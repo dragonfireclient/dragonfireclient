@@ -732,7 +732,7 @@ end
 
 minetest.register_node("default:stone", {
 	description = "Stone",
-	tiles ={"default_stone.png"},
+	tiles = {"default_stone.png"},
 	groups = {cracky=3},
 	drop = 'default:cobble',
 	legacy_mineral = true,
@@ -765,6 +765,9 @@ minetest.register_node("default:dirt_with_grass", {
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
+	paramtype = "light",
+	sunlight_propagates = true,
+	drawtype = "glasslike",
 })
 
 minetest.register_node("default:dirt_with_grass_footsteps", {

@@ -167,7 +167,8 @@ static u8 getFaceLight(enum LightBank bank, MapNode n, MapNode n2,
 			ndef->get(n2).light_source);
 	if(light_source > light)
 		light = light_source;
-
+	if(g_settings->getBool("fullbright"))
+		return 255;
 	return decode_light(light);
 }
 

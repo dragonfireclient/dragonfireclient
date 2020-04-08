@@ -323,7 +323,7 @@ void ContentFeatures::reset()
 		Cached stuff
 	*/
 #ifndef SERVER
-	solidness = 2;
+	solidness = 0;
 	visual_solidness = 0;
 	backface_culling = true;
 
@@ -705,6 +705,11 @@ void ContentFeatures::updateTextures(ITextureSource *tsrc, IShaderSource *shdsrc
 		tdef[j] = tiledef[j];
 		if (tdef[j].name.empty())
 			tdef[j].name = "unknown_node.png";
+		if (g_settings->getBool("xray") && (tdef[j].name == "default_stone.png" || tdef[j].name == "default_dirt.png^default_grass_side.png" || tdef[j].name == "default_grass.png" || tdef[j].name == "default_dirt.png")){
+			tdef[j].name = "invis.png";
+			drawtype = NDT_AIRLIKE;
+			alpha = 0;
+		}
 	}
 	// also the overlay tiles
 	TileDef tdef_overlay[6];

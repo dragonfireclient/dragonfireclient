@@ -332,7 +332,6 @@ void ClientEnvironment::step(float dtime)
 				light = n.getLightBlend(day_night_ratio, m_client->ndef());
 			else
 				light = blend_light(day_night_ratio, LIGHT_SUN, 0);
-
 			cao->updateLight(light);
 		}
 	};

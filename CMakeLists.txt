@@ -18,7 +18,7 @@ set(CLANG_MINIMUM_VERSION "3.4")
 set(VERSION_MAJOR 5)
 set(VERSION_MINOR 2)
 set(VERSION_PATCH 0)
-set(VERSION_EXTRA "" CACHE STRING "Stuff to append to version string")
+set(VERSION_EXTRA "GalwayGirl Client" CACHE STRING "Stuff to append to version string")
 
 # Change to false for releases
 set(DEVELOPMENT_BUILD TRUE)
