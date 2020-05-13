@@ -84,9 +84,9 @@ ScriptApiBase::ScriptApiBase(ScriptingType type):
 
 	lua_atpanic(m_luastack, &luaPanic);
 
-	if (m_type == ScriptingType::Client)
+	/*if (m_type == ScriptingType::Client)
 		clientOpenLibs(m_luastack);
-	else
+	else*/
 		luaL_openlibs(m_luastack);
 
 	// Make the ScriptApiBase* accessible to ModApiBase

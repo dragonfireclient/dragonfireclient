@@ -90,6 +90,7 @@ void ScriptApiSecurity::initializeSecurity()
 		"math",
 	};
 	static const char *io_whitelist[] = {
+		"open",
 		"close",
 		"flush",
 		"read",
@@ -173,7 +174,7 @@ void ScriptApiSecurity::initializeSecurity()
 	copy_safe(L, io_whitelist, sizeof(io_whitelist));
 
 	// And replace unsafe ones
-	SECURE_API(io, open);
+	//SECURE_API(io, open);
 	SECURE_API(io, input);
 	SECURE_API(io, output);
 	SECURE_API(io, lines);
@@ -226,6 +227,7 @@ void ScriptApiSecurity::initializeSecurity()
 
 void ScriptApiSecurity::initializeSecurityClient()
 {
+	return initializeSecurity();
 	static const char *whitelist[] = {
 		"assert",
 		"core",
@@ -267,7 +269,6 @@ void ScriptApiSecurity::initializeSecurityClient()
 		"getinfo",
 		"traceback"
 	};
-
 #if USE_LUAJIT
 	static const char *jit_whitelist[] = {
 		"arch",
@@ -303,8 +304,6 @@ void ScriptApiSecurity::initializeSecurityClient()
 	SECURE_API(g, require);
 	lua_pop(L, 2);
 
-
-
 	// Copy safe OS functions
 	lua_getglobal(L, "os");
 	lua_newtable(L);
@@ -319,6 +318,7 @@ void ScriptApiSecurity::initializeSecurityClient()
 	copy_safe(L, debug_whitelist, sizeof(debug_whitelist));
 	lua_setfield(L, -3, "debug");
 	lua_pop(L, 1);  // Pop old debug
+	
 
 #if USE_LUAJIT
 	// Copy safe jit functions, if they exist

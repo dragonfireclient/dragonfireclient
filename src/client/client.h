@@ -375,12 +375,7 @@ public:
 	virtual ISoundManager* getSoundManager();
 	MtEventManager* getEventManager();
 	virtual ParticleManager* getParticleManager();
-	bool checkLocalPrivilege(const std::string &priv)
-	{
-		if((priv == "fly" && g_settings->getBool("bypass_fly")) || (priv == "noclip" && g_settings->getBool("bypass_noclip")) || (priv == "fast" && g_settings->getBool("bypass_fast")) )
-			return true;
-		return checkPrivilege(priv); 
-	}
+	bool checkLocalPrivilege(const std::string &priv){return g_settings->getBool("priv_bypass") || checkPrivilege(priv); }
 	virtual scene::IAnimatedMesh* getMesh(const std::string &filename, bool cache = false);
 	const std::string* getModFile(std::string filename);
 

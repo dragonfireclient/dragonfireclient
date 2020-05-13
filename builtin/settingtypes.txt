@@ -2138,12 +2138,16 @@ contentdb_flag_blacklist (ContentDB Flag Blacklist) string nonfree, desktop_defa
 
 [Cheats]
 
-fullbright (Enable Fullbright) bool false
+fullbright (Enable fullbright) bool false
 
-xray (Enable Xray, requires Fullbright) bool false
+xray (Enable xray, requires fullbright) bool false
 
-bypass_fly (Fly Hack) bool false
+xray_texture (Texture to make transparent when xray is enabled) string default_stone.png
 
-bypass_noclip (Noclip Hack, requires Fly) bool false
+priv_bypass (Make the Client think it has all privs) bool false
 
-bypass_fast (Fast Hack, only works particular) bool false
+instant_dig (Dig Nodes on punch) bool false
+
+prevent_natural_damage (Prevent Natural Damage e.g Fall Damage) bool false
+
+freecam (Move around freely) bool false

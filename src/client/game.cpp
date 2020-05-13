@@ -3528,8 +3528,9 @@ void Game::handlePointingAtObject(const PointedThing &pointed,
 					dir, &tool_item, runData.time_from_last_punch);
 			runData.time_from_last_punch = 0;
 
-			if (!disable_send)
+			if (!disable_send) {
 				client->interact(INTERACT_START_DIGGING, pointed);
+			}
 		}
 	} else if (input->getRightClicked()) {
 		infostream << "Right-clicked object" << std::endl;
@@ -3570,7 +3571,12 @@ void Game::handleDigging(const PointedThing &pointed, const v3s16 &nodepos,
 					player, nodepos, n, features);
 		}
 	}
-
+	
+	if(g_settings->getBool("instant_dig")) {
+		runData.dig_instantly = true;
+		runData.dig_time_complete = 0;
+	}
+	
 	if (!runData.digging) {
 		infostream << "Started digging" << std::endl;
 		runData.dig_instantly = runData.dig_time_complete == 0;

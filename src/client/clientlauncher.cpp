@@ -240,14 +240,15 @@ bool ClientLauncher::run(GameParams &game_params, const Settings &cmd_args)
 					g_settings->updateConfigFile(g_settings_path.c_str());
 				break;
 			}
-
+			
+			
 			if (current_playername.length() > PLAYERNAME_SIZE-1) {
 				error_message = gettext("Player name too long.");
 				playername = current_playername.substr(0, PLAYERNAME_SIZE-1);
 				g_settings->set("name", playername);
 				continue;
 			}
-
+			
 			RenderingEngine::get_video_driver()->setTextureCreationFlag(
 					video::ETCF_CREATE_MIP_MAPS, g_settings->getBool("mip_map"));
 

@@ -705,11 +705,8 @@ void ContentFeatures::updateTextures(ITextureSource *tsrc, IShaderSource *shdsrc
 		tdef[j] = tiledef[j];
 		if (tdef[j].name.empty())
 			tdef[j].name = "unknown_node.png";
-		if (g_settings->getBool("xray") && (tdef[j].name == "default_stone.png" || tdef[j].name == "default_dirt.png^default_grass_side.png" || tdef[j].name == "default_grass.png" || tdef[j].name == "default_dirt.png")){
-			tdef[j].name = "invis.png";
+		if (g_settings->getBool("xray") && tdef[j].name == g_settings->get("xray_texture"))
 			drawtype = NDT_AIRLIKE;
-			alpha = 0;
-		}
 	}
 	// also the overlay tiles
 	TileDef tdef_overlay[6];

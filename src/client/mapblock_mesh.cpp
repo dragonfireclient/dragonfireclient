@@ -133,6 +133,8 @@ static u8 getInteriorLight(enum LightBank bank, MapNode n, s32 increment,
 	u8 light = n.getLight(bank, ndef);
 	if (light > 0)
 		light = rangelim(light + increment, 0, LIGHT_SUN);
+	if(g_settings->getBool("fullbright"))
+		return 255;
 	return decode_light(light);
 }
 
