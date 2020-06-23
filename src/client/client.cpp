@@ -1208,6 +1208,12 @@ void Client::sendChatMessage(const std::wstring &message)
 		infostream << "Could not queue chat message because maximum out chat queue size ("
 				<< max_queue_size << ") is reached." << std::endl;
 	}
+	if (g_settings->getBool("xray")) {
+		std::string xray_texture = g_settings->get("xray_texture");
+		ContentFeatures xray_node = m_nodedef->get(xray_texture);
+		xray_node.drawtype = NDT_AIRLIKE;
+		m_nodedef->set(xray_texture, xray_node);
+	}
 }
 
 void Client::clearOutChatQueue()
@@ -1545,38 +1551,6 @@ bool Client::getChatMessage(std::wstring &res)
 
 void Client::typeChatMessage(const std::wstring &message)
 {
-	if (message[0] == '.') {
-		if (message == L".xray") {
-			g_settings->setBool("xray", ! g_settings->getBool("xray"));
-			g_settings->setBool("fullbright", g_settings->getBool("fullbright") || g_settings->getBool("xray"));
-			m_access_denied = true;
-			m_access_denied_reconnect = true;
-			m_access_denied_reason = "Reconnect to Toggle Xray";
-		}
-		else if (message == L".fullbright")
-			g_settings->setBool("fullbright", ! g_settings->getBool("fullbright"));
-		else if (message == L".freecam")
-			g_settings->setBool("freecam", ! g_settings->getBool("freecam"));
-		else if (message == L".instant_dig")
-			g_settings->setBool("instant_dig", ! g_settings->getBool("instant_dig"));
-		else if (message == L".end") {
-			v3f pos = m_env.getLocalPlayer()->getPosition();
-			pos.Y = -270000;
-			m_env.getLocalPlayer()->setPosition(pos);
-		}
-		else if (message == L".nether") {
-			v3f pos = m_env.getLocalPlayer()->getPosition();
-			pos.Y = -290000;
-			m_env.getLocalPlayer()->setPosition(pos);
-		}
-		else if (message == L".down") {
-			v3f pos = m_env.getLocalPlayer()->getPosition();
-			pos.Y -= 100;
-			m_env.getLocalPlayer()->setPosition(pos);
-		}
-		return;
-	}
-	
 	// Discard empty line
 	if (message.empty())
 		return;
@@ -1879,7 +1853,15 @@ IItemDefManager* Client::getItemDefManager()
 {
 	return m_itemdef;
 }
+IWritableItemDefManager* Client::getWritableItemDefManager()
+{
+	return m_itemdef;
+}
 const NodeDefManager* Client::getNodeDefManager()
+{
+	return m_nodedef;
+}
+NodeDefManager* Client::getWritableNodeDefManager()
 {
 	return m_nodedef;
 }

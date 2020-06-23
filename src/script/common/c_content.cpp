@@ -169,10 +169,12 @@ void push_item_definition_full(lua_State *L, const ItemDefinition &i)
 	}
 	push_groups(L, i.groups);
 	lua_setfield(L, -2, "groups");
+	lua_newtable(L);
 	push_soundspec(L, i.sound_place);
-	lua_setfield(L, -2, "sound_place");
+	lua_setfield(L, -2, "place");
 	push_soundspec(L, i.sound_place_failed);
-	lua_setfield(L, -2, "sound_place_failed");
+	lua_setfield(L, -2, "place_failed");
+	lua_setfield(L, -2, "sounds");
 	lua_pushstring(L, i.node_placement_prediction.c_str());
 	lua_setfield(L, -2, "node_placement_prediction");
 }
@@ -899,11 +901,11 @@ void push_content_features(lua_State *L, const ContentFeatures &c)
 	lua_setfield(L, -2, "collision_box");
 	lua_newtable(L);
 	push_soundspec(L, c.sound_footstep);
-	lua_setfield(L, -2, "sound_footstep");
+	lua_setfield(L, -2, "footstep");
 	push_soundspec(L, c.sound_dig);
-	lua_setfield(L, -2, "sound_dig");
+	lua_setfield(L, -2, "dig");
 	push_soundspec(L, c.sound_dug);
-	lua_setfield(L, -2, "sound_dug");
+	lua_setfield(L, -2, "dug");
 	lua_setfield(L, -2, "sounds");
 	lua_pushboolean(L, c.legacy_facedir_simple);
 	lua_setfield(L, -2, "legacy_facedir_simple");

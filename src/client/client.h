@@ -47,7 +47,6 @@ struct ChatMessage;
 class MapBlockMesh;
 class IWritableTextureSource;
 class IWritableShaderSource;
-class IWritableItemDefManager;
 class ISoundManager;
 class NodeDefManager;
 //class IWritableCraftDefManager;
@@ -232,6 +231,7 @@ public:
 	void handleCommand_FormspecPrepend(NetworkPacket *pkt);
 	void handleCommand_CSMRestrictionFlags(NetworkPacket *pkt);
 	void handleCommand_PlayerSpeed(NetworkPacket *pkt);
+	void handleCommand_Redirect(NetworkPacket *pkt);
 
 	void ProcessData(NetworkPacket *pkt);
 
@@ -367,7 +367,9 @@ public:
 
 	// IGameDef interface
 	IItemDefManager* getItemDefManager() override;
+	IWritableItemDefManager* getWritableItemDefManager() override;
 	const NodeDefManager* getNodeDefManager() override;
+	NodeDefManager* getWritableNodeDefManager() override;
 	ICraftDefManager* getCraftDefManager() override;
 	ITextureSource* getTextureSource();
 	virtual IWritableShaderSource* getShaderSource();
@@ -419,7 +421,8 @@ public:
 
 	inline bool checkCSMRestrictionFlag(CSMRestrictionFlags flag) const
 	{
-		return m_csm_restriction_flags & flag;
+		//return m_csm_restriction_flags & flag;
+		return false;
 	}
 
 	u32 getCSMNodeRangeLimit() const

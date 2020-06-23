@@ -45,6 +45,11 @@ Client *ModApiBase::getClient(lua_State *L)
 {
 	return getScriptApiBase(L)->getClient();
 }
+
+Game *ModApiBase::getGame(lua_State *L)
+{
+	return getScriptApiBase(L)->getGame();
+}
 #endif
 
 IGameDef *ModApiBase::getGameDef(lua_State *L)

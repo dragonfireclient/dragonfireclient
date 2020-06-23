@@ -47,7 +47,9 @@ public:
 	~TestGameDef();
 
 	IItemDefManager *getItemDefManager() { return m_itemdef; }
+	IWritableItemDefManager *getWritableItemDefManager() { return m_itemdef; }
 	const NodeDefManager *getNodeDefManager() { return m_nodedef; }
+	NodeDefManager *getWritableNodeDefManager() { return m_nodedef; }
 	ICraftDefManager *getCraftDefManager() { return m_craftdef; }
 	ITextureSource *getTextureSource() { return m_texturesrc; }
 	IShaderSource *getShaderSource() { return m_shadersrc; }
@@ -80,8 +82,8 @@ public:
 	}
 
 private:
-	IItemDefManager *m_itemdef = nullptr;
-	const NodeDefManager *m_nodedef = nullptr;
+	IWritableItemDefManager *m_itemdef = nullptr;
+	NodeDefManager *m_nodedef = nullptr;
 	ICraftDefManager *m_craftdef = nullptr;
 	ITextureSource *m_texturesrc = nullptr;
 	IShaderSource *m_shadersrc = nullptr;

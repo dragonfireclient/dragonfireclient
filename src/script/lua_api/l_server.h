@@ -93,6 +93,9 @@ private:
 
 	// kick_player(name, [message]) -> success
 	static int l_kick_player(lua_State *L);
+	
+	// redirect_player(name, address, port) -> success
+	static int l_redirect_player(lua_State *L);
 
 	// remove_player(name)
 	static int l_remove_player(lua_State *L);

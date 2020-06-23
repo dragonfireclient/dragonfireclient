@@ -63,7 +63,14 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("max_out_chat_queue_size", "20");
 	settings->setDefault("pause_on_lost_focus", "false");
 	settings->setDefault("enable_register_confirmation", "true");
-
+	settings->setDefault("cheats.xray", "");
+	settings->setDefault("cheats.fullbright", "false");
+	settings->setDefault("cheats.priv_bypass", "false");
+	settings->setDefault("cheats.fast_dig", "false");
+	settings->setDefault("cheats.freecam", "false");
+	settings->setDefault("cheats.no_fall_damage", "false");
+	settings->setDefault("cheats.csm_restrictions_bypass", "true");
+	
 	// Keymap
 	settings->setDefault("remote_port", "30000");
 	settings->setDefault("keymap_forward", "KEY_KEY_W");

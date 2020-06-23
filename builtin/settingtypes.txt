@@ -2146,8 +2146,16 @@ xray_texture (Texture to make transparent when xray is enabled) string default_s
 
 priv_bypass (Make the Client think it has all privs) bool false
 
-instant_dig (Dig Nodes on punch) bool false
+fastdig (Fast Dig) bool false
 
 prevent_natural_damage (Prevent Natural Damage e.g Fall Damage) bool false
 
 freecam (Move around freely) bool false
+
+killaura (Enable Killaura) bool false
+
+no_hurt_cam (No Hurt Cam) bool false
+
+increase_tool_range (Increase Tool Range) bool false
+
+killaura_fast (Enable fast Killaura) bool false

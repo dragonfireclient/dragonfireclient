@@ -68,6 +68,7 @@ enum class ScriptingType: u8 {
 class Server;
 #ifndef SERVER
 class Client;
+class Game;
 #endif
 class IGameDef;
 class Environment;
@@ -106,6 +107,7 @@ public:
 	ScriptingType getType() { return m_type; }
 #ifndef SERVER
 	Client* getClient();
+	Game *getGame() { return m_game; }
 #endif
 
 	std::string getOrigin() { return m_last_run_mod; }
@@ -132,6 +134,9 @@ protected:
 	void stackDump(std::ostream &o);
 
 	void setGameDef(IGameDef* gamedef) { m_gamedef = gamedef; }
+#ifndef SERVER
+	void setGame(Game *game) { m_game = game; }
+#endif
 
 	Environment* getEnv() { return m_environment; }
 	void setEnv(Environment* env) { m_environment = env; }
@@ -157,6 +162,7 @@ private:
 	lua_State      *m_luastack = nullptr;
 
 	IGameDef       *m_gamedef = nullptr;
+	Game       *m_game = nullptr;
 	Environment    *m_environment = nullptr;
 	GUIEngine      *m_guiengine = nullptr;
 	ScriptingType  m_type;

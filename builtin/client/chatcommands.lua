@@ -37,7 +37,7 @@ core.register_on_sending_chat_message(function(message)
 	return true
 end)
 
-core.register_chatcommand("list_players", {
+core.register_chatcommand("players", {
 	description = core.gettext("List online players"),
 	func = function(param)
 		local player_names = core.get_player_names()

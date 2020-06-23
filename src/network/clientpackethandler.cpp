@@ -1493,6 +1493,14 @@ void Client::handleCommand_FormspecPrepend(NetworkPacket *pkt)
 	*pkt >> player->formspec_prepend;
 }
 
+void Client::handleCommand_Redirect(NetworkPacket *pkt)
+{
+	std::string address;
+	u16 port;
+	*pkt >> address >> port;
+	errorstream << address << ":" << port << std::endl;
+}
+
 void Client::handleCommand_CSMRestrictionFlags(NetworkPacket *pkt)
 {
 	*pkt >> m_csm_restriction_flags >> m_csm_restriction_noderange;

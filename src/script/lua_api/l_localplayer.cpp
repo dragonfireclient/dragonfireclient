@@ -217,6 +217,15 @@ int LuaLocalPlayer::l_get_pos(lua_State *L)
 	return 1;
 }
 
+int LuaLocalPlayer::l_set_pos(lua_State *L)
+{
+	LocalPlayer *player = getobject(L, 1);
+	
+	v3f pos = checkFloatPos(L, 2);
+	player->setPosition(pos);
+	return 0;
+}
+
 int LuaLocalPlayer::l_get_movement_acceleration(lua_State *L)
 {
 	LocalPlayer *player = getobject(L, 1);
@@ -423,6 +432,7 @@ const luaL_Reg LuaLocalPlayer::methods[] = {
 		luamethod(LuaLocalPlayer, get_key_pressed),
 		luamethod(LuaLocalPlayer, get_breath),
 		luamethod(LuaLocalPlayer, get_pos),
+		luamethod(LuaLocalPlayer, set_pos),
 		luamethod(LuaLocalPlayer, get_movement_acceleration),
 		luamethod(LuaLocalPlayer, get_movement_speed),
 		luamethod(LuaLocalPlayer, get_movement),

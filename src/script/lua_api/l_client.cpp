@@ -24,6 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/clientevent.h"
 #include "client/sound.h"
 #include "client/clientenvironment.h"
+#include "client/game.h"
 #include "common/c_content.h"
 #include "common/c_converter.h"
 #include "cpp_api/s_base.h"
@@ -406,6 +407,54 @@ int ModApiClient::l_get_csm_restrictions(lua_State *L)
 	return 1;
 }
 
+// send_damage(damage)
+int ModApiClient::l_send_damage(lua_State *L)
+{
+	u16 damage = luaL_checknumber(L, 1);
+	getClient(L)->sendDamage(damage);
+	return 0;	
+}
+
+// place_node(pos)
+int ModApiClient::l_place_node(lua_State *L)
+{
+	Client *client = getClient(L);
+	v3s16 pos = read_v3s16(L, 1);
+	PointedThing pointed;
+	pointed.type = POINTEDTHING_NODE;
+	pointed.node_abovesurface = pos;
+	pointed.node_undersurface = pos;
+	client->interact(INTERACT_PLACE, pointed);
+	return 0;
+}
+
+// dig_node(pos)
+int ModApiClient::l_dig_node(lua_State *L)
+{
+	Client *client = getClient(L);
+	v3s16 pos = read_v3s16(L, 1);
+	PointedThing pointed;
+	pointed.type = POINTEDTHING_NODE;
+	pointed.node_abovesurface = pos;
+	pointed.node_undersurface = pos;
+	client->interact(INTERACT_START_DIGGING, pointed);
+	client->interact(INTERACT_DIGGING_COMPLETED, pointed);
+	return 0;
+}
+
+// start_dig(pos)
+int ModApiClient::l_start_dig(lua_State *L)
+{
+	Client *client = getClient(L);
+	v3s16 pos = read_v3s16(L, 1);
+	PointedThing pointed;
+	pointed.type = POINTEDTHING_NODE;
+	pointed.node_abovesurface = pos;
+	pointed.node_undersurface = pos;
+	client->interact(INTERACT_START_DIGGING, pointed);
+	return 0;
+}
+
 void ModApiClient::Initialize(lua_State *L, int top)
 {
 	API_FCT(get_current_modname);
@@ -433,4 +482,8 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(get_builtin_path);
 	API_FCT(get_language);
 	API_FCT(get_csm_restrictions);
+	API_FCT(send_damage);
+	API_FCT(place_node);
+	API_FCT(dig_node);
+	API_FCT(start_dig);
 }

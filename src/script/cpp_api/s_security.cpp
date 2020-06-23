@@ -227,7 +227,6 @@ void ScriptApiSecurity::initializeSecurity()
 
 void ScriptApiSecurity::initializeSecurityClient()
 {
-	return initializeSecurity();
 	static const char *whitelist[] = {
 		"assert",
 		"core",

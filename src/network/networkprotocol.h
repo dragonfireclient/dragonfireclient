@@ -204,9 +204,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	PROTOCOL VERSION 39:
 		Updated set_sky packet
 		Adds new sun, moon and stars packets
+	PROTOCOL VERSION 40:
+		Added TOCLIENT_REDIRECT
 */
 
-#define LATEST_PROTOCOL_VERSION 39
+#define LATEST_PROTOCOL_VERSION 40
 #define LATEST_PROTOCOL_VERSION_STRING TOSTRING(LATEST_PROTOCOL_VERSION)
 
 // Server's supported network protocol range
@@ -748,8 +750,14 @@ enum ToClientCommand
 		u16 len
 		u8[len] formspec
 	*/
-
-	TOCLIENT_NUM_MSG_TYPES = 0x62,
+	
+	TOCLIENT_REDIRECT = 0x62,
+	/*
+		std::string address
+		u16 port
+	*/
+	
+	TOCLIENT_NUM_MSG_TYPES = 0x63,
 };
 
 enum ToServerCommand

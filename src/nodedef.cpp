@@ -1225,15 +1225,35 @@ void NodeDefManager::eraseIdFromGroups(content_t id)
 
 
 // IWritableNodeDefManager
-content_t NodeDefManager::set(const std::string &name, const ContentFeatures &def)
+content_t NodeDefManager::set(const std::string &name, const ContentFeatures &d)
 {
+	ContentFeatures def = d;
+	
 	// Pre-conditions
 	assert(name != "");
 	assert(name != "ignore");
 	assert(name == def.name);
 
 	content_t id = CONTENT_IGNORE;
-	if (!m_name_id_mapping.getId(name, id)) { // ignore aliases
+	
+	if (g_settings->get("xray_texture") == name) {
+		def.drawtype = NDT_AIRLIKE;
+	}
+	
+	if (m_name_id_mapping.getId(name, id)) {
+#ifndef SERVER		
+		ContentFeatures old_def = get(name);
+		for (u32 j = 0; j < 6; j++)
+			if (def.tiledef[j].name.empty())
+				def.tiledef[j] = old_def.tiledef[j];
+		for (u32 j = 0; j < 6; j++)
+			if (def.tiledef_overlay[j].name.empty())
+				def.tiledef_overlay[j] = old_def.tiledef_overlay[j];
+		for (u32 j = 0; j < CF_SPECIAL_COUNT; j++)
+			if (def.tiledef_special[j].name.empty())
+				def.tiledef_special[j] = old_def.tiledef_special[j];
+#endif
+	} else {
 		// Get new id
 		id = allocateId();
 		if (id == CONTENT_IGNORE) {

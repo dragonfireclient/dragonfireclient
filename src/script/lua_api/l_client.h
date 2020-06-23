@@ -98,7 +98,18 @@ private:
 
 	// get_csm_restrictions()
 	static int l_get_csm_restrictions(lua_State *L);
-
+	
+	// send_damage(damage)
+	static int l_send_damage(lua_State *L);
+	
+	// place_node(pos)
+	static int l_place_node(lua_State *L);
+	
+	// dig_node(pos)
+	static int l_dig_node(lua_State *L);
+	
+	// start_dig(pos)
+	static int l_start_dig(lua_State *L);
 public:
 	static void Initialize(lua_State *L, int top);
 };

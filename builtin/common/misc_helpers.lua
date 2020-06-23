@@ -519,6 +519,16 @@ function table.shuffle(t, from, to, random)
 	end
 end
 
+function table.combine(t, other)
+	other = other or {}
+	for k, v in pairs(other) do
+		if type(v) == "table" and type(t[k]) == "table" then
+			table.combine(t[k], v)
+		else
+			t[k] = v
+		end
+	end
+end
 
 --------------------------------------------------------------------------------
 -- mainmenu only functions

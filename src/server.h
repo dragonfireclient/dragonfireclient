@@ -332,6 +332,7 @@ public:
 	void acceptAuth(session_t peer_id, bool forSudoMode);
 	void DenyAccess_Legacy(session_t peer_id, const std::wstring &reason);
 	void DisconnectPeer(session_t peer_id);
+	void RedirectPeer(session_t peer_id, const std::string address, u16 port);
 	bool getClientConInfo(session_t peer_id, con::rtt_stat_type type, float *retval);
 	bool getClientInfo(session_t peer_id, ClientState *state, u32 *uptime,
 			u8* ser_vers, u16* prot_vers, u8* major, u8* minor, u8* patch,
@@ -392,6 +393,7 @@ private:
 	void SendAccessDenied(session_t peer_id, AccessDeniedCode reason,
 		const std::string &custom_reason, bool reconnect = false);
 	void SendAccessDenied_Legacy(session_t peer_id, const std::wstring &reason);
+	void SendRedirect(session_t peer_id, const std::string address, u16 port);
 	void SendDeathscreen(session_t peer_id, bool set_camera_point_target,
 		v3f camera_point_target);
 	void SendItemDef(session_t peer_id, IItemDefManager *itemdef, u16 protocol_version);

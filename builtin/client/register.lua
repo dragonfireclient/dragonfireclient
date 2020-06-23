@@ -40,6 +40,26 @@ function core.run_callbacks(callbacks, mode, ...)
 	return ret
 end
 
+function core.override_item(name, redefinition)
+	if redefinition.name ~= nil then
+		error("Attempt to redefine name of "..name.." to "..dump(redefinition.name), 2)
+	end
+	if redefinition.type ~= nil then
+		error("Attempt to redefine type of "..name.." to "..dump(redefinition.type), 2)
+	end
+	local itemdef = core.get_item_def(name)
+	if not itemdef then
+		error("Attempt to override non-existent item "..name, 2)
+	end
+	local nodedef = core.get_node_def(name)
+	table.combine(itemdef, nodedef)
+	
+	for k, v in pairs(redefinition) do
+		rawset(itemdef, k, v)
+	end
+	core.register_item_raw(itemdef)
+end
+
 --
 -- Callback registration
 --

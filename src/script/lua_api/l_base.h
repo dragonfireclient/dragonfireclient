@@ -32,6 +32,7 @@ extern "C" {
 
 #ifndef SERVER
 class Client;
+class Game;
 #endif
 
 class ScriptApiBase;
@@ -46,10 +47,10 @@ public:
 	static Server*          getServer(lua_State *L);
 	#ifndef SERVER
 	static Client*          getClient(lua_State *L);
+	static Game*        	getGame(lua_State *L);
 	#endif // !SERVER
 
 	static IGameDef*        getGameDef(lua_State *L);
-
 	static Environment*     getEnv(lua_State *L);
 	static GUIEngine*       getGuiEngine(lua_State *L);
 	// When we are not loading the mod, this function returns "."

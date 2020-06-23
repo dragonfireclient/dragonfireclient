@@ -1,0 +1,463 @@
+\href{https://travis-ci.org/minetest/minetest}{\tt } \href{https://hosted.weblate.org/engage/minetest/?utm_source=widget}{\tt } \href{https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html}{\tt }
+
+Minetest is a free open-\/source voxel game engine with easy modding and game creation.
+
+Copyright (C) 2010-\/2019 Perttu Ahola \href{mailto:celeron55@gmail.com}{\tt celeron55@gmail.\+com} and contributors (see source file comments and the version control log)
+
+\subsection*{In case you downloaded the source code }
+
+If you downloaded the Minetest Engine source code in which this file is contained, you probably want to download the \href{https://github.com/minetest/minetest_game/}{\tt Minetest Game} project too. See its R\+E\+A\+D\+M\+E.\+txt for more information.
+
+\subsection*{Table of Contents }
+
+
+\begin{DoxyEnumerate}
+\item \href{#further-documentation}{\tt Further Documentation}
+\item \href{#default-controls}{\tt Default Controls}
+\item \href{#paths}{\tt Paths}
+\item \href{#configuration-file}{\tt Configuration File}
+\item \href{#command-line-options}{\tt Command-\/line Options}
+\item \href{#compiling}{\tt Compiling}
+\item \href{#docker}{\tt Docker}
+\item \href{#version-scheme}{\tt Version Scheme}
+\end{DoxyEnumerate}
+
+\subsection*{Further documentation }
+
+
+\begin{DoxyItemize}
+\item Website\+: \href{http://minetest.net/}{\tt http\+://minetest.\+net/}
+\item Wiki\+: \href{http://wiki.minetest.net/}{\tt http\+://wiki.\+minetest.\+net/}
+\item Developer wiki\+: \href{http://dev.minetest.net/}{\tt http\+://dev.\+minetest.\+net/}
+\item Forum\+: \href{http://forum.minetest.net/}{\tt http\+://forum.\+minetest.\+net/}
+\item Git\+Hub\+: \href{https://github.com/minetest/minetest/}{\tt https\+://github.\+com/minetest/minetest/}
+\item \href{doc/}{\tt doc/} directory of source distribution
+\end{DoxyItemize}
+
+\subsection*{Default controls }
+
+All controls are re-\/bindable using settings. Some can be changed in the key config dialog in the settings tab.
+
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Button }&\textbf{ Action  }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Button }&\textbf{ Action  }\\\cline{1-2}
+\endhead
+Move mouse &Look around \\\cline{1-2}
+W, A, S, D &Move \\\cline{1-2}
+Space &Jump/move up \\\cline{1-2}
+Shift &Sneak/move down \\\cline{1-2}
+Q &Drop itemstack \\\cline{1-2}
+Shift + Q &Drop single item \\\cline{1-2}
+Left mouse button &Dig/punch/take item \\\cline{1-2}
+Right mouse button &Place/use \\\cline{1-2}
+Shift + right mouse button &Build (without using) \\\cline{1-2}
+I &Inventory menu \\\cline{1-2}
+Mouse wheel &Select item \\\cline{1-2}
+0-\/9 &Select item \\\cline{1-2}
+Z &Zoom (needs zoom privilege) \\\cline{1-2}
+T &Chat \\\cline{1-2}
+/ &Command \\\cline{1-2}
+Esc &Pause menu/abort/exit (pauses only singleplayer game) \\\cline{1-2}
+R &Enable/disable full range view \\\cline{1-2}
++ &Increase view range \\\cline{1-2}
+-\/ &Decrease view range \\\cline{1-2}
+K &Enable/disable fly mode (needs fly privilege) \\\cline{1-2}
+P &Enable/disable pitch move mode \\\cline{1-2}
+J &Enable/disable fast mode (needs fast privilege) \\\cline{1-2}
+H &Enable/disable noclip mode (needs noclip privilege) \\\cline{1-2}
+E &Move fast in fast mode \\\cline{1-2}
+F1 &Hide/show H\+UD \\\cline{1-2}
+F2 &Hide/show chat \\\cline{1-2}
+F3 &Disable/enable fog \\\cline{1-2}
+F4 &Disable/enable camera update (Mapblocks are not updated anymore when disabled, disabled in release builds) \\\cline{1-2}
+F5 &Cycle through debug information screens \\\cline{1-2}
+F6 &Cycle through profiler info screens \\\cline{1-2}
+F7 &Cycle through camera modes \\\cline{1-2}
+F9 &Cycle through minimap modes \\\cline{1-2}
+Shift + F9 &Change minimap orientation \\\cline{1-2}
+F10 &Show/hide console \\\cline{1-2}
+F12 &Take screenshot \\\cline{1-2}
+\end{longtabu}
+\subsection*{Paths }
+
+Locations\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily bin} -\/ Compiled binaries
+\item {\ttfamily share} -\/ Distributed read-\/only data
+\item {\ttfamily user} -\/ User-\/created modifiable data
+\end{DoxyItemize}
+
+Where each location is on each platform\+:
+
+
+\begin{DoxyItemize}
+\item Windows .zip / R\+U\+N\+\_\+\+I\+N\+\_\+\+P\+L\+A\+CE source\+:
+\begin{DoxyItemize}
+\item {\ttfamily bin} = {\ttfamily bin}
+\item {\ttfamily share} = {\ttfamily .}
+\item {\ttfamily user} = {\ttfamily .}
+\end{DoxyItemize}
+\item Windows installed\+:
+\begin{DoxyItemize}
+\item {\ttfamily bin} = {\ttfamily C\+:\textbackslash{}Program Files\textbackslash{}Minetest\textbackslash{}bin (Depends on the install location)}
+\item {\ttfamily share} = {\ttfamily C\+:\textbackslash{}Program Files\textbackslash{}Minetest (Depends on the install location)}
+\item {\ttfamily user} = {\ttfamily A\+P\+P\+D\+A\+TA\%\textbackslash{}Minetest}
+\end{DoxyItemize}
+\item Linux installed\+:
+\begin{DoxyItemize}
+\item {\ttfamily bin} = {\ttfamily /usr/bin}
+\item {\ttfamily share} = {\ttfamily /usr/share/minetest}
+\item {\ttfamily user} = {\ttfamily $\sim$/.minetest}
+\end{DoxyItemize}
+\item mac\+OS\+:
+\begin{DoxyItemize}
+\item {\ttfamily bin} = {\ttfamily Contents/\+Mac\+OS}
+\item {\ttfamily share} = {\ttfamily Contents/\+Resources}
+\item {\ttfamily user} = {\ttfamily Contents/\+User OR $\sim$/\+Library/\+Application Support/minetest}
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+Worlds can be found as separate folders in\+: {\ttfamily user/worlds/}
+
+\subsection*{Configuration file }
+
+
+\begin{DoxyItemize}
+\item Default location\+: {\ttfamily user/minetest.\+conf}
+\item This file is created by closing Minetest for the first time.
+\item A specific file can be specified on the command line\+: {\ttfamily -\/-\/config $<$path-\/to-\/file$>$}
+\item A run-\/in-\/place build will look for the configuration file in {\ttfamily location\+\_\+of\+\_\+exe/../minetest.conf} and also {\ttfamily location\+\_\+of\+\_\+exe/../../minetest.conf}
+\end{DoxyItemize}
+
+\subsection*{Command-\/line options }
+
+
+\begin{DoxyItemize}
+\item Use {\ttfamily -\/-\/help}
+\end{DoxyItemize}
+
+\subsection*{Compiling }
+
+\subsubsection*{Compiling on G\+N\+U/\+Linux}
+
+\paragraph*{Dependencies}
+
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Dependency }&\textbf{ Version }&\textbf{ Commentary  }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Dependency }&\textbf{ Version }&\textbf{ Commentary  }\\\cline{1-3}
+\endhead
+G\+CC &4.\+9+ &Can be replaced with Clang 3.\+4+ \\\cline{1-3}
+C\+Make &2.\+6+ &\\\cline{1-3}
+Irrlicht &1.\+7.\+3+ &\\\cline{1-3}
+S\+Q\+Lite3 &3.\+0+ &\\\cline{1-3}
+Lua\+J\+IT &2.\+0+ &Bundled Lua 5.\+1 is used if not present \\\cline{1-3}
+G\+MP &5.\+0.\+0+ &Bundled mini-\/\+G\+MP is used if not present \\\cline{1-3}
+Json\+C\+PP &1.\+0.\+0+ &Bundled Json\+C\+PP is used if not present \\\cline{1-3}
+\end{longtabu}
+For Debian/\+Ubuntu users\+: \begin{DoxyVerb}sudo apt install g++ make libc6-dev libirrlicht-dev cmake libbz2-dev libpng-dev libjpeg-dev libxxf86vm-dev libgl1-mesa-dev libsqlite3-dev libogg-dev libvorbis-dev libopenal-dev libcurl4-gnutls-dev libfreetype6-dev zlib1g-dev libgmp-dev libjsoncpp-dev
+\end{DoxyVerb}
+
+
+For Fedora users\+: \begin{DoxyVerb}sudo dnf install make automake gcc gcc-c++ kernel-devel cmake libcurl-devel openal-soft-devel libvorbis-devel libXxf86vm-devel libogg-devel freetype-devel mesa-libGL-devel zlib-devel jsoncpp-devel irrlicht-devel bzip2-libs gmp-devel sqlite-devel luajit-devel leveldb-devel ncurses-devel doxygen spatialindex-devel bzip2-devel
+\end{DoxyVerb}
+
+
+For Arch users\+: \begin{DoxyVerb}sudo pacman -S base-devel libcurl-gnutls cmake libxxf86vm irrlicht libpng sqlite libogg libvorbis openal freetype2 jsoncpp gmp luajit leveldb ncurses
+\end{DoxyVerb}
+
+
+For Alpine users\+: \begin{DoxyVerb}sudo apk add build-base irrlicht-dev cmake bzip2-dev libpng-dev jpeg-dev libxxf86vm-dev mesa-dev sqlite-dev libogg-dev libvorbis-dev openal-soft-dev curl-dev freetype-dev zlib-dev gmp-dev jsoncpp-dev luajit-dev
+\end{DoxyVerb}
+
+
+\paragraph*{Download}
+
+You can install Git for easily keeping your copy up to date. If you don’t want Git, read below on how to get the source without Git. This is an example for installing Git on Debian/\+Ubuntu\+: \begin{DoxyVerb}sudo apt install git
+\end{DoxyVerb}
+
+
+For Fedora users\+: \begin{DoxyVerb}sudo dnf install git
+\end{DoxyVerb}
+
+
+Download source (this is the U\+RL to the latest of source repository, which might not work at all times) using Git\+: \begin{DoxyVerb}git clone --depth 1 https://github.com/minetest/minetest.git
+cd minetest
+\end{DoxyVerb}
+
+
+Download minetest\+\_\+game (otherwise only the \char`\"{}\+Minimal development test\char`\"{} game is available) using Git\+: \begin{DoxyVerb}git clone --depth 1 https://github.com/minetest/minetest_game.git games/minetest_game
+\end{DoxyVerb}
+
+
+Download source, without using Git\+: \begin{DoxyVerb}wget https://github.com/minetest/minetest/archive/master.tar.gz
+tar xf master.tar.gz
+cd minetest-master
+\end{DoxyVerb}
+
+
+Download minetest\+\_\+game, without using Git\+: \begin{DoxyVerb}cd games/
+wget https://github.com/minetest/minetest_game/archive/master.tar.gz
+tar xf master.tar.gz
+mv minetest_game-master minetest_game
+cd ..
+\end{DoxyVerb}
+
+
+\paragraph*{Build}
+
+Build a version that runs directly from the source directory\+: \begin{DoxyVerb}cmake . -DRUN_IN_PLACE=TRUE
+make -j$(nproc)
+\end{DoxyVerb}
+
+
+Run it\+: \begin{DoxyVerb}./bin/minetest
+\end{DoxyVerb}
+
+
+
+\begin{DoxyItemize}
+\item Use {\ttfamily cmake . -\/\+LH} to see all C\+Make options and their current state.
+\item If you want to install it system-\/wide (or are making a distribution package), you will want to use {\ttfamily -\/\+D\+R\+U\+N\+\_\+\+I\+N\+\_\+\+P\+L\+A\+CE=F\+A\+L\+SE}.
+\item You can build a bare server by specifying {\ttfamily -\/\+D\+B\+U\+I\+L\+D\+\_\+\+S\+E\+R\+V\+ER=T\+R\+UE}.
+\item You can disable the client build by specifying {\ttfamily -\/\+D\+B\+U\+I\+L\+D\+\_\+\+C\+L\+I\+E\+NT=F\+A\+L\+SE}.
+\item You can select between Release and Debug build by {\ttfamily -\/\+D\+C\+M\+A\+K\+E\+\_\+\+B\+U\+I\+L\+D\+\_\+\+T\+Y\+PE=$<$Debug or Release$>$}.
+\begin{DoxyItemize}
+\item Debug build is slower, but gives much more useful output in a debugger.
+\end{DoxyItemize}
+\item If you build a bare server you don\textquotesingle{}t need to have Irrlicht installed.
+\begin{DoxyItemize}
+\item In that case use {\ttfamily -\/\+D\+I\+R\+R\+L\+I\+C\+H\+T\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+D\+IR=/the/irrlicht/source}.
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\subsubsection*{C\+Make options}
+
+General options and their default values\+: \begin{DoxyVerb}BUILD_CLIENT=TRUE          - Build Minetest client
+BUILD_SERVER=FALSE         - Build Minetest server
+CMAKE_BUILD_TYPE=Release   - Type of build (Release vs. Debug)
+    Release                - Release build
+    Debug                  - Debug build
+    SemiDebug              - Partially optimized debug build
+    RelWithDebInfo         - Release build with debug information
+    MinSizeRel             - Release build with -Os passed to compiler to make executable as small as possible
+ENABLE_CURL=ON             - Build with cURL; Enables use of online mod repo, public serverlist and remote media fetching via http
+ENABLE_CURSES=ON           - Build with (n)curses; Enables a server side terminal (command line option: --terminal)
+ENABLE_FREETYPE=ON         - Build with FreeType2; Allows using TTF fonts
+ENABLE_GETTEXT=ON          - Build with Gettext; Allows using translations
+ENABLE_GLES=OFF            - Build for OpenGL ES instead of OpenGL (requires support by Irrlicht)
+ENABLE_LEVELDB=ON          - Build with LevelDB; Enables use of LevelDB map backend
+ENABLE_POSTGRESQL=ON       - Build with libpq; Enables use of PostgreSQL map backend (PostgreSQL 9.5 or greater recommended)
+ENABLE_REDIS=ON            - Build with libhiredis; Enables use of Redis map backend
+ENABLE_SPATIAL=ON          - Build with LibSpatial; Speeds up AreaStores
+ENABLE_SOUND=ON            - Build with OpenAL, libogg & libvorbis; in-game sounds
+ENABLE_LUAJIT=ON           - Build with LuaJIT (much faster than non-JIT Lua)
+ENABLE_SYSTEM_GMP=ON       - Use GMP from system (much faster than bundled mini-gmp)
+ENABLE_SYSTEM_JSONCPP=OFF  - Use JsonCPP from system
+OPENGL_GL_PREFERENCE=LEGACY - Linux client build only; See CMake Policy CMP0072 for reference
+RUN_IN_PLACE=FALSE         - Create a portable install (worlds, settings etc. in current directory)
+USE_GPROF=FALSE            - Enable profiling using GProf
+VERSION_EXTRA=             - Text to append to version (e.g. VERSION_EXTRA=foobar -> Minetest 0.4.9-foobar)
+\end{DoxyVerb}
+
+
+Library specific options\+: \begin{DoxyVerb}BZIP2_INCLUDE_DIR               - Linux only; directory where bzlib.h is located
+BZIP2_LIBRARY                   - Linux only; path to libbz2.a/libbz2.so
+CURL_DLL                        - Only if building with cURL on Windows; path to libcurl.dll
+CURL_INCLUDE_DIR                - Only if building with cURL; directory where curl.h is located
+CURL_LIBRARY                    - Only if building with cURL; path to libcurl.a/libcurl.so/libcurl.lib
+EGL_INCLUDE_DIR                 - Only if building with GLES; directory that contains egl.h
+EGL_LIBRARY                     - Only if building with GLES; path to libEGL.a/libEGL.so
+FREETYPE_INCLUDE_DIR_freetype2  - Only if building with FreeType 2; directory that contains an freetype directory with files such as ftimage.h in it
+FREETYPE_INCLUDE_DIR_ft2build   - Only if building with FreeType 2; directory that contains ft2build.h
+FREETYPE_LIBRARY                - Only if building with FreeType 2; path to libfreetype.a/libfreetype.so/freetype.lib
+FREETYPE_DLL                    - Only if building with FreeType 2 on Windows; path to libfreetype.dll
+GETTEXT_DLL                     - Only when building with gettext on Windows; path to libintl3.dll
+GETTEXT_ICONV_DLL               - Only when building with gettext on Windows; path to libiconv2.dll
+GETTEXT_INCLUDE_DIR             - Only when building with gettext; directory that contains iconv.h
+GETTEXT_LIBRARY                 - Only when building with gettext on Windows; path to libintl.dll.a
+GETTEXT_MSGFMT                  - Only when building with gettext; path to msgfmt/msgfmt.exe
+IRRLICHT_DLL                    - Only on Windows; path to Irrlicht.dll
+IRRLICHT_INCLUDE_DIR            - Directory that contains IrrCompileConfig.h
+IRRLICHT_LIBRARY                - Path to libIrrlicht.a/libIrrlicht.so/libIrrlicht.dll.a/Irrlicht.lib
+LEVELDB_INCLUDE_DIR             - Only when building with LevelDB; directory that contains db.h
+LEVELDB_LIBRARY                 - Only when building with LevelDB; path to libleveldb.a/libleveldb.so/libleveldb.dll.a
+LEVELDB_DLL                     - Only when building with LevelDB on Windows; path to libleveldb.dll
+PostgreSQL_INCLUDE_DIR          - Only when building with PostgreSQL; directory that contains libpq-fe.h
+PostgreSQL_LIBRARY              - Only when building with PostgreSQL; path to libpq.a/libpq.so/libpq.lib
+REDIS_INCLUDE_DIR               - Only when building with Redis; directory that contains hiredis.h
+REDIS_LIBRARY                   - Only when building with Redis; path to libhiredis.a/libhiredis.so
+SPATIAL_INCLUDE_DIR             - Only when building with LibSpatial; directory that contains spatialindex/SpatialIndex.h
+SPATIAL_LIBRARY                 - Only when building with LibSpatial; path to libspatialindex_c.so/spatialindex-32.lib
+LUA_INCLUDE_DIR                 - Only if you want to use LuaJIT; directory where luajit.h is located
+LUA_LIBRARY                     - Only if you want to use LuaJIT; path to libluajit.a/libluajit.so
+MINGWM10_DLL                    - Only if compiling with MinGW; path to mingwm10.dll
+OGG_DLL                         - Only if building with sound on Windows; path to libogg.dll
+OGG_INCLUDE_DIR                 - Only if building with sound; directory that contains an ogg directory which contains ogg.h
+OGG_LIBRARY                     - Only if building with sound; path to libogg.a/libogg.so/libogg.dll.a
+OPENAL_DLL                      - Only if building with sound on Windows; path to OpenAL32.dll
+OPENAL_INCLUDE_DIR              - Only if building with sound; directory where al.h is located
+OPENAL_LIBRARY                  - Only if building with sound; path to libopenal.a/libopenal.so/OpenAL32.lib
+OPENGLES2_INCLUDE_DIR           - Only if building with GLES; directory that contains gl2.h
+OPENGLES2_LIBRARY               - Only if building with GLES; path to libGLESv2.a/libGLESv2.so
+SQLITE3_INCLUDE_DIR             - Directory that contains sqlite3.h
+SQLITE3_LIBRARY                 - Path to libsqlite3.a/libsqlite3.so/sqlite3.lib
+VORBISFILE_DLL                  - Only if building with sound on Windows; path to libvorbisfile-3.dll
+VORBISFILE_LIBRARY              - Only if building with sound; path to libvorbisfile.a/libvorbisfile.so/libvorbisfile.dll.a
+VORBIS_DLL                      - Only if building with sound on Windows; path to libvorbis-0.dll
+VORBIS_INCLUDE_DIR              - Only if building with sound; directory that contains a directory vorbis with vorbisenc.h inside
+VORBIS_LIBRARY                  - Only if building with sound; path to libvorbis.a/libvorbis.so/libvorbis.dll.a
+XXF86VM_LIBRARY                 - Only on Linux; path to libXXf86vm.a/libXXf86vm.so
+ZLIB_DLL                        - Only on Windows; path to zlib1.dll
+ZLIB_INCLUDE_DIR                - Directory that contains zlib.h
+ZLIB_LIBRARY                    - Path to libz.a/libz.so/zlib.lib
+\end{DoxyVerb}
+
+
+\subsubsection*{Compiling on Windows}
+
+\subsubsection*{Requirements}
+
+
+\begin{DoxyItemize}
+\item \href{https://visualstudio.microsoft.com}{\tt Visual Studio 2015 or newer}
+\item \href{https://cmake.org/download/}{\tt C\+Make}
+\item \href{https://github.com/Microsoft/vcpkg}{\tt vcpkg}
+\item \href{https://git-scm.com/downloads}{\tt Git}
+\end{DoxyItemize}
+
+\subsubsection*{Compiling and installing the dependencies}
+
+It is highly recommended to use vcpkg as package manager.
+
+\paragraph*{a) Using vcpkg to install dependencies}
+
+After you successfully built vcpkg you can easily install the required libraries\+: 
+\begin{DoxyCode}
+vcpkg install irrlicht zlib curl[winssl] openal-soft libvorbis libogg sqlite3 freetype luajit --triplet
+       x64-windows
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item {\ttfamily curl} is optional, but required to read the serverlist, {\ttfamily curl\mbox{[}winssl\mbox{]}} is required to use the content store.
+\item {\ttfamily openal-\/soft}, {\ttfamily libvorbis} and {\ttfamily libogg} are optional, but required to use sound.
+\item {\ttfamily freetype} is optional, it allows true-\/type font rendering.
+\item {\ttfamily luajit} is optional, it replaces the integrated Lua interpreter with a faster just-\/in-\/time interpreter.
+\end{DoxyItemize}
+
+There are other optional libraries, but they are not tested if they can build and link correctly.
+
+Use {\ttfamily -\/-\/triplet} to specify the target triplet, e.\+g. {\ttfamily x64-\/windows} or {\ttfamily x86-\/windows}.
+
+\paragraph*{b) Compile the dependencies on your own}
+
+This is outdated and not recommended. Follow the instructions on \href{https://dev.minetest.net/Build_Win32_Minetest_including_all_required_libraries#VS2012_Build}{\tt https\+://dev.\+minetest.\+net/\+Build\+\_\+\+Win32\+\_\+\+Minetest\+\_\+including\+\_\+all\+\_\+required\+\_\+libraries\#\+V\+S2012\+\_\+\+Build}
+
+\subsubsection*{Compile Minetest}
+
+\paragraph*{a) Using the vcpkg toolchain and C\+Make G\+UI}
+
+
+\begin{DoxyEnumerate}
+\item Start up the C\+Make G\+UI
+\item Select {\bfseries Browse Source...} and select D\+I\+R/minetest
+\item Select {\bfseries Browse Build...} and select D\+I\+R/minetest-\/build
+\item Select {\bfseries Configure}
+\item Choose the right visual Studio version and target platform. It has to match the version of the installed dependencies
+\item Choose {\bfseries Specify toolchain file for cross-\/compiling}
+\item Click {\bfseries Next}
+\item Select the vcpkg toolchain file e.\+g. {\ttfamily D\+:/vcpkg/scripts/buildsystems/vcpkg.cmake}
+\item Click Finish
+\item Wait until cmake have generated the cash file
+\item If there are any errors, solve them and hit {\bfseries Configure}
+\item Click {\bfseries Generate}
+\item Click {\bfseries Open Project}
+\item Compile Minetest inside Visual studio.
+\end{DoxyEnumerate}
+
+\paragraph*{b) Using the vcpkg toolchain and the commandline}
+
+Run the following script in Power\+Shell\+:
+
+
+\begin{DoxyCode}
+cmake . -G"Visual Studio 15 2017 Win64" -DCMAKE\_TOOLCHAIN\_FILE=D:/vcpkg/scripts/buildsystems/vcpkg.cmake
+       -DCMAKE\_BUILD\_TYPE=Release -DENABLE\_GETTEXT=0 -DENABLE\_CURSES=0
+cmake --build . --config Release
+\end{DoxyCode}
+ Make sure that the right compiler is selected and the path to the vcpkg toolchain is correct.
+
+\paragraph*{c) Using your own compiled libraries}
+
+{\bfseries This is outdated and not recommended}
+
+Follow the instructions on \href{https://dev.minetest.net/Build_Win32_Minetest_including_all_required_libraries#VS2012_Build}{\tt https\+://dev.\+minetest.\+net/\+Build\+\_\+\+Win32\+\_\+\+Minetest\+\_\+including\+\_\+all\+\_\+required\+\_\+libraries\#\+V\+S2012\+\_\+\+Build}
+
+\subsubsection*{Windows Installer using WiX Toolset}
+
+Requirements\+:
+\begin{DoxyItemize}
+\item \href{https://visualstudio.microsoft.com/}{\tt Visual Studio 2017}
+\item \href{https://wixtoolset.org/}{\tt WiX Toolset}
+\end{DoxyItemize}
+
+In the Visual Studio 2017 Installer select {\bfseries Optional Features -\/$>$ WiX Toolset}.
+
+Build the binaries as described above, but make sure you unselect {\ttfamily R\+U\+N\+\_\+\+I\+N\+\_\+\+P\+L\+A\+CE}.
+
+Open the generated project file with Visual Studio. Right-\/click {\bfseries Package} and choose {\bfseries Generate}. It may take some minutes to generate the installer.
+
+\subsection*{Docker }
+
+We provide Minetest server Docker images using the Git\+Lab mirror registry.
+
+Images are built on each commit and available using the following tag scheme\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily registry.\+gitlab.\+com/minetest/minetest/server\+:latest} (latest build)
+\item {\ttfamily registry.\+gitlab.\+com/minetest/minetest/server\+:$<$branch/tag$>$} (current branch or current tag)
+\item {\ttfamily registry.\+gitlab.\+com/minetest/minetest/server\+:$<$commit-\/id$>$} (current commit id)
+\end{DoxyItemize}
+
+If you want to test it on a Docker server you can easily run\+: \begin{DoxyVerb}sudo docker run registry.gitlab.com/minetest/minetest/server:<docker tag>
+\end{DoxyVerb}
+
+
+If you want to use it in a production environment you should use volumes bound to the Docker host to persist data and modify the configuration\+: \begin{DoxyVerb}sudo docker create -v /home/minetest/data/:/var/lib/minetest/ -v /home/minetest/conf/:/etc/minetest/ registry.gitlab.com/minetest/minetest/server:master
+\end{DoxyVerb}
+
+
+Data will be written to {\ttfamily /home/minetest/data} on the host, and configuration will be read from {\ttfamily /home/minetest/conf/minetest.conf}.
+
+{\bfseries Note\+:} If you don\textquotesingle{}t understand the previous commands please read the official Docker documentation before use.
+
+You can also host your Minetest server inside a Kubernetes cluster. See our example implementation in \href{misc/kubernetes.yml}{\tt {\ttfamily misc/kubernetes.\+yml}}.
+
+\subsection*{Version scheme }
+
+We use {\ttfamily major.\+minor.\+patch} since 5.\+0.\+0-\/dev. Prior to that we used {\ttfamily 0.\+major.\+minor}.
+
+
+\begin{DoxyItemize}
+\item Major is incremented when the release contains breaking changes, all other numbers are set to 0.
+\item Minor is incremented when the release contains new non-\/breaking features, patch is set to 0.
+\item Patch is incremented when the release only contains bugfixes and very minor/trivial features considered necessary.
+\end{DoxyItemize}
+
+Since 5.\+0.\+0-\/dev and 0.\+4.\+17-\/dev, the dev notation refers to the next release, i.\+e.\+: 5.\+0.\+0-\/dev is the development version leading to 5.\+0.\+0. Prior to that we used {\ttfamily previous\+\_\+version-\/dev}. 
