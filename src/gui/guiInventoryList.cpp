@@ -1,17 +1,14 @@
 /*
 Minetest
 Copyright (C) 2013 celeron55, Perttu Ahola <celeron55@gmail.com>
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
 the Free Software Foundation; either version 2.1 of the License, or
 (at your option) any later version.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Lesser General Public License for more details.
-
 You should have received a copy of the GNU Lesser General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -47,7 +44,8 @@ GUIInventoryList::GUIInventoryList(gui::IGUIEnvironment *env,
 	m_fs_menu(fs_menu),
 	m_options(options),
 	m_font(font),
-	m_hovered_i(-1)
+	m_hovered_i(-1),
+	m_already_warned(false)
 {
 }
 
@@ -58,20 +56,27 @@ void GUIInventoryList::draw()
 
 	Inventory *inv = m_invmgr->getInventory(m_inventoryloc);
 	if (!inv) {
-		warningstream << "GUIInventoryList::draw(): "
-				<< "The inventory location "
-				<< "\"" << m_inventoryloc.dump() << "\" doesn't exist anymore"
-				<< std::endl;
+		if (!m_already_warned) {
+			warningstream << "GUIInventoryList::draw(): "
+					<< "The inventory location "
+					<< "\"" << m_inventoryloc.dump() << "\" doesn't exist"
+					<< std::endl;
+			m_already_warned = true;
+		}
 		return;
 	}
 	InventoryList *ilist = inv->getList(m_listname);
 	if (!ilist) {
-		warningstream << "GUIInventoryList::draw(): "
-				<< "The inventory list \"" << m_listname << "\" @ \""
-				<< m_inventoryloc.dump() << "\" doesn't exist anymore"
-				<< std::endl;
+		if (!m_already_warned) {
+			warningstream << "GUIInventoryList::draw(): "
+					<< "The inventory list \"" << m_listname << "\" @ \""
+					<< m_inventoryloc.dump() << "\" doesn't exist"
+					<< std::endl;
+			m_already_warned = true;
+		}
 		return;
 	}
+	m_already_warned = false;
 
 	video::IVideoDriver *driver = Environment->getVideoDriver();
 	Client *client = m_fs_menu->getClient();
@@ -80,9 +85,11 @@ void GUIInventoryList::draw()
 	core::rect<s32> imgrect(0, 0, m_slot_size.X, m_slot_size.Y);
 	v2s32 base_pos = AbsoluteRect.UpperLeftCorner;
 
+	const s32 list_size = (s32)ilist->getSize();
+
 	for (s32 i = 0; i < m_geom.X * m_geom.Y; i++) {
 		s32 item_i = i + m_start_item_i;
-		if (item_i >= (s32)ilist->getSize())
+		if (item_i >= list_size)
 			break;
 
 		v2s32 p((i % m_geom.X) * m_slot_spacing.X,
@@ -192,8 +199,17 @@ bool GUIInventoryList::OnEvent(const SEvent &event)
 
 s32 GUIInventoryList::getItemIndexAtPos(v2s32 p) const
 {
+	// no item if no gui element at pointer
 	if (!IsVisible || AbsoluteClippingRect.getArea() <= 0 ||
 			!AbsoluteClippingRect.isPointInside(p))
+		return -1;
+
+	// there can not be an item if the inventory or the inventorylist does not exist
+	Inventory *inv = m_invmgr->getInventory(m_inventoryloc);
+	if (!inv)
+		return -1;
+	InventoryList *ilist = inv->getList(m_listname);
+	if (!ilist)
 		return -1;
 
 	core::rect<s32> imgrect(0, 0, m_slot_size.X, m_slot_size.Y);
@@ -210,7 +226,8 @@ s32 GUIInventoryList::getItemIndexAtPos(v2s32 p) const
 
 	rect.clipAgainst(AbsoluteClippingRect);
 
-	if (rect.getArea() > 0 && rect.isPointInside(p))
+	if (rect.getArea() > 0 && rect.isPointInside(p) &&
+			i + m_start_item_i < (s32)ilist->getSize())
 		return i + m_start_item_i;
 
 	return -1;

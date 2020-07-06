@@ -9,5 +9,5 @@ dofile(commonpath .. "chatcommands.lua")
 dofile(commonpath .. "vector.lua")
 dofile(clientpath .. "death_formspec.lua")
 dofile(clientpath .. "chatcommands.lua")
-dofile(clientpath .. "cheats.lua")
+dofile(clientpath .. "pos.lua")
 

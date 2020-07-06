@@ -681,6 +681,7 @@ static u8 face_contents(content_t m1, content_t m2, bool *equivalent,
 	u8 c1 = f1.solidness;
 	u8 c2 = f2.solidness;
 
+
 	if (c1 == c2)
 		return 0;
 
@@ -688,6 +689,7 @@ static u8 face_contents(content_t m1, content_t m2, bool *equivalent,
 		c1 = f1.visual_solidness;
 	else if (c2 == 0)
 		c2 = f2.visual_solidness;
+
 
 	if (c1 == c2) {
 		*equivalent = true;
@@ -805,25 +807,35 @@ static void getTileInfo(
 	VoxelManipulator &vmanip = data->m_vmanip;
 	const NodeDefManager *ndef = data->m_client->ndef();
 	v3s16 blockpos_nodes = data->m_blockpos * MAP_BLOCKSIZE;
-
+	content_t cXray = ndef->getId(g_settings->get("xray_node"));
+	bool xray = g_settings->getBool("xray");
+	
 	const MapNode &n0 = vmanip.getNodeRefUnsafe(blockpos_nodes + p);
 
+	content_t c0 = n0.getContent();
+	if (xray && c0 == cXray)
+		c0 = CONTENT_AIR;
+
 	// Don't even try to get n1 if n0 is already CONTENT_IGNORE
-	if (n0.getContent() == CONTENT_IGNORE) {
+	if (c0 == CONTENT_IGNORE) {
 		makes_face = false;
 		return;
 	}
 
 	const MapNode &n1 = vmanip.getNodeRefUnsafeCheckFlags(blockpos_nodes + p + face_dir);
 
-	if (n1.getContent() == CONTENT_IGNORE) {
+	content_t c1 = n1.getContent();
+	if (xray && c1 == cXray)
+		c1 = CONTENT_AIR;
+
+	if (c1 == CONTENT_IGNORE) {
 		makes_face = false;
 		return;
 	}
 
 	// This is hackish
 	bool equivalent = false;
-	u8 mf = face_contents(n0.getContent(), n1.getContent(),
+	u8 mf = face_contents(c0, c1,
 			&equivalent, ndef);
 
 	if (mf == 0) {

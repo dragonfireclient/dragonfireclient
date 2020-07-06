@@ -1,17 +1,14 @@
 /*
 Minetest
 Copyright (C) 2013 celeron55, Perttu Ahola <celeron55@gmail.com>
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
 the Free Software Foundation; either version 2.1 of the License, or
 (at your option) any later version.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Lesser General Public License for more details.
-
 You should have received a copy of the GNU Lesser General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -107,7 +104,7 @@ private:
 	const InventoryLocation m_inventoryloc;
 	const std::string m_listname;
 
-	// specifies the width and height of the inventorylist in itemslots
+	// the specified width and height of the shown inventorylist in itemslots
 	const v2s32 m_geom;
 	// the first item's index in inventory
 	const s32 m_start_item_i;
@@ -127,4 +124,7 @@ private:
 
 	// the index of the hovered item; -1 if no item is hovered
 	s32 m_hovered_i;
+
+	// we do not want to write a warning on every draw
+	bool m_already_warned;
 };

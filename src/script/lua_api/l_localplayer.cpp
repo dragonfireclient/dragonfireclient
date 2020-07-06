@@ -23,6 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/localplayer.h"
 #include "hud.h"
 #include "common/c_content.h"
+#include "client/client.h"
 
 LuaLocalPlayer::LuaLocalPlayer(LocalPlayer *m) : m_localplayer(m)
 {
@@ -223,6 +224,7 @@ int LuaLocalPlayer::l_set_pos(lua_State *L)
 	
 	v3f pos = checkFloatPos(L, 2);
 	player->setPosition(pos);
+	getClient(L)->sendPlayerPos();
 	return 0;
 }
 

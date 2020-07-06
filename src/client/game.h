@@ -736,6 +736,9 @@ public:
 	void togglePitchMove();
 	void toggleFast();
 	void toggleNoClip();
+	void toggleXray();
+	void toggleFullbright();
+	void toggleKillaura();
 	void toggleCinematic();
 	void toggleAutoforward();
 

@@ -705,8 +705,6 @@ void ContentFeatures::updateTextures(ITextureSource *tsrc, IShaderSource *shdsrc
 		tdef[j] = tiledef[j];
 		if (tdef[j].name.empty())
 			tdef[j].name = "unknown_node.png";
-		if (g_settings->getBool("xray") && tdef[j].name == g_settings->get("xray_texture"))
-			drawtype = NDT_AIRLIKE;
 	}
 	// also the overlay tiles
 	TileDef tdef_overlay[6];
@@ -1235,10 +1233,6 @@ content_t NodeDefManager::set(const std::string &name, const ContentFeatures &d)
 	assert(name == def.name);
 
 	content_t id = CONTENT_IGNORE;
-	
-	if (g_settings->get("xray_texture") == name) {
-		def.drawtype = NDT_AIRLIKE;
-	}
 	
 	if (m_name_id_mapping.getId(name, id)) {
 #ifndef SERVER		

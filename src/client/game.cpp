@@ -1069,6 +1069,12 @@ void Game::processKeyInput()
 		toggleFast();
 	} else if (wasKeyDown(KeyType::NOCLIP)) {
 		toggleNoClip();
+	} else if (wasKeyDown(KeyType::XRAY)) {
+		toggleXray();
+	} else if (wasKeyDown(KeyType::FULLBRIGHT)) {
+		toggleFullbright();
+	} else if (wasKeyDown(KeyType::KILLAURA)) {
+		toggleKillaura();
 	} else if (wasKeyDown(KeyType::MUTE)) {
 		bool new_mute_sound = !g_settings->getBool("mute_sound");
 		g_settings->setBool("mute_sound", new_mute_sound);
@@ -1324,6 +1330,44 @@ void Game::toggleNoClip()
 		}
 	} else {
 		m_game_ui->showTranslatedStatusText("Noclip mode disabled");
+	}
+}
+
+void Game::toggleXray()
+{
+	bool xray = ! g_settings->getBool("xray");
+	g_settings->set("xray", bool_to_cstr(xray));
+
+	if (xray) {
+		m_game_ui->showTranslatedStatusText("Xray enabled");
+	} else {
+		m_game_ui->showTranslatedStatusText("Xray disabled");
+	}
+	client->m_mesh_update_thread.doUpdate();
+}
+
+void Game::toggleFullbright()
+{
+	bool fullbright = ! g_settings->getBool("fullbright");
+	g_settings->set("fullbright", bool_to_cstr(fullbright));
+
+	if (fullbright) {
+		m_game_ui->showTranslatedStatusText("Fullbright enabled");
+	} else {
+		m_game_ui->showTranslatedStatusText("Fullbright disabled");
+	}
+	client->m_mesh_update_thread.doUpdate();
+}
+
+void Game::toggleKillaura()
+{
+	bool killaura = ! g_settings->getBool("killaura");
+	g_settings->set("killaura", bool_to_cstr(killaura));
+
+	if (killaura) {
+		m_game_ui->showTranslatedStatusText("Killaura enabled");
+	} else {
+		m_game_ui->showTranslatedStatusText("Killaura disabled");
 	}
 }
 
@@ -2181,7 +2225,7 @@ void Game::processPlayerInteraction(f32 dtime, bool show_hud, bool show_debug)
 	f32 d = getToolRange(selected_def, hand_item.getDefinition(itemdef_manager));
 	
 	if(g_settings->getBool("increase_tool_range"))
-		d = 1000;
+		d = 5;
 
 	core::line3d<f32> shootline;
 
@@ -2697,7 +2741,7 @@ void Game::handlePointingAtObject(const PointedThing &pointed,
 
 	m_game_ui->setInfoText(infotext);
 
-	if (input->getLeftState() || g_settings->getBool("killaura")) {
+	if (input->getLeftState() || (g_settings->getBool("killaura") && ! g_settings->getBool("killaura_fast"))) {
 		bool do_punch = false;
 		bool do_punch_damage = false;
 
@@ -2707,7 +2751,7 @@ void Game::handlePointingAtObject(const PointedThing &pointed,
 			runData.object_hit_delay_timer = object_hit_delay;
 		}
 
-		if (input->getLeftClicked() || g_settings->getBool("killaura"))
+		if (input->getLeftClicked() || (g_settings->getBool("killaura") && ! g_settings->getBool("killaura_fast")))
 			do_punch = true;
 
 		if (do_punch) {

@@ -126,6 +126,6 @@ private:
 	// TODO: Add callback to update these when g_settings changes
 	int m_generation_interval;
 
-protected:
+public:
 	virtual void doUpdate();
 };

@@ -445,6 +445,10 @@ public:
 	{
 		return m_env.getLocalPlayer()->formspec_prepend;
 	}
+	
+	void sendPlayerPos();
+	MeshUpdateThread m_mesh_update_thread;
+	
 private:
 	void loadMods();
 	bool checkBuiltinIntegrity();
@@ -459,7 +463,6 @@ private:
 
 	void ReceiveAll();
 
-	void sendPlayerPos();
 
 	void deleteAuthData();
 	// helper method shared with clientpackethandler
@@ -492,7 +495,6 @@ private:
 	MtEventManager *m_event;
 
 
-	MeshUpdateThread m_mesh_update_thread;
 	ClientEnvironment m_env;
 	ParticleManager m_particle_manager;
 	std::unique_ptr<con::Connection> m_con;

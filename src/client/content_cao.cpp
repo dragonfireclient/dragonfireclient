@@ -793,6 +793,9 @@ void GenericCAO::addToScene(ITextureSource *tsrc)
 
 void GenericCAO::updateLight(u8 light_at_pos)
 {
+	if (g_settings->getBool("fullbright"))
+		light_at_pos = 255;
+		
 	// Don't update light of attached one
 	if (getParent() != NULL) {
 		return;
