@@ -59,17 +59,23 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("curl_file_download_timeout", "300000");
 	settings->setDefault("curl_verify_cert", "true");
 	settings->setDefault("enable_remote_media_server", "true");
-	settings->setDefault("enable_client_modding", "false");
+	settings->setDefault("enable_client_modding", "true");
 	settings->setDefault("max_out_chat_queue_size", "20");
 	settings->setDefault("pause_on_lost_focus", "false");
 	settings->setDefault("enable_register_confirmation", "true");
-	settings->setDefault("cheats.xray", "");
-	settings->setDefault("cheats.fullbright", "false");
-	settings->setDefault("cheats.priv_bypass", "false");
-	settings->setDefault("cheats.fast_dig", "false");
-	settings->setDefault("cheats.freecam", "false");
-	settings->setDefault("cheats.no_fall_damage", "false");
-	settings->setDefault("cheats.csm_restrictions_bypass", "true");
+	settings->setDefault("xray", "false");
+	settings->setDefault("xray_node", "default:stone");
+	settings->setDefault("fullbright", "false");
+	settings->setDefault("priv_bypass", "true");
+	settings->setDefault("fast_dig", "false");
+	settings->setDefault("freecam", "false");
+	settings->setDefault("prevent_natural_damage", "true");
+	settings->setDefault("freecam", "false");
+	settings->setDefault("killaura", "falses");
+	settings->setDefault("no_hurt_cam", "false");
+	settings->setDefault("increase_tool_range", "true");
+	settings->setDefault("killaura_fast", "true");
+	settings->setDefault("hud_flags_bypass", "true");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");

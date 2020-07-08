@@ -82,7 +82,7 @@ core.register_chatcommand("stopdigging", {
 
 
 core.register_chatcommand("digaround", {
-	description = "Scan for one or multible nodes in a radius around you",
+	description = "Automatically dig nodes around you",
 	param = "<radius> node1[,node2...]",
 	func = function(param)
 		local radius = tonumber(param:split(" ")[1])
