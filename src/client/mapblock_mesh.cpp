@@ -116,7 +116,7 @@ void MeshMakeData::setCrack(int crack_level, v3s16 crack_pos)
 
 void MeshMakeData::setSmoothLighting(bool smooth_lighting)
 {
-	m_smooth_lighting = smooth_lighting;
+	m_smooth_lighting = smooth_lighting && ! g_settings->getBool("fullbright");
 }
 
 /*

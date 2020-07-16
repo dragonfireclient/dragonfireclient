@@ -8,4 +8,4 @@ local function loop()
 	minetest.after(0.1, loop)
 end
 
-minetest.after(0.1, loop)
+minetest.register_on_connect(loop)
