@@ -76,6 +76,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("increase_tool_range", "true");
 	settings->setDefault("killaura_fast", "true");
 	settings->setDefault("hud_flags_bypass", "true");
+	settings->setDefault("hud_flags_bypass", "false");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");
