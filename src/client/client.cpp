@@ -100,13 +100,13 @@ Client::Client(
 		bool ipv6,
 		GameUI *game_ui
 ):
+	m_mesh_update_thread(this),
 	m_tsrc(tsrc),
 	m_shsrc(shsrc),
 	m_itemdef(itemdef),
 	m_nodedef(nodedef),
 	m_sound(sound),
 	m_event(event),
-	m_mesh_update_thread(this),
 	m_env(
 		new ClientMap(this, control, 666),
 		tsrc, this

@@ -691,21 +691,18 @@ public:
 	void extendedResourceCleanup();
 
 	// Basic initialisation
-	bool init(const std::string &map_dir, std::string *address,
-			u16 port,
-			const SubgameSpec &gamespec);
+	bool init(const std::string &map_dir, const std::string &address,
+			u16 port, const SubgameSpec &gamespec);
 	bool initSound();
 	bool createSingleplayerServer(const std::string &map_dir,
-			const SubgameSpec &gamespec, u16 port, std::string *address);
+			const SubgameSpec &gamespec, u16 port);
 
 	// Client creation
-	bool createClient(const std::string &playername,
-			const std::string &password, std::string *address, u16 port);
+	bool createClient(const GameStartData &start_data);
 	bool initGui();
 
 	// Client connection
-	bool connectToServer(const std::string &playername,
-			const std::string &password, std::string *address, u16 port,
+	bool connectToServer(const GameStartData &start_data,
 			bool *connect_ok, bool *aborted);
 	bool getServerContent(bool *aborted);
 
@@ -857,7 +854,8 @@ public:
 	SoundMaker *soundmaker = nullptr;
 
 	ChatBackend *chat_backend = nullptr;
-
+	LogOutputBuffer m_chat_log_buf;
+	
 	EventManager *eventmgr = nullptr;
 	QuicktuneShortcutter *quicktune = nullptr;
 	bool registration_confirmation_shown = false;

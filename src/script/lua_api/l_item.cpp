@@ -24,7 +24,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "common/c_content.h"
 #include "itemdef.h"
 #include "nodedef.h"
-#include "content_sao.h"
 #include "server.h"
 #include "inventory.h"
 #include "log.h"
