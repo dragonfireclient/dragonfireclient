@@ -89,6 +89,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_drop", "KEY_KEY_Q");
 	settings->setDefault("keymap_zoom", "KEY_KEY_Z");
 	settings->setDefault("keymap_inventory", "KEY_KEY_I");
+	settings->setDefault("keymap_special_inventory", "KEY_KEY_O");
 	settings->setDefault("keymap_special1", "KEY_KEY_E");
 	settings->setDefault("keymap_chat", "KEY_KEY_T");
 	settings->setDefault("keymap_cmd", "/");
@@ -120,6 +121,10 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_screenshot", "KEY_F12");
 	settings->setDefault("keymap_increase_viewing_range_min", "+");
 	settings->setDefault("keymap_decrease_viewing_range_min", "-");
+	settings->setDefault("keymap_toggle_xray", "KEY_KEY_X");
+	settings->setDefault("keymap_toggle_fullbright", "KEY_KEY_F");
+	settings->setDefault("keymap_toggle_killaura", "KEY_KEY_G");
+	settings->setDefault("keymap_toggle_freecam", "KEY_KEY_L");
 	settings->setDefault("keymap_slot1", "KEY_KEY_1");
 	settings->setDefault("keymap_slot2", "KEY_KEY_2");
 	settings->setDefault("keymap_slot3", "KEY_KEY_3");

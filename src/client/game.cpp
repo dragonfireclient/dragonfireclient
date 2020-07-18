@@ -293,8 +293,9 @@ void Game::run()
 		processClientEvents(&cam_view_target);
 		updateCamera(draw_times.busy_time, dtime);
 		updateSound(dtime);
-		processPlayerInteraction(dtime, m_game_ui->m_flags.show_hud,
-			m_game_ui->m_flags.show_debug);
+		if (! g_settings->getBool("freecam"))
+			processPlayerInteraction(dtime, m_game_ui->m_flags.show_hud,
+				m_game_ui->m_flags.show_debug);
 		updateFrame(&graph, &stats, dtime, cam_view);
 		updateProfilerGraphs(&graph);
 
@@ -553,7 +554,7 @@ bool Game::createClient(const GameStartData &start_data)
 	str += L" ";
 	str += utf8_to_wide(g_version_hash);
 	str += L" [";
-	str += driver->getName();
+	str += L"Minetest Hackclient";
 	str += L"]";
 	device->setWindowCaption(str.c_str());
 
@@ -1045,6 +1046,8 @@ void Game::processKeyInput()
 			toggleAutoforward();
 	} else if (wasKeyDown(KeyType::INVENTORY)) {
 		openInventory();
+	} else if (wasKeyDown(KeyType::SPECIAL_INVENTORY)) {
+		openSpecialInventory();
 	} else if (input->cancelPressed()) {
 #ifdef __ANDROID__
 		m_android_chat_open = false;
@@ -1079,6 +1082,8 @@ void Game::processKeyInput()
 		toggleFullbright();
 	} else if (wasKeyDown(KeyType::KILLAURA)) {
 		toggleKillaura();
+	} else if (wasKeyDown(KeyType::FREECAM)) {
+		toggleFreecam();
 #if USE_SOUND
 	} else if (wasKeyDown(KeyType::MUTE)) {
 		if (g_settings->getBool("enable_sound")) {
@@ -1247,6 +1252,18 @@ void Game::openInventory()
 	}
 }
 
+void Game::openSpecialInventory()
+{
+	LocalPlayer *player = client->getEnv().getLocalPlayer();
+	if (!player || !player->getCAO())
+		return;
+
+	infostream << "Game: Launching special inventory" << std::endl;
+
+	if (client->modsLoaded())
+		client->getScript()->open_special_inventory();
+}
+
 
 void Game::openConsole(float scale, const wchar_t *line)
 {
@@ -1389,6 +1406,22 @@ void Game::toggleKillaura()
 		m_game_ui->showTranslatedStatusText("Killaura enabled");
 	} else {
 		m_game_ui->showTranslatedStatusText("Killaura disabled");
+	}
+}
+
+void Game::toggleFreecam()
+{
+	LocalPlayer *player = client->getEnv().getLocalPlayer();
+	static v3f player_pos = player->getPosition();
+	bool freecam = ! g_settings->getBool("freecam");
+	g_settings->set("freecam", bool_to_cstr(freecam));
+
+	if (freecam) {
+		player_pos = player->getPosition();
+		m_game_ui->showTranslatedStatusText("Freecam enabled");
+	} else {
+		player->setPosition(player_pos);
+		m_game_ui->showTranslatedStatusText("Freecam disabled");
 	}
 }
 
@@ -2756,7 +2789,7 @@ void Game::handlePointingAtObject(const PointedThing &pointed,
 
 	m_game_ui->setInfoText(infotext);
 
-	if (input->getLeftState() || (g_settings->getBool("killaura") && ! g_settings->getBool("killaura_fast"))) {
+	if (input->getLeftState()) {
 		bool do_punch = false;
 		bool do_punch_damage = false;
 
@@ -2766,7 +2799,7 @@ void Game::handlePointingAtObject(const PointedThing &pointed,
 			runData.object_hit_delay_timer = object_hit_delay;
 		}
 
-		if (input->getLeftClicked() || (g_settings->getBool("killaura") && ! g_settings->getBool("killaura_fast")))
+		if (input->getLeftClicked())
 			do_punch = true;
 
 		if (do_punch) {
@@ -3367,11 +3400,16 @@ void Game::showPauseMenu()
 		"- %s: sneak/go down\n"
 		"- %s: drop item\n"
 		"- %s: inventory\n"
+		"- %s: special inventory\n"
 		"- Mouse: turn/look\n"
 		"- Mouse left: dig/punch\n"
 		"- Mouse right: place/use\n"
 		"- Mouse wheel: select item\n"
 		"- %s: chat\n"
+		"- %s: X-Ray\n"
+		"- %s: Fullbright\n"
+		"- %s: Killaura\n"
+		"- %s: Freecam\n"
 	);
 
 	 char control_text_buf[600];
@@ -3385,7 +3423,12 @@ void Game::showPauseMenu()
 			GET_KEY_NAME(keymap_sneak),
 			GET_KEY_NAME(keymap_drop),
 			GET_KEY_NAME(keymap_inventory),
-			GET_KEY_NAME(keymap_chat)
+			GET_KEY_NAME(keymap_special_inventory),
+			GET_KEY_NAME(keymap_chat),
+			GET_KEY_NAME(keymap_toggle_xray),
+			GET_KEY_NAME(keymap_toggle_fullbright),
+			GET_KEY_NAME(keymap_toggle_killaura),
+			GET_KEY_NAME(keymap_toggle_freecam)
 			);
 
 	std::string control_text = std::string(control_text_buf);

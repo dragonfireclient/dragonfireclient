@@ -59,6 +59,7 @@ enum
 	GUI_ID_KEY_SNEAK_BUTTON,
 	GUI_ID_KEY_DROP_BUTTON,
 	GUI_ID_KEY_INVENTORY_BUTTON,
+	GUI_ID_KEY_SPECIAL_INVENTORY_BUTTON,
 	GUI_ID_KEY_HOTBAR_PREV_BUTTON,
 	GUI_ID_KEY_HOTBAR_NEXT_BUTTON,
 	GUI_ID_KEY_MUTE_BUTTON,
@@ -75,6 +76,10 @@ enum
 	GUI_ID_KEY_DEC_RANGE_BUTTON,
 	GUI_ID_KEY_INC_RANGE_BUTTON,
 	GUI_ID_KEY_AUTOFWD_BUTTON,
+	GUI_ID_KEY_XRAY,
+	GUI_ID_KEY_FULLBRIGHT,
+	GUI_ID_KEY_KILLAURA,
+	GUI_ID_KEY_FREECAM,
 	// other
 	GUI_ID_CB_AUX1_DESCENDS,
 	GUI_ID_CB_DOUBLETAP_JUMP,
@@ -121,9 +126,9 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 
 	const float s = m_gui_scale;
 	DesiredRect = core::rect<s32>(
-		screensize.X / 2 - 835 * s / 2,
+		screensize.X / 2 - 1113 * s / 2,
 		screensize.Y / 2 - 430 * s / 2,
-		screensize.X / 2 + 835 * s / 2,
+		screensize.X / 2 + 1113 * s / 2,
 		screensize.Y / 2 + 430 * s / 2
 	);
 	recalculateAbsolutePosition(false);
@@ -421,6 +426,7 @@ void GUIKeyChangeMenu::init_keys()
 	this->add_key(GUI_ID_KEY_SNEAK_BUTTON,     wgettext("Sneak"),            "keymap_sneak");
 	this->add_key(GUI_ID_KEY_DROP_BUTTON,      wgettext("Drop"),             "keymap_drop");
 	this->add_key(GUI_ID_KEY_INVENTORY_BUTTON, wgettext("Inventory"),        "keymap_inventory");
+	this->add_key(GUI_ID_KEY_SPECIAL_INVENTORY_BUTTON,wgettext("Special Inv."),"keymap_special_inventory");
 	this->add_key(GUI_ID_KEY_HOTBAR_PREV_BUTTON,wgettext("Prev. item"),      "keymap_hotbar_previous");
 	this->add_key(GUI_ID_KEY_HOTBAR_NEXT_BUTTON,wgettext("Next item"),       "keymap_hotbar_next");
 	this->add_key(GUI_ID_KEY_ZOOM_BUTTON,      wgettext("Zoom"),             "keymap_zoom");
@@ -445,4 +451,8 @@ void GUIKeyChangeMenu::init_keys()
 	this->add_key(GUI_ID_KEY_HUD_BUTTON,       wgettext("Toggle HUD"),       "keymap_toggle_hud");
 	this->add_key(GUI_ID_KEY_CHATLOG_BUTTON,   wgettext("Toggle chat log"),  "keymap_toggle_chat");
 	this->add_key(GUI_ID_KEY_FOG_BUTTON,       wgettext("Toggle fog"),       "keymap_toggle_fog");
+	this->add_key(GUI_ID_KEY_XRAY,		       wgettext("Toggle X-Ray"),     "keymap_toggle_xray");
+	this->add_key(GUI_ID_KEY_FULLBRIGHT,       wgettext("Toggle Fullbr."),	 "keymap_toggle_fullbright");
+	this->add_key(GUI_ID_KEY_KILLAURA,         wgettext("Toggle Killaura"),  "keymap_toggle_killaura");
+	this->add_key(GUI_ID_KEY_FREECAM,          wgettext("Toggle Freec."),   "keymap_toggle_freecam");
 }

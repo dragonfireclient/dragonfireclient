@@ -242,6 +242,20 @@ bool ScriptApiClient::on_inventory_open(Inventory *inventory)
 	return readParam<bool>(L, -1);
 }
 
+void ScriptApiClient::open_special_inventory()
+{
+	SCRIPTAPI_PRECHECKHEADER
+	
+	PUSH_ERROR_HANDLER(L);
+	int error_handler = lua_gettop(L) - 1;
+	lua_insert(L, error_handler);
+	
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "open_special_inventory");
+	if (lua_isfunction(L, -1))
+		lua_pcall(L, 0, 0, error_handler);
+}
+
 void ScriptApiClient::setEnv(ClientEnvironment *env)
 {
 	ScriptApiBase::setEnv(env);

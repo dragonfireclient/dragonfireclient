@@ -186,6 +186,10 @@ keymap_sneak (Sneak key) key KEY_LSHIFT
 #    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
 keymap_inventory (Inventory key) key KEY_KEY_I
 
+#    Key for opening the special inventory.
+#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
+keymap_special_inventory (Special inventory key) key KEY_KEY_O
+
 #    Key for moving fast in fast mode.
 #    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
 keymap_special1 (Special key) key KEY_KEY_E
@@ -265,6 +269,22 @@ keymap_drop (Drop item key) key KEY_KEY_Q
 #    Key to use view zoom when possible.
 #    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
 keymap_zoom (View zoom key) key KEY_KEY_Z
+
+#    Key for toggling X-Ray.
+#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
+keymap_toggle_xray (Xray key) key KEY_KEY_X
+
+#    Key for toggling Fullbright.
+#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
+keymap_toggle_fullbright (Fullbright key) key KEY_KEY_F
+
+#    Key for toggling Killaura.
+#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
+keymap_toggle_killaura (Killaura key) key KEY_KEY_G
+
+#    Key for toggling Freecam.
+#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
+keymap_toggle_freecam (Freecam key) key KEY_KEY_L
 
 #    Key for selecting the first hotbar slot.
 #    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
@@ -2206,10 +2226,10 @@ contentdb_flag_blacklist (ContentDB Flag Blacklist) string nonfree, desktop_defa
 fullbright (Fullbright) bool false
 
 # Enable xray, requires fullbright
-xray (Xray) bool false
+xray (X-Ray) bool false
 
 # Texture to apply xray
-xray_node (XrayTexture) string default:stone
+xray_node (X-RayTexture) string default:stone
 
 # Make the Client think it has all privs
 priv_bypass (PrivBypass) bool true

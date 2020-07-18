@@ -18,7 +18,8 @@ minetest.register_on_death(function()
 	if minetest.settings:get_bool("autorespawn") then
 		minetest.send_respawn()
 	else
-	minetest.show_formspec("respawn:death", formspec)
+		minetest.show_formspec("respawn:death", formspec)
+	end
 end)
 
 minetest.register_on_formspec_input(function(formname, fields)

@@ -161,13 +161,14 @@ void Player::clearHud()
 
 void PlayerSettings::readGlobalSettings()
 {
-	free_move = g_settings->getBool("free_move");
+	freecam = g_settings->getBool("freecam");
+	free_move = g_settings->getBool("free_move") || freecam;
 	pitch_move = g_settings->getBool("pitch_move");
-	fast_move = g_settings->getBool("fast_move");
+	fast_move = g_settings->getBool("fast_move") || freecam;
 	continuous_forward = g_settings->getBool("continuous_forward");
-	always_fly_fast = g_settings->getBool("always_fly_fast");
+	always_fly_fast = g_settings->getBool("always_fly_fast") || freecam;
 	aux1_descends = g_settings->getBool("aux1_descends");
-	noclip = g_settings->getBool("noclip");
+	noclip = g_settings->getBool("noclip") || freecam;
 	autojump = g_settings->getBool("autojump");
 }
 

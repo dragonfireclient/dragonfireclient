@@ -116,6 +116,6 @@ private:
 	
 	// start_dig(pos)
 	static int l_start_dig(lua_State *L);
-public:
+public:	
 	static void Initialize(lua_State *L, int top);
 };

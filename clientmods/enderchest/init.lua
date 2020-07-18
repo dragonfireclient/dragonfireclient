@@ -20,6 +20,6 @@ local formspec = "size[9,8.75]"..
 	"listring[current_player;enderchest]"..
 	"listring[current_player;main]"
 
-function minetest.show_extra_inventory()
+function minetest.open_special_inventory()
 	minetest.show_formspec("enderchest:enderchest", formspec)
 end

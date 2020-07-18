@@ -41,6 +41,7 @@ public:
 		// Other
 		DROP,
 		INVENTORY,
+		SPECIAL_INVENTORY,
 		CHAT,
 		CMD,
 		CMD_LOCAL,
@@ -71,6 +72,7 @@ public:
 		XRAY,
 		FULLBRIGHT,
 		KILLAURA,
+		FREECAM,
 	
 		QUICKTUNE_NEXT,
 		QUICKTUNE_PREV,

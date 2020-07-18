@@ -220,7 +220,7 @@ void ClientEnvironment::step(float dtime)
 			lplayer->applyControl(dtime_part, this);
 
 			// Apply physics
-			if (!free_move && !is_climbing) {
+			if (!free_move && !is_climbing && ! g_settings->getBool("freecam")) {
 				// Gravity
 				v3f speed = lplayer->getSpeed();
 				if (!lplayer->in_liquid)
