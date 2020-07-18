@@ -76,6 +76,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 class InputHandler;
 class ChatBackend;  /* to avoid having to include chat.h */
 struct SubgameSpec;
+struct GameStartData;
 
 struct Jitter {
 	f32 max, min, avg, counter, max_sample, min_sample, max_fraction;
@@ -92,19 +93,10 @@ struct CameraOrientation {
 	f32 camera_pitch;  // "up/down"
 };
 
-void the_game(bool *kill,
-		bool random_input,
-		InputHandler *input,
-		const std::string &map_dir,
-		const std::string &playername,
-		const std::string &password,
-		const std::string &address, // If "", local server is used
-		u16 port,
-		std::string &error_message,
-		ChatBackend &chat_backend,
-		bool *reconnect_requested,
-		const SubgameSpec &gamespec, // Used for local game
-		bool simple_singleplayer_mode);
+/*
+	Text input system
+*/
+
 struct TextDestNodeMetadata : public TextDest
 {
 	TextDestNodeMetadata(v3s16 p, Client *client)
@@ -292,6 +284,7 @@ class SoundMaker
 public:
 	bool makes_footstep_sound;
 	float m_player_step_timer;
+	float m_player_jump_timer;
 
 	SimpleSoundSpec m_player_step_sound;
 	SimpleSoundSpec m_player_leftpunch_sound;
@@ -301,7 +294,8 @@ public:
 		m_sound(sound),
 		m_ndef(ndef),
 		makes_footstep_sound(true),
-		m_player_step_timer(0)
+		m_player_step_timer(0),
+		m_player_jump_timer(0.0f)
 	{
 	}
 
@@ -311,6 +305,14 @@ public:
 			m_player_step_timer = 0.03;
 			if (makes_footstep_sound)
 				m_sound->playSound(m_player_step_sound, false);
+		}
+	}
+
+	void playPlayerJump()
+	{
+		if (m_player_jump_timer <= 0.0f) {
+			m_player_jump_timer = 0.2f;
+			m_sound->playSound(SimpleSoundSpec("player_jump", 0.5f), false);
 		}
 	}
 
@@ -328,7 +330,8 @@ public:
 
 	static void playerJump(MtEvent *e, void *data)
 	{
-		//SoundMaker *sm = (SoundMaker*)data;
+		SoundMaker *sm = (SoundMaker *)data;
+		sm->playPlayerJump();
 	}
 
 	static void cameraPunchLeft(MtEvent *e, void *data)
@@ -377,6 +380,7 @@ public:
 	void step(float dtime)
 	{
 		m_player_step_timer -= dtime;
+		m_player_jump_timer -= dtime;
 	}
 };
 
@@ -674,23 +678,15 @@ public:
 	~Game();
 
 	bool startup(bool *kill,
-			bool random_input,
 			InputHandler *input,
-			const std::string &map_dir,
-			const std::string &playername,
-			const std::string &password,
-			// If address is "", local server is used and address is updated
-			std::string *address,
-			u16 port,
+			const GameStartData &game_params,
 			std::string &error_message,
 			bool *reconnect,
-			ChatBackend *chat_backend,
-			const SubgameSpec &gamespec,    // Used for local game
-			bool simple_singleplayer_mode);
+			ChatBackend *chat_backend);
+
 
 	void run();
 	void shutdown();
-
 
 	void extendedResourceCleanup();
 
@@ -931,3 +927,10 @@ public:
 #endif
 };
 extern Game *g_game;
+
+void the_game(bool *kill,
+		InputHandler *input,
+		const GameStartData &start_data,
+		std::string &error_message,
+		ChatBackend &chat_backend,
+		bool *reconnect_requested);

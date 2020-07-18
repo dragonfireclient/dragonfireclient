@@ -17,8 +17,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include <algorithm>
 #include "serverenvironment.h"
-#include "content_sao.h"
 #include "settings.h"
 #include "log.h"
 #include "mapblock.h"
@@ -44,7 +44,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #if USE_POSTGRESQL
 #include "database/database-postgresql.h"
 #endif
-#include <algorithm>
+#if USE_LEVELDB
+#include "database/database-leveldb.h"
+#endif
+#include "server/luaentity_sao.h"
+#include "server/player_sao.h"
 
 #define LBM_NAME_ALLOWED_CHARS "abcdefghijklmnopqrstuvwxyz0123456789_:"
 
@@ -545,24 +549,6 @@ bool ServerEnvironment::removePlayerFromDatabase(const std::string &name)
 	return m_player_database->removePlayer(name);
 }
 
-bool ServerEnvironment::line_of_sight(v3f pos1, v3f pos2, v3s16 *p)
-{
-	// Iterate trough nodes on the line
-	voxalgo::VoxelLineIterator iterator(pos1 / BS, (pos2 - pos1) / BS);
-	do {
-		MapNode n = getMap().getNode(iterator.m_current_node_pos);
-
-		// Return non-air
-		if (n.param0 != CONTENT_AIR) {
-			if (p)
-				*p = iterator.m_current_node_pos;
-			return false;
-		}
-		iterator.next();
-	} while (iterator.m_current_index <= iterator.m_last_index);
-	return true;
-}
-
 void ServerEnvironment::kickAllPlayers(AccessDeniedCode reason,
 	const std::string &str_reason, bool reconnect)
 {
@@ -638,6 +624,9 @@ PlayerSAO *ServerEnvironment::loadPlayer(RemotePlayer *player, bool *new_player,
 
 void ServerEnvironment::saveMeta()
 {
+	if (!m_meta_loaded)
+		return;
+
 	std::string path = m_path_world + DIR_DELIM "env_meta.txt";
 
 	// Open file and serialize
@@ -664,6 +653,9 @@ void ServerEnvironment::saveMeta()
 
 void ServerEnvironment::loadMeta()
 {
+	SANITY_CHECK(!m_meta_loaded);
+	m_meta_loaded = true;
+
 	// If file doesn't exist, load default environment metadata
 	if (!fs::PathExists(m_path_world + DIR_DELIM "env_meta.txt")) {
 		infostream << "ServerEnvironment: Loading default environment metadata"
@@ -1420,10 +1412,7 @@ void ServerEnvironment::step(float dtime)
 			// Step object
 			obj->step(dtime, send_recommended);
 			// Read messages from object
-			while (!obj->m_messages_out.empty()) {
-				this->m_active_object_messages.push(obj->m_messages_out.front());
-				obj->m_messages_out.pop();
-			}
+			obj->dumpAOMessagesToQueue(m_active_object_messages);
 		};
 		m_ao_manager.step(dtime, cb_state);
 	}
@@ -1609,28 +1598,28 @@ void ServerEnvironment::setStaticForActiveObjectsInBlock(
 	}
 }
 
-ActiveObjectMessage ServerEnvironment::getActiveObjectMessage()
+bool ServerEnvironment::getActiveObjectMessage(ActiveObjectMessage *dest)
 {
 	if(m_active_object_messages.empty())
-		return ActiveObjectMessage(0);
+		return false;
 
-	ActiveObjectMessage message = m_active_object_messages.front();
+	*dest = std::move(m_active_object_messages.front());
 	m_active_object_messages.pop();
-	return message;
+	return true;
 }
 
 void ServerEnvironment::getSelectedActiveObjects(
 	const core::line3d<f32> &shootline_on_map,
 	std::vector<PointedThing> &objects)
 {
-	std::vector<u16> objectIds;
-	getObjectsInsideRadius(objectIds, shootline_on_map.start,
-		shootline_on_map.getLength() + 10.0f);
+	std::vector<ServerActiveObject *> objs;
+	getObjectsInsideRadius(objs, shootline_on_map.start,
+		shootline_on_map.getLength() + 10.0f, nullptr);
 	const v3f line_vector = shootline_on_map.getVector();
 
-	for (u16 objectId : objectIds) {
-		ServerActiveObject* obj = getActiveObject(objectId);
-
+	for (auto obj : objs) {
+		if (obj->isGone())
+			continue;
 		aabb3f selection_box;
 		if (!obj->getSelectionBox(&selection_box))
 			continue;
@@ -1645,7 +1634,7 @@ void ServerEnvironment::getSelectedActiveObjects(
 		if (boxLineCollision(offsetted_box, shootline_on_map.start, line_vector,
 				&current_intersection, &current_normal)) {
 			objects.emplace_back(
-				(s16) objectId, current_intersection, current_normal,
+				(s16) obj->getId(), current_intersection, current_normal,
 				(current_intersection - shootline_on_map.start).getLengthSQ());
 		}
 	}
@@ -1799,6 +1788,18 @@ static void print_hexdump(std::ostream &o, const std::string &data)
 	}
 }
 
+ServerActiveObject* ServerEnvironment::createSAO(ActiveObjectType type, v3f pos,
+		const std::string &data)
+{
+	switch (type) {
+		case ACTIVEOBJECT_TYPE_LUAENTITY:
+			return new LuaEntitySAO(this, pos, data);
+		default:
+			warningstream << "ServerActiveObject: No factory for type=" << type << std::endl;
+	}
+	return nullptr;
+}
+
 /*
 	Convert stored objects from blocks near the players to active.
 */
@@ -1832,10 +1833,10 @@ void ServerEnvironment::activateObjects(MapBlock *block, u32 dtime_s)
 	std::vector<StaticObject> new_stored;
 	for (const StaticObject &s_obj : block->m_static_objects.m_stored) {
 		// Create an active object from the data
-		ServerActiveObject *obj = ServerActiveObject::create
-			((ActiveObjectType) s_obj.type, this, 0, s_obj.pos, s_obj.data);
+		ServerActiveObject *obj = createSAO((ActiveObjectType) s_obj.type, s_obj.pos,
+			s_obj.data);
 		// If couldn't create object, store static data back.
-		if(obj == NULL) {
+		if (!obj) {
 			errorstream<<"ServerEnvironment::activateObjects(): "
 				<<"failed to create active object from static object "
 				<<"in block "<<PP(s_obj.pos/BS)
@@ -2083,6 +2084,7 @@ PlayerDatabase *ServerEnvironment::openPlayerDatabase(const std::string &name,
 
 	if (name == "dummy")
 		return new Database_Dummy();
+
 #if USE_POSTGRESQL
 	if (name == "postgresql") {
 		std::string connect_string;
@@ -2090,6 +2092,12 @@ PlayerDatabase *ServerEnvironment::openPlayerDatabase(const std::string &name,
 		return new PlayerDatabasePostgreSQL(connect_string);
 	}
 #endif
+
+#if USE_LEVELDB
+	if (name == "leveldb")
+		return new PlayerDatabaseLevelDB(savedir);
+#endif
+
 	if (name == "files")
 		return new PlayerDatabaseFiles(savedir + DIR_DELIM + "players");
 
@@ -2110,7 +2118,7 @@ bool ServerEnvironment::migratePlayersDatabase(const GameParams &game_params,
 	if (!world_mt.exists("player_backend")) {
 		errorstream << "Please specify your current backend in world.mt:"
 			<< std::endl
-			<< "	player_backend = {files|sqlite3|postgresql}"
+			<< "	player_backend = {files|sqlite3|leveldb|postgresql}"
 			<< std::endl;
 		return false;
 	}
@@ -2189,8 +2197,21 @@ AuthDatabase *ServerEnvironment::openAuthDatabase(
 	if (name == "sqlite3")
 		return new AuthDatabaseSQLite3(savedir);
 
+#if USE_POSTGRESQL
+	if (name == "postgresql") {
+		std::string connect_string;
+		conf.getNoEx("pgsql_auth_connection", connect_string);
+		return new AuthDatabasePostgreSQL(connect_string);
+	}
+#endif
+
 	if (name == "files")
 		return new AuthDatabaseFiles(savedir);
+
+#if USE_LEVELDB
+	if (name == "leveldb")
+		return new AuthDatabaseLevelDB(savedir);
+#endif
 
 	throw BaseException(std::string("Database backend ") + name + " not supported.");
 }

@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Lojban (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-18 20:21+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"PO-Revision-Date: 2020-03-15 18:36+0000\n"
+"Last-Translator: Robin Townsend <iantownsend@disroot.org>\n"
 "Language-Team: Lojban <https://hosted.weblate.org/projects/minetest/minetest/"
 "jbo/>\n"
 "Language: jbo\n"
@@ -12,15 +12,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.9-dev\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #: builtin/client/death_formspec.lua src/client/game.cpp
 msgid "Respawn"
-msgstr "nu tolcanci"
+msgstr "tolcanci"
 
 #: builtin/client/death_formspec.lua src/client/game.cpp
 msgid "You died"
 msgstr ".i do morsi"
+
+#: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
+msgid "OK"
+msgstr ""
 
 #: builtin/fstk/ui.lua
 #, fuzzy
@@ -31,23 +35,19 @@ msgstr ""
 
 #: builtin/fstk/ui.lua
 msgid "An error occurred:"
-msgstr ".i la'e di'e nabmi"
+msgstr ".i da nabmi"
 
 #: builtin/fstk/ui.lua
 msgid "Main menu"
 msgstr "ralju liste"
 
 #: builtin/fstk/ui.lua
-msgid "Ok"
-msgstr "je'e"
-
-#: builtin/fstk/ui.lua
 msgid "Reconnect"
-msgstr "nu samjo'e"
+msgstr "za'u re'u samjo'e"
 
 #: builtin/fstk/ui.lua
 msgid "The server has requested a reconnect:"
-msgstr ".i lo samse'u cu cpedu lo nu za'u re'u co'a samjo'e"
+msgstr ".i le samtcise'u cu cpedu pa nu za'u re'u co'a samjo'e"
 
 #: builtin/mainmenu/common.lua src/client/game.cpp
 msgid "Loading..."
@@ -89,32 +89,36 @@ msgstr ""
 #: src/gui/guiConfirmRegistration.cpp src/gui/guiKeyChangeMenu.cpp
 #: src/gui/guiPasswordChange.cpp
 msgid "Cancel"
-msgstr "nu sisti"
+msgstr "sisti"
 
 #: builtin/mainmenu/dlg_config_world.lua builtin/mainmenu/tab_content.lua
 msgid "Dependencies:"
-msgstr "se nitcu"
+msgstr "jai se nitcu"
 
 #: builtin/mainmenu/dlg_config_world.lua
 msgid "Disable all"
-msgstr "nu ro co'e cu ganda"
+msgstr "ro co'e cu ganda"
 
 #: builtin/mainmenu/dlg_config_world.lua
 msgid "Disable modpack"
-msgstr "nu lo se samtcise'a bakfu cu ganda"
+msgstr "le se samtcise'a bakfu cu ganda"
 
 #: builtin/mainmenu/dlg_config_world.lua
 msgid "Enable all"
-msgstr "nu ro co'e cu katci"
+msgstr "ro co'e cu katci"
 
 #: builtin/mainmenu/dlg_config_world.lua
 msgid "Enable modpack"
-msgstr "nu lo se samtcise'a bakfu cu katci"
+msgstr "le se samtcise'a bakfu cu katci"
 
 #: builtin/mainmenu/dlg_config_world.lua
 msgid ""
 "Failed to enable mod \"$1\" as it contains disallowed characters. Only "
 "characters [a-z0-9_] are allowed."
+msgstr ""
+
+#: builtin/mainmenu/dlg_config_world.lua
+msgid "Find More Mods"
 msgstr ""
 
 #: builtin/mainmenu/dlg_config_world.lua
@@ -128,7 +132,7 @@ msgstr "na'e se nitcu"
 
 #: builtin/mainmenu/dlg_config_world.lua
 msgid "No game description provided."
-msgstr ".i no da skicu be lo se kelci ku vlapoi"
+msgstr "to'i no da ve skicu le se kelci toi"
 
 #: builtin/mainmenu/dlg_config_world.lua
 #, fuzzy
@@ -137,7 +141,7 @@ msgstr ".i nitcu no da"
 
 #: builtin/mainmenu/dlg_config_world.lua
 msgid "No modpack description provided."
-msgstr ".i no da skicu be lo se samtcise'a ku vlapoi"
+msgstr "to'i no da ve skicu le se samtcise'a bakfu toi"
 
 #: builtin/mainmenu/dlg_config_world.lua
 #, fuzzy
@@ -151,7 +155,7 @@ msgstr "na'e se nitcu"
 #: builtin/mainmenu/dlg_config_world.lua
 #: builtin/mainmenu/dlg_settings_advanced.lua src/gui/guiKeyChangeMenu.cpp
 msgid "Save"
-msgstr "nu vreji"
+msgstr "co'a vreji"
 
 #: builtin/mainmenu/dlg_config_world.lua
 msgid "World:"
@@ -163,23 +167,24 @@ msgstr "katci"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "All packages"
-msgstr "cmima lu'i ro bakfu"
-
-#: builtin/mainmenu/dlg_contentstore.lua
-msgid "Back"
-msgstr "nu xruti"
+msgstr "se cmima ro bakfu"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Back to Main Menu"
-msgstr "nu xruti fi tu'a lo ralju liste"
+msgstr "xruti fi tu'a le ralju liste"
 
 #: builtin/mainmenu/dlg_contentstore.lua
-msgid "Downloading and installing $1, please wait..."
-msgstr ".i ca'o kibycpa la'o zoi. $1 .zoi je cu samtcise'a ri .i .e'o denpa"
+msgid "ContentDB is not available when Minetest was compiled without cURL"
+msgstr ""
+
+#: builtin/mainmenu/dlg_contentstore.lua
+#, fuzzy
+msgid "Downloading..."
+msgstr ".i ca'o samymo'i"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Failed to download $1"
-msgstr ".i da nabmi fi lo nu kibycpa la'o zoi. $1 .zoi"
+msgstr ".i da nabmi fi le nu kibycpa la'o zoi. $1 .zoi"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 #: builtin/mainmenu/dlg_settings_advanced.lua
@@ -188,7 +193,7 @@ msgstr "se kelci"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Install"
-msgstr "nu samtcise'a"
+msgstr "samtcise'a"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 #: builtin/mainmenu/dlg_settings_advanced.lua
@@ -197,7 +202,7 @@ msgstr "se samtcise'a"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "No packages could be retrieved"
-msgstr ".i na kakne lo ka ce'u kibycpa su'o bakfu"
+msgstr ".i na kakne le ka kibycpa pa bakfu"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "No results"
@@ -206,62 +211,221 @@ msgstr ".i no da ckaji lo se sisku"
 #: builtin/mainmenu/dlg_contentstore.lua
 #: builtin/mainmenu/dlg_settings_advanced.lua builtin/mainmenu/tab_online.lua
 msgid "Search"
-msgstr "nu sisku"
+msgstr "sisku"
 
 #: builtin/mainmenu/dlg_contentstore.lua
+#, fuzzy
 msgid "Texture packs"
 msgstr "jvinu bakfu"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Uninstall"
-msgstr "nu to'e samtcise'a"
+msgstr "to'e samtcise'a"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Update"
 msgstr ""
 
+#: builtin/mainmenu/dlg_contentstore.lua
+msgid "View"
+msgstr ""
+
 #: builtin/mainmenu/dlg_create_world.lua
 msgid "A world named \"$1\" already exists"
-msgstr ".i pa munje xa'o cmene zoi zoi. $1 .zoi"
+msgstr ".i zoi zoi. $1 .zoi xa'o cmene pa munje"
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Additional terrain"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua src/settings_translation_file.cpp
+msgid "Altitude chill"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Altitude dry"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Biome blending"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Biomes"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Caverns"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Caves"
+msgstr ""
 
 #: builtin/mainmenu/dlg_create_world.lua
 msgid "Create"
-msgstr "nu cupra"
+msgstr "cupra"
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Decorations"
+msgstr "datni"
 
 #: builtin/mainmenu/dlg_create_world.lua
 msgid "Download a game, such as Minetest Game, from minetest.net"
 msgstr ""
-".i ko kibycpa pa se kelci be mu'u la .maintest. se kelci la'o zoi. minetest."
-"net .zoi"
+".i ko kibycpa pa se kelci to mupli fa la .maintest. se kelci toi la'o zoi. "
+"minetest.net .zoi"
 
 #: builtin/mainmenu/dlg_create_world.lua
 msgid "Download one from minetest.net"
 msgstr ".i ko kibycpa pa se kelci la'o zoi. minetest.net .zoi"
 
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Dungeons"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Flat terrain"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Floating landmasses in the sky"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Floatlands (experimental)"
+msgstr ""
+
 #: builtin/mainmenu/dlg_create_world.lua src/settings_translation_file.cpp
 msgid "Game"
 msgstr "se kelci"
 
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Generate non-fractal terrain: Oceans and underground"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Hills"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Humid rivers"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Increases humidity around rivers"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Lakes"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Low humidity and high heat causes shallow or dry rivers"
+msgstr ""
+
 #: builtin/mainmenu/dlg_create_world.lua src/settings_translation_file.cpp
+#, fuzzy
 msgid "Mapgen"
-msgstr "te cupra lo munje"
+msgstr "te cupra le munje"
+
+#: builtin/mainmenu/dlg_create_world.lua src/settings_translation_file.cpp
+msgid "Mapgen flags"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Mapgen-specific flags"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Mountains"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Mud flow"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Network of tunnels and caves"
+msgstr ""
 
 #: builtin/mainmenu/dlg_create_world.lua
 msgid "No game selected"
 msgstr ".i do cuxna no se kelci"
 
 #: builtin/mainmenu/dlg_create_world.lua
+msgid "Reduces heat with altitude"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Reduces humidity with altitude"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Rivers"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Sea level rivers"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
 msgid "Seed"
 msgstr "cunso jai krasi"
 
 #: builtin/mainmenu/dlg_create_world.lua
-msgid "Warning: The minimal development test is meant for developers."
+msgid "Smooth transition between biomes"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid ""
+"Structures appearing on the terrain (no effect on trees and jungle grass "
+"created by v6)"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Structures appearing on the terrain, typically trees and plants"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Temperate, Desert"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Temperate, Desert, Jungle"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Temperate, Desert, Jungle, Tundra, Taiga"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Terrain surface erosion"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Trees and jungle grass"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Vary river depth"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Very large caverns deep in the underground"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Warning: The Development Test is meant for developers."
 msgstr ".i la'o zoi. Minimal development test .zoi na'o selpli lo favgau .o'i"
 
 #: builtin/mainmenu/dlg_create_world.lua
 msgid "World name"
-msgstr "cmene lo munje"
+msgstr "cmene le munje"
 
 #: builtin/mainmenu/dlg_create_world.lua
 msgid "You have no games installed."
@@ -269,13 +433,13 @@ msgstr ".i do samtcise'a no se kelci"
 
 #: builtin/mainmenu/dlg_delete_content.lua
 msgid "Are you sure you want to delete \"$1\"?"
-msgstr ".i .au ju'o pei do vimcu la'o zoi. $1 .zoi"
+msgstr ".i xu do djica le nu vimcu la'o zoi. $1 .zoi"
 
 #: builtin/mainmenu/dlg_delete_content.lua
 #: builtin/mainmenu/dlg_delete_world.lua builtin/mainmenu/tab_local.lua
 #: src/client/keycode.cpp
 msgid "Delete"
-msgstr "nu vimcu"
+msgstr "vimcu"
 
 #: builtin/mainmenu/dlg_delete_content.lua
 msgid "pkgmgr: failed to delete \"$1\""
@@ -287,16 +451,15 @@ msgstr ""
 
 #: builtin/mainmenu/dlg_delete_world.lua
 msgid "Delete World \"$1\"?"
-msgstr ".i .au ju'o pei do vimcu la'o zoi. $1 .zoi"
+msgstr ".i xu do djica le nu vimcu la'o zoi. $1 .zoi noi munje"
 
 #: builtin/mainmenu/dlg_rename_modpack.lua
-#, fuzzy
 msgid "Accept"
-msgstr "fitytu'i"
+msgstr "mulno"
 
 #: builtin/mainmenu/dlg_rename_modpack.lua
 msgid "Rename Modpack:"
-msgstr "nu basti fi lo ka ce'u cmene lo se samtcise'a bakfu"
+msgstr "basti fi lo ka cmene le se samtcise'a bakfu"
 
 #: builtin/mainmenu/dlg_rename_modpack.lua
 msgid ""
@@ -306,7 +469,7 @@ msgstr ""
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "(No description of setting given)"
-msgstr ""
+msgstr "to'i no da ve skicu le te tcimi'e toi"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "2D Noise"
@@ -326,7 +489,7 @@ msgstr "ganda"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Edit"
-msgstr "nu bixygau"
+msgstr "binxo"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Enabled"
@@ -350,15 +513,15 @@ msgstr ""
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Please enter a valid integer."
-msgstr ""
+msgstr ".i ko samci'a da poi drani le ka lerpoi fi pa mulna'u"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Please enter a valid number."
-msgstr ".i ko samci'a pa namcu lerpoi poi drani"
+msgstr ".i ko samci'a da poi drani fi le ka lerpoi fi pa namcu"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Restore Default"
-msgstr "nu xruti fi lo zmiselcu'a"
+msgstr "xruti fi le zmiselcu'a"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua src/settings_translation_file.cpp
 msgid "Scale"
@@ -366,11 +529,11 @@ msgstr ""
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Select directory"
-msgstr "nu cuxna pa datnyveimei"
+msgstr "cuxna fi lu'i le datnyveimei"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Select file"
-msgstr "nu cuxna pa datnyvei"
+msgstr "cuxna fi lu'i le datnyvei"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Show technical names"
@@ -378,11 +541,11 @@ msgstr ""
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "The value must be at least $1."
-msgstr ".i lo namcu cu zmadu .ei li $1"
+msgstr ".i sarcu fa le nu le namcu cu dubjavmau li $1"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "The value must not be larger than $1."
-msgstr ".i lo namcu cu mleca .ei li $1"
+msgstr ".i sarcu fa le nu le namcu na zmadu li $1"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "X"
@@ -408,21 +571,32 @@ msgstr ""
 msgid "Z spread"
 msgstr ""
 
+#. ~ "absvalue" is a noise parameter flag.
+#. It is short for "absolute value".
+#. It can be enabled in noise settings in
+#. main menu -> "All Settings".
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "absvalue"
 msgstr ""
 
+#. ~ "defaults" is a noise parameter flag.
+#. It describes the default processing options
+#. for noise settings in main menu -> "All Settings".
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "defaults"
 msgstr ""
 
+#. ~ "eased" is a noise parameter flag.
+#. It is used to make the map smoother and
+#. can be enabled in noise settings in
+#. main menu -> "All Settings".
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "eased"
 msgstr ""
 
 #: builtin/mainmenu/pkgmgr.lua
 msgid "$1 (Enabled)"
-msgstr "me la'o zoi. $1 .zoi noi katci"
+msgstr "$1 to'i katci toi"
 
 #: builtin/mainmenu/pkgmgr.lua
 msgid "$1 mods"
@@ -431,7 +605,8 @@ msgstr "se samtcise'a fi la'o zoi. $1 .zoi"
 #: builtin/mainmenu/pkgmgr.lua
 msgid "Failed to install $1 to $2"
 msgstr ""
-".i da nabmi fi lo nu $1 co'a cmima lo se datnyveimei be la'o zoi. $2 .zoi"
+".i da nabmi fi le nu setca la'o zoi. $1 .zoi lu'i ro se datnyveimei be la'o "
+"zoi. $2 .zoi"
 
 #: builtin/mainmenu/pkgmgr.lua
 msgid "Install Mod: Unable to find real mod name for: $1"
@@ -474,12 +649,14 @@ msgid "Browse online content"
 msgstr ""
 
 #: builtin/mainmenu/tab_content.lua
+#, fuzzy
 msgid "Content"
-msgstr "se samtcise'a"
+msgstr "kakne le ka se samtcise'a"
 
 #: builtin/mainmenu/tab_content.lua
+#, fuzzy
 msgid "Disable Texture Pack"
-msgstr "nu lo jvinu bakfu cu ganda"
+msgstr "le jvinu bakfu cu ganda"
 
 #: builtin/mainmenu/tab_content.lua
 msgid "Information:"
@@ -487,23 +664,24 @@ msgstr "datni"
 
 #: builtin/mainmenu/tab_content.lua
 msgid "Installed Packages:"
-msgstr "ca'o mo'u se samtcise'a"
+msgstr "pu mo'u se samtcise'a"
 
 #: builtin/mainmenu/tab_content.lua
+#, fuzzy
 msgid "No dependencies."
 msgstr ".i nitcu no da"
 
 #: builtin/mainmenu/tab_content.lua
 msgid "No package description available"
-msgstr "to'i no da skicu be lo bakfu ku vlapoi toi"
+msgstr "to'i no da ve skicu le bakfu toi"
 
 #: builtin/mainmenu/tab_content.lua
 msgid "Rename"
-msgstr "nu basti fi lo ka ce'u cmene"
+msgstr "basti fi le ka cmene"
 
 #: builtin/mainmenu/tab_content.lua
 msgid "Uninstall Package"
-msgstr ""
+msgstr "to'e samtcise'a le bakfu"
 
 #: builtin/mainmenu/tab_content.lua
 msgid "Use Texture Pack"
@@ -511,7 +689,7 @@ msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Active Contributors"
-msgstr ""
+msgstr "liste lu'i ro ca gunka"
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Core Developers"
@@ -519,11 +697,11 @@ msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
-msgstr "lo finti liste"
+msgstr "liste lu'i ro gunka"
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
-msgstr ""
+msgstr "liste lu'i ro pu je nai ca gunka"
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Core Developers"
@@ -539,11 +717,11 @@ msgstr ""
 
 #: builtin/mainmenu/tab_local.lua
 msgid "Configure"
-msgstr ""
+msgstr "tcimi'e"
 
 #: builtin/mainmenu/tab_local.lua builtin/mainmenu/tab_simple_main.lua
 msgid "Creative Mode"
-msgstr "le nu finti kelci"
+msgstr "finti se kelci"
 
 #: builtin/mainmenu/tab_local.lua builtin/mainmenu/tab_simple_main.lua
 msgid "Enable Damage"
@@ -555,13 +733,16 @@ msgid "Host Game"
 msgstr "cfari fa lo nu kelci"
 
 #: builtin/mainmenu/tab_local.lua
-#, fuzzy
 msgid "Host Server"
-msgstr "lo samtcise'u"
+msgstr "co'a samtcise'u"
+
+#: builtin/mainmenu/tab_local.lua
+msgid "Install games from ContentDB"
+msgstr ""
 
 #: builtin/mainmenu/tab_local.lua
 msgid "Name/Password"
-msgstr "lo cmene .e lo lerpoijaspu"
+msgstr "cmene .i lerpoijaspu"
 
 #: builtin/mainmenu/tab_local.lua
 msgid "New"
@@ -569,42 +750,39 @@ msgstr "cnino"
 
 #: builtin/mainmenu/tab_local.lua
 msgid "No world created or selected!"
-msgstr ".i lo no munje cu puzi zbasu gi'a cuxna"
+msgstr ".i do no munje cu cupra ja cu cuxna"
 
 #: builtin/mainmenu/tab_local.lua
-#, fuzzy
 msgid "Play Game"
-msgstr "cfari fa lo nu kelci"
+msgstr "co'a kelci"
 
 #: builtin/mainmenu/tab_local.lua
 msgid "Port"
-msgstr "lo judrnporte"
+msgstr "judrnporte"
 
 #: builtin/mainmenu/tab_local.lua
-#, fuzzy
 msgid "Select World:"
-msgstr "cuxna lo munje"
+msgstr ".i ko cuxna fi lu'i le munje"
 
 #: builtin/mainmenu/tab_local.lua
 msgid "Server Port"
-msgstr "lo samtcise'u judrnporte"
+msgstr "judrnporte le samtcise'u"
 
 #: builtin/mainmenu/tab_local.lua
 msgid "Start Game"
-msgstr "nu co'a kelci"
+msgstr "co'a kelci"
 
 #: builtin/mainmenu/tab_online.lua
-#, fuzzy
 msgid "Address / Port"
-msgstr "lo samjudri jo'u judrnporte"
+msgstr "judri .i judrnporte"
 
 #: builtin/mainmenu/tab_online.lua builtin/mainmenu/tab_simple_main.lua
 msgid "Connect"
-msgstr "samjongau"
+msgstr "co'a samjo'e"
 
 #: builtin/mainmenu/tab_online.lua builtin/mainmenu/tab_simple_main.lua
 msgid "Creative mode"
-msgstr "le nu finti kelci"
+msgstr "finti se kelci"
 
 #: builtin/mainmenu/tab_online.lua builtin/mainmenu/tab_simple_main.lua
 msgid "Damage enabled"
@@ -612,25 +790,25 @@ msgstr ""
 
 #: builtin/mainmenu/tab_online.lua builtin/mainmenu/tab_simple_main.lua
 msgid "Del. Favorite"
-msgstr ""
+msgstr "co'u cmima lu'i ro nelci se tcita"
 
 #: builtin/mainmenu/tab_online.lua builtin/mainmenu/tab_simple_main.lua
 msgid "Favorite"
-msgstr ""
+msgstr "nelci se tcita"
 
 #: builtin/mainmenu/tab_online.lua
 msgid "Join Game"
-msgstr "nu co'a kelci kansa"
+msgstr "co'a kansa fi le ka kelci"
 
 #: builtin/mainmenu/tab_online.lua builtin/mainmenu/tab_simple_main.lua
-#, fuzzy
 msgid "Name / Password"
-msgstr "lo cmene .e lo lerpoijaspu"
+msgstr "cmene .i lerpoijaspu"
 
 #: builtin/mainmenu/tab_online.lua builtin/mainmenu/tab_simple_main.lua
 msgid "Ping"
-msgstr ""
+msgstr ".pin. temci"
 
+#. ~ PvP = Player versus Player
 #: builtin/mainmenu/tab_online.lua builtin/mainmenu/tab_simple_main.lua
 msgid "PvP enabled"
 msgstr ""
@@ -654,7 +832,7 @@ msgstr ""
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "All Settings"
-msgstr ""
+msgstr "se cmima ro te tcimi'e"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Antialiasing:"
@@ -662,16 +840,15 @@ msgstr ""
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Are you sure to reset your singleplayer world?"
-msgstr ".i .au ju'o pei do xruti lo do nonselkansa munje"
+msgstr ".i xu do djica le nu xruti le do nonselkansa munje"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Autosave Screen Size"
 msgstr ""
 
 #: builtin/mainmenu/tab_settings.lua
-#, fuzzy
 msgid "Bilinear Filter"
-msgstr "lo puvyrelyli'iju'e"
+msgstr "puvyrelyli'iju'e"
 
 #: builtin/mainmenu/tab_settings.lua
 #, fuzzy
@@ -702,6 +879,7 @@ msgid "Mipmap"
 msgstr "lo puvrmipmepi"
 
 #: builtin/mainmenu/tab_settings.lua
+#, fuzzy
 msgid "Mipmap + Aniso. Filter"
 msgstr "lo puvrmipmepi .e lo puvytolmanfyju'e"
 
@@ -733,10 +911,12 @@ msgid "None"
 msgstr ""
 
 #: builtin/mainmenu/tab_settings.lua
+#, fuzzy
 msgid "Opaque Leaves"
 msgstr "lo tolkli pezli"
 
 #: builtin/mainmenu/tab_settings.lua
+#, fuzzy
 msgid "Opaque Water"
 msgstr "lo tolkli djacu"
 
@@ -751,7 +931,7 @@ msgstr "lo kantu"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Reset singleplayer world"
-msgstr "kraga'igau le za'e pavykelci munje"
+msgstr "xruti le nonselkansa munje"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Screen:"
@@ -759,17 +939,19 @@ msgstr ""
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Settings"
-msgstr ""
+msgstr "te tcimi'e"
 
 #: builtin/mainmenu/tab_settings.lua src/settings_translation_file.cpp
 msgid "Shaders"
-msgstr "lo ti'orkemsamtci"
+msgstr "ti'orkemsamtci"
 
 #: builtin/mainmenu/tab_settings.lua
+#, fuzzy
 msgid "Shaders (unavailable)"
-msgstr ""
+msgstr "ti'orkemsamtci to na kakne toi"
 
 #: builtin/mainmenu/tab_settings.lua
+#, fuzzy
 msgid "Simple Leaves"
 msgstr "lo sampu pezli"
 
@@ -796,9 +978,8 @@ msgid "Touchthreshold: (px)"
 msgstr ""
 
 #: builtin/mainmenu/tab_settings.lua
-#, fuzzy
 msgid "Trilinear Filter"
-msgstr "lo puvycibli'iju'e"
+msgstr "puvycibli'iju'e"
 
 #: builtin/mainmenu/tab_settings.lua
 #, fuzzy
@@ -825,11 +1006,11 @@ msgstr ""
 
 #: builtin/mainmenu/tab_simple_main.lua
 msgid "Main"
-msgstr "lo ralju"
+msgstr "ralju"
 
 #: builtin/mainmenu/tab_simple_main.lua
 msgid "Start Singleplayer"
-msgstr ""
+msgstr "co'a nonselkansa kelci"
 
 #: src/client/client.cpp
 msgid "Connection timed out."
@@ -837,17 +1018,20 @@ msgstr ""
 
 #: src/client/client.cpp
 msgid "Done!"
-msgstr ""
+msgstr ".i mulno"
 
 #: src/client/client.cpp
+#, fuzzy
 msgid "Initializing nodes"
 msgstr ".i ca'o samymo'i lo me la'o gy.node.gy."
 
 #: src/client/client.cpp
+#, fuzzy
 msgid "Initializing nodes..."
 msgstr ".i ca'o samymo'i lo me la'o gy.node.gy."
 
 #: src/client/client.cpp
+#, fuzzy
 msgid "Loading textures..."
 msgstr ".i ca'o samymo'i le tengu datnyvei"
 
@@ -858,30 +1042,34 @@ msgstr ""
 #: src/client/clientlauncher.cpp
 msgid "Connection error (timed out?)"
 msgstr ""
+".i da nabmi fi le nu co'a jorne to la'a cu'i le temci cu dukse le ka clani "
+"toi"
 
 #: src/client/clientlauncher.cpp
 msgid "Could not find or load game \""
 msgstr ""
+".i na cumki fa le nu le se kelci cu jai se facki je cu se samymo'i .i ky. du "
+"la'o zoi."
 
 #: src/client/clientlauncher.cpp
 msgid "Invalid gamespec."
-msgstr ""
+msgstr ".i le se kelci ve skicu vreji na drani"
 
 #: src/client/clientlauncher.cpp
 msgid "Main Menu"
-msgstr ""
+msgstr "ralju liste"
 
 #: src/client/clientlauncher.cpp
 msgid "No world selected and no address provided. Nothing to do."
-msgstr ""
+msgstr ".i do cuxna no munje .i do ciska no judri .i do zukte no da"
 
 #: src/client/clientlauncher.cpp
 msgid "Player name too long."
-msgstr ""
+msgstr ".i le plicme cu dukse le ka clani"
 
 #: src/client/clientlauncher.cpp
 msgid "Please choose a name!"
-msgstr ""
+msgstr ".i ko ckaji le ka da zo'u jdice le du'u da cmene"
 
 #: src/client/clientlauncher.cpp
 msgid "Provided password file failed to open: "
@@ -891,6 +1079,14 @@ msgstr ""
 msgid "Provided world path doesn't exist: "
 msgstr ""
 
+#. ~ DO NOT TRANSLATE THIS LITERALLY!
+#. This is a special string. Put either "no" or "yes"
+#. into the translation field (literally).
+#. Choose "yes" if the language requires use of the fallback
+#. font, "no" otherwise.
+#. The fallback font is (normally) required for languages with
+#. non-Latin script, like Chinese.
+#. When in doubt, test your translation.
 #: src/client/fontengine.cpp
 msgid "needs_fallback_font"
 msgstr "no"
@@ -900,16 +1096,16 @@ msgid ""
 "\n"
 "Check debug.txt for details."
 msgstr ""
+"\n"
+".i sarcu fa le nu do cipcta la'o zoi. debug.txt .zoi kei tu'a le tcila"
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "- Address: "
-msgstr "lo samjudri jo'u judrnporte"
+msgstr "- judri: "
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "- Creative Mode: "
-msgstr "le nu finti kelci"
+msgstr "- finti se kelci: "
 
 #: src/client/game.cpp
 msgid "- Damage: "
@@ -920,23 +1116,22 @@ msgid "- Mode: "
 msgstr ""
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "- Port: "
-msgstr "lo judrnporte"
+msgstr "- judrnporte: "
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "- Public: "
-msgstr "gubni"
+msgstr "- gubni: "
 
-#: src/client/game.cpp
-msgid "- PvP: "
-msgstr ""
-
+#. ~ PvP = Player versus Player
 #: src/client/game.cpp
 #, fuzzy
+msgid "- PvP: "
+msgstr "- kakne le ka simxu le ka xrani: "
+
+#: src/client/game.cpp
 msgid "- Server Name: "
-msgstr "lo samtcise'u"
+msgstr "- cmene le samtcise'u: "
 
 #: src/client/game.cpp
 #, fuzzy
@@ -958,7 +1153,7 @@ msgstr ""
 
 #: src/client/game.cpp
 msgid "Change Password"
-msgstr "gafygau lo lerpoijaspu"
+msgstr "basti fi le ka lerpoijaspu"
 
 #: src/client/game.cpp
 #, fuzzy
@@ -976,7 +1171,7 @@ msgstr ""
 
 #: src/client/game.cpp
 msgid "Connecting to server..."
-msgstr ".i ca'o troci lo za'i samjo'e lo samse'u"
+msgstr ".i ca'o samjo'e le samse'u"
 
 #: src/client/game.cpp
 msgid "Continue"
@@ -1003,11 +1198,11 @@ msgstr ""
 
 #: src/client/game.cpp
 msgid "Creating client..."
-msgstr ".i lo samtciselse'u cu se zbasu"
+msgstr ".i ca'o cupra le samtciselse'u"
 
 #: src/client/game.cpp
 msgid "Creating server..."
-msgstr ".i lo samtcise'u cu se zbasu"
+msgstr ".i ca'o cupra le samtcise'u"
 
 #: src/client/game.cpp
 msgid "Debug info and profiler graph hidden"
@@ -1047,11 +1242,11 @@ msgstr ""
 
 #: src/client/game.cpp
 msgid "Exit to Menu"
-msgstr ""
+msgstr "sisti tu'a le se kelci"
 
 #: src/client/game.cpp
 msgid "Exit to OS"
-msgstr "tolcfagau"
+msgstr "sisti tu'a le samtci"
 
 #: src/client/game.cpp
 msgid "Fast mode disabled"
@@ -1090,16 +1285,15 @@ msgstr "selpli"
 
 #: src/client/game.cpp
 msgid "Game info:"
-msgstr ""
+msgstr ".i datni le se kelci"
 
 #: src/client/game.cpp
 msgid "Game paused"
-msgstr ""
+msgstr ".i ca'o denpa fo le nu kelci"
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "Hosting server"
-msgstr ".i lo samtcise'u cu se zbasu"
+msgstr ".i le samtci pe do cu samtcise'u"
 
 #: src/client/game.cpp
 #, fuzzy
@@ -1169,11 +1363,11 @@ msgstr ".i ca'o samymo'i tu'a lo me la'o gy.node.gy."
 
 #: src/client/game.cpp
 msgid "Off"
-msgstr ""
+msgstr "ganda"
 
 #: src/client/game.cpp
 msgid "On"
-msgstr ""
+msgstr "katci"
 
 #: src/client/game.cpp
 msgid "Pitch move mode disabled"
@@ -1189,19 +1383,19 @@ msgstr ""
 
 #: src/client/game.cpp
 msgid "Remote server"
-msgstr ""
+msgstr ".i da poi na du le samtci pe do cu samtcise'u"
 
 #: src/client/game.cpp
 msgid "Resolving address..."
-msgstr ".i ca'o troci lo nu facki lo samjudri"
+msgstr ".i ca'o sisku le ka se judri da kau"
 
 #: src/client/game.cpp
 msgid "Shutting down..."
-msgstr ""
+msgstr ".i ca'o sisti"
 
 #: src/client/game.cpp
 msgid "Singleplayer"
-msgstr "pa kelci"
+msgstr "nonselkansa"
 
 #: src/client/game.cpp
 msgid "Sound Volume"
@@ -1211,6 +1405,14 @@ msgstr ""
 #, fuzzy
 msgid "Sound muted"
 msgstr "lo ni sance "
+
+#: src/client/game.cpp
+msgid "Sound system is disabled"
+msgstr ""
+
+#: src/client/game.cpp
+msgid "Sound system is not supported on this build"
+msgstr ""
 
 #: src/client/game.cpp
 #, fuzzy
@@ -1245,27 +1447,25 @@ msgstr ""
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
-#: src/client/game.cpp src/gui/modalMenu.cpp
-#, fuzzy
+#: src/client/game.cpp
 msgid "ok"
 msgstr "je'e"
 
 #: src/client/gameui.cpp
-#, fuzzy
 msgid "Chat hidden"
-msgstr "samta'a"
+msgstr ".i ca mipri le tavla .uidje"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
-msgstr ""
+msgstr ".i ca viska le tavla .uidje"
 
 #: src/client/gameui.cpp
 msgid "HUD hidden"
-msgstr ""
+msgstr ".i ca mipri le crakemsazycimde"
 
 #: src/client/gameui.cpp
 msgid "HUD shown"
-msgstr ""
+msgstr ".i ca viska le crakemsazycimde"
 
 #: src/client/gameui.cpp
 msgid "Profiler hidden"
@@ -1348,12 +1548,13 @@ msgid "Insert"
 msgstr ""
 
 #: src/client/keycode.cpp src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Left"
 msgstr "za'i zu'e muvdu"
 
 #: src/client/keycode.cpp
 msgid "Left Button"
-msgstr "lo zulselpevysmacu"
+msgstr "zulselpevysmacu"
 
 #: src/client/keycode.cpp
 msgid "Left Control"
@@ -1371,13 +1572,14 @@ msgstr ""
 msgid "Left Windows"
 msgstr ""
 
+#. ~ Key name, common on Windows keyboards
 #: src/client/keycode.cpp
 msgid "Menu"
 msgstr ""
 
 #: src/client/keycode.cpp
 msgid "Middle Button"
-msgstr "lo mijyselpevysmacu"
+msgstr "mijyselpevysmacu"
 
 #: src/client/keycode.cpp
 msgid "Num Lock"
@@ -1444,6 +1646,7 @@ msgid "Numpad 9"
 msgstr ""
 
 #: src/client/keycode.cpp
+#, fuzzy
 msgid "OEM Clear"
 msgstr "la'o gy.OEM Clear.gy."
 
@@ -1463,6 +1666,7 @@ msgstr ""
 msgid "Play"
 msgstr ""
 
+#. ~ "Print screen" key
 #: src/client/keycode.cpp
 msgid "Print"
 msgstr ""
@@ -1472,12 +1676,13 @@ msgid "Return"
 msgstr ""
 
 #: src/client/keycode.cpp src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Right"
 msgstr "za'i ri'u muvdu"
 
 #: src/client/keycode.cpp
 msgid "Right Button"
-msgstr "lo prityselpevysmacu"
+msgstr "prityselpevysmacu"
 
 #: src/client/keycode.cpp
 msgid "Right Control"
@@ -1499,6 +1704,7 @@ msgstr ""
 msgid "Scroll Lock"
 msgstr ""
 
+#. ~ Key name
 #: src/client/keycode.cpp
 msgid "Select"
 msgstr ""
@@ -1528,10 +1734,12 @@ msgid "Up"
 msgstr ""
 
 #: src/client/keycode.cpp
+#, fuzzy
 msgid "X Button 1"
 msgstr "la'o gy.X Button 1.gy."
 
 #: src/client/keycode.cpp
+#, fuzzy
 msgid "X Button 2"
 msgstr "la'o gy.X Button 2.gy."
 
@@ -1541,7 +1749,7 @@ msgstr ""
 
 #: src/gui/guiConfirmRegistration.cpp src/gui/guiPasswordChange.cpp
 msgid "Passwords do not match!"
-msgstr ".i lo lerpoijaspu na mintu"
+msgstr ".i lu'i le re lerpoijaspu na simxu le ka mintu"
 
 #: src/gui/guiConfirmRegistration.cpp
 msgid "Register and Join"
@@ -1575,6 +1783,7 @@ msgid "Automatic jumping"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Backward"
 msgstr "za'i ti'a muvdu"
 
@@ -1585,7 +1794,7 @@ msgstr "gafygau lo lerpoijaspu"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Chat"
-msgstr "samta'a"
+msgstr "tavla"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Command"
@@ -1593,7 +1802,7 @@ msgstr "minde"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Console"
-msgstr ""
+msgstr "samtrotci"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Dec. range"
@@ -1608,10 +1817,12 @@ msgid "Double tap \"jump\" to toggle fly"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Drop"
 msgstr "mu'e falcru"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Forward"
 msgstr "za'i ca'u muvdu"
 
@@ -1625,11 +1836,11 @@ msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Inventory"
-msgstr "lo dacti uidje"
+msgstr "sorcu"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Jump"
-msgstr "mu'e plipe"
+msgstr "plipe"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Key already in use"
@@ -1650,23 +1861,23 @@ msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Next item"
-msgstr ""
+msgstr "se lamli'e fi lu'i le dacti"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Prev. item"
-msgstr ""
+msgstr "lamli'e fi lu'i le dacti"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Range select"
-msgstr "mu'e cuxna fi le'i se kuspe"
+msgstr "cuxna fi lu'i le se kuspe"
 
 #: src/gui/guiKeyChangeMenu.cpp src/settings_translation_file.cpp
 msgid "Screenshot"
-msgstr ""
+msgstr "vidnyxra"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Sneak"
-msgstr "za'i masno cadzu"
+msgstr "masno cadzu"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Special"
@@ -1683,10 +1894,12 @@ msgid "Toggle chat log"
 msgstr "mu'e co'a jonai mo'u sutra"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Toggle fast"
 msgstr "mu'e co'a jonai mo'u sutra"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Toggle fly"
 msgstr "mu'e co'a jonai mo'u vofli"
 
@@ -1710,28 +1923,32 @@ msgid "Toggle pitchmove"
 msgstr "mu'e co'a jonai mo'u sutra"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "press key"
-msgstr "ko da'ergau le batke"
+msgstr ".i ko da'ergau pa batke"
 
 #: src/gui/guiPasswordChange.cpp
 msgid "Change"
-msgstr "gafygau"
+msgstr "basti"
 
 #: src/gui/guiPasswordChange.cpp
+#, fuzzy
 msgid "Confirm Password"
 msgstr "le rapli lerpoijaspu"
 
 #: src/gui/guiPasswordChange.cpp
+#, fuzzy
 msgid "New Password"
 msgstr "lo cnino lerpoijaspu"
 
 #: src/gui/guiPasswordChange.cpp
+#, fuzzy
 msgid "Old Password"
 msgstr "lo slabu lerpoijaspu"
 
 #: src/gui/guiVolumeChange.cpp
 msgid "Exit"
-msgstr ""
+msgstr "sisti"
 
 #: src/gui/guiVolumeChange.cpp
 #, fuzzy
@@ -1739,13 +1956,19 @@ msgid "Muted"
 msgstr "ko da'ergau le batke"
 
 #: src/gui/guiVolumeChange.cpp
+#, fuzzy
 msgid "Sound Volume: "
 msgstr "lo ni sance "
 
+#. ~ Imperative, as in "Enter/type in text".
+#. Don't forget the space.
 #: src/gui/modalMenu.cpp
 msgid "Enter "
 msgstr ""
 
+#. ~ DO NOT TRANSLATE THIS LITERALLY!
+#. This is a special string which needs to contain the translation's
+#. language code (e.g. "de" for German).
 #: src/network/clientpackethandler.cpp src/script/lua_api/l_client.cpp
 msgid "LANG_CODE"
 msgstr "jbo"
@@ -1830,6 +2053,10 @@ msgid "3D mode"
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid "3D mode parallax strength"
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "3D noise defining giant caverns."
 msgstr ""
 
@@ -1837,6 +2064,14 @@ msgstr ""
 msgid ""
 "3D noise defining mountain structure and height.\n"
 "Also defines structure of floatland mountain terrain."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"3D noise defining structure of floatlands.\n"
+"If altered from the default, the noise 'scale' (0.7 by default) may need\n"
+"to be adjusted, as floatland tapering functions best when this noise has\n"
+"a value range of approximately -2.0 to 2.0."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -1877,18 +2112,19 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "A message to be displayed to all clients when the server crashes."
-msgstr ""
+msgstr ".i benji le notci ro se samtcise'u ca ro nu le samtcise'u cu samfli"
 
 #: src/settings_translation_file.cpp
 msgid "A message to be displayed to all clients when the server shuts down."
 msgstr ""
+".i benji le notci ro se samtcise'u ca ro nu le samtcise'u co'u samtcise'u"
 
 #: src/settings_translation_file.cpp
 msgid "ABM interval"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Absolute limit of emerge queues"
+msgid "Absolute limit of queued blocks to emerge"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -1933,6 +2169,16 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
+#, c-format
+msgid ""
+"Adjusts the density of the floatland layer.\n"
+"Increase value to increase density. Can be positive or negative.\n"
+"Value = 0.0: 50% of volume is floatland.\n"
+"Value = 2.0 (can be higher depending on 'mgv7_np_floatland', always test\n"
+"to be sure) creates a solid floatland layer."
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Advanced"
 msgstr ""
 
@@ -1943,10 +2189,6 @@ msgid ""
 "Value '1.0' leaves the light curve unaltered.\n"
 "This only has significant effect on daylight and artificial\n"
 "light, it has very little effect on natural night light."
-msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid "Altitude chill"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -1971,7 +2213,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Announce server"
-msgstr ""
+msgstr "gubysku zo'e pe tu'a le samtcise'u"
 
 #: src/settings_translation_file.cpp
 msgid "Announce to this serverlist."
@@ -2001,7 +2243,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Ask to reconnect after crash"
-msgstr ""
+msgstr "krefu samjo'e te preti ba ro nu samfli"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -2054,11 +2296,11 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Basic"
-msgstr ""
+msgstr "jicmu"
 
 #: src/settings_translation_file.cpp
 msgid "Basic privileges"
-msgstr ""
+msgstr "jicmu se curmi"
 
 #: src/settings_translation_file.cpp
 msgid "Beach noise"
@@ -2069,9 +2311,8 @@ msgid "Beach noise threshold"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Bilinear filtering"
-msgstr "lo puvyrelyli'iju'e"
+msgstr "puvyrelyli'iju'e"
 
 #: src/settings_translation_file.cpp
 #, fuzzy
@@ -2124,8 +2365,8 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Camera 'near clipping plane' distance in nodes, between 0 and 0.5.\n"
-"Most users will not need to change this.\n"
+"Camera 'near clipping plane' distance in nodes, between 0 and 0.25\n"
+"Only works on GLES platforms. Most users will not need to change this.\n"
 "Increasing can reduce artifacting on weaker GPUs.\n"
 "0.1 = Default, 0.25 = Good value for weaker tablets."
 msgstr ""
@@ -2203,9 +2444,17 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid "Chat font size"
+msgstr ""
+
+#: src/settings_translation_file.cpp
 #, fuzzy
 msgid "Chat key"
 msgstr "samta'a"
+
+#: src/settings_translation_file.cpp
+msgid "Chat log level"
+msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Chat message count limit"
@@ -2281,9 +2530,8 @@ msgid "Cloud radius"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Clouds"
-msgstr "le bliku dilnu"
+msgstr "dilnu"
 
 #: src/settings_translation_file.cpp
 msgid "Clouds are a client side effect."
@@ -2296,7 +2544,7 @@ msgstr "lo ralju"
 
 #: src/settings_translation_file.cpp
 msgid "Colored fog"
-msgstr ""
+msgstr "le bumgapci cu skari"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -2406,9 +2654,8 @@ msgid "Crash message"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Creative"
-msgstr "zbasu"
+msgstr "finti se kelci"
 
 #: src/settings_translation_file.cpp
 msgid "Crosshair alpha"
@@ -2473,9 +2720,8 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Default password"
-msgstr "lo cnino lerpoijaspu"
+msgstr "zmiselcu'a fi lu'i ro lerpoijaspu"
 
 #: src/settings_translation_file.cpp
 msgid "Default privileges"
@@ -2483,6 +2729,10 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Default report format"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Default stack size"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -2796,6 +3046,16 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid ""
+"Exponent of the floatland tapering. Alters the tapering behaviour.\n"
+"Value = 1.0 creates a uniform, linear tapering.\n"
+"Values > 1.0 create a smooth tapering suitable for the default separated\n"
+"floatlands.\n"
+"Values < 1.0 (for example 0.25) create a more defined surface level with\n"
+"flatter lowlands, suitable for a solid floatland layer."
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "FPS in pause menu"
 msgstr ""
 
@@ -2906,6 +3166,34 @@ msgid "Fixed virtual joystick"
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid "Floatland density"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Floatland maximum Y"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Floatland minimum Y"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Floatland noise"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Floatland taper exponent"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Floatland tapering distance"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Floatland water level"
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Fly key"
 msgstr ""
 
@@ -2955,6 +3243,12 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Font size of the monospace font in point (pt)."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Font size of the recent chat text and chat prompt in point (pt).\n"
+"Value 0 will use the default font size."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4157,7 +4451,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Language"
-msgstr ""
+msgstr "bangu"
 
 #: src/settings_translation_file.cpp
 msgid "Large cave depth"
@@ -4258,14 +4552,6 @@ msgid "Light curve low gradient"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Limit of emerge queues on disk"
-msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid "Limit of emerge queues to generate"
-msgstr ""
-
-#: src/settings_translation_file.cpp
 msgid ""
 "Limit of map generation, in nodes, in all 6 directions from (0, 0, 0).\n"
 "Only mapchunks completely within the mapgen limit are generated.\n"
@@ -4326,6 +4612,10 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Lower Y limit of dungeons."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Lower Y limit of floatlands."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4397,7 +4687,9 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "Map generation attributes specific to Mapgen v7.\n"
-"'ridges' enables the rivers."
+"'ridges': Rivers.\n"
+"'floatlands': Floating land masses in the atmosphere.\n"
+"'caverns': Giant caves deep underground."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4485,10 +4777,6 @@ msgid "Mapgen debug"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Mapgen flags"
-msgstr ""
-
-#: src/settings_translation_file.cpp
 msgid "Mapgen name"
 msgstr ""
 
@@ -4556,13 +4844,13 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "Maximum number of blocks to be queued that are to be generated.\n"
-"Set to blank for an appropriate amount to be chosen automatically."
+"This limit is enforced per player."
 msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
 "Maximum number of blocks to be queued that are to be loaded from file.\n"
-"Set to blank for an appropriate amount to be chosen automatically."
+"This limit is enforced per player."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4644,6 +4932,10 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Method used to highlight selected object."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Minimal level of logging to be written to chat."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4755,12 +5047,12 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Near clipping plane"
+msgid "Near plane"
 msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Network"
-msgstr ""
+msgstr "te samjo'e"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -4807,9 +5099,6 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "Number of emerge threads to use.\n"
-"WARNING: Currently there are multiple bugs that may cause crashes when\n"
-"'num_emerge_threads' is larger than 1. Until this warning is removed it is\n"
-"strongly recommended this value is set to the default '1'.\n"
 "Value 0:\n"
 "-    Automatic selection. The number of emerge threads will be\n"
 "-    'number of processors - 2', with a lower limit of 1.\n"
@@ -4886,10 +5175,6 @@ msgid "Parallax occlusion scale"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Parallax occlusion strength"
-msgstr ""
-
-#: src/settings_translation_file.cpp
 msgid ""
 "Path of the fallback font.\n"
 "If “freetype” setting is enabled: Must be a TrueType font.\n"
@@ -4899,7 +5184,9 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Path to save screenshots at."
+msgid ""
+"Path to save screenshots at. Can be an absolute or relative path.\n"
+"The folder will be created if it doesn't already exist."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4933,6 +5220,14 @@ msgid "Pause on lost window focus"
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid "Per-player limit of queued blocks load from disk"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Per-player limit of queued blocks to generate"
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Physics"
 msgstr ""
 
@@ -4953,7 +5248,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Player name"
-msgstr ""
+msgstr "plicme"
 
 #: src/settings_translation_file.cpp
 msgid "Player transfer distance"
@@ -4999,6 +5294,18 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Profiling"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Prometheus listener address"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Prometheus listener address.\n"
+"If minetest is compiled with ENABLE_PROMETHEUS option enabled,\n"
+"enable metrics listener for Prometheus on that address.\n"
+"Metrics can be fetch on http://127.0.0.1:30000/metrics"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -5251,29 +5558,24 @@ msgid "Server / Singleplayer"
 msgstr "pa kelci"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Server URL"
-msgstr "lo samtcise'u"
+msgstr "veirjudri le samtcise'u"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Server address"
-msgstr "lo samtcise'u judrnporte"
+msgstr "judri le samtcise'u"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Server description"
-msgstr "lo samtcise'u judrnporte"
+msgstr "ve skicu le samtcise'u"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Server name"
-msgstr "lo samtcise'u"
+msgstr "cmene le samtcise'u"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Server port"
-msgstr "lo samtcise'u judrnporte"
+msgstr "judrnporte le samtcise'u"
 
 #: src/settings_translation_file.cpp
 msgid "Server side occlusion culling"
@@ -5317,9 +5619,8 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Shader path"
-msgstr "lo ti'orkemsamtci"
+msgstr "judri le ti'orkemsamtci"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -5454,6 +5755,13 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
+"Specifies the default stack size of nodes, items and tools.\n"
+"Note that mods or games may explicitly set a stack for certain (or all) "
+"items."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
 "Spread of light curve boost range.\n"
 "Controls the width of the range to be boosted.\n"
 "Standard deviation of the light curve boost Gaussian."
@@ -5476,6 +5784,10 @@ msgid "Step mountain spread noise"
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid "Strength of 3D mode parallax."
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Strength of generated normalmaps."
 msgstr ""
 
@@ -5487,15 +5799,25 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Strength of parallax."
-msgstr ""
-
-#: src/settings_translation_file.cpp
 msgid "Strict protocol checking"
 msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Strip color codes"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Surface level of optional water placed on a solid floatland layer.\n"
+"Water is disabled by default and will only be placed if this value is set\n"
+"to above 'mgv7_floatland_ymax' - 'mgv7_floatland_taper' (the start of the\n"
+"upper tapering).\n"
+"***WARNING, POTENTIAL DANGER TO WORLDS AND SERVER PERFORMANCE***:\n"
+"When enabling water placement the floatlands must be configured and tested\n"
+"to be a solid layer by setting 'mgv7_floatland_density' to 2.0 (or other\n"
+"required value depending on 'mgv7_np_floatland'), to avoid\n"
+"server-intensive extreme water flow and to avoid vast flooding of the\n"
+"world surface below."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -5612,7 +5934,7 @@ msgid ""
 "In active blocks objects are loaded and ABMs run.\n"
 "This is also the minimum range in which active objects (mobs) are "
 "maintained.\n"
-"This should be configured together with active_object_range."
+"This should be configured together with active_object_send_range_blocks."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -5763,6 +6085,10 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Upper Y limit of dungeons."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Upper Y limit of floatlands."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -6093,6 +6419,14 @@ msgid "Y-distance over which caverns expand to full size."
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid ""
+"Y-distance over which floatlands taper from full density to nothing.\n"
+"Tapering starts at this distance from the Y limit.\n"
+"For a solid floatland layer, this controls the height of hills/mountains.\n"
+"Must be less than or equal to half the distance between the Y limits."
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Y-level of average terrain surface."
 msgstr ""
 
@@ -6127,3 +6461,12 @@ msgstr ""
 #, fuzzy
 #~ msgid "Enable VBO"
 #~ msgstr "selpli"
+
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr ".i ca'o kibycpa la'o zoi. $1 .zoi je cu samtcise'a ri .i ko denpa"
+
+#~ msgid "Back"
+#~ msgstr "xruti"
+
+#~ msgid "Ok"
+#~ msgstr "je'e"

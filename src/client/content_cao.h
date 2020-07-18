@@ -130,6 +130,8 @@ private:
 	// Settings
 	bool m_enable_shaders = false;
 
+	bool visualExpiryRequired(const ObjectProperties &newprops) const;
+
 public:
 	GenericCAO(Client *client, ClientEnvironment *env);
 
@@ -186,10 +188,11 @@ public:
 		return m_matrixnode->getRelativeTransformationMatrix();
 	}
 
-	inline const core::matrix4 &getAbsolutePosRotMatrix() const
+	inline const core::matrix4 *getAbsolutePosRotMatrix() const
 	{
-		assert(m_matrixnode);
-		return m_matrixnode->getAbsoluteTransformation();
+		if (!m_matrixnode)
+			return nullptr;
+		return &m_matrixnode->getAbsoluteTransformation();
 	}
 
 	inline f32 getStepHeight() const
@@ -234,13 +237,16 @@ public:
 		m_visuals_expired = true;
 	}
 
-	void updateLight(u8 light_at_pos);
-
-	void updateLightNoCheck(u8 light_at_pos);
+	void updateLight(u32 day_night_ratio);
 
 	void setNodeLight(u8 light);
 
-	v3s16 getLightPosition();
+	/* Get light position(s).
+	 * returns number of positions written into pos[], which must have space
+	 * for at least 3 vectors. */
+	u16 getLightPosition(v3s16 *pos);
+
+	void updateNametag();
 
 	void updateNodePos();
 

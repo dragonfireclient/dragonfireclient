@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Norwegian Bokmål (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-18 20:21+0000\n"
-"PO-Revision-Date: 2019-12-11 13:36+0000\n"
-"Last-Translator: Petter Reinholdtsen <pere-weblate@hungry.com>\n"
+"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"PO-Revision-Date: 2020-06-18 13:41+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
 "minetest/minetest/nb_NO/>\n"
 "Language: nb\n"
@@ -12,20 +12,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10-dev\n"
+"X-Generator: Weblate 4.1.1-dev\n"
 
 #: builtin/client/death_formspec.lua src/client/game.cpp
 msgid "Respawn"
-msgstr "Respawn"
+msgstr "Gjenoppstå"
 
 #: builtin/client/death_formspec.lua src/client/game.cpp
 msgid "You died"
 msgstr "Du døde"
 
+#: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
+msgid "OK"
+msgstr ""
+
 #: builtin/fstk/ui.lua
-#, fuzzy
 msgid "An error occurred in a Lua script:"
-msgstr "Det oppstod en feil i et Lua-skriptet, for eksempel i en mod:"
+msgstr "Det oppstod en feil i et Lua-skript:"
 
 #: builtin/fstk/ui.lua
 msgid "An error occurred:"
@@ -34,10 +37,6 @@ msgstr "Det oppstod en feil:"
 #: builtin/fstk/ui.lua
 msgid "Main menu"
 msgstr "Hovedmeny"
-
-#: builtin/fstk/ui.lua
-msgid "Ok"
-msgstr "Okei"
 
 #: builtin/fstk/ui.lua
 msgid "Reconnect"
@@ -112,26 +111,28 @@ msgid ""
 "Failed to enable mod \"$1\" as it contains disallowed characters. Only "
 "characters [a-z0-9_] are allowed."
 msgstr ""
-"Kunne ikke aktivere mod \"$1\" fordi  den inneholder ugyldige tegn. Kun "
+"Kunne ikke aktivere modden «$1» fordi den inneholder ugyldige tegn. Kun "
 "tegnene [a-z0-9_] er tillatt."
+
+#: builtin/mainmenu/dlg_config_world.lua
+msgid "Find More Mods"
+msgstr ""
 
 #: builtin/mainmenu/dlg_config_world.lua
 msgid "Mod:"
 msgstr "Mod:"
 
 #: builtin/mainmenu/dlg_config_world.lua
-#, fuzzy
 msgid "No (optional) dependencies"
-msgstr "Valgfrie avhengigheter:"
+msgstr "Kan gjerne bruke"
 
 #: builtin/mainmenu/dlg_config_world.lua
 msgid "No game description provided."
 msgstr "Mangler spillbeskrivelse."
 
 #: builtin/mainmenu/dlg_config_world.lua
-#, fuzzy
 msgid "No hard dependencies"
-msgstr "Ingen avhengigheter."
+msgstr "Krever ingen andre modder"
 
 #: builtin/mainmenu/dlg_config_world.lua
 msgid "No modpack description provided."
@@ -164,16 +165,17 @@ msgid "All packages"
 msgstr "Alle pakker"
 
 #: builtin/mainmenu/dlg_contentstore.lua
-msgid "Back"
-msgstr "Tilbake"
-
-#: builtin/mainmenu/dlg_contentstore.lua
 msgid "Back to Main Menu"
 msgstr "Tilbake til hovedmeny"
 
 #: builtin/mainmenu/dlg_contentstore.lua
-msgid "Downloading and installing $1, please wait..."
-msgstr "Laster ned og installerer $1, vent…"
+msgid "ContentDB is not available when Minetest was compiled without cURL"
+msgstr ""
+
+#: builtin/mainmenu/dlg_contentstore.lua
+#, fuzzy
+msgid "Downloading..."
+msgstr "Laster..."
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Failed to download $1"
@@ -218,13 +220,55 @@ msgstr "Avinstaller"
 msgid "Update"
 msgstr "Oppdater"
 
+#: builtin/mainmenu/dlg_contentstore.lua
+msgid "View"
+msgstr ""
+
 #: builtin/mainmenu/dlg_create_world.lua
 msgid "A world named \"$1\" already exists"
 msgstr "En verden med navn \"$1\" eksisterer allerede"
 
 #: builtin/mainmenu/dlg_create_world.lua
+msgid "Additional terrain"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua src/settings_translation_file.cpp
+msgid "Altitude chill"
+msgstr "Temperaturen synker med stigende høyde"
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Altitude dry"
+msgstr "Temperaturen synker med stigende høyde"
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Biome blending"
+msgstr "Biotoplyd"
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Biomes"
+msgstr "Biotoplyd"
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Caverns"
+msgstr "Grottelyd"
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Caves"
+msgstr "Oktaver"
+
+#: builtin/mainmenu/dlg_create_world.lua
 msgid "Create"
 msgstr "Opprett"
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Decorations"
+msgstr "Informasjon:"
 
 #: builtin/mainmenu/dlg_create_world.lua
 msgid "Download a game, such as Minetest Game, from minetest.net"
@@ -234,17 +278,97 @@ msgstr "Last ned et spill, for eksempel Minetest Game, fra minetest.net"
 msgid "Download one from minetest.net"
 msgstr "Last ned en fra minetest.net"
 
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Dungeons"
+msgstr "Grottelyd"
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Flat terrain"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Floating landmasses in the sky"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Floatlands (experimental)"
+msgstr ""
+
 #: builtin/mainmenu/dlg_create_world.lua src/settings_translation_file.cpp
 msgid "Game"
 msgstr "Spill"
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Generate non-fractal terrain: Oceans and underground"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Hills"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Humid rivers"
+msgstr "Videodriver"
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Increases humidity around rivers"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Lakes"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Low humidity and high heat causes shallow or dry rivers"
+msgstr ""
 
 #: builtin/mainmenu/dlg_create_world.lua src/settings_translation_file.cpp
 msgid "Mapgen"
 msgstr "Mapgen"
 
+#: builtin/mainmenu/dlg_create_world.lua src/settings_translation_file.cpp
+msgid "Mapgen flags"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Mapgen-specific flags"
+msgstr "Mapgen"
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Mountains"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Mud flow"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Network of tunnels and caves"
+msgstr ""
+
 #: builtin/mainmenu/dlg_create_world.lua
 msgid "No game selected"
 msgstr "Intet spill valgt"
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Reduces heat with altitude"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Reduces humidity with altitude"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Rivers"
+msgstr "Elvestørrelse"
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Sea level rivers"
+msgstr ""
 
 #: builtin/mainmenu/dlg_create_world.lua
 #: builtin/mainmenu/dlg_settings_advanced.lua
@@ -252,7 +376,51 @@ msgid "Seed"
 msgstr "Seed"
 
 #: builtin/mainmenu/dlg_create_world.lua
-msgid "Warning: The minimal development test is meant for developers."
+msgid "Smooth transition between biomes"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid ""
+"Structures appearing on the terrain (no effect on trees and jungle grass "
+"created by v6)"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Structures appearing on the terrain, typically trees and plants"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Temperate, Desert"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Temperate, Desert, Jungle"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Temperate, Desert, Jungle, Tundra, Taiga"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Terrain surface erosion"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Trees and jungle grass"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Vary river depth"
+msgstr "Elvedybde"
+
+#: builtin/mainmenu/dlg_create_world.lua
+msgid "Very large caverns deep in the underground"
+msgstr ""
+
+#: builtin/mainmenu/dlg_create_world.lua
+#, fuzzy
+msgid "Warning: The Development Test is meant for developers."
 msgstr "Advarsel: Den minimale utviklingstesten er tiltenkt utviklere."
 
 #: builtin/mainmenu/dlg_create_world.lua
@@ -343,7 +511,7 @@ msgstr "Forskyvning"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Persistance"
-msgstr "Utholdenhet"
+msgstr "Bestandighet"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Please enter a valid integer."
@@ -405,17 +573,28 @@ msgstr "Z"
 msgid "Z spread"
 msgstr "Z-spredning"
 
+#. ~ "absvalue" is a noise parameter flag.
+#. It is short for "absolute value".
+#. It can be enabled in noise settings in
+#. main menu -> "All Settings".
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "absvalue"
 msgstr "Absoluttverdi"
 
+#. ~ "defaults" is a noise parameter flag.
+#. It describes the default processing options
+#. for noise settings in main menu -> "All Settings".
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "defaults"
 msgstr "Forvalg"
 
+#. ~ "eased" is a noise parameter flag.
+#. It is used to make the map smoother and
+#. can be enabled in noise settings in
+#. main menu -> "All Settings".
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "eased"
-msgstr "lettet"
+msgstr "myknet"
 
 #: builtin/mainmenu/pkgmgr.lua
 msgid "$1 (Enabled)"
@@ -462,8 +641,9 @@ msgid "Unable to install a mod as a $1"
 msgstr "Klarte ikke å installere mod som en $1"
 
 #: builtin/mainmenu/pkgmgr.lua
+#, fuzzy
 msgid "Unable to install a modpack as a $1"
-msgstr "Klarte ikke å installere en modpack som  $2"
+msgstr "Klarte ikke å installere en modpakke som $1"
 
 #: builtin/mainmenu/tab_content.lua
 msgid "Browse online content"
@@ -554,6 +734,10 @@ msgid "Host Server"
 msgstr "Vertstjener"
 
 #: builtin/mainmenu/tab_local.lua
+msgid "Install games from ContentDB"
+msgstr ""
+
+#: builtin/mainmenu/tab_local.lua
 msgid "Name/Password"
 msgstr "Navn/passord"
 
@@ -621,9 +805,10 @@ msgstr "Navn / passord"
 msgid "Ping"
 msgstr "Latens"
 
+#. ~ PvP = Player versus Player
 #: builtin/mainmenu/tab_online.lua builtin/mainmenu/tab_simple_main.lua
 msgid "PvP enabled"
-msgstr "Spiller mot spiller aktivert"
+msgstr "Alle mot alle er på"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "2x"
@@ -663,7 +848,7 @@ msgstr "Bilineært filter"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Bump Mapping"
-msgstr ""
+msgstr "Teksturtilføyning"
 
 #: builtin/mainmenu/tab_settings.lua src/client/game.cpp
 msgid "Change Keys"
@@ -683,11 +868,11 @@ msgstr "Generer normale kart"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Mipmap"
-msgstr ""
+msgstr "Mipmap"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Mipmap + Aniso. Filter"
-msgstr "Mipkart + Aniso. filter"
+msgstr "Mipmap + anisotropisk filter"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "No"
@@ -699,7 +884,7 @@ msgstr "Inget filter"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "No Mipmap"
-msgstr "Intet Mipkart"
+msgstr "Mangler mipmap"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Node Highlighting"
@@ -747,7 +932,7 @@ msgstr "Skygger"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Shaders (unavailable)"
-msgstr ""
+msgstr "Skyggelegging (ikke tilgjenglig)"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Simple Leaves"
@@ -763,11 +948,11 @@ msgstr "Teksturering:"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "To enable shaders the OpenGL driver needs to be used."
-msgstr ""
+msgstr "For å skru på skyggeleging, må man bruke OpenGL-driveren."
 
 #: builtin/mainmenu/tab_settings.lua src/settings_translation_file.cpp
 msgid "Tone Mapping"
-msgstr ""
+msgstr "Nyanseoversettelse (tone mapping)"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Touchthreshold: (px)"
@@ -782,9 +967,8 @@ msgid "Waving Leaves"
 msgstr "Bølgende blader"
 
 #: builtin/mainmenu/tab_settings.lua
-#, fuzzy
 msgid "Waving Liquids"
-msgstr "Bølgende blader"
+msgstr "Skvulpende væsker"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Waving Plants"
@@ -836,7 +1020,7 @@ msgstr "Tilkoblingsfeil (tidsavbrudd?)"
 
 #: src/client/clientlauncher.cpp
 msgid "Could not find or load game \""
-msgstr "Kunne ikke finne eller laste spill \""
+msgstr "Klarte ikke finne eller laste inn spill «"
 
 #: src/client/clientlauncher.cpp
 msgid "Invalid gamespec."
@@ -848,7 +1032,7 @@ msgstr "Hovedmeny"
 
 #: src/client/clientlauncher.cpp
 msgid "No world selected and no address provided. Nothing to do."
-msgstr "Intet å gjøre.  Ingen verden valgt og ingen adresse oppgitt."
+msgstr "Intet å gjøre. Ingen verden valgt og ingen adresse oppgitt."
 
 #: src/client/clientlauncher.cpp
 msgid "Player name too long."
@@ -866,6 +1050,14 @@ msgstr "Passordfilen kunne ikke åpnes: "
 msgid "Provided world path doesn't exist: "
 msgstr "Angitt sti til verdenen finnes ikke: "
 
+#. ~ DO NOT TRANSLATE THIS LITERALLY!
+#. This is a special string. Put either "no" or "yes"
+#. into the translation field (literally).
+#. Choose "yes" if the language requires use of the fallback
+#. font, "no" otherwise.
+#. The fallback font is (normally) required for languages with
+#. non-Latin script, like Chinese.
+#. When in doubt, test your translation.
 #: src/client/fontengine.cpp
 msgid "needs_fallback_font"
 msgstr "no"
@@ -902,9 +1094,10 @@ msgstr "- Port: "
 msgid "- Public: "
 msgstr "- Offentlig: "
 
+#. ~ PvP = Player versus Player
 #: src/client/game.cpp
 msgid "- PvP: "
-msgstr "- PvP: "
+msgstr "- Alle mot alle (PvP): "
 
 #: src/client/game.cpp
 msgid "- Server Name: "
@@ -993,11 +1186,11 @@ msgstr "Oppretter tjener…"
 
 #: src/client/game.cpp
 msgid "Debug info and profiler graph hidden"
-msgstr ""
+msgstr "Skjuler feilsøkingsinfo og profilgraf"
 
 #: src/client/game.cpp
 msgid "Debug info shown"
-msgstr ""
+msgstr "Viser feilsøkingsinfo"
 
 #: src/client/game.cpp
 msgid "Debug info, profiler graph, and wireframe hidden"
@@ -1018,6 +1211,18 @@ msgid ""
 "- touch&drag, tap 2nd finger\n"
 " --> place single item to slot\n"
 msgstr ""
+"Standardstyring:\n"
+"Ved ingen synlig meny:\n"
+"- enkel berøring: knapp aktiveres\n"
+"- dobbel berøring: legg på plass/bruke\n"
+"- glidende berøring: se rundt deg\n"
+"Meny/beholdning synlig:\n"
+"- dobbel berøring (ute):\n"
+" -->lukk\n"
+"- berør stabel, berør spor:\n"
+" --> flytt stabel\n"
+"- berør&trekk, berør med den andre fingeren\n"
+" --> legg én enkelt gjenstand i spor\n"
 
 #: src/client/game.cpp
 msgid "Disabled unlimited viewing range"
@@ -1036,42 +1241,36 @@ msgid "Exit to OS"
 msgstr "Avslutt til operativsystem"
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "Fast mode disabled"
-msgstr "Deaktiver Alle"
+msgstr "Rask forflytning av"
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "Fast mode enabled"
-msgstr "Skade aktivert"
+msgstr "Rask forflytning på"
 
 #: src/client/game.cpp
 msgid "Fast mode enabled (note: no 'fast' privilege)"
 msgstr ""
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "Fly mode disabled"
-msgstr "Deaktiver Alle"
+msgstr "Flymodus av"
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "Fly mode enabled"
-msgstr "Skade aktivert"
+msgstr "Flymodus på"
 
 #: src/client/game.cpp
 msgid "Fly mode enabled (note: no 'fly' privilege)"
 msgstr ""
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "Fog disabled"
-msgstr "Deaktiver Alle"
+msgstr "Tåke av"
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "Fog enabled"
-msgstr "aktivert"
+msgstr "Tåke på"
 
 #: src/client/game.cpp
 msgid "Game info:"
@@ -1107,7 +1306,7 @@ msgstr ""
 
 #: src/client/game.cpp
 msgid "Minimap hidden"
-msgstr ""
+msgstr "Skjuler minikart"
 
 #: src/client/game.cpp
 msgid "Minimap in radar mode, Zoom x1"
@@ -1138,9 +1337,8 @@ msgid "Noclip mode disabled"
 msgstr ""
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "Noclip mode enabled"
-msgstr "Skade aktivert"
+msgstr "Kan gå gjennom vegger"
 
 #: src/client/game.cpp
 msgid "Noclip mode enabled (note: no 'noclip' privilege)"
@@ -1148,7 +1346,7 @@ msgstr ""
 
 #: src/client/game.cpp
 msgid "Node definitions..."
-msgstr ""
+msgstr "Blokkdefinisjoner..."
 
 #: src/client/game.cpp
 msgid "Off"
@@ -1191,14 +1389,20 @@ msgid "Sound Volume"
 msgstr "Lydstyrke"
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "Sound muted"
-msgstr "Lydstyrke"
+msgstr "Lyd av"
 
 #: src/client/game.cpp
-#, fuzzy
+msgid "Sound system is disabled"
+msgstr ""
+
+#: src/client/game.cpp
+msgid "Sound system is not supported on this build"
+msgstr ""
+
+#: src/client/game.cpp
 msgid "Sound unmuted"
-msgstr "Lydstyrke"
+msgstr "Lyd på"
 
 #: src/client/game.cpp
 #, c-format
@@ -1228,18 +1432,17 @@ msgstr ""
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
-#: src/client/game.cpp src/gui/modalMenu.cpp
+#: src/client/game.cpp
 msgid "ok"
 msgstr "ok"
 
 #: src/client/gameui.cpp
-#, fuzzy
 msgid "Chat hidden"
-msgstr "Skydretast"
+msgstr "Chat skjult"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
-msgstr ""
+msgstr "Viser chat"
 
 #: src/client/gameui.cpp
 msgid "HUD hidden"
@@ -1263,9 +1466,8 @@ msgid "Apps"
 msgstr "Programmer"
 
 #: src/client/keycode.cpp
-#, fuzzy
 msgid "Backspace"
-msgstr "Tilbake"
+msgstr "Tilbaketast"
 
 #: src/client/keycode.cpp
 msgid "Caps Lock"
@@ -1351,6 +1553,7 @@ msgstr "Venstre Shift"
 msgid "Left Windows"
 msgstr "Venstre Super"
 
+#. ~ Key name, common on Windows keyboards
 #: src/client/keycode.cpp
 msgid "Menu"
 msgstr "Meny"
@@ -1425,15 +1628,15 @@ msgstr "Numpad 9"
 
 #: src/client/keycode.cpp
 msgid "OEM Clear"
-msgstr ""
+msgstr "Tøm OEM"
 
 #: src/client/keycode.cpp
 msgid "Page down"
-msgstr ""
+msgstr "Page down"
 
 #: src/client/keycode.cpp
 msgid "Page up"
-msgstr ""
+msgstr "Page up"
 
 #: src/client/keycode.cpp
 msgid "Pause"
@@ -1443,6 +1646,7 @@ msgstr "Pause"
 msgid "Play"
 msgstr "Spill"
 
+#. ~ "Print screen" key
 #: src/client/keycode.cpp
 msgid "Print"
 msgstr "Skriv ut"
@@ -1479,6 +1683,7 @@ msgstr "Høyre Super"
 msgid "Scroll Lock"
 msgstr "Scroll Lock"
 
+#. ~ Key name
 #: src/client/keycode.cpp
 msgid "Select"
 msgstr "Velg"
@@ -1536,6 +1741,11 @@ msgid ""
 "Please retype your password and click 'Register and Join' to confirm account "
 "creation, or click 'Cancel' to abort."
 msgstr ""
+"Dette er første gang du kobler deg til serveren «\"%s».\n"
+"Om du fortsetter, vil det opprettes en ny konto med ditt navn og passord på "
+"denne serveren.\n"
+"Vennligst skriv inn et passord og klikk på «Registrer meg og bli med» for å "
+"bekrefte opprettelse av konto, eller klikk « Avbryt» for å avbryte."
 
 #: src/gui/guiFormSpecMenu.cpp
 msgid "Proceed"
@@ -1547,9 +1757,8 @@ msgid "\"Special\" = climb down"
 msgstr "«bruk» = klatre ned"
 
 #: src/gui/guiKeyChangeMenu.cpp
-#, fuzzy
 msgid "Autoforward"
-msgstr "Framover"
+msgstr "Automatisk fremover"
 
 #: src/gui/guiKeyChangeMenu.cpp src/settings_translation_file.cpp
 msgid "Automatic jumping"
@@ -1560,13 +1769,12 @@ msgid "Backward"
 msgstr "Tilbake"
 
 #: src/gui/guiKeyChangeMenu.cpp
-#, fuzzy
 msgid "Change camera"
-msgstr "Endre taster"
+msgstr "Endre visning"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Chat"
-msgstr "Sludre"
+msgstr "Chatte"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Command"
@@ -1578,7 +1786,7 @@ msgstr "Konsoll"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Dec. range"
-msgstr ""
+msgstr "Senk siktavstanden"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Dec. volume"
@@ -1598,7 +1806,7 @@ msgstr "Framover"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Inc. range"
-msgstr ""
+msgstr "Øk siktavstanden"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Inc. volume"
@@ -1632,11 +1840,11 @@ msgstr "Demp"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Next item"
-msgstr "Neste element"
+msgstr "Neste gjenstand"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Prev. item"
-msgstr "Forrige element"
+msgstr "Forrige gjenstand"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Range select"
@@ -1644,51 +1852,47 @@ msgstr "Velg rekkevidde"
 
 #: src/gui/guiKeyChangeMenu.cpp src/settings_translation_file.cpp
 msgid "Screenshot"
-msgstr "Skjermavbildning"
+msgstr "Skjermdump"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Sneak"
-msgstr "Snik"
+msgstr "Snike"
 
 #: src/gui/guiKeyChangeMenu.cpp
-#, fuzzy
 msgid "Special"
 msgstr "Spesial"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
-msgstr ""
+msgstr "HUD (hurtigtilgang) av/på"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
-msgstr ""
+msgstr "Chattehistorikk av/på"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle fast"
-msgstr ""
+msgstr "Rask forflytning av/på"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle fly"
-msgstr ""
+msgstr "Flymodus av/på"
 
 #: src/gui/guiKeyChangeMenu.cpp
-#, fuzzy
 msgid "Toggle fog"
-msgstr "Farget tåke"
+msgstr "Tåke av/på"
 
 #: src/gui/guiKeyChangeMenu.cpp
-#, fuzzy
 msgid "Toggle minimap"
-msgstr "Aktiverer minikart."
+msgstr "Minikart av/på"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle noclip"
-msgstr ""
+msgstr "Gjennomtrengelige blokker av/på"
 
 #: src/gui/guiKeyChangeMenu.cpp
-#, fuzzy
 msgid "Toggle pitchmove"
-msgstr "Farget tåke"
+msgstr "Pitchbevegelse (lateralaksevinkel) av/på"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "press key"
@@ -1715,18 +1919,22 @@ msgid "Exit"
 msgstr "Avslutt"
 
 #: src/gui/guiVolumeChange.cpp
-#, fuzzy
 msgid "Muted"
-msgstr "Demp"
+msgstr "Av"
 
 #: src/gui/guiVolumeChange.cpp
 msgid "Sound Volume: "
 msgstr "Lydstyrke: "
 
+#. ~ Imperative, as in "Enter/type in text".
+#. Don't forget the space.
 #: src/gui/modalMenu.cpp
 msgid "Enter "
 msgstr "Enter "
 
+#. ~ DO NOT TRANSLATE THIS LITERALLY!
+#. This is a special string which needs to contain the translation's
+#. language code (e.g. "de" for German).
 #: src/network/clientpackethandler.cpp src/script/lua_api/l_client.cpp
 msgid "LANG_CODE"
 msgstr "nb"
@@ -1751,6 +1959,7 @@ msgstr ""
 "utenfor hovedsirkelen."
 
 #: src/settings_translation_file.cpp
+#, fuzzy
 msgid ""
 "(X,Y,Z) offset of fractal from world center in units of 'scale'.\n"
 "Can be used to move a desired point to (0, 0) to create a\n"
@@ -1761,6 +1970,15 @@ msgid ""
 "situations.\n"
 "Range roughly -2 to 2. Multiply by 'scale' for offset in nodes."
 msgstr ""
+"(X,Y,Z) offset of fractal from world center in units of 'scale'.\n"
+"Kan benyttes for å flytte et ønsket punkt til (0, 0) for å opprette et\n"
+"passende gjenoppstandelsespunkt, eller for å tillate 'zooming in' on a "
+"desired\n"
+"point ved å øke 'scale'.\n"
+"Standardverdien is tuned for a suitable spawn point for Mandelbrot\n"
+"sets with default parameters, it may need altering in other\n"
+"situations.\n"
+"Range roughly -2 to 2. Multiply by 'scale' for offset in nodes."
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -1772,6 +1990,13 @@ msgid ""
 "Default is for a vertically-squashed shape suitable for\n"
 "an island, set all 3 numbers equal for the raw shape."
 msgstr ""
+"(X,Y,Z)-skalering for fraktal i blokker.\n"
+"Faktisk fraktalstørrelse blir to til tre ganger større.\n"
+"Man kan angi veldig store tall; fraktalen\n"
+"behøver ikke passe inn i verdenen.\n"
+"Øk disse tallene for å oppskalere på fraktalens detaljer.\n"
+"Standardverdien gir en form som er sammenpresset\n"
+"i høyden og egner seg til øy. Angi tre like tall for grunnformen."
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -1781,31 +2006,31 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "2D noise that controls the shape/size of ridged mountains."
-msgstr ""
+msgstr "2D-støytall som styrer form og størrelse på høydedrag."
 
 #: src/settings_translation_file.cpp
 msgid "2D noise that controls the shape/size of rolling hills."
-msgstr ""
+msgstr "2D-støytall som styrer form og størrelse på bakkelandskap."
 
 #: src/settings_translation_file.cpp
 msgid "2D noise that controls the shape/size of step mountains."
-msgstr ""
+msgstr "2D-støytall som styrer form og størrelse på trinnvise fjell."
 
 #: src/settings_translation_file.cpp
 msgid "2D noise that controls the size/occurrence of ridged mountain ranges."
-msgstr ""
+msgstr "2D-støytall som styrer fjellkjedestørrelse og -forekomst."
 
 #: src/settings_translation_file.cpp
 msgid "2D noise that controls the size/occurrence of rolling hills."
-msgstr ""
+msgstr "2D-støytall som styrer størrelse og forekomst av bakkelandskap."
 
 #: src/settings_translation_file.cpp
 msgid "2D noise that controls the size/occurrence of step mountain ranges."
-msgstr ""
+msgstr "2D-støytall som styrer størrelse og forekomst av trinnfjellkjeder."
 
 #: src/settings_translation_file.cpp
 msgid "2D noise that locates the river valleys and channels."
-msgstr ""
+msgstr "2D-støytall som plasserer elvedaler og elveleier."
 
 #: src/settings_translation_file.cpp
 msgid "3D clouds"
@@ -1816,30 +2041,45 @@ msgid "3D mode"
 msgstr "3D-modus"
 
 #: src/settings_translation_file.cpp
-msgid "3D noise defining giant caverns."
+msgid "3D mode parallax strength"
 msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "3D noise defining giant caverns."
+msgstr "3D-støytall som definerer kjempegrotter."
 
 #: src/settings_translation_file.cpp
 msgid ""
 "3D noise defining mountain structure and height.\n"
 "Also defines structure of floatland mountain terrain."
 msgstr ""
+"3D-støytall som definerer fjellstruktur og -høyde.\n"
+"Definerer også fjellterrengstruktur på luftøyer."
+
+#: src/settings_translation_file.cpp
+msgid ""
+"3D noise defining structure of floatlands.\n"
+"If altered from the default, the noise 'scale' (0.7 by default) may need\n"
+"to be adjusted, as floatland tapering functions best when this noise has\n"
+"a value range of approximately -2.0 to 2.0."
+msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "3D noise defining structure of river canyon walls."
-msgstr ""
+msgstr "3D-støytall som definerer strukturen til sidene i en elvekløft."
 
 #: src/settings_translation_file.cpp
 msgid "3D noise defining terrain."
-msgstr ""
+msgstr "3D-støytall som definerer terrenget."
 
 #: src/settings_translation_file.cpp
 msgid "3D noise for mountain overhangs, cliffs, etc. Usually small variations."
 msgstr ""
+"3D-støytall for fjelloverheng, klipper o. l. Vanligvis små variasjoner."
 
 #: src/settings_translation_file.cpp
 msgid "3D noise that determines number of dungeons per mapchunk."
-msgstr ""
+msgstr "3D-støytall som avgjør antall grotter per kartchunk."
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -1854,28 +2094,40 @@ msgid ""
 "-    pageflip: quadbuffer based 3d.\n"
 "Note that the interlaced mode requires shaders to be enabled."
 msgstr ""
+"3D-støtte.\n"
+"For øyeblikket støttes følgende alternativer:\n"
+"-    none: Ingen 3D-utdata.\n"
+"-    anaglyph: Cyan/magenta farge-3D.\n"
+"-    interlaced: Skjermstøtte for partall/oddetall-linjebasert "
+"polarisering.\n"
+"-    topbottom: Del skjermen i topp og bunn.\n"
+"-    sidebyside: Del skjermen side om side.\n"
+"-    crossview: Skjele-3d\n"
+"-    pageflip: Quadbuffer-basert 3d.\n"
+"Vær klar over at interlace-modus krever at skyggelegging er påslått."
 
 #: src/settings_translation_file.cpp
 msgid ""
 "A chosen map seed for a new map, leave empty for random.\n"
 "Will be overridden when creating a new world in the main menu."
 msgstr ""
+"Velg genereringsfrø for en ny verden. La det stå tomt for et tilfeldig et.\n"
+"Blir erstattet når man oppretter en ny verden i hovedmenyen."
 
 #: src/settings_translation_file.cpp
 msgid "A message to be displayed to all clients when the server crashes."
-msgstr ""
+msgstr "Melding som vises til alle klienter når serveren krasjer."
 
 #: src/settings_translation_file.cpp
 msgid "A message to be displayed to all clients when the server shuts down."
-msgstr "En melding å vise alle klienter når tjeneren slås av."
+msgstr "Melding som vises alle klienter når serveren slås av."
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "ABM interval"
 msgstr "ABM-intervall"
 
 #: src/settings_translation_file.cpp
-msgid "Absolute limit of emerge queues"
+msgid "Absolute limit of queued blocks to emerge"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -1884,11 +2136,11 @@ msgstr "Akselerasjon i luft"
 
 #: src/settings_translation_file.cpp
 msgid "Acceleration of gravity, in nodes per second per second."
-msgstr ""
+msgstr "Tyngdeakselerasjon, i blokker per sekund per sekund (b/s^2)."
 
 #: src/settings_translation_file.cpp
 msgid "Active Block Modifiers"
-msgstr ""
+msgstr "Aktive blokkendrere (ABM)"
 
 #: src/settings_translation_file.cpp
 #, fuzzy
@@ -1897,11 +2149,11 @@ msgstr "Aktiv blokkeringsrekkevidde"
 
 #: src/settings_translation_file.cpp
 msgid "Active block range"
-msgstr "Aktiv blokkeringsrekkevidde"
+msgstr "Rekkevidde for aktive blokker"
 
 #: src/settings_translation_file.cpp
 msgid "Active object send range"
-msgstr ""
+msgstr "Område for sending av aktive objekt"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -1909,15 +2161,31 @@ msgid ""
 "Leave this blank to start a local server.\n"
 "Note that the address field in the main menu overrides this setting."
 msgstr ""
+"Kobler til denne adressen.\n"
+"La det stå tomt for å starte en lokal server.\n"
+"Vær klar over at adressen i feltet i hovedmenyen overkjører denne "
+"innstillingen."
 
 #: src/settings_translation_file.cpp
 msgid "Adds particles when digging a node."
-msgstr "Legger til partikler når en node graves."
+msgstr "Legger på partikler når man graver ut en blokk."
 
 #: src/settings_translation_file.cpp
 msgid ""
 "Adjust dpi configuration to your screen (non X11/Android only) e.g. for 4k "
 "screens."
+msgstr ""
+"Justér skjermens DPI-innstilling (ikke for X11/kun Android), f. eks. for 4k-"
+"skjermer."
+
+#: src/settings_translation_file.cpp
+#, c-format
+msgid ""
+"Adjusts the density of the floatland layer.\n"
+"Increase value to increase density. Can be positive or negative.\n"
+"Value = 0.0: 50% of volume is floatland.\n"
+"Value = 2.0 (can be higher depending on 'mgv7_np_floatland', always test\n"
+"to be sure) creates a solid floatland layer."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -1932,14 +2200,15 @@ msgid ""
 "This only has significant effect on daylight and artificial\n"
 "light, it has very little effect on natural night light."
 msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid "Altitude chill"
-msgstr ""
+"Endrer lyskurven ved å bruke gammakurven (gamma-korreksjon) .\n"
+"Høye verdier gjør middels og lave lysnivåer lysere.\n"
+"Verdien «1.0» gir ingen endring i lyskurven.\n"
+"Dette har reell betydning kun for dagslys og kunstig\n"
+"belysning - det har lite å si for naturlig nattelys."
 
 #: src/settings_translation_file.cpp
 msgid "Always fly and fast"
-msgstr ""
+msgstr "Alltid flymodus og rask forflytning"
 
 #: src/settings_translation_file.cpp
 msgid "Ambient occlusion gamma"
@@ -1947,11 +2216,11 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Amount of messages a player may send per 10 seconds."
-msgstr ""
+msgstr "Antall meldinger en spiller kan sende hvert 10. sekund."
 
 #: src/settings_translation_file.cpp
 msgid "Amplifies the valleys."
-msgstr ""
+msgstr "Forsterker daler."
 
 #: src/settings_translation_file.cpp
 msgid "Anisotropic filtering"
@@ -1959,38 +2228,39 @@ msgstr "Antisotropisk filtrering"
 
 #: src/settings_translation_file.cpp
 msgid "Announce server"
-msgstr "Annonser tjener"
+msgstr "Offentliggjør server"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Announce to this serverlist."
-msgstr "Annonser tjener"
+msgstr "Offentliggjør for denne serverlisten."
 
 #: src/settings_translation_file.cpp
 msgid "Append item name"
-msgstr ""
+msgstr "Legg til elementnavn"
 
 #: src/settings_translation_file.cpp
 msgid "Append item name to tooltip."
-msgstr ""
+msgstr "Legg elementnavn til infoboble."
 
 #: src/settings_translation_file.cpp
 msgid "Apple trees noise"
-msgstr ""
+msgstr "Støytall for epletrær"
 
 #: src/settings_translation_file.cpp
 msgid "Arm inertia"
-msgstr ""
+msgstr "Treghet i armer"
 
 #: src/settings_translation_file.cpp
 msgid ""
 "Arm inertia, gives a more realistic movement of\n"
 "the arm when the camera moves."
 msgstr ""
+"Å gi armene treghet fører til en mer virkelighetsnær\n"
+"bevegelse av armene når kameraet flytter seg."
 
 #: src/settings_translation_file.cpp
 msgid "Ask to reconnect after crash"
-msgstr "Spør om gjentilkobling etter kræsj"
+msgstr "Spør om å koble til igjen etter kræsj"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -2006,20 +2276,26 @@ msgid ""
 "optimization.\n"
 "Stated in mapblocks (16 nodes)."
 msgstr ""
+"På denne avstanden vil serveren utføre en kraftig optimalisering\n"
+"av hvilke blokker som sendes til klienten.\n"
+"En lav verdi kan potensielt føre til en kraftig forbedring i ytelsen, \n"
+"på bekostning av synlige gjengivelsesfeil (det kan skje at blokker ikke\n"
+"gjengis under vann og i huler, tidvis heller ikke på land).\n"
+"Angi denne verdien til høyere enn max_block_send_distance\n"
+"for å slå av denne optimaliseringen.\n"
+"Målenheten er «mapblocks» (en enhet på 16x16 blokker)."
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Automatic forward key"
-msgstr "Tast for filmatisk tilstand"
+msgstr "Tast for automatisk fremoverbevegelse"
 
 #: src/settings_translation_file.cpp
 msgid "Automatically jump up single-node obstacles."
-msgstr ""
+msgstr "Hopp automatisk over hindringer med høyde på én blokk."
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Automatically report to the serverlist."
-msgstr "Rapporter automatisk til tjenerlisten."
+msgstr "Rapporter automatisk til serverlisten."
 
 #: src/settings_translation_file.cpp
 msgid "Autosave screen size"
@@ -2027,7 +2303,7 @@ msgstr "Lagre skjermstørrelse automatisk"
 
 #: src/settings_translation_file.cpp
 msgid "Autoscaling mode"
-msgstr ""
+msgstr "Autoskaleringsmodus"
 
 #: src/settings_translation_file.cpp
 msgid "Backward key"
@@ -2035,25 +2311,23 @@ msgstr "Rettetast"
 
 #: src/settings_translation_file.cpp
 msgid "Base ground level"
-msgstr ""
+msgstr "Bakkens grunnivå"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Base terrain height."
-msgstr "Grunnleggende terrenghøyde"
+msgstr "Terrengets grunnhøyde."
 
 #: src/settings_translation_file.cpp
 msgid "Basic"
 msgstr "Grunnleggende"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Basic privileges"
-msgstr "Grunnleggende priviliger"
+msgstr "Enkle rettigheter"
 
 #: src/settings_translation_file.cpp
 msgid "Beach noise"
-msgstr "Strandlyd"
+msgstr "Strandlys"
 
 #: src/settings_translation_file.cpp
 msgid "Beach noise threshold"
@@ -2069,7 +2343,7 @@ msgstr "Bindingsadresse"
 
 #: src/settings_translation_file.cpp
 msgid "Biome API temperature and humidity noise parameters"
-msgstr ""
+msgstr "Temperatur- og fuktighetsparametre for biotop-APIet"
 
 #: src/settings_translation_file.cpp
 msgid "Biome noise"
@@ -2081,24 +2355,23 @@ msgstr "Biter per piksel (dvs. fargedybde) i fullskjermsmodus."
 
 #: src/settings_translation_file.cpp
 msgid "Block send optimize distance"
-msgstr ""
+msgstr "Avstand for optimalizering av mapblocksending"
 
 #: src/settings_translation_file.cpp
 msgid "Bold and italic font path"
-msgstr ""
+msgstr "Filsti for fet og kursivert skrifttype"
 
 #: src/settings_translation_file.cpp
 msgid "Bold and italic monospace font path"
-msgstr ""
+msgstr "Filsti for fet og kursivert monospace skrifttype"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Bold font path"
-msgstr "Skriftsti"
+msgstr "Filsti for fet skrifttype"
 
 #: src/settings_translation_file.cpp
 msgid "Bold monospace font path"
-msgstr ""
+msgstr "Filsti for fet monospace skrifttype"
 
 #: src/settings_translation_file.cpp
 msgid "Build inside player"
@@ -2110,15 +2383,20 @@ msgstr "Innebygd"
 
 #: src/settings_translation_file.cpp
 msgid "Bumpmapping"
-msgstr ""
+msgstr "Teksturpåføring (bump mapping)"
 
 #: src/settings_translation_file.cpp
+#, fuzzy
 msgid ""
-"Camera 'near clipping plane' distance in nodes, between 0 and 0.5.\n"
-"Most users will not need to change this.\n"
+"Camera 'near clipping plane' distance in nodes, between 0 and 0.25\n"
+"Only works on GLES platforms. Most users will not need to change this.\n"
 "Increasing can reduce artifacting on weaker GPUs.\n"
 "0.1 = Default, 0.25 = Good value for weaker tablets."
 msgstr ""
+"Kamera 'near clipping plane' avstand i noder, mellom 0 og 0,5.\n"
+"Brukere flest vil ikke behøve å endre på dette.\n"
+"Økning av verdi vil kunne redusere artefakter fra svakere skjermkort.\n"
+"0.1 = standardverdi, 0.25 = grei verdi for svakere nettbrett."
 
 #: src/settings_translation_file.cpp
 msgid "Camera smoothing"
@@ -2130,7 +2408,7 @@ msgstr "Kamerautjevning i filmmodus"
 
 #: src/settings_translation_file.cpp
 msgid "Camera update toggle key"
-msgstr ""
+msgstr "Av/på-tast for visningsoppdatning"
 
 #: src/settings_translation_file.cpp
 msgid "Cave noise"
@@ -2165,7 +2443,6 @@ msgid "Cavern noise"
 msgstr "Grottelyd"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Cavern taper"
 msgstr "Grotteinnsnevring"
 
@@ -2174,15 +2451,16 @@ msgid "Cavern threshold"
 msgstr "Grotteterskel"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Cavern upper limit"
-msgstr "Grottegrense"
+msgstr "Øvre grottegrense"
 
 #: src/settings_translation_file.cpp
 msgid ""
 "Center of light curve boost range.\n"
 "Where 0.0 is minimum light level, 1.0 is maximum light level."
 msgstr ""
+"Midtpunkt på lysforsterkningskurven,\n"
+"der 0.0 er minimumsnivået for lysstyrke mens 1.0 er maksimumsnivået."
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -2193,28 +2471,42 @@ msgid ""
 "be\n"
 "necessary for smaller screens."
 msgstr ""
+"Endrer hovedmenyens brukergrensesnitt (UI):\n"
+"-   Fullstendig:  Flere enkeltspillerverdener, valg av spill, "
+"teksturpakkevalg, osv.\n"
+"-   Enkel: Én enkeltspillerverden, ingen valg av spill eller teksturpakke.  "
+"Kan være\n"
+"nødvendig på mindre skjermer."
+
+#: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Chat font size"
+msgstr "Skriftstørrelse"
 
 #: src/settings_translation_file.cpp
 msgid "Chat key"
 msgstr "Skydretast"
 
 #: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Chat log level"
+msgstr "Loggingsnivå for feilsøking"
+
+#: src/settings_translation_file.cpp
 msgid "Chat message count limit"
-msgstr ""
+msgstr "Maks antall meldinger i chatten"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Chat message format"
-msgstr "Kræsjmelding"
+msgstr "Chatmeldingsformat"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Chat message kick threshold"
-msgstr "Grotteterskel"
+msgstr "Terskel for utvisning fra chat"
 
 #: src/settings_translation_file.cpp
 msgid "Chat message max length"
-msgstr ""
+msgstr "Maksstørrelse på melding i chatten"
 
 #: src/settings_translation_file.cpp
 msgid "Chat toggle key"
@@ -2226,7 +2518,7 @@ msgstr "Sludrekommandoer"
 
 #: src/settings_translation_file.cpp
 msgid "Chunk size"
-msgstr ""
+msgstr "Chunk-størrelse"
 
 #: src/settings_translation_file.cpp
 msgid "Cinematic mode"
@@ -2238,7 +2530,7 @@ msgstr "Tast for filmatisk tilstand"
 
 #: src/settings_translation_file.cpp
 msgid "Clean transparent textures"
-msgstr ""
+msgstr "Rene, gjennomsiktige teksturer"
 
 #: src/settings_translation_file.cpp
 msgid "Client"
@@ -2250,15 +2542,15 @@ msgstr "Klient og tjener"
 
 #: src/settings_translation_file.cpp
 msgid "Client modding"
-msgstr ""
+msgstr "Brukermodding"
 
 #: src/settings_translation_file.cpp
 msgid "Client side modding restrictions"
-msgstr ""
+msgstr "Moddebegrensninger på brukers side"
 
 #: src/settings_translation_file.cpp
 msgid "Client side node lookup range restriction"
-msgstr ""
+msgstr "Omfangsbegrensning av blokkoppslag hos klienten"
 
 #: src/settings_translation_file.cpp
 msgid "Climbing speed"
@@ -2294,22 +2586,33 @@ msgid ""
 "These flags are independent from Minetest versions,\n"
 "so see a full list at https://content.minetest.net/help/content_flags/"
 msgstr ""
+"Komma-atskilt liste med of flags to hide in the content repository.\n"
+"\"nonfree\" kan brukes til å skjule pakker som ikke kvalifiserer som \"fri "
+"programvare\"\n"
+"som definert av Free Software Foundation.\n"
+"Man kan også specify innholdsvurderinger.\n"
+"Disse flags are uavhengige av Minetest-versjoner,\n"
+"se fullstendig liste på https://content.minetest.net/help/content_flags/"
 
 #: src/settings_translation_file.cpp
 msgid ""
 "Comma-separated list of mods that are allowed to access HTTP APIs, which\n"
 "allow them to upload and download data to/from the internet."
 msgstr ""
+"Kommaatskilt liste over modder som er gitt tilgang til HTTP-APIer.\n"
+"Dette lar dem laste data opp og ned til internett."
 
 #: src/settings_translation_file.cpp
 msgid ""
 "Comma-separated list of trusted mods that are allowed to access insecure\n"
 "functions even when mod security is on (via request_insecure_environment())."
 msgstr ""
+"Kommainndelt liste med klarerte modder som har tilgang til usikre\n"
+"funksjoner selv når moddsikkerhet er på (via request_insecure_environment())."
 
 #: src/settings_translation_file.cpp
 msgid "Command key"
-msgstr ""
+msgstr "Tast for chat og kommandoer"
 
 #: src/settings_translation_file.cpp
 msgid "Connect glass"
@@ -2325,7 +2628,7 @@ msgstr "Forbinder glass hvis støttet av knutepunkt."
 
 #: src/settings_translation_file.cpp
 msgid "Console alpha"
-msgstr ""
+msgstr "Konsolldekkevne (opasitet)"
 
 #: src/settings_translation_file.cpp
 msgid "Console color"
@@ -2337,41 +2640,43 @@ msgstr "Konsollhøyde"
 
 #: src/settings_translation_file.cpp
 msgid "ContentDB Flag Blacklist"
-msgstr ""
+msgstr "ContentDBs svarteliste"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "ContentDB URL"
-msgstr "Fortsett"
+msgstr "ContentDB-URL"
 
 #: src/settings_translation_file.cpp
 msgid "Continuous forward"
-msgstr ""
+msgstr "Kontinuerlig fremoverbevegelse"
 
 #: src/settings_translation_file.cpp
 msgid ""
 "Continuous forward movement, toggled by autoforward key.\n"
 "Press the autoforward key again or the backwards movement to disable."
 msgstr ""
+"Kontinuerlig fremoverbevegelse, slås av/på med tasten for automatisk "
+"fremover.\n"
+"Trykk på automatisk fremover-tasten igjen eller gå bakover for å slå av."
 
 #: src/settings_translation_file.cpp
 msgid "Controls"
 msgstr "Kontroller"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid ""
 "Controls length of day/night cycle.\n"
 "Examples:\n"
 "72 = 20min, 360 = 4min, 1 = 24hour, 0 = day/night/whatever stays unchanged."
 msgstr ""
-"Kontrollerer lengden på dag/natt -syklus.\n"
-"Eksempler: 72 = 20min, 360 = 4min, 1 = 24timer, 0 = dag/natt/hva det skal "
-"være, forblir uendret."
+"Styrer lengden på døgnet.\n"
+"Eksempler:\n"
+"1 = 24timer, 72 = 20min, 360 = 4min, 0 = dag/natt/hva det skal være, forblir "
+"uendret."
 
 #: src/settings_translation_file.cpp
 msgid "Controls sinking speed in liquid."
-msgstr ""
+msgstr "Bestemmer synkehastigheten i væsker."
 
 #: src/settings_translation_file.cpp
 msgid "Controls steepness/depth of lake depressions."
@@ -2414,7 +2719,7 @@ msgstr "Trådkorsfarge (R, G, B)."
 
 #: src/settings_translation_file.cpp
 msgid "DPI"
-msgstr ""
+msgstr "DPI (skjermoppløsning)"
 
 #: src/settings_translation_file.cpp
 msgid "Damage"
@@ -2422,12 +2727,11 @@ msgstr "Skade"
 
 #: src/settings_translation_file.cpp
 msgid "Debug info toggle key"
-msgstr ""
+msgstr "Tast for å vise/skjule feilsøkingsinfo"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Debug log file size threshold"
-msgstr "Strandlydsterskel"
+msgstr "Størrelsesterskel for feilsøkingsloggfil"
 
 #: src/settings_translation_file.cpp
 msgid "Debug log level"
@@ -2439,11 +2743,11 @@ msgstr "Tast for senking av lydstyrke"
 
 #: src/settings_translation_file.cpp
 msgid "Decrease this to increase liquid resistance to movement."
-msgstr ""
+msgstr "Reduksjon av denne verdien øker bevegelsesmotstanden i væsker."
 
 #: src/settings_translation_file.cpp
 msgid "Dedicated server step"
-msgstr ""
+msgstr "Serverens oppdateringsintervall (servertikk)"
 
 #: src/settings_translation_file.cpp
 msgid "Default acceleration"
@@ -2470,6 +2774,11 @@ msgstr "Forvalgte privilegium"
 #: src/settings_translation_file.cpp
 msgid "Default report format"
 msgstr "Forvalgt rapporteringsformat"
+
+#: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Default stack size"
+msgstr "Forvalgt spill"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -2517,9 +2826,8 @@ msgid "Defines the base ground level."
 msgstr "Definerer treområder og skogstetthet."
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Defines the depth of the river channel."
-msgstr "Definerer treområder og skogstetthet."
+msgstr "Angir dybden på elveleier."
 
 #: src/settings_translation_file.cpp
 msgid "Defines the maximal player transfer distance in blocks (0 = unlimited)."
@@ -2530,9 +2838,8 @@ msgid "Defines the width of the river channel."
 msgstr ""
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Defines the width of the river valley."
-msgstr "Definerer område der trær har epler."
+msgstr "Angir bredden på elveleiet."
 
 #: src/settings_translation_file.cpp
 msgid "Defines tree areas and tree density."
@@ -2618,11 +2925,11 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Dungeon maximum Y"
-msgstr ""
+msgstr "Maksimum y-verdi for grotter"
 
 #: src/settings_translation_file.cpp
 msgid "Dungeon minimum Y"
-msgstr ""
+msgstr "Minimum y-verdi for grotter"
 
 #: src/settings_translation_file.cpp
 #, fuzzy
@@ -2650,9 +2957,8 @@ msgid "Enable creative mode for new created maps."
 msgstr "Skru på kreativt modusfor nye opprettede kart."
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Enable joysticks"
-msgstr "Skru på spillstikker"
+msgstr "Bruk joystick"
 
 #: src/settings_translation_file.cpp
 msgid "Enable mod channels support."
@@ -2787,6 +3093,16 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid ""
+"Exponent of the floatland tapering. Alters the tapering behaviour.\n"
+"Value = 1.0 creates a uniform, linear tapering.\n"
+"Values > 1.0 create a smooth tapering suitable for the default separated\n"
+"floatlands.\n"
+"Values < 1.0 (for example 0.25) create a more defined surface level with\n"
+"flatter lowlands, suitable for a solid floatland layer."
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "FPS in pause menu"
 msgstr ""
 
@@ -2803,9 +3119,8 @@ msgid "Fall bobbing factor"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Fallback font path"
-msgstr "Tilbakefallsskrift"
+msgstr "Filsti for reserveskrifttype"
 
 #: src/settings_translation_file.cpp
 msgid "Fallback font shadow"
@@ -2847,7 +3162,7 @@ msgstr "Synsfelt"
 
 #: src/settings_translation_file.cpp
 msgid "Field of view in degrees."
-msgstr "Synsfelt i grader"
+msgstr "Synsfelt i grader."
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -2855,11 +3170,12 @@ msgid ""
 "the\n"
 "Multiplayer Tab."
 msgstr ""
+"Fil i klient/serverliste som inneholder yndlingsservere som vist\n"
+"i flerspillefanen."
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Filler depth"
-msgstr "Elvedybde"
+msgstr "Fylldybde"
 
 #: src/settings_translation_file.cpp
 msgid "Filler depth noise"
@@ -2886,8 +3202,9 @@ msgid "First of 4 2D noises that together define hill/mountain range height."
 msgstr ""
 
 #: src/settings_translation_file.cpp
+#, fuzzy
 msgid "First of two 3D noises that together define tunnels."
-msgstr ""
+msgstr "Det første av to 3D-støytall som sammen definerer tunneler."
 
 #: src/settings_translation_file.cpp
 msgid "Fixed map seed"
@@ -2896,6 +3213,38 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid "Fixed virtual joystick"
 msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Floatland density"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Floatland maximum Y"
+msgstr "Maksimum y-verdi for grotter"
+
+#: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Floatland minimum Y"
+msgstr "Minimum y-verdi for grotter"
+
+#: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Floatland noise"
+msgstr "Bakkestøy"
+
+#: src/settings_translation_file.cpp
+msgid "Floatland taper exponent"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Floatland tapering distance"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Floatland water level"
+msgstr "Vannivå"
 
 #: src/settings_translation_file.cpp
 msgid "Fly key"
@@ -2910,9 +3259,8 @@ msgid "Fog"
 msgstr "Tåke"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Fog start"
-msgstr "Tåkestart"
+msgstr "Tåkegrense"
 
 #: src/settings_translation_file.cpp
 msgid "Fog toggle key"
@@ -2920,11 +3268,11 @@ msgstr "Tåkevekslingstast"
 
 #: src/settings_translation_file.cpp
 msgid "Font bold by default"
-msgstr ""
+msgstr "Fet skrifttype som forvalg"
 
 #: src/settings_translation_file.cpp
 msgid "Font italic by default"
-msgstr ""
+msgstr "Kursiv skrifttype som forvalg"
 
 #: src/settings_translation_file.cpp
 msgid "Font shadow"
@@ -2948,6 +3296,12 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Font size of the monospace font in point (pt)."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Font size of the recent chat text and chat prompt in point (pt).\n"
+"Value 0 will use the default font size."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -3010,9 +3364,8 @@ msgid "Fraction of the visible distance at which fog starts to be rendered"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "FreeType fonts"
-msgstr "FreeType-skrifter"
+msgstr "FreeType-skrifttyper"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -3098,9 +3451,8 @@ msgid "Ground level"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Ground noise"
-msgstr "Grottelyd"
+msgstr "Bakkestøy"
 
 #: src/settings_translation_file.cpp
 msgid "HTTP mods"
@@ -3157,35 +3509,31 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Hill steepness"
-msgstr ""
+msgstr "Bratthet for ås"
 
 #: src/settings_translation_file.cpp
 msgid "Hill threshold"
-msgstr ""
+msgstr "Terskel for ås"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Hilliness1 noise"
-msgstr "Varmestøy"
+msgstr "Bakke støy 1"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Hilliness2 noise"
-msgstr "Varmestøy"
+msgstr "Bakke støy 2"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Hilliness3 noise"
-msgstr "Varmestøy"
+msgstr "Bakke støy 3"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Hilliness4 noise"
-msgstr "Varmestøy"
+msgstr "Bakke støy 4"
 
 #: src/settings_translation_file.cpp
 msgid "Homepage of server, to be displayed in the serverlist."
-msgstr ""
+msgstr "Serverens hjemmeside, som vises i serverlisten."
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -3546,7 +3894,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Inventory key"
-msgstr ""
+msgstr "Tast for beholdning"
 
 #: src/settings_translation_file.cpp
 msgid "Invert mouse"
@@ -3554,7 +3902,7 @@ msgstr "Inverter mus"
 
 #: src/settings_translation_file.cpp
 msgid "Invert vertical mouse movement."
-msgstr ""
+msgstr "Inverter vertikale musebevegelser."
 
 #: src/settings_translation_file.cpp
 #, fuzzy
@@ -3633,19 +3981,19 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Julia w"
-msgstr "Julia w"
+msgstr "Julia-w"
 
 #: src/settings_translation_file.cpp
 msgid "Julia x"
-msgstr "Julia x"
+msgstr "Julia-x"
 
 #: src/settings_translation_file.cpp
 msgid "Julia y"
-msgstr "Julia y"
+msgstr "Julia-y"
 
 #: src/settings_translation_file.cpp
 msgid "Julia z"
-msgstr "Julia z"
+msgstr "Julia-z"
 
 #: src/settings_translation_file.cpp
 msgid "Jump key"
@@ -4150,6 +4498,11 @@ msgid ""
 "See http://irrlicht.sourceforge.net/docu/namespaceirr."
 "html#a54da2a0e231901735e3da1b0edf72eb3"
 msgstr ""
+"Sniketast.\n"
+"Brukes også for å gå ned på stiger og i vann dersom aux1_descends ikke "
+"brukes.\n"
+"See http://irrlicht.sourceforge.net/docu/namespaceirr."
+"html#a54da2a0e231901735e3da1b0edf72eb3"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -4331,7 +4684,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Leaves style"
-msgstr ""
+msgstr "Bladstil"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -4340,10 +4693,14 @@ msgid ""
 "-   Simple: only outer faces, if defined special_tiles are used\n"
 "-   Opaque: disable transparency"
 msgstr ""
+"Bladstil:\n"
+"- Stilig: alle sider synes\n"
+"- Enkel: kun yttersider synes, dersom special_tiles brukes\n"
+"- Tildekket: gjennomsiktighet er av"
 
 #: src/settings_translation_file.cpp
 msgid "Left key"
-msgstr ""
+msgstr "Venstretast"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -4407,14 +4764,6 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Light curve low gradient"
-msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid "Limit of emerge queues on disk"
-msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid "Limit of emerge queues to generate"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4482,8 +4831,13 @@ msgid "Lower Y limit of dungeons."
 msgstr ""
 
 #: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Lower Y limit of floatlands."
+msgstr "Y-verdi for store grotters øvre grense."
+
+#: src/settings_translation_file.cpp
 msgid "Main menu script"
-msgstr ""
+msgstr "Skript for hovedmeny"
 
 #: src/settings_translation_file.cpp
 #, fuzzy
@@ -4505,7 +4859,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Map directory"
-msgstr ""
+msgstr "Mappe for kart"
 
 #: src/settings_translation_file.cpp
 msgid "Map generation attributes specific to Mapgen Carpathian."
@@ -4549,7 +4903,9 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "Map generation attributes specific to Mapgen v7.\n"
-"'ridges' enables the rivers."
+"'ridges': Rivers.\n"
+"'floatlands': Floating land masses in the atmosphere.\n"
+"'caverns': Giant caves deep underground."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4558,7 +4914,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Map save interval"
-msgstr ""
+msgstr "Lagringsintervall for kart"
 
 #: src/settings_translation_file.cpp
 msgid "Mapblock limit"
@@ -4643,10 +4999,6 @@ msgid "Mapgen debug"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Mapgen flags"
-msgstr ""
-
-#: src/settings_translation_file.cpp
 msgid "Mapgen name"
 msgstr ""
 
@@ -4672,11 +5024,11 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Maximum FPS"
-msgstr ""
+msgstr "Maks FPS («frames» - bilder per sekund)"
 
 #: src/settings_translation_file.cpp
 msgid "Maximum FPS when game is paused."
-msgstr ""
+msgstr "Maks FPS når spillet står i pause."
 
 #: src/settings_translation_file.cpp
 msgid "Maximum forceloaded blocks"
@@ -4714,13 +5066,13 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "Maximum number of blocks to be queued that are to be generated.\n"
-"Set to blank for an appropriate amount to be chosen automatically."
+"This limit is enforced per player."
 msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
 "Maximum number of blocks to be queued that are to be loaded from file.\n"
-"Set to blank for an appropriate amount to be chosen automatically."
+"This limit is enforced per player."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4784,11 +5136,11 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Maximum users"
-msgstr ""
+msgstr "Maks antall brukere"
 
 #: src/settings_translation_file.cpp
 msgid "Menus"
-msgstr ""
+msgstr "Menyer"
 
 #: src/settings_translation_file.cpp
 msgid "Mesh cache"
@@ -4796,7 +5148,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Message of the day"
-msgstr ""
+msgstr "Dagens melding"
 
 #: src/settings_translation_file.cpp
 msgid "Message of the day displayed to players connecting."
@@ -4807,12 +5159,16 @@ msgid "Method used to highlight selected object."
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Minimap"
+msgid "Minimal level of logging to be written to chat."
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid "Minimap"
+msgstr "Minikart"
+
+#: src/settings_translation_file.cpp
 msgid "Minimap key"
-msgstr ""
+msgstr "Tast for minikart"
 
 #: src/settings_translation_file.cpp
 msgid "Minimap scan height"
@@ -4844,11 +5200,11 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Monospace font path"
-msgstr ""
+msgstr "Filsti for monospace skrifttype"
 
 #: src/settings_translation_file.cpp
 msgid "Monospace font size"
-msgstr ""
+msgstr "Størrelse for monospace skrifttype"
 
 #: src/settings_translation_file.cpp
 msgid "Mountain height noise"
@@ -4868,7 +5224,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Mouse sensitivity"
-msgstr ""
+msgstr "Pekerfølsomhet"
 
 #: src/settings_translation_file.cpp
 msgid "Mouse sensitivity multiplier."
@@ -4913,7 +5269,7 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Near clipping plane"
+msgid "Near plane"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4965,9 +5321,6 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "Number of emerge threads to use.\n"
-"WARNING: Currently there are multiple bugs that may cause crashes when\n"
-"'num_emerge_threads' is larger than 1. Until this warning is removed it is\n"
-"strongly recommended this value is set to the default '1'.\n"
 "Value 0:\n"
 "-    Automatic selection. The number of emerge threads will be\n"
 "-    'number of processors - 2', with a lower limit of 1.\n"
@@ -5044,10 +5397,6 @@ msgid "Parallax occlusion scale"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Parallax occlusion strength"
-msgstr ""
-
-#: src/settings_translation_file.cpp
 msgid ""
 "Path of the fallback font.\n"
 "If “freetype” setting is enabled: Must be a TrueType font.\n"
@@ -5057,7 +5406,9 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Path to save screenshots at."
+msgid ""
+"Path to save screenshots at. Can be an absolute or relative path.\n"
+"The folder will be created if it doesn't already exist."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -5091,8 +5442,16 @@ msgid "Pause on lost window focus"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Physics"
+msgid "Per-player limit of queued blocks load from disk"
 msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Per-player limit of queued blocks to generate"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Physics"
+msgstr "Fysikk"
 
 #: src/settings_translation_file.cpp
 #, fuzzy
@@ -5111,7 +5470,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Player name"
-msgstr ""
+msgstr "Spillernavn"
 
 #: src/settings_translation_file.cpp
 msgid "Player transfer distance"
@@ -5160,6 +5519,18 @@ msgid "Profiling"
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid "Prometheus listener address"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Prometheus listener address.\n"
+"If minetest is compiled with ENABLE_PROMETHEUS option enabled,\n"
+"enable metrics listener for Prometheus on that address.\n"
+"Metrics can be fetch on http://127.0.0.1:30000/metrics"
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Proportion of large caves that contain liquid."
 msgstr ""
 
@@ -5180,7 +5551,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Range select key"
-msgstr ""
+msgstr "Tilfeldig inndata"
 
 #: src/settings_translation_file.cpp
 msgid "Recent Chat Messages"
@@ -5197,7 +5568,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Remote port"
-msgstr ""
+msgstr "Eksterne media"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -5207,7 +5578,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Replaces the default main menu with a custom one."
-msgstr ""
+msgstr "Ekstern port."
 
 #: src/settings_translation_file.cpp
 msgid "Report path"
@@ -5252,34 +5623,28 @@ msgid "Rightclick repetition interval"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "River channel depth"
-msgstr "Elvedybde"
+msgstr "Elveleiedybde"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "River channel width"
-msgstr "Elvedybde"
+msgstr "Elveleiebredde"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "River depth"
 msgstr "Elvedybde"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "River noise"
 msgstr "Elvestøy"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "River size"
 msgstr "Elvestørrelse"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "River valley width"
-msgstr "Elvedybde"
+msgstr "Bredde på elvedal"
 
 #: src/settings_translation_file.cpp
 msgid "Rollback recording"
@@ -5328,15 +5693,15 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Screen height"
-msgstr ""
+msgstr "Skjermhøyde"
 
 #: src/settings_translation_file.cpp
 msgid "Screen width"
-msgstr ""
+msgstr "Skjermbredde"
 
 #: src/settings_translation_file.cpp
 msgid "Screenshot folder"
-msgstr ""
+msgstr "Mappe for skjermdumper"
 
 #: src/settings_translation_file.cpp
 msgid "Screenshot format"
@@ -5367,23 +5732,23 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Security"
-msgstr ""
+msgstr "Sikkerhet"
 
 #: src/settings_translation_file.cpp
 msgid "See https://www.sqlite.org/pragma.html#pragma_synchronous"
-msgstr ""
+msgstr "Se https://www.sqlite.org/pragma.html#pragma_synchronous"
 
 #: src/settings_translation_file.cpp
 msgid "Selection box border color (R,G,B)."
-msgstr ""
+msgstr "Kantfarge på utvalgsfelt (R,G,B)."
 
 #: src/settings_translation_file.cpp
 msgid "Selection box color"
-msgstr ""
+msgstr "Farge på utvalgsfelt"
 
 #: src/settings_translation_file.cpp
 msgid "Selection box width"
-msgstr ""
+msgstr "Bredde på utvalgsfelt"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -5410,76 +5775,77 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Server / Singleplayer"
-msgstr ""
+msgstr "Server/alene"
 
 #: src/settings_translation_file.cpp
 msgid "Server URL"
-msgstr ""
+msgstr "Server-URL"
 
 #: src/settings_translation_file.cpp
 msgid "Server address"
-msgstr ""
+msgstr "Serveradresse"
 
 #: src/settings_translation_file.cpp
 msgid "Server description"
-msgstr ""
+msgstr "Serverbeskrivelse"
 
 #: src/settings_translation_file.cpp
 msgid "Server name"
-msgstr ""
+msgstr "Servernavn"
 
 #: src/settings_translation_file.cpp
 msgid "Server port"
-msgstr ""
+msgstr "Serverport"
 
 #: src/settings_translation_file.cpp
+#, fuzzy
 msgid "Server side occlusion culling"
-msgstr ""
+msgstr "Ikke-synlige blokker blir ikke sendt videre av serveren"
 
 #: src/settings_translation_file.cpp
 msgid "Serverlist URL"
-msgstr ""
+msgstr "Serverliste-URL"
 
 #: src/settings_translation_file.cpp
 msgid "Serverlist file"
-msgstr ""
+msgstr "Serverlistefil"
 
 #: src/settings_translation_file.cpp
 msgid ""
 "Set the language. Leave empty to use the system language.\n"
 "A restart is required after changing this."
 msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid "Set the maximum character length of a chat message sent by clients."
-msgstr ""
+"Angi språk. La stå tom for å bruke operativsystemets språk.\n"
+"Krever omstart etter endring."
 
 #: src/settings_translation_file.cpp
 #, fuzzy
+msgid "Set the maximum character length of a chat message sent by clients."
+msgstr "Angi maksimalt antall tegn i chatmelding sendt av klienter."
+
+#: src/settings_translation_file.cpp
 msgid ""
 "Set to true to enable waving leaves.\n"
 "Requires shaders to be enabled."
 msgstr ""
-"Aktiver for å slå på bølgende blader.\n"
-"Krever at dybdeskapere er aktivert."
+"Angi som sann for å slå på bladrasling.\n"
+"Krever at skyggelegging er påslått."
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid ""
 "Set to true to enable waving liquids (like water).\n"
 "Requires shaders to be enabled."
 msgstr ""
-"Aktiver for å slå på bølgende blader.\n"
-"Krever at dybdeskapere er aktivert."
+"Angi som sann for å slå på væskeskvulping (som vann).\n"
+"Krever at skyggelegging er påslått."
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid ""
 "Set to true to enable waving plants.\n"
 "Requires shaders to be enabled."
 msgstr ""
-"Aktiver for å slå på bølgende blader.\n"
-"Krever at dybdeskapere er aktivert."
+"Angi som sann for å slå på plantesvaiing.\n"
+"Krever at skyggelegging er aktivert."
 
 #: src/settings_translation_file.cpp
 msgid "Shader path"
@@ -5511,7 +5877,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Show debug info"
-msgstr ""
+msgstr "Vis feilsøkingsinfo"
 
 #: src/settings_translation_file.cpp
 msgid "Show entity selection boxes"
@@ -5519,7 +5885,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Shutdown message"
-msgstr ""
+msgstr "Beskjed ved avslutning"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -5582,7 +5948,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Sneak key"
-msgstr ""
+msgstr "Sniketast"
 
 #: src/settings_translation_file.cpp
 #, fuzzy
@@ -5595,16 +5961,15 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Sound"
-msgstr ""
+msgstr "Lyd"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Special key"
-msgstr "trykk tast"
+msgstr "Spesialtast"
 
 #: src/settings_translation_file.cpp
 msgid "Special key for climbing/descending"
-msgstr ""
+msgstr "Spesialtast for klatring/nedklatring"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -5613,28 +5978,47 @@ msgid ""
 "(obviously, remote_media should end with a slash).\n"
 "Files that are not present will be fetched the usual way."
 msgstr ""
+"Angir URL som klienten bruker for å hente media i stedet for å bruke UDP.\n"
+"$filename burde være tilgjenglig fra $remote_media$filename via cURL\n"
+"(remote_media bør selvfølgelig ende med skråstrek).\n"
+"Filer som ikke er til stede hentes på den vanlige måten."
 
 #: src/settings_translation_file.cpp
+msgid ""
+"Specifies the default stack size of nodes, items and tools.\n"
+"Note that mods or games may explicitly set a stack for certain (or all) "
+"items."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+#, fuzzy
 msgid ""
 "Spread of light curve boost range.\n"
 "Controls the width of the range to be boosted.\n"
 "Standard deviation of the light curve boost Gaussian."
 msgstr ""
+"Spread of light curve boost range.\n"
+"Styrer the width of the range to be boosted.\n"
+"Standardavvik for lyskurvens boost Gaussian."
 
 #: src/settings_translation_file.cpp
 msgid "Static spawnpoint"
-msgstr ""
+msgstr "Fast gjenoppstandelsespunkt"
 
 #: src/settings_translation_file.cpp
 msgid "Steepness noise"
-msgstr ""
+msgstr "Bratthetsstøy"
 
 #: src/settings_translation_file.cpp
 msgid "Step mountain size noise"
-msgstr ""
+msgstr "Bratt fjellside-støy"
 
 #: src/settings_translation_file.cpp
 msgid "Step mountain spread noise"
+msgstr "Spredningsstøy for bratt fjell"
+
+#: src/settings_translation_file.cpp
+msgid "Strength of 3D mode parallax."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -5649,10 +6033,6 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Strength of parallax."
-msgstr ""
-
-#: src/settings_translation_file.cpp
 msgid "Strict protocol checking"
 msgstr ""
 
@@ -5661,12 +6041,26 @@ msgid "Strip color codes"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Synchronous SQLite"
+msgid ""
+"Surface level of optional water placed on a solid floatland layer.\n"
+"Water is disabled by default and will only be placed if this value is set\n"
+"to above 'mgv7_floatland_ymax' - 'mgv7_floatland_taper' (the start of the\n"
+"upper tapering).\n"
+"***WARNING, POTENTIAL DANGER TO WORLDS AND SERVER PERFORMANCE***:\n"
+"When enabling water placement the floatlands must be configured and tested\n"
+"to be a solid layer by setting 'mgv7_floatland_density' to 2.0 (or other\n"
+"required value depending on 'mgv7_np_floatland'), to avoid\n"
+"server-intensive extreme water flow and to avoid vast flooding of the\n"
+"world surface below."
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid "Synchronous SQLite"
+msgstr "Synkron SQLite"
+
+#: src/settings_translation_file.cpp
 msgid "Temperature variation for biomes."
-msgstr ""
+msgstr "Temperaturvariasjon for biomer."
 
 #: src/settings_translation_file.cpp
 msgid "Terrain alternative noise"
@@ -5709,7 +6103,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Texture path"
-msgstr ""
+msgstr "Filsti for teksturer"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -5756,6 +6150,11 @@ msgid ""
 "Default is 1.0 (1/2 node).\n"
 "Requires waving liquids to be enabled."
 msgstr ""
+"Makshøyden for overflaten på væsker som skvulper.\n"
+"4,0 = Bølgehøyde er to blokker.\n"
+"0,0 = Bølger flytter seg ikke i det hele tatt.\n"
+"Forvalgt verdi er 1,0 (1/2 blokk).\n"
+"Krever at væskebølger er påslått."
 
 #: src/settings_translation_file.cpp
 msgid "The network interface that the server listens on."
@@ -5775,7 +6174,7 @@ msgid ""
 "In active blocks objects are loaded and ABMs run.\n"
 "This is also the minimum range in which active objects (mobs) are "
 "maintained.\n"
-"This should be configured together with active_object_range."
+"This should be configured together with active_object_send_range_blocks."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -5886,7 +6285,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Trilinear filtering"
-msgstr ""
+msgstr "Forsinkelse for infoboble"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -5894,10 +6293,13 @@ msgid ""
 "False = 128\n"
 "Usable to make minimap smoother on slower machines."
 msgstr ""
+"Sann = 256\n"
+"Usann = 128\n"
+"Kan gjøre at minikartet kjører lettere på trege maskiner."
 
 #: src/settings_translation_file.cpp
 msgid "Trusted mods"
-msgstr ""
+msgstr "Klarterte modder"
 
 #: src/settings_translation_file.cpp
 msgid "URL to the server list displayed in the Multiplayer Tab."
@@ -5929,12 +6331,17 @@ msgid "Upper Y limit of dungeons."
 msgstr ""
 
 #: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Upper Y limit of floatlands."
+msgstr "Y-verdi for store grotters øvre grense."
+
+#: src/settings_translation_file.cpp
 msgid "Use 3D cloud look instead of flat."
-msgstr ""
+msgstr "Bruk 3D-skyer i stedet for flate."
 
 #: src/settings_translation_file.cpp
 msgid "Use a cloud animation for the main menu background."
-msgstr ""
+msgstr "Bruk animerte skyer som bakgrunn for hovedmenyen."
 
 #: src/settings_translation_file.cpp
 msgid "Use anisotropic filtering when viewing at textures from an angle."
@@ -6021,7 +6428,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Video driver"
-msgstr ""
+msgstr "Videodriver"
 
 #: src/settings_translation_file.cpp
 msgid "View bobbing factor"
@@ -6053,13 +6460,15 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Volume"
-msgstr ""
+msgstr "Volum"
 
 #: src/settings_translation_file.cpp
 msgid ""
 "Volume of all sounds.\n"
 "Requires the sound system to be enabled."
 msgstr ""
+"Volum på all lyd. \n"
+"Krever påslått lydsystem."
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -6076,7 +6485,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Walking speed"
-msgstr ""
+msgstr "Gangfart"
 
 #: src/settings_translation_file.cpp
 msgid "Walking, flying and climbing speed in fast mode, in nodes per second."
@@ -6084,7 +6493,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Water level"
-msgstr ""
+msgstr "Vannivå"
 
 #: src/settings_translation_file.cpp
 msgid "Water surface level of the world."
@@ -6092,11 +6501,11 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Waving Nodes"
-msgstr ""
+msgstr "Blokksvaiing"
 
 #: src/settings_translation_file.cpp
 msgid "Waving leaves"
-msgstr ""
+msgstr "Bladrasling"
 
 #: src/settings_translation_file.cpp
 #, fuzzy
@@ -6120,7 +6529,7 @@ msgstr "Bølgende vann"
 
 #: src/settings_translation_file.cpp
 msgid "Waving plants"
-msgstr ""
+msgstr "Plantesvaiing"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -6214,9 +6623,10 @@ msgid ""
 "World directory (everything in the world is stored here).\n"
 "Not needed if starting from the main menu."
 msgstr ""
+"Mappe for verden (alt i verdenen lagres her).\n"
+"Trengs ikke hvis den opprettes fra hovedmenyen."
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "World start time"
 msgstr "Verdensstarttid"
 
@@ -6236,33 +6646,44 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Y of flat ground."
-msgstr ""
+msgstr "Y-koordinat for flatt land."
 
 #: src/settings_translation_file.cpp
+#, fuzzy
 msgid ""
 "Y of mountain density gradient zero level. Used to shift mountains "
 "vertically."
 msgstr ""
+"Y for nullnivået for tetthetsgradient til fjell. Brukes for å forskyve fjell "
+"i høyden."
 
 #: src/settings_translation_file.cpp
 msgid "Y of upper limit of large caves."
-msgstr ""
+msgstr "Y-verdi for store grotters øvre grense."
 
 #: src/settings_translation_file.cpp
 msgid "Y-distance over which caverns expand to full size."
 msgstr "Y-avstand som en grotte kan øke i størrelse til full størrelse."
 
 #: src/settings_translation_file.cpp
-msgid "Y-level of average terrain surface."
+msgid ""
+"Y-distance over which floatlands taper from full density to nothing.\n"
+"Tapering starts at this distance from the Y limit.\n"
+"For a solid floatland layer, this controls the height of hills/mountains.\n"
+"Must be less than or equal to half the distance between the Y limits."
 msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Y-level of average terrain surface."
+msgstr "Y-nivå for gjennomsnittlig terrengoverflate."
 
 #: src/settings_translation_file.cpp
 msgid "Y-level of cavern upper limit."
-msgstr ""
+msgstr "Y-nivå for øvre grottegrense."
 
 #: src/settings_translation_file.cpp
 msgid "Y-level of higher terrain that creates cliffs."
-msgstr ""
+msgstr "Y-nivå for høytliggende terreng som fører til klipper."
 
 #: src/settings_translation_file.cpp
 msgid "Y-level of lower terrain and seabed."
@@ -6301,3 +6722,15 @@ msgstr "cURL-tidsgrense"
 
 #~ msgid "Enable VBO"
 #~ msgstr "Aktiver VBO"
+
+#~ msgid "Path to save screenshots at."
+#~ msgstr "Filsti til lagring av skjermdumper."
+
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Laster ned og installerer $1, vent…"
+
+#~ msgid "Back"
+#~ msgstr "Tilbake"
+
+#~ msgid "Ok"
+#~ msgstr "Okei"
