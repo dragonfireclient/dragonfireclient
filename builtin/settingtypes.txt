@@ -2148,7 +2148,7 @@ priv_bypass (Make the Client think it has all privs) bool true
 
 fastdig (Fast Dig) bool false
 
-prevent_natural_damage (Prevent Natural Damage e.g Fall Damage) bool true
+prevent_natural_damage (Prevent Fall Damage) bool true
 
 freecam (Move around freely) bool false
 
@@ -2158,7 +2158,6 @@ no_hurt_cam (No Hurt Cam) bool false
 
 increase_tool_range (Increase Tool Range) bool true
 
-killaura_fast (Enable fast Killaura) bool true
-
 hud_flags_bypass (Enable HUD Flags Bypass) bool true
 
+antiknockback (Anti Knockback) bool false

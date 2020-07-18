@@ -74,7 +74,6 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("killaura", "falses");
 	settings->setDefault("no_hurt_cam", "false");
 	settings->setDefault("increase_tool_range", "true");
-	settings->setDefault("killaura_fast", "true");
 	settings->setDefault("hud_flags_bypass", "true");
 	settings->setDefault("antiknockback", "false");
 	

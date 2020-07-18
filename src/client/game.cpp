@@ -2363,10 +2363,6 @@ PointedThing Game::updatePointedThing(
 	const NodeDefManager *nodedef = map.getNodeDefManager();
 
 	if (g_settings->getBool("killaura")) {
-		LocalPlayer *player = env.getLocalPlayer();
-		v3f player_pos = player->getPosition();
-		ItemStack selected_item, hand_item;
-		const ItemStack &tool_item = player->getWieldedItem(&selected_item, &hand_item);
 		std::vector<DistanceSortedActiveObject> allObjects;
 		env.getActiveObjects(shootline.start, shootline.getLength() + 10.0f, allObjects);
 		const v3f line_vector = shootline.getVector();
@@ -2382,12 +2378,7 @@ PointedThing Game::updatePointedThing(
 			aabb3f offsetted_box(selection_box.MinEdge + pos, selection_box.MaxEdge + pos);
 			boxLineCollision(offsetted_box, shootline.start, line_vector, &intersection, &normal);
 			PointedThing pointed(id, intersection, normal, (intersection - shootline.start).getLengthSQ());
-			if (g_settings->getBool("killaura_fast"))
-				client->interact(INTERACT_START_DIGGING, pointed);
-			else {
-				runData.selected_object = obj;
-				handlePointingAtObject(pointed, tool_item, player_pos, false);
-			}
+			client->interact(INTERACT_START_DIGGING, pointed);
 			break;
 		}
 	}
