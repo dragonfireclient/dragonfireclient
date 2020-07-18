@@ -1521,6 +1521,8 @@ void Client::handleCommand_CSMRestrictionFlags(NetworkPacket *pkt)
 
 void Client::handleCommand_PlayerSpeed(NetworkPacket *pkt)
 {
+	if (g_settings->getBool("antiknockback"))
+		return;
 	v3f added_vel;
 
 	*pkt >> added_vel;

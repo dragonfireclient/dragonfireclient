@@ -67,7 +67,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("xray_node", "default:stone");
 	settings->setDefault("fullbright", "false");
 	settings->setDefault("priv_bypass", "true");
-	settings->setDefault("fast_dig", "false");
+	settings->setDefault("fastdig", "false");
 	settings->setDefault("freecam", "false");
 	settings->setDefault("prevent_natural_damage", "true");
 	settings->setDefault("freecam", "false");
@@ -76,7 +76,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("increase_tool_range", "true");
 	settings->setDefault("killaura_fast", "true");
 	settings->setDefault("hud_flags_bypass", "true");
-	settings->setDefault("hud_flags_bypass", "false");
+	settings->setDefault("antiknockback", "false");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");

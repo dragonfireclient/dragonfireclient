@@ -83,12 +83,11 @@ core.register_chatcommand("stopdigging", {
 
 core.register_chatcommand("digaround", {
 	description = "Automatically dig nodes around you",
-	param = "<radius> node1[,node2...]",
+	param = "<node1> [<node2>] ...",
 	func = function(param)
-		local radius = tonumber(param:split(" ")[1])
-		local nodes = param:split(" ")[2]:split(",")
+		local nodes = param:split(" ")
 		local function loop()
-			local fpos = core.find_node_near(core.localplayer:get_pos(), radius, nodes, true)
+			local fpos = core.find_node_near(core.localplayer:get_pos(), 5, nodes, true)
 			if fpos then core.dig_node(fpos) end
 			core.after(0, loop)
 		end
