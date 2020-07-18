@@ -1,4 +1,3 @@
-
 function get_itemslot_bg(x, y, w, h)
 	local out = ""
 	for i = 0, w - 1, 1 do
@@ -9,7 +8,7 @@ function get_itemslot_bg(x, y, w, h)
 	return out
 end
 
-local formspec_ender_chest = "size[9,8.75]"..
+local formspec = "size[9,8.75]"..
 	"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", "Ender Chest")).."]"..
 	"list[current_player;enderchest;0,0.5;9,3;]"..
 	get_itemslot_bg(0,0.5,9,3)..
@@ -21,8 +20,6 @@ local formspec_ender_chest = "size[9,8.75]"..
 	"listring[current_player;enderchest]"..
 	"listring[current_player;main]"
 
-minetest.register_chatcommand("echest", {
-	func = function()
-		minetest.show_formspec("echest:enderchest", formspec_ender_chest)
-	end
-})
+function minetest.show_extra_inventory()
+	minetest.show_formspec("enderchest:enderchest", formspec)
+end

@@ -2138,26 +2138,37 @@ contentdb_flag_blacklist (ContentDB Flag Blacklist) string nonfree, desktop_defa
 
 [Cheats]
 
-fullbright (Enable fullbright) bool false
+fullbright (Fullbright) bool false
 
-xray (Enable xray, requires fullbright) bool false
+# Enable xray, requires fullbright
+xray (Xray) bool false
 
-xray_node (Texture to apply xray) string default:stone
+# Texture to apply xray
+xray_node (XrayTexture) string default:stone
 
-priv_bypass (Make the Client think it has all privs) bool true
+# Make the Client think it has all privs
+priv_bypass (PrivBypass) bool true
 
-fastdig (Fast Dig) bool false
+fastdig (FastDig) bool false
 
-prevent_natural_damage (Prevent Fall Damage) bool true
+prevent_natural_damage (NoFallDamage) bool true
 
-freecam (Move around freely) bool false
+freecam (Freecam) bool false
 
-killaura (Enable Killaura) bool false
+killaura (Killaura) bool false
 
-no_hurt_cam (No Hurt Cam) bool false
+no_hurt_cam (NoHurtCam) bool false
 
-increase_tool_range (Increase Tool Range) bool true
+increase_tool_range (Range) bool true
 
-hud_flags_bypass (Enable HUD Flags Bypass) bool true
+# HUD Flags Bypass
+hud_flags_bypass (HUDBypass) bool true
 
-antiknockback (Anti Knockback) bool false
+antiknockback (AntiKnockback) bool false
+
+# Set to true if AntiCheat is enabled on server
+anticheat_protection (AnticheatProtection) bool true
+
+autorespawn (AutoRespawn) bool false
+
+show_cheat_hud (CheatHUD) bool true

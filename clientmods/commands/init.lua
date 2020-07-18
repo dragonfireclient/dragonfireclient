@@ -1,74 +1,21 @@
-core.register_chatcommand("place", {
+minetest.register_chatcommand("say", {
+	description = "Send raw text",
+	func = function(text)
+		minetest.send_chat_message(text)
+		return true
+	end,
+})
+
+minetest.register_chatcommand("teleport", {
 	params = "<X>,<Y>,<Z>",
-	description = "Place wielded item",
+	description = "Teleport to position. " .. (core.anticheat_protection and "Only works for short distances." or ""),
 	func = function(param)
 		local success, pos = core.parse_pos(param)
 		if success then
-			core.place_node(pos)
-			return true, "Node placed at " .. core.pos_to_string(pos)
+			core.localplayer:set_pos(pos)
+			return true, "Teleporting to " .. core.pos_to_string(pos)
 		end
 		return false, pos
-	end,
-})
-
-core.register_chatcommand("dig", {
-	params = "<X>,<Y>,<Z>",
-	description = "Dig node",
-	func = function(param)
-		local success, pos = core.parse_pos(param)
-		if success then
-			core.dig_node(pos)
-			return true, "Node at " .. core.pos_to_string(pos) .. " dug"
-		end
-		return false, pos
-	end,
-})
-
-core.register_chatcommand("kill", {
-	description = "Kill yourself",
-	func = function(param)
-		core.send_damage(core.localplayer:get_hp())
-	end,
-})
-
-core.register_chatcommand("scan", {
-	description = "Scan for one or multible nodes in a radius around you",
-	param = "<radius> node1[,node2...]",
-	func = function(param)
-		local radius = tonumber(param:split(" ")[1])
-		local nodes = param:split(" ")[2]:split(",")
-		local pos = core.localplayer:get_pos()
-		local fpos = core.find_node_near(pos, radius, nodes, true)
-		if fpos then
-			return true, "Found " .. table.concat(nodes, " or ") .. " at " .. core.pos_to_string(fpos)
-		end
-		return false, "None of " .. table.concat(nodes, " or ") .. " found in a radius of " .. tostring(radius)
-	end,
-})
-
-local function teleport(param)
-	local success, pos = core.parse_pos(param)
-	if success then
-		core.localplayer:set_pos(pos)
-		return true, "Teleporting to " .. core.pos_to_string(pos)
-	end
-	return false, pos
-end
-
-core.register_chatcommand("teleport", {
-	params = "<X>,<Y>,<Z>",
-	description = "Teleport to position",
-	func = function(param)
-		return teleport(param)
-	end,
-})
-
-core.register_chatcommand("tpoff", {
-	params = "<X>,<Y>,<Z>",
-	description = "Teleport to position and log out immediately",
-	func = function(param)
-		teleport(param)
-		minetest.disconnect()
 	end,
 })
 
@@ -78,3 +25,57 @@ minetest.register_chatcommand("wielded", {
 		return true, minetest.get_wielded_item():get_name()
 	end
 })
+
+minetest.register_chatcommand("disconnect", {
+	description = "Exit to main menu",
+	func = function(param)
+		minetest.disconnect()
+	end,
+})
+
+minetest.register_chatcommand("players", {
+	description = "List online players",
+	func = function(param)
+		return true, "Online players: " .. table.concat(minetest.get_player_names(), ", ")
+	end
+})
+
+minetest.register_chatcommand("kill", {
+	description = "Kill yourself",
+	func = function()
+		minetest.send_damage(minetest.localplayer:get_hp())
+	end,
+})
+
+minetest.register_chatcommand("set", {
+	params = "([-n] <name> <value>) | <name>",
+	description = "Set or read client configuration setting",
+	func = function(param)
+		local arg, setname, setvalue = string.match(param, "(-[n]) ([^ ]+) (.+)")
+		if arg and arg == "-n" and setname and setvalue then
+			minetest.settings:set(setname, setvalue)
+			return true, setname .. " = " .. setvalue
+		end
+
+		setname, setvalue = string.match(param, "([^ ]+) (.+)")
+		if setname and setvalue then
+			if not minetest.settings:get(setname) then
+				return false, "Failed. Use '.set -n <name> <value>' to create a new setting."
+			end
+			minetest.settings:set(setname, setvalue)
+			return true, setname .. " = " .. setvalue
+		end
+
+		setname = string.match(param, "([^ ]+)")
+		if setname then
+			setvalue = minetest.settings:get(setname)
+			if not setvalue then
+				setvalue = "<not set>"
+			end
+			return true, setname .. " = " .. setvalue
+		end
+
+		return false, "Invalid parameters (see .help set)."
+	end,
+})
+ 
