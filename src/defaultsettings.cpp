@@ -76,6 +76,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("increase_tool_range", "true");
 	settings->setDefault("hud_flags_bypass", "true");
 	settings->setDefault("antiknockback", "false");
+	settings->setDefault("entity_speed", "false");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");

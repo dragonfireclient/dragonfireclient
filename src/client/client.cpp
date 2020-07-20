@@ -1290,7 +1290,7 @@ void Client::sendReady()
 	Send(&pkt);
 }
 
-void Client::sendPlayerPos()
+void Client::sendPlayerPos(v3f pos)
 {
 	LocalPlayer *player = m_env.getLocalPlayer();
 	if (!player)
@@ -1308,7 +1308,7 @@ void Client::sendPlayerPos()
 	//	return;
 
 	if (
-			player->last_position     == player->getPosition() &&
+			player->last_position     == pos &&
 			player->last_speed        == player->getSpeed()    &&
 			player->last_pitch        == player->getPitch()    &&
 			player->last_yaw          == player->getYaw()      &&
@@ -1317,7 +1317,7 @@ void Client::sendPlayerPos()
 			player->last_wanted_range == wanted_range)
 		return;
 
-	player->last_position     = player->getPosition();
+	player->last_position     = pos;
 	player->last_speed        = player->getSpeed();
 	player->last_pitch        = player->getPitch();
 	player->last_yaw          = player->getYaw();
@@ -1330,6 +1330,14 @@ void Client::sendPlayerPos()
 	writePlayerPos(player, &map, &pkt);
 
 	Send(&pkt);
+}
+
+void Client::sendPlayerPos()
+{
+	LocalPlayer *player = m_env.getLocalPlayer();
+	if (!player)
+		return;
+	sendPlayerPos(player->getPosition());
 }
 
 void Client::removeNode(v3s16 p)

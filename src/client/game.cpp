@@ -2417,27 +2417,9 @@ PointedThing Game::updatePointedThing(
 	ClientMap &map = env.getClientMap();
 	const NodeDefManager *nodedef = map.getNodeDefManager();
 
-	if (g_settings->getBool("killaura")) {
-		std::vector<DistanceSortedActiveObject> allObjects;
-		env.getActiveObjects(shootline.start, shootline.getLength() + 10.0f, allObjects);
-		const v3f line_vector = shootline.getVector();
-		for (const auto &allObject : allObjects) {
-			ClientActiveObject *obj = allObject.obj;
-			s16 id = obj->getId();
-			v3f pos = obj->getPosition();
-			v3f intersection;
-			v3s16 normal;
-			aabb3f selection_box;
-			if (! obj->getSelectionBox(&selection_box))
-				continue;
-			aabb3f offsetted_box(selection_box.MinEdge + pos, selection_box.MaxEdge + pos);
-			boxLineCollision(offsetted_box, shootline.start, line_vector, &intersection, &normal);
-			PointedThing pointed(id, intersection, normal, (intersection - shootline.start).getLengthSQ());
-			client->interact(INTERACT_START_DIGGING, pointed);
-			break;
-		}
-	}
-	
+	if (g_settings->getBool("killaura"))
+		handleKillaura(shootline.start, shootline.getLength());
+		
 	runData.selected_object = NULL;
 	hud->pointing_at_object = false;
 	RaycastState s(shootline, look_for_object, liquids_pointable);
@@ -2514,6 +2496,22 @@ PointedThing Game::updatePointedThing(
 	return result;
 }
 
+void Game::handleKillaura(v3f origin, f32 max_d)
+{
+	ClientEnvironment &env = client->getEnv();
+	std::vector<DistanceSortedActiveObject> allObjects;
+	env.getActiveObjects(origin, max_d, allObjects);
+	for (const auto &allObject : allObjects) {
+		ClientActiveObject *obj = allObject.obj;
+		s16 id = obj->getId();
+		aabb3f selection_box;
+		if (! obj->getSelectionBox(&selection_box))
+			continue;
+		PointedThing pointed(id, v3f(0,0,0), v3s16(0,0,0), 0);
+		client->interact(INTERACT_START_DIGGING, pointed);
+		break;
+	}
+}
 
 void Game::handlePointingAtNothing(const ItemStack &playerItem)
 {

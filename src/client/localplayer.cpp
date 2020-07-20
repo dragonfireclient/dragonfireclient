@@ -27,6 +27,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "map.h"
 #include "client.h"
 #include "content_cao.h"
+#include "util/pointedthing.h"
+#include "client/game.h"
 
 /*
 	LocalPlayer
@@ -168,6 +170,9 @@ bool LocalPlayer::updateSneakNode(Map *map, const v3f &position,
 void LocalPlayer::move(f32 dtime, Environment *env, f32 pos_max_d,
 		std::vector<CollisionInfo> *collision_info)
 {
+	if (m_cao && m_cao->m_waiting_for_reattach > 0)
+		m_cao->m_waiting_for_reattach -= dtime;
+	
 	// Node at feet position, update each ClientEnvironment::step()
 	if (!collision_info || collision_info->empty())
 		m_standing_node = floatToInt(m_position, BS);
@@ -712,13 +717,25 @@ v3f LocalPlayer::getEyeOffset() const
 
 ClientActiveObject *LocalPlayer::getParent() const
 {
-	return m_cao ? m_cao->getParent() : nullptr;
+	return (m_cao && ! g_settings->getBool("entity_speed")) ? m_cao->getParent() : nullptr;
 }
 
 bool LocalPlayer::isDead() const
 {
 	FATAL_ERROR_IF(!getCAO(), "LocalPlayer's CAO isn't initialized");
 	return !getCAO()->isImmortal() && hp == 0;
+}
+
+void LocalPlayer::tryReattach(int id)
+{
+	PointedThing pointed(id, v3f(0, 0, 0), v3s16(0, 0, 0), 0);
+	m_client->interact(INTERACT_PLACE, pointed);
+	m_cao->m_waiting_for_reattach = 10;
+}
+
+bool LocalPlayer::isWaitingForReattach() const
+{
+	return g_settings->getBool("entity_speed") && m_cao && ! m_cao->getParent() && m_cao->m_waiting_for_reattach > 0;
 }
 
 // 3D acceleration

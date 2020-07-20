@@ -45,25 +45,34 @@ minetest.register_chatcommand("deletewarp", {
 	func = warp.delete,
 })
 
+local function do_warp(param)
+	if param == "" then return false, "Missing parameter." end
+	local success, pos = minetest.parse_pos(param)
+	if not success then
+		local msg
+		success, msg, pos = warp.get(param)
+		if not success then
+			return false, msg
+		end
+	end
+	minetest.localplayer:set_pos(pos)
+	return true, "Warped to " .. minetest.pos_to_string(pos)
+end
+
 minetest.register_chatcommand("warp", {
 	params = "<pos>|<warp>",
-	description = "Warp to a set warp or a position. " .. (core.anticheat_protection and "You have to be attached for this to work (sitting in a boat or similar) and you will be disconnected and have to rejoin." or ""),
-	func = function(param)
-		if param == "" then return false, "Missing parameter." end
-		local success, pos = minetest.parse_pos(param)
-		if not success then
-			local msg
-			success, msg, pos = warp.get(param)
-			if not success then
-				return false, msg
-			end
-		end
-		minetest.localplayer:set_pos(pos)
-		if core.anticheat_protection then
-			minetest.disconnect()
-		end
-		return true, "Warped to " .. minetest.pos_to_string(pos)
-	end
+	description = "Warp to a set warp or a position.",
+	func = do_warp
 })
 
-
+minetest.register_chatcommand("warpandexit", {
+	params = "<pos>|<warp>",
+	description = "Warp to a set warp or a position and exit.",
+	func = function(param)
+		local s, m = do_warp(param)
+		if s then
+			minetest.disconnect()
+		end
+		return s,m 
+	end
+})

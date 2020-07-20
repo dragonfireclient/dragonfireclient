@@ -2251,9 +2251,6 @@ hud_flags_bypass (HUDBypass) bool true
 
 antiknockback (AntiKnockback) bool false
 
-# Set to true if AntiCheat is enabled on server
-anticheat_protection (AnticheatProtection) bool true
-
 autorespawn (AutoRespawn) bool false
 
 show_cheat_hud (CheatHUD) bool true

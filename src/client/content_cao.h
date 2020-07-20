@@ -224,6 +224,7 @@ public:
 	void addAttachmentChild(int child_id);
 	void removeAttachmentChild(int child_id);
 	ClientActiveObject *getParent() const;
+	int getParentId() const { return m_attachment_parent_id; }
 	const std::unordered_set<int> &getAttachmentChildIds() const
 	{ return m_attachment_child_ids; }
 	void updateAttachments();
@@ -275,4 +276,6 @@ public:
 	{
 		return m_prop.infotext;
 	}
+	
+	float m_waiting_for_reattach;
 };

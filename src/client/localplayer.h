@@ -157,7 +157,11 @@ public:
 	{
 		added_velocity += vel;
 	}
-
+	
+	void tryReattach(int id);
+	
+	bool isWaitingForReattach() const;
+	
 private:
 	void accelerate(const v3f &target_speed, const f32 max_increase_H,
 		const f32 max_increase_V, const bool use_pitch);

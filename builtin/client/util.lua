@@ -20,5 +20,3 @@ function core.parse_relative_pos(param)
 	if success then pos = vector.round(vector.add(core.localplayer:get_pos(), pos)) end
 	return success, pos
 end 
-
-core.anticheat_protection = minetest.settings:get_bool("anticheat_protection") ~= false

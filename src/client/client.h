@@ -437,6 +437,7 @@ public:
 		return m_env.getLocalPlayer()->formspec_prepend;
 	}
 	
+	void sendPlayerPos(v3f pos);
 	void sendPlayerPos();
 	MeshUpdateThread m_mesh_update_thread;
 	

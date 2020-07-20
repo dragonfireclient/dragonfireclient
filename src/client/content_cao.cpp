@@ -472,13 +472,14 @@ void GenericCAO::setAttachment(int parent_id, const std::string &bone, v3f posit
 	ClientActiveObject *parent = m_env->getActiveObject(parent_id);
 
 	if (parent_id != old_parent) {
+		if (old_parent)
+			m_waiting_for_reattach = 10;
 		if (auto *o = m_env->getActiveObject(old_parent))
 			o->removeAttachmentChild(m_id);
 		if (parent)
 			parent->addAttachmentChild(m_id);
 	}
-
-
+	
 	updateAttachments();
 }
 
