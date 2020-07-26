@@ -223,7 +223,7 @@ void GameUI::setChatText(const EnrichedString &chat_text, u32 recent_chat_count)
 	
 	const v2u32 &window_size = RenderingEngine::get_instance()->getWindowSize();
 	
-	s32 chat_y = window_size.Y - 100 - m_guitext_chat->getTextHeight();
+	s32 chat_y = window_size.Y - 150 - m_guitext_chat->getTextHeight();
 
 	if (m_flags.show_debug)
 		chat_y += 2 * g_fontengine->getLineHeight();

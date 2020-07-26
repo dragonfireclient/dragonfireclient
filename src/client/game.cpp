@@ -2511,7 +2511,6 @@ void Game::handleKillaura(v3f origin, f32 max_d)
 			continue;
 		PointedThing pointed(id, v3f(0,0,0), v3s16(0,0,0), 0);
 		client->interact(INTERACT_START_DIGGING, pointed);
-		break;
 	}
 }
 
