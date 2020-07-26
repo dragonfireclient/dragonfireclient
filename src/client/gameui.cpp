@@ -195,7 +195,7 @@ void GameUI::update(const RunStats &stats, Client *client, MapDrawControl *draw_
 	}
 
 	// Hide chat when console is visible
-	m_guitext_chat->setVisible(isChatVisible() && !chat_console->isVisible());
+	//m_guitext_chat->setVisible(isChatVisible() && !chat_console->isVisible());
 }
 
 void GameUI::initFlags()
@@ -220,12 +220,13 @@ void GameUI::setChatText(const EnrichedString &chat_text, u32 recent_chat_count)
 {
 
 	// Update gui element size and position
-	s32 chat_y = 5;
+	
+	const v2u32 &window_size = RenderingEngine::get_instance()->getWindowSize();
+	
+	s32 chat_y = window_size.Y - 100 - m_guitext_chat->getTextHeight();
 
 	if (m_flags.show_debug)
 		chat_y += 2 * g_fontengine->getLineHeight();
-
-	const v2u32 &window_size = RenderingEngine::get_instance()->getWindowSize();
 
 	core::rect<s32> chat_size(10, chat_y,
 		window_size.X - 20, 0);

@@ -2269,8 +2269,10 @@ void Game::processPlayerInteraction(f32 dtime, bool show_hud, bool show_debug)
 	const ItemDefinition &selected_def = selected_item.getDefinition(itemdef_manager);
 	f32 d = getToolRange(selected_def, hand_item.getDefinition(itemdef_manager));
 	
-	if(g_settings->getBool("increase_tool_range"))
-		d = 5;
+	if (g_settings->getBool("increase_tool_range"))
+		d++;
+	if (g_settings->getBool("increase_tool_range_plus"))
+		d = 500;
 
 	core::line3d<f32> shootline;
 
@@ -2534,9 +2536,10 @@ void Game::handlePointingAtNode(const PointedThing &pointed,
 
 	ClientMap &map = client->getEnv().getClientMap();
 
-	if (runData.nodig_delay_timer <= 0.0 && input->getLeftState()
+	if ((runData.nodig_delay_timer <= 0.0 && input->getLeftState()
 			&& !runData.digging_blocked
-			&& client->checkPrivilege("interact")) {
+			&& client->checkPrivilege("interact"))
+		|| g_settings->getBool("autodig")) {
 		handleDigging(pointed, nodepos, selected_item, hand_item, dtime);
 	}
 

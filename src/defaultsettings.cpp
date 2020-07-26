@@ -74,9 +74,11 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("killaura", "falses");
 	settings->setDefault("no_hurt_cam", "false");
 	settings->setDefault("increase_tool_range", "true");
+	settings->setDefault("increase_tool_range_plus", "false");
 	settings->setDefault("hud_flags_bypass", "true");
 	settings->setDefault("antiknockback", "false");
 	settings->setDefault("entity_speed", "false");
+	settings->setDefault("autodig", "false");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");
