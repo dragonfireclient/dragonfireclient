@@ -41,6 +41,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "log.h"
 #include "filesys.h"
 #include "gettext.h"
+#include "gui/cheatMenu.h"
 #include "gui/guiChatConsole.h"
 #include "gui/guiConfirmRegistration.h"
 #include "gui/guiFormSpecMenu.h"
@@ -855,7 +856,7 @@ public:
 	ISoundManager *sound = nullptr;
 	bool sound_is_dummy = false;
 	SoundMaker *soundmaker = nullptr;
-
+	
 	ChatBackend *chat_backend = nullptr;
 	LogOutputBuffer m_chat_log_buf;
 	
@@ -865,6 +866,7 @@ public:
 
 	std::unique_ptr<GameUI> m_game_ui;
 	GUIChatConsole *gui_chat_console = nullptr; // Free using ->Drop()
+	CheatMenu *m_cheat_menu = nullptr;
 	MapDrawControl *draw_control = nullptr;
 	Camera *camera = nullptr;
 	Clouds *clouds = nullptr;	                  // Free using ->Drop()

@@ -275,6 +275,15 @@ void GameUI::toggleChat()
 		showTranslatedStatusText("Chat hidden");
 }
 
+void GameUI::toggleCheatMenu()
+{
+	m_flags.show_cheat_menu = !m_flags.show_cheat_menu;
+	if (m_flags.show_cheat_menu)
+		showTranslatedStatusText("Cheat Menu shown");
+	else
+		showTranslatedStatusText("Cheat Menu hidden");
+}
+
 void GameUI::toggleHud()
 {
 	m_flags.show_hud = !m_flags.show_hud;

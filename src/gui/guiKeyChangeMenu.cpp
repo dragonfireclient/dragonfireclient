@@ -73,13 +73,19 @@ enum
 	GUI_ID_KEY_CHATLOG_BUTTON,
 	GUI_ID_KEY_HUD_BUTTON,
 	GUI_ID_KEY_FOG_BUTTON,
+	GUI_ID_KEY_CHEAT_MENU_BUTTON,
 	GUI_ID_KEY_DEC_RANGE_BUTTON,
 	GUI_ID_KEY_INC_RANGE_BUTTON,
 	GUI_ID_KEY_AUTOFWD_BUTTON,
-	GUI_ID_KEY_XRAY,
-	GUI_ID_KEY_FULLBRIGHT,
-	GUI_ID_KEY_KILLAURA,
-	GUI_ID_KEY_FREECAM,
+	GUI_ID_KEY_XRAY_BUTTON,
+	GUI_ID_KEY_FULLBRIGHT_BUTTON,
+	GUI_ID_KEY_KILLAURA_BUTTON,
+	GUI_ID_KEY_FREECAM_BUTTON,
+	GUI_ID_KEY_SELECT_UP_BUTTON,
+	GUI_ID_KEY_SELECT_DOWN_BUTTON,
+	GUI_ID_KEY_SELECT_LEFT_BUTTON,
+	GUI_ID_KEY_SELECT_RIGHT_BUTTON,
+	GUI_ID_KEY_SELECT_CONFIRM_BUTTON,
 	// other
 	GUI_ID_CB_AUX1_DESCENDS,
 	GUI_ID_CB_DOUBLETAP_JUMP,
@@ -451,8 +457,14 @@ void GUIKeyChangeMenu::init_keys()
 	this->add_key(GUI_ID_KEY_HUD_BUTTON,       wgettext("Toggle HUD"),       "keymap_toggle_hud");
 	this->add_key(GUI_ID_KEY_CHATLOG_BUTTON,   wgettext("Toggle chat log"),  "keymap_toggle_chat");
 	this->add_key(GUI_ID_KEY_FOG_BUTTON,       wgettext("Toggle fog"),       "keymap_toggle_fog");
-	this->add_key(GUI_ID_KEY_XRAY,		       wgettext("Toggle X-Ray"),     "keymap_toggle_xray");
-	this->add_key(GUI_ID_KEY_FULLBRIGHT,       wgettext("Toggle Fullbr."),	 "keymap_toggle_fullbright");
-	this->add_key(GUI_ID_KEY_KILLAURA,         wgettext("Toggle Killaura"),  "keymap_toggle_killaura");
-	this->add_key(GUI_ID_KEY_FREECAM,          wgettext("Toggle Freec."),   "keymap_toggle_freecam");
+	this->add_key(GUI_ID_KEY_CHEAT_MENU_BUTTON,wgettext("Toggle C. Menu"),"keymap_toggle_cheat_menu");
+	this->add_key(GUI_ID_KEY_XRAY_BUTTON,	   wgettext("Toggle X-Ray"),     "keymap_toggle_xray");
+	this->add_key(GUI_ID_KEY_FULLBRIGHT_BUTTON,wgettext("Toggle Fullbr."),	 "keymap_toggle_fullbright");
+	this->add_key(GUI_ID_KEY_KILLAURA_BUTTON,  wgettext("Toggle Killaura"),  "keymap_toggle_killaura");
+	this->add_key(GUI_ID_KEY_FREECAM_BUTTON,   wgettext("Toggle Freec."),    "keymap_toggle_freecam");
+	this->add_key(GUI_ID_KEY_SELECT_UP_BUTTON, wgettext("C. Menu Up"),    "keymap_select_up");
+	this->add_key(GUI_ID_KEY_SELECT_DOWN_BUTTON,wgettext("C. Menu Down"), "keymap_select_down");
+	this->add_key(GUI_ID_KEY_SELECT_LEFT_BUTTON,wgettext("C. Menu Left"), "keymap_select_left");
+	this->add_key(GUI_ID_KEY_SELECT_RIGHT_BUTTON,wgettext("C. Menu Right"),"keymap_select_right");
+	this->add_key(GUI_ID_KEY_SELECT_CONFIRM_BUTTON,wgettext("C. Menu Enter"),"keymap_select_confirm");
 }

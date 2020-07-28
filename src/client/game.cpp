@@ -593,8 +593,17 @@ bool Game::initGui()
 	// Chat backend and console
 	gui_chat_console = new GUIChatConsole(guienv, guienv->getRootGUIElement(),
 			-1, chat_backend, client, &g_menumgr);
+
 	if (!gui_chat_console) {
 		*error_message = "Could not allocate memory for chat console";
+		errorstream << *error_message << std::endl;
+		return false;
+	}
+	
+	m_cheat_menu = new CheatMenu(client);
+
+	if (!m_cheat_menu) {
+		*error_message = "Could not allocate memory for cheat menu";
 		errorstream << *error_message << std::endl;
 		return false;
 	}
@@ -1084,6 +1093,16 @@ void Game::processKeyInput()
 		toggleKillaura();
 	} else if (wasKeyDown(KeyType::FREECAM)) {
 		toggleFreecam();
+	} else if (wasKeyDown(KeyType::SELECT_UP)) {
+		m_cheat_menu->selectUp();
+	} else if (wasKeyDown(KeyType::SELECT_DOWN)) {
+		m_cheat_menu->selectDown();
+	} else if (wasKeyDown(KeyType::SELECT_LEFT)) {
+		m_cheat_menu->selectLeft();
+	} else if (wasKeyDown(KeyType::SELECT_RIGHT)) {
+		m_cheat_menu->selectRight();
+	} else if (wasKeyDown(KeyType::SELECT_CONFIRM)) {
+		m_cheat_menu->selectConfirm();
 #if USE_SOUND
 	} else if (wasKeyDown(KeyType::MUTE)) {
 		if (g_settings->getBool("enable_sound")) {
@@ -1137,6 +1156,8 @@ void Game::processKeyInput()
 		m_game_ui->toggleChat();
 	} else if (wasKeyDown(KeyType::TOGGLE_FOG)) {
 		toggleFog();
+	} else if (wasKeyDown(KeyType::TOGGLE_CHEAT_MENU)) {
+		m_game_ui->toggleCheatMenu();
 	} else if (wasKeyDown(KeyType::TOGGLE_UPDATE_CAMERA)) {
 		toggleUpdateCamera();
 	} else if (wasKeyDown(KeyType::TOGGLE_DEBUG)) {
@@ -2272,7 +2293,7 @@ void Game::processPlayerInteraction(f32 dtime, bool show_hud, bool show_debug)
 	if (g_settings->getBool("increase_tool_range"))
 		d++;
 	if (g_settings->getBool("increase_tool_range_plus"))
-		d = 500;
+		d = 1000;
 
 	core::line3d<f32> shootline;
 
@@ -3187,13 +3208,19 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 		graph->draw(10, screensize.Y - 10, driver, g_fontengine->getFont());
 
 	/*
+		Cheat menu
+	*/
+
+	if (m_game_ui->m_flags.show_cheat_menu && ! gui_chat_console->isOpen())
+		m_cheat_menu->draw(driver, m_game_ui->m_flags.show_debug);
+
+	/*
 		Damage flash
 	*/
-	if (runData.damage_flash > 0.0f && ! g_settings->getBool("no_hurt_cam")) {
+	if (runData.damage_flash > 0.0f) {
 		video::SColor color(runData.damage_flash, 180, 0, 0);
-		driver->draw2DRectangle(color,
-					core::rect<s32>(0, 0, screensize.X, screensize.Y),
-					NULL);
+		if (! g_settings->getBool("no_hurt_cam"))
+			driver->draw2DRectangle(color, core::rect<s32>(0, 0, screensize.X, screensize.Y), NULL);
 
 		runData.damage_flash -= 384.0f * dtime;
 	}

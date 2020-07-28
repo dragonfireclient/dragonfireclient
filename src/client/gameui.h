@@ -59,6 +59,7 @@ public:
 		bool show_minimap = false;
 		bool show_debug = true;
 		bool show_profiler_graph = false;
+		bool show_cheat_menu = true;
 	};
 
 	void init();
@@ -91,6 +92,7 @@ public:
 	void updateProfiler();
 
 	void toggleChat();
+	void toggleCheatMenu();
 	void toggleHud();
 	void toggleProfiler();
 

@@ -206,6 +206,8 @@ void Client::loadMods()
 	// Run a callback when mods are loaded
 	m_script->on_mods_loaded();
 
+	m_script->init_cheats();
+
 	// Create objects if they're ready
 	if (m_state == LC_Ready)
 		m_script->on_client_ready(m_env.getLocalPlayer());

@@ -2252,5 +2252,3 @@ hud_flags_bypass (HUDBypass) bool true
 antiknockback (AntiKnockback) bool false
 
 autorespawn (AutoRespawn) bool false
-
-show_cheat_hud (CheatHUD) bool true

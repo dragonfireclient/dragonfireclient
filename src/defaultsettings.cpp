@@ -79,6 +79,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("antiknockback", "false");
 	settings->setDefault("entity_speed", "false");
 	settings->setDefault("autodig", "false");
+	settings->setDefault("autorespawn", "false");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");
@@ -113,6 +114,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_toggle_hud", "KEY_F1");
 	settings->setDefault("keymap_toggle_chat", "KEY_F2");
 	settings->setDefault("keymap_toggle_fog", "KEY_F3");
+	settings->setDefault("keymap_toggle_cheat_menu", "KEY_F8");
 #if DEBUG
 	settings->setDefault("keymap_toggle_update_camera", "KEY_F4");
 #else
@@ -128,6 +130,11 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_toggle_fullbright", "KEY_KEY_F");
 	settings->setDefault("keymap_toggle_killaura", "KEY_KEY_G");
 	settings->setDefault("keymap_toggle_freecam", "KEY_KEY_L");
+	settings->setDefault("keymap_select_up", "KEY_UP");
+	settings->setDefault("keymap_select_down", "KEY_DOWN");
+	settings->setDefault("keymap_select_left", "KEY_LEFT");
+	settings->setDefault("keymap_select_right", "KEY_RIGHT");
+	settings->setDefault("keymap_select_confirm", "KEY_RETURN");
 	settings->setDefault("keymap_slot1", "KEY_KEY_1");
 	settings->setDefault("keymap_slot2", "KEY_KEY_2");
 	settings->setDefault("keymap_slot3", "KEY_KEY_3");
