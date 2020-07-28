@@ -742,6 +742,7 @@ public:
 	void toggleFog();
 	void toggleDebug();
 	void toggleUpdateCamera();
+	void updatePlayerCAOVisibility();
 
 	void increaseViewRange();
 	void decreaseViewRange();
@@ -789,6 +790,7 @@ public:
 	void showOverlayMessage(const char *msg, float dtime, int percent,
 			bool draw_clouds = true);
 
+	static void freecamChangedCallback(const std::string &setting_name, void *data);
 	static void settingChangedCallback(const std::string &setting_name, void *data);
 	void readSettings();
 

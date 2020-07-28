@@ -108,7 +108,9 @@ Game::Game() :
 		&settingChangedCallback, this);
 	g_settings->registerChangedCallback("camera_smoothing",
 		&settingChangedCallback, this);
-
+	g_settings->registerChangedCallback("freecam",
+		&freecamChangedCallback, this);
+		
 	readSettings();
 
 #ifdef __ANDROID__
@@ -1432,16 +1434,12 @@ void Game::toggleKillaura()
 
 void Game::toggleFreecam()
 {
-	LocalPlayer *player = client->getEnv().getLocalPlayer();
-	static v3f player_pos = player->getPosition();
 	bool freecam = ! g_settings->getBool("freecam");
 	g_settings->set("freecam", bool_to_cstr(freecam));
 
 	if (freecam) {
-		player_pos = player->getPosition();
 		m_game_ui->showTranslatedStatusText("Freecam enabled");
 	} else {
-		player->setPosition(player_pos);
 		m_game_ui->showTranslatedStatusText("Freecam disabled");
 	}
 }
@@ -1566,6 +1564,8 @@ void Game::toggleDebug()
 
 void Game::toggleUpdateCamera()
 {
+	if (g_settings->getBool("freecam"))
+		return;
 	m_flags.disable_camera_update = !m_flags.disable_camera_update;
 	if (m_flags.disable_camera_update)
 		m_game_ui->showTranslatedStatusText("Camera update disabled");
@@ -2193,17 +2193,9 @@ void Game::updateCamera(u32 busy_time, f32 dtime)
 
 	v3s16 old_camera_offset = camera->getOffset();
 
-	if (wasKeyDown(KeyType::CAMERA_MODE)) {
-		GenericCAO *playercao = player->getCAO();
-
-		// If playercao not loaded, don't change camera
-		if (!playercao)
-			return;
-
+	if (wasKeyDown(KeyType::CAMERA_MODE) && ! g_settings->getBool("freecam")) {
 		camera->toggleCameraMode();
-
-		playercao->setVisible(camera->getCameraMode() > CAMERA_MODE_FIRST);
-		playercao->setChildrenVisible(camera->getCameraMode() > CAMERA_MODE_FIRST);
+		updatePlayerCAOVisibility();
 	}
 
 	float full_punch_interval = playeritem_toolcap.full_punch_interval;
@@ -2234,6 +2226,15 @@ void Game::updateCamera(u32 busy_time, f32 dtime)
 	}
 }
 
+void Game::updatePlayerCAOVisibility()
+{
+	LocalPlayer *player = client->getEnv().getLocalPlayer();
+	GenericCAO *playercao = player->getCAO();
+	if (!playercao)
+		return;
+	playercao->setVisible(camera->getCameraMode() > CAMERA_MODE_FIRST || g_settings->getBool("freecam"));
+	playercao->setChildrenVisible(camera->getCameraMode() > CAMERA_MODE_FIRST || g_settings->getBool("freecam"));
+}
 
 void Game::updateSound(f32 dtime)
 {
@@ -3320,6 +3321,18 @@ void Game::showOverlayMessage(const char *msg, float dtime, int percent, bool dr
 void Game::settingChangedCallback(const std::string &setting_name, void *data)
 {
 	((Game *)data)->readSettings();
+}
+
+void Game::freecamChangedCallback(const std::string &setting_name, void *data)
+{
+	Game *game = (Game *) data;
+	LocalPlayer *player = game->client->getEnv().getLocalPlayer();
+	static v3f player_pos = player->getPosition();
+	if (g_settings->getBool("freecam"))
+		player_pos = player->getPosition();
+	else
+		player->setPosition(player_pos);
+	game->updatePlayerCAOVisibility();
 }
 
 void Game::readSettings()

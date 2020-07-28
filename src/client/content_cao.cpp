@@ -943,7 +943,7 @@ void GenericCAO::updateNodePos()
 void GenericCAO::step(float dtime, ClientEnvironment *env)
 {
 	// Handle model animations and update positions instantly to prevent lags
-	if (m_is_local_player) {
+	if (m_is_local_player && ! g_settings->getBool("freecam")) {
 		LocalPlayer *player = m_env->getLocalPlayer();
 		m_position = player->getPosition();
 		pos_translator.val_current = m_position;
