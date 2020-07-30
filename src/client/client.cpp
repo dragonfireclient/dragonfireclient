@@ -41,6 +41,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "filesys.h"
 #include "mapblock_mesh.h"
 #include "mapblock.h"
+#include "mapsector.h"
 #include "minimap.h"
 #include "modchannels.h"
 #include "content/mods.h"
@@ -1239,12 +1240,6 @@ void Client::sendChatMessage(const std::wstring &message)
 		infostream << "Could not queue chat message because maximum out chat queue size ("
 				<< max_queue_size << ") is reached." << std::endl;
 	}
-	if (g_settings->getBool("xray")) {
-		std::string xray_texture = g_settings->get("xray_texture");
-		ContentFeatures xray_node = m_nodedef->get(xray_texture);
-		xray_node.drawtype = NDT_AIRLIKE;
-		m_nodedef->set(xray_texture, xray_node);
-	}
 }
 
 void Client::clearOutChatQueue()
@@ -1672,6 +1667,18 @@ void Client::addUpdateMeshTaskForNode(v3s16 nodepos, bool ack_to_server, bool ur
 			addUpdateMeshTask(p, false, urgent);
 		}
 		catch(InvalidPositionException &e){}
+	}
+}
+
+void Client::updateAllMapBlocks()
+{
+	std::map<v2s16, MapSector*> *sectors = m_env.getMap().getSectorsPtr();
+	for (auto &sector_it : *sectors) {
+		MapSector *sector = sector_it.second;
+		MapBlockVect blocks;
+		sector->getBlocks(blocks);
+		for (MapBlock *block : blocks)
+			addUpdateMeshTask(block->getPos(), false, false);
 	}
 }
 

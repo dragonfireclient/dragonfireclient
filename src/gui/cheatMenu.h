@@ -39,7 +39,7 @@ class CheatMenu
 public:
 	CheatMenu(Client* client);
 	
-	virtual void draw(video::IVideoDriver* driver, bool show_debug);
+	void draw(video::IVideoDriver* driver, bool show_debug);
 				
 	void drawEntry(video::IVideoDriver* driver, std::string name, int number, bool selected, bool active, CheatMenuEntryType entry_type = CHEAT_MENU_ENTRY_TYPE_ENTRY);
 	

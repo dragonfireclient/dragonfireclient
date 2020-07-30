@@ -110,6 +110,10 @@ Game::Game() :
 		&settingChangedCallback, this);
 	g_settings->registerChangedCallback("freecam",
 		&freecamChangedCallback, this);
+	g_settings->registerChangedCallback("xray",
+		&updateAllMapBlocksCallback, this);
+	g_settings->registerChangedCallback("fullbright",
+		&updateAllMapBlocksCallback, this);
 		
 	readSettings();
 
@@ -168,6 +172,8 @@ Game::~Game()
 		&settingChangedCallback, this);
 	g_settings->deregisterChangedCallback("camera_smoothing",
 		&settingChangedCallback, this);
+	g_settings->deregisterChangedCallback("freecam",
+		&freecamChangedCallback, this);
 }
 
 bool Game::startup(bool *kill,
@@ -334,6 +340,12 @@ void Game::shutdown()
 
 	if (gui_chat_console)
 		gui_chat_console->drop();
+
+	if (m_cheat_menu)
+		delete m_cheat_menu;
+		
+	if (m_tracers)
+		delete m_tracers;
 
 	if (sky)
 		sky->drop();
@@ -606,6 +618,14 @@ bool Game::initGui()
 
 	if (!m_cheat_menu) {
 		*error_message = "Could not allocate memory for cheat menu";
+		errorstream << *error_message << std::endl;
+		return false;
+	}
+	
+	m_tracers = new Tracers();
+
+	if (!m_tracers) {
+		*error_message = "Could not allocate memory for tracers";
 		errorstream << *error_message << std::endl;
 		return false;
 	}
@@ -3214,6 +3234,12 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 
 	if (m_game_ui->m_flags.show_cheat_menu && ! gui_chat_console->isOpen())
 		m_cheat_menu->draw(driver, m_game_ui->m_flags.show_debug);
+		
+	/*
+		Tracers
+	*/
+
+		m_tracers->draw(driver);
 
 	/*
 		Damage flash
@@ -3321,6 +3347,11 @@ void Game::showOverlayMessage(const char *msg, float dtime, int percent, bool dr
 void Game::settingChangedCallback(const std::string &setting_name, void *data)
 {
 	((Game *)data)->readSettings();
+}
+
+void Game::updateAllMapBlocksCallback(const std::string &setting_name, void *data)
+{
+	((Game *) data)->client->updateAllMapBlocks();
 }
 
 void Game::freecamChangedCallback(const std::string &setting_name, void *data)
