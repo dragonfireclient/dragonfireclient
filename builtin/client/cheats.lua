@@ -9,18 +9,27 @@ core.cheats = {
 		["DragonRider"] = "entity_speed",
 		["Freecam"] = "freecam",
 		["PrivBypass"] = "priv_bypass",
+		["AutoForward"] = "continuous_forward",
+		["PitchMove"] = "pitch_move",
+		["AutoJump"] = "autojump",
+		["Jesus"] = "jesus",
 	},
 	["Render"] = {
 		["Xray"] = "xray",
 		["Fullbright"] = "fullbright",
 		["HUDBypass"] = "hud_flags_bypass",
-		["NoHurtCam"] = "no_hurt_cam"
+		["NoHurtCam"] = "no_hurt_cam",
 	},
 	["World"] = {
 		["FastDig"] = "fastdig",
+		["FastPlace"] = "fastplace",
 		["AutoDig"] = "autodig",
+		["AutoPlace"] = "autoplace",
+		["InstantBreak"] = "instant_break",
 		["IncreasedRange"] = "increase_tool_range",
 		["UnlimitedRange"] = "increase_tool_range_plus",
+		["Scaffold"] = "scaffold",
+		["Highway"] = "highway",
 	},
 	["Misc"] = {
 		["Enderchest"] = function()

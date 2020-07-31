@@ -427,12 +427,18 @@ int ModApiClient::l_send_damage(lua_State *L)
 int ModApiClient::l_place_node(lua_State *L)
 {
 	Client *client = getClient(L);
+	ClientMap &map = client->getEnv().getClientMap();
+	LocalPlayer *player = client->getEnv().getLocalPlayer();
+	ItemStack selected_item, hand_item;
+	player->getWieldedItem(&selected_item, &hand_item);
+	const ItemDefinition &selected_def = selected_item.getDefinition(getGameDef(L)->idef());
 	v3s16 pos = read_v3s16(L, 1);
 	PointedThing pointed;
 	pointed.type = POINTEDTHING_NODE;
 	pointed.node_abovesurface = pos;
 	pointed.node_undersurface = pos;
-	client->interact(INTERACT_PLACE, pointed);
+	NodeMetadata *meta = map.getNodeMetadata(pos);
+	g_game->nodePlacement(selected_def, selected_item, pos, pos, pointed, meta);
 	return 0;
 }
 

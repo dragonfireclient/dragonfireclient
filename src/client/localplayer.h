@@ -31,6 +31,7 @@ class GenericCAO;
 class ClientActiveObject;
 class ClientEnvironment;
 class IGameDef;
+struct ContentFeatures;
 struct collisionMoveResult;
 
 enum LocalPlayerAnimations
@@ -161,6 +162,8 @@ public:
 	void tryReattach(int id);
 	
 	bool isWaitingForReattach() const;
+	
+	bool canWalkOn(const ContentFeatures &f);
 	
 private:
 	void accelerate(const v3f &target_speed, const f32 max_increase_H,

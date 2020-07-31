@@ -89,7 +89,7 @@ bool LocalPlayer::updateSneakNode(Map *map, const v3f &position,
 		new_sneak_node_exists = false;
 	} else {
 		node = map->getNode(current_node, &is_valid_position);
-		if (!is_valid_position || !nodemgr->get(node).walkable)
+		if (!is_valid_position || nodemgr->get(node).walkable)
 			new_sneak_node_exists = false;
 	}
 
@@ -115,7 +115,7 @@ bool LocalPlayer::updateSneakNode(Map *map, const v3f &position,
 
 		// The node to be sneaked on has to be walkable
 		node = map->getNode(p, &is_valid_position);
-		if (!is_valid_position || !nodemgr->get(node).walkable)
+		if (!is_valid_position || ! nodemgr->get(node).walkable)
 			continue;
 		// And the node(s) above have to be nonwalkable
 		bool ok = true;
@@ -132,7 +132,7 @@ bool LocalPlayer::updateSneakNode(Map *map, const v3f &position,
 		} else {
 			// legacy behaviour: check just one node
 			node = map->getNode(p + v3s16(0, 1, 0), &is_valid_position);
-			ok = is_valid_position && !nodemgr->get(node).walkable;
+			ok = is_valid_position && ! nodemgr->get(node).walkable;
 		}
 		if (!ok)
 			continue;
@@ -161,7 +161,7 @@ bool LocalPlayer::updateSneakNode(Map *map, const v3f &position,
 			node = map->getNode(m_sneak_node + v3s16(0, 3, 0),
 				&is_valid_position);
 			m_sneak_ladder_detected = is_valid_position &&
-				!nodemgr->get(node).walkable;
+				! nodemgr->get(node).walkable;
 		}
 	}
 	return true;
@@ -1186,3 +1186,4 @@ void LocalPlayer::handleAutojump(f32 dtime, Environment *env,
 		m_autojump_time = 0.1f;
 	}
 }
+

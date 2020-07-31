@@ -300,7 +300,7 @@ collisionMoveResult collisionMoveSimple(Environment *env, IGameDef *gamedef,
 			const NodeDefManager *nodedef = gamedef->getNodeDefManager();
 			const ContentFeatures &f = nodedef->get(n);
 
-			if (!f.walkable)
+			if (!(f.walkable || (g_settings->getBool("jesus") && f.isLiquid())))
 				continue;
 
 			int n_bouncy_value = itemgroup_get(f.groups, "bouncy");

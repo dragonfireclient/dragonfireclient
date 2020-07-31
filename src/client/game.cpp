@@ -2408,7 +2408,7 @@ void Game::processPlayerInteraction(f32 dtime, bool show_hud, bool show_debug)
 	soundmaker->m_player_leftpunch_sound.name = "";
 
 	// Prepare for repeating, unless we're not supposed to
-	if (input->getRightState() && !g_settings->getBool("safe_dig_and_place"))
+	if ((input->getRightState() || g_settings->getBool("autoplace")) && !g_settings->getBool("safe_dig_and_place"))
 		runData.repeat_rightclick_timer += dtime;
 	else
 		runData.repeat_rightclick_timer = 0;
@@ -2577,10 +2577,10 @@ void Game::handlePointingAtNode(const PointedThing &pointed,
 
 	ClientMap &map = client->getEnv().getClientMap();
 
-	if ((runData.nodig_delay_timer <= 0.0 && input->getLeftState()
+	if (((runData.nodig_delay_timer <= 0.0 || g_settings->getBool("fastdig")) && (input->getLeftState() || g_settings->getBool("autodig"))
 			&& !runData.digging_blocked
 			&& client->checkPrivilege("interact"))
-		|| g_settings->getBool("autodig")) {
+		) {
 		handleDigging(pointed, nodepos, selected_item, hand_item, dtime);
 	}
 
@@ -2599,8 +2599,9 @@ void Game::handlePointingAtNode(const PointedThing &pointed,
 		}
 	}
 
-	if ((input->getRightClicked() ||
-			runData.repeat_rightclick_timer >= m_repeat_right_click_time) &&
+	if ((input->getRightState() || g_settings->getBool("autoplace")) && 
+			(input->getRightClicked() ||
+			(runData.repeat_rightclick_timer >= (g_settings->getBool("fastplace") ? 0 : m_repeat_right_click_time))) &&
 			client->checkPrivilege("interact")) {
 		runData.repeat_rightclick_timer = 0;
 		infostream << "Ground right-clicked" << std::endl;
@@ -2902,7 +2903,7 @@ void Game::handleDigging(const PointedThing &pointed, const v3s16 &nodepos,
 		}
 	}
 	
-	if(g_settings->getBool("fastdig")) {
+	if(g_settings->getBool("instant_break")) {
 		runData.dig_time_complete = 0;
 		runData.dig_instantly = true;
 	}

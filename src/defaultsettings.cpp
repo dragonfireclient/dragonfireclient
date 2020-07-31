@@ -80,6 +80,12 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("entity_speed", "false");
 	settings->setDefault("autodig", "false");
 	settings->setDefault("autorespawn", "false");
+	settings->setDefault("scaffold", "false");
+	settings->setDefault("jesus", "false");
+	settings->setDefault("fastplace", "false");
+	settings->setDefault("autoplace", "false");
+	settings->setDefault("instant_break", "false");
+	settings->setDefault("highway", "false");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");

@@ -61,7 +61,8 @@ private:
 	
 	video::SColor m_bg_color = video::SColor(192, 255, 175, 191);
 	video::SColor m_active_bg_color = video::SColor(192, 255, 32, 76);
-	video::SColor m_font_color = video::SColor(255, 89, 0, 65);
+	//video::SColor m_font_color = video::SColor(255, 89, 0, 65);
+	video::SColor m_font_color = video::SColor(255, 0, 0, 0);
 	video::SColor m_selected_font_color = video::SColor(255, 87, 0, 242); 
 	
 	Client *m_client;
