@@ -53,6 +53,9 @@ GameUI::GameUI()
 }
 void GameUI::init()
 {
+	m_guitext_coords = gui::StaticText::add(guienv, L"", core::rect<s32>(0, 0, 0, 0), false,
+		false, guiroot);
+	
 	// First line of debug text
 	m_guitext = gui::StaticText::add(guienv, utf8_to_wide(PROJECT_NAME_C).c_str(),
 		core::rect<s32>(0, 0, 0, 0), false, false, guiroot);
@@ -94,7 +97,23 @@ void GameUI::update(const RunStats &stats, Client *client, MapDrawControl *draw_
 	const CameraOrientation &cam, const PointedThing &pointed_old,
 	const GUIChatConsole *chat_console, float dtime)
 {
+	LocalPlayer *player = client->getEnv().getLocalPlayer();
+	v3f player_position = player->getPosition();
 	v2u32 screensize = RenderingEngine::get_instance()->getWindowSize();
+
+	bool show_coords = g_settings->getBool("coords");
+
+	if (show_coords) {
+		std::ostringstream os(std::ios_base::binary);
+		os << std::setprecision(1) << std::fixed
+			<< (player_position.X / BS)
+			<< ", " << (player_position.Y / BS)
+			<< ", " << (player_position.Z / BS);
+		setStaticText(m_guitext_coords, utf8_to_wide(os.str()).c_str());
+		m_guitext_coords->setRelativePosition(core::rect<s32>(5, screensize.Y - 5 - g_fontengine->getTextHeight(), screensize.X, screensize.Y));
+	}
+	
+	m_guitext_coords->setVisible(show_coords);
 
 	if (m_flags.show_debug) {
 		static float drawtime_avg = 0;
@@ -125,9 +144,6 @@ void GameUI::update(const RunStats &stats, Client *client, MapDrawControl *draw_
 	m_guitext->setVisible(m_flags.show_debug);
 
 	if (m_flags.show_debug) {
-		LocalPlayer *player = client->getEnv().getLocalPlayer();
-		v3f player_position = player->getPosition();
-
 		std::ostringstream os(std::ios_base::binary);
 		os << std::setprecision(1) << std::fixed
 			<< "pos: (" << (player_position.X / BS)

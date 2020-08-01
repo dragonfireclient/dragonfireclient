@@ -111,7 +111,8 @@ private:
 
 	gui::IGUIStaticText *m_guitext = nullptr;  // First line of debug text
 	gui::IGUIStaticText *m_guitext2 = nullptr; // Second line of debug text
-
+	gui::IGUIStaticText *m_guitext_coords = nullptr;
+	
 	gui::IGUIStaticText *m_guitext_info = nullptr; // At the middle of the screen
 	std::wstring m_infotext;
 

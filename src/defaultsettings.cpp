@@ -87,6 +87,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("instant_break", "false");
 	settings->setDefault("highway", "false");
 	settings->setDefault("no_night", "false");
+	settings->setDefault("coords", "false");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");

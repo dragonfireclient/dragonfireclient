@@ -20,6 +20,7 @@ core.cheats = {
 		["HUDBypass"] = "hud_flags_bypass",
 		["NoHurtCam"] = "no_hurt_cam",
 		["BrightNight"] = "no_night",
+		["Coords"] = "coords",
 	},
 	["World"] = {
 		["FastDig"] = "fastdig",
