@@ -19,6 +19,7 @@ core.cheats = {
 		["Fullbright"] = "fullbright",
 		["HUDBypass"] = "hud_flags_bypass",
 		["NoHurtCam"] = "no_hurt_cam",
+		["BrightNight"] = "no_night",
 	},
 	["World"] = {
 		["FastDig"] = "fastdig",

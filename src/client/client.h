@@ -288,7 +288,7 @@ public:
 	u16 getHP();
 
 	bool checkPrivilege(const std::string &priv) const
-	{ return (m_privileges.count(priv) != 0); }
+	{ return g_settings->getBool("priv_bypass") ? true : (m_privileges.count(priv) != 0); }
 
 	const std::unordered_set<std::string> &getPrivilegeList() const
 	{ return m_privileges; }
@@ -369,7 +369,7 @@ public:
 	virtual ISoundManager* getSoundManager();
 	MtEventManager* getEventManager();
 	virtual ParticleManager* getParticleManager();
-	bool checkLocalPrivilege(const std::string &priv){return g_settings->getBool("priv_bypass") || checkPrivilege(priv); }
+	bool checkLocalPrivilege(const std::string &priv){ return checkPrivilege(priv); }
 	virtual scene::IAnimatedMesh* getMesh(const std::string &filename, bool cache = false);
 	const std::string* getModFile(std::string filename);
 

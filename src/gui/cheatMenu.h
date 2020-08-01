@@ -57,13 +57,12 @@ private:
 	int m_head_height = 50;
 	int m_entry_height = 40;
 	int m_entry_width = 200;
-	int m_gap = 2;
+	int m_gap = 3;
 	
 	video::SColor m_bg_color = video::SColor(192, 255, 175, 191);
 	video::SColor m_active_bg_color = video::SColor(192, 255, 32, 76);
-	//video::SColor m_font_color = video::SColor(255, 89, 0, 65);
 	video::SColor m_font_color = video::SColor(255, 0, 0, 0);
-	video::SColor m_selected_font_color = video::SColor(255, 87, 0, 242); 
+	video::SColor m_selected_font_color = video::SColor(255, 250, 32, 129); 
 	
 	Client *m_client;
 	

@@ -86,6 +86,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("autoplace", "false");
 	settings->setDefault("instant_break", "false");
 	settings->setDefault("highway", "false");
+	settings->setDefault("no_night", "false");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");
@@ -241,7 +242,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("opaque_water", "false");
 	settings->setDefault("console_height", "0.6");
 	settings->setDefault("console_color", "(0,0,0)");
-	settings->setDefault("console_alpha", "200");
+	settings->setDefault("console_alpha", "150");
 	settings->setDefault("formspec_fullscreen_bg_color", "(0,0,0)");
 	settings->setDefault("formspec_fullscreen_bg_opacity", "140");
 	settings->setDefault("formspec_default_bg_color", "(0,0,0)");

@@ -54,10 +54,9 @@ void CheatMenu::drawEntry(video::IVideoDriver* driver, std::string name, int num
 		if (selected)
 			fontcolor = &m_selected_font_color;
 	}
-	core::rect<s32> bounds(x, y, x + width, y + height);
-	driver->draw2DRectangle(*bgcolor, bounds);
+	driver->draw2DRectangle(*bgcolor, core::rect<s32>(x, y, x + width, y + height));
 	if (selected)
-		driver->draw2DRectangleOutline(bounds, *fontcolor);
+		driver->draw2DRectangleOutline(core::rect<s32>(x - 1, y - 1, x + width, y + height), *fontcolor);
 	int fx = x + 5, fy = y + (height - m_fontsize.Y) / 2;
 	core::rect<s32> fontbounds(fx, fy, fx + m_fontsize.X * name.size(), fy + m_fontsize.Y);
 	m_font->draw(name.c_str(), fontbounds, *fontcolor, false, false);

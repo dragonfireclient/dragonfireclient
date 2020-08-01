@@ -1680,6 +1680,7 @@ void Client::updateAllMapBlocks()
 		for (MapBlock *block : blocks)
 			addUpdateMeshTask(block->getPos(), false, false);
 	}
+	//addUpdateMeshTaskWithEdge(getObjectBlockPos(m_env.getLocalPlayer()->getPosition()), false, false);
 }
 
 ClientEvent *Client::getClientEvent()

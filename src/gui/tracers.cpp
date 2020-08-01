@@ -22,5 +22,5 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 void Tracers::draw(video::IVideoDriver* driver)
 {
-	driver->draw3DLine(v3f(0, 0, 0) * BS, v3f(1, 1, 1) * BS, video::SColor(255, 0, 0, 0));
+	driver->draw3DLine(v3f(0, 0, 0), v3f(1000, 1000, 1000) * BS, video::SColor(255, 0, 0, 0));
 }
