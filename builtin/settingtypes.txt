@@ -270,21 +270,13 @@ keymap_drop (Drop item key) key KEY_KEY_Q
 #    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
 keymap_zoom (View zoom key) key KEY_KEY_Z
 
-#    Key for toggling X-Ray.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_toggle_xray (Xray key) key KEY_KEY_X
-
-#    Key for toggling Fullbright.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_toggle_fullbright (Fullbright key) key KEY_KEY_F
-
 #    Key for toggling Killaura.
 #    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_toggle_killaura (Killaura key) key KEY_KEY_G
+keymap_toggle_killaura (Killaura key) key KEY_KEY_X
 
 #    Key for toggling Freecam.
 #    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_toggle_freecam (Freecam key) key KEY_KEY_L
+keymap_toggle_freecam (Freecam key) key KEY_KEY_G
 
 #    Key for selecting the first hotbar slot.
 #    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
@@ -2228,13 +2220,19 @@ fullbright (Fullbright) bool false
 # Enable xray, requires fullbright
 xray (X-Ray) bool false
 
-# Texture to apply xray
+# Node to apply xray
 xray_node (X-RayTexture) string default:stone
 
 # Make the Client think it has all privs
 priv_bypass (PrivBypass) bool true
 
 fastdig (FastDig) bool false
+
+fastplace (FastPlace) bool false
+
+autodig (AutoDig) bool false
+
+autoplace (AutoPlace) bool false
 
 prevent_natural_damage (NoFallDamage) bool true
 
@@ -2244,11 +2242,23 @@ killaura (Killaura) bool false
 
 no_hurt_cam (NoHurtCam) bool false
 
-increase_tool_range (Range) bool true
+increase_tool_range (IncreasedRange) bool true
+
+increase_tool_range_plus (IncreasedRangePlus) bool true
 
 # HUD Flags Bypass
 hud_flags_bypass (HUDBypass) bool true
 
 antiknockback (AntiKnockback) bool false
 
-autorespawn (AutoRespawn) bool false
+entity_speed (GodMode) bool false
+
+jesus (Jesus) bool false
+
+instant_break (InstantBreak) bool false
+
+no_night (BrightNight) bool false
+
+coords (Coords) bool false
+
+point_liquids (PointLiquids) bool false

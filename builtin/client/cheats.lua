@@ -3,10 +3,9 @@ core.cheats = {
 		["Killaura"] = "killaura",
 		["AntiKnockback"] = "antiknockback",
 		["NoFallDamage"] = "prevent_natural_damage",
-		["AutoRespawn"] = "autorespawn",
 	},
 	["Movement"] = {
-		["DragonRider"] = "entity_speed",
+		["GodMode"] = "entity_speed",
 		["Freecam"] = "freecam",
 		["PrivBypass"] = "priv_bypass",
 		["AutoForward"] = "continuous_forward",
@@ -30,8 +29,7 @@ core.cheats = {
 		["InstantBreak"] = "instant_break",
 		["IncreasedRange"] = "increase_tool_range",
 		["UnlimitedRange"] = "increase_tool_range_plus",
-		["Scaffold"] = "scaffold",
-		["Highway"] = "highway",
+		["PointLiquids"] = "point_liquids",
 	},
 	["Misc"] = {
 		["Enderchest"] = function()
@@ -39,3 +37,8 @@ core.cheats = {
 		end,
 	}
 }
+
+function core.register_cheat(cheatname, category, func)
+	core.cheats[category] = core.cheats[category] or {}
+	core.cheats[category][cheatname] = func
+end

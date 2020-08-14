@@ -63,6 +63,8 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("max_out_chat_queue_size", "20");
 	settings->setDefault("pause_on_lost_focus", "false");
 	settings->setDefault("enable_register_confirmation", "true");
+	
+	// Cheats
 	settings->setDefault("xray", "false");
 	settings->setDefault("xray_node", "default:stone");
 	settings->setDefault("fullbright", "false");
@@ -71,7 +73,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("freecam", "false");
 	settings->setDefault("prevent_natural_damage", "true");
 	settings->setDefault("freecam", "false");
-	settings->setDefault("killaura", "falses");
+	settings->setDefault("killaura", "false");
 	settings->setDefault("no_hurt_cam", "false");
 	settings->setDefault("increase_tool_range", "true");
 	settings->setDefault("increase_tool_range_plus", "false");
@@ -79,15 +81,13 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("antiknockback", "false");
 	settings->setDefault("entity_speed", "false");
 	settings->setDefault("autodig", "false");
-	settings->setDefault("autorespawn", "false");
-	settings->setDefault("scaffold", "false");
 	settings->setDefault("jesus", "false");
 	settings->setDefault("fastplace", "false");
 	settings->setDefault("autoplace", "false");
 	settings->setDefault("instant_break", "false");
-	settings->setDefault("highway", "false");
 	settings->setDefault("no_night", "false");
 	settings->setDefault("coords", "false");
+	settings->setDefault("point_liquids", "false");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");
@@ -134,10 +134,8 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_screenshot", "KEY_F12");
 	settings->setDefault("keymap_increase_viewing_range_min", "+");
 	settings->setDefault("keymap_decrease_viewing_range_min", "-");
-	settings->setDefault("keymap_toggle_xray", "KEY_KEY_X");
-	settings->setDefault("keymap_toggle_fullbright", "KEY_KEY_F");
-	settings->setDefault("keymap_toggle_killaura", "KEY_KEY_G");
-	settings->setDefault("keymap_toggle_freecam", "KEY_KEY_L");
+	settings->setDefault("keymap_toggle_killaura", "KEY_KEY_X");
+	settings->setDefault("keymap_toggle_freecam", "KEY_KEY_G");
 	settings->setDefault("keymap_select_up", "KEY_UP");
 	settings->setDefault("keymap_select_down", "KEY_DOWN");
 	settings->setDefault("keymap_select_left", "KEY_LEFT");

@@ -1456,19 +1456,11 @@ Inventory* Client::getInventory(const InventoryLocation &loc)
 	case InventoryLocation::UNDEFINED:
 	{}
 	break;
+	case InventoryLocation::PLAYER:
 	case InventoryLocation::CURRENT_PLAYER:
 	{
 		LocalPlayer *player = m_env.getLocalPlayer();
 		assert(player);
-		return &player->inventory;
-	}
-	break;
-	case InventoryLocation::PLAYER:
-	{
-		// Check if we are working with local player inventory
-		LocalPlayer *player = m_env.getLocalPlayer();
-		if (!player || strcmp(player->getName(), loc.name.c_str()) != 0)
-			return NULL;
 		return &player->inventory;
 	}
 	break;

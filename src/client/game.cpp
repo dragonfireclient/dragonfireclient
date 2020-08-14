@@ -112,6 +112,8 @@ Game::Game() :
 		&freecamChangedCallback, this);
 	g_settings->registerChangedCallback("xray",
 		&updateAllMapBlocksCallback, this);
+	g_settings->registerChangedCallback("xray_node",
+		&updateAllMapBlocksCallback, this);
 	g_settings->registerChangedCallback("fullbright",
 		&updateAllMapBlocksCallback, this);
 		
@@ -174,6 +176,12 @@ Game::~Game()
 		&settingChangedCallback, this);
 	g_settings->deregisterChangedCallback("freecam",
 		&freecamChangedCallback, this);
+	g_settings->deregisterChangedCallback("xray",
+		&updateAllMapBlocksCallback, this);
+	g_settings->deregisterChangedCallback("xray_node",
+		&updateAllMapBlocksCallback, this);
+	g_settings->deregisterChangedCallback("fullbright",
+		&updateAllMapBlocksCallback, this);
 }
 
 bool Game::startup(bool *kill,
@@ -1107,10 +1115,6 @@ void Game::processKeyInput()
 		toggleFast();
 	} else if (wasKeyDown(KeyType::NOCLIP)) {
 		toggleNoClip();
-	} else if (wasKeyDown(KeyType::XRAY)) {
-		toggleXray();
-	} else if (wasKeyDown(KeyType::FULLBRIGHT)) {
-		toggleFullbright();
 	} else if (wasKeyDown(KeyType::KILLAURA)) {
 		toggleKillaura();
 	} else if (wasKeyDown(KeyType::FREECAM)) {
@@ -1412,32 +1416,6 @@ void Game::toggleNoClip()
 	} else {
 		m_game_ui->showTranslatedStatusText("Noclip mode disabled");
 	}
-}
-
-void Game::toggleXray()
-{
-	bool xray = ! g_settings->getBool("xray");
-	g_settings->set("xray", bool_to_cstr(xray));
-
-	if (xray) {
-		m_game_ui->showTranslatedStatusText("Xray enabled");
-	} else {
-		m_game_ui->showTranslatedStatusText("Xray disabled");
-	}
-	client->m_mesh_update_thread.doUpdate();
-}
-
-void Game::toggleFullbright()
-{
-	bool fullbright = ! g_settings->getBool("fullbright");
-	g_settings->set("fullbright", bool_to_cstr(fullbright));
-
-	if (fullbright) {
-		m_game_ui->showTranslatedStatusText("Fullbright enabled");
-	} else {
-		m_game_ui->showTranslatedStatusText("Fullbright disabled");
-	}
-	client->m_mesh_update_thread.doUpdate();
 }
 
 void Game::toggleKillaura()
@@ -3478,8 +3456,6 @@ void Game::showPauseMenu()
 		"- Mouse right: place/use\n"
 		"- Mouse wheel: select item\n"
 		"- %s: chat\n"
-		"- %s: X-Ray\n"
-		"- %s: Fullbright\n"
 		"- %s: Killaura\n"
 		"- %s: Freecam\n"
 	);
@@ -3497,8 +3473,6 @@ void Game::showPauseMenu()
 			GET_KEY_NAME(keymap_inventory),
 			GET_KEY_NAME(keymap_special_inventory),
 			GET_KEY_NAME(keymap_chat),
-			GET_KEY_NAME(keymap_toggle_xray),
-			GET_KEY_NAME(keymap_toggle_fullbright),
 			GET_KEY_NAME(keymap_toggle_killaura),
 			GET_KEY_NAME(keymap_toggle_freecam)
 			);

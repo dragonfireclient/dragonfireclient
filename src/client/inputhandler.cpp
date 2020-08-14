@@ -73,8 +73,6 @@ void KeyCache::populate()
 			getKeySetting("keymap_decrease_viewing_range_min");
 	key[KeyType::RANGESELECT] = getKeySetting("keymap_rangeselect");
 	key[KeyType::ZOOM] = getKeySetting("keymap_zoom");
-	key[KeyType::XRAY] = getKeySetting("keymap_toggle_xray");
-	key[KeyType::FULLBRIGHT] = getKeySetting("keymap_toggle_fullbright");
 	key[KeyType::KILLAURA] = getKeySetting("keymap_toggle_killaura");
 	key[KeyType::FREECAM] = getKeySetting("keymap_toggle_freecam");
 	key[KeyType::SELECT_UP] = getKeySetting("keymap_select_up");

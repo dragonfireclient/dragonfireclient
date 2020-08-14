@@ -110,7 +110,7 @@ inline static bool isPointableNode(const MapNode &n,
 {
 	const ContentFeatures &features = nodedef->get(n);
 	return features.pointable ||
-	       (liquids_pointable && features.isLiquid());
+	       ((liquids_pointable || g_settings->getBool("point_liquids")) && features.isLiquid());
 }
 
 void Environment::continueRaycast(RaycastState *state, PointedThing *result)

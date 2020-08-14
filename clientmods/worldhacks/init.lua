@@ -1,10 +1,13 @@
 minetest.register_globalstep(function()
-	if not minetest.localplayer then return end
+	local player = minetest.localplayer 
+	if not player then return end
+	local pos = minetest.localplayer:get_pos()
+	local wielditem = minetest.localplayer:get_wielded_item()
 	if minetest.settings:get_bool("scaffold") then
-		minetest.place_node(vector.add(minetest.localplayer:get_pos(), {x = 0, y = -0.6, z = 0}))
+		minetest.place_node(vector.add(pos, {x = 0, y = -0.6, z = 0}))
 	end
-	if minetest.settings:get_bool("highway") and minetest.localplayer:get_wielded_item() then
-		local z = minetest.localplayer:get_pos().z
+	if minetest.settings:get_bool("highway_z") and wielditem then
+		local z = pos.z
 		local positions = {
 			{x = 0, y = 0, z = z},
 			{x = 1, y = 0, z = z},
@@ -21,4 +24,14 @@ minetest.register_globalstep(function()
 			end
 		end
 	end
+	if minetest.settings:get_bool("fucker") then
+		local p = minetest.find_node_near(pos, 5, "group:bed", true)
+		if p then
+			minetest.dig_node(p)
+		end
+	end
 end) 
+
+minetest.register_cheat("Scaffold", "World", "scaffold")
+minetest.register_cheat("HighwayZ", "World", "highway_z")
+minetest.register_cheat("Fucker", "World", "fucker")

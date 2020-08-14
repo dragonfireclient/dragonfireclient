@@ -77,8 +77,6 @@ enum
 	GUI_ID_KEY_DEC_RANGE_BUTTON,
 	GUI_ID_KEY_INC_RANGE_BUTTON,
 	GUI_ID_KEY_AUTOFWD_BUTTON,
-	GUI_ID_KEY_XRAY_BUTTON,
-	GUI_ID_KEY_FULLBRIGHT_BUTTON,
 	GUI_ID_KEY_KILLAURA_BUTTON,
 	GUI_ID_KEY_FREECAM_BUTTON,
 	GUI_ID_KEY_SELECT_UP_BUTTON,
@@ -458,8 +456,6 @@ void GUIKeyChangeMenu::init_keys()
 	this->add_key(GUI_ID_KEY_CHATLOG_BUTTON,   wgettext("Toggle chat log"),  "keymap_toggle_chat");
 	this->add_key(GUI_ID_KEY_FOG_BUTTON,       wgettext("Toggle fog"),       "keymap_toggle_fog");
 	this->add_key(GUI_ID_KEY_CHEAT_MENU_BUTTON,wgettext("Toggle C. Menu"),"keymap_toggle_cheat_menu");
-	this->add_key(GUI_ID_KEY_XRAY_BUTTON,	   wgettext("Toggle X-Ray"),     "keymap_toggle_xray");
-	this->add_key(GUI_ID_KEY_FULLBRIGHT_BUTTON,wgettext("Toggle Fullbr."),	 "keymap_toggle_fullbright");
 	this->add_key(GUI_ID_KEY_KILLAURA_BUTTON,  wgettext("Toggle Killaura"),  "keymap_toggle_killaura");
 	this->add_key(GUI_ID_KEY_FREECAM_BUTTON,   wgettext("Toggle Freec."),    "keymap_toggle_freecam");
 	this->add_key(GUI_ID_KEY_SELECT_UP_BUTTON, wgettext("C. Menu Up"),    "keymap_select_up");

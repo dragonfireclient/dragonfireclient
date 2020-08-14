@@ -43,3 +43,5 @@ minetest.register_chatcommand("respawn", {
 		end
 	end
 })
+
+minetest.register_cheat("AutoRespawn", "Combat", "autorespawn")

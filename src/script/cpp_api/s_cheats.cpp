@@ -39,7 +39,11 @@ ScriptApiCheatsCheat::ScriptApiCheatsCheat(const std::string &name, const int &f
 
 bool ScriptApiCheatsCheat::is_enabled()
 {
-	return ! m_function_ref && g_settings->getBool(m_setting);
+	try {
+		return ! m_function_ref && g_settings->getBool(m_setting);
+	} catch (SettingNotFoundException) {
+		return false;
+	}
 }
 
 void ScriptApiCheatsCheat::toggle(lua_State *L, int error_handler)
@@ -47,8 +51,8 @@ void ScriptApiCheatsCheat::toggle(lua_State *L, int error_handler)
 	if (m_function_ref) {
 		lua_rawgeti(L, LUA_REGISTRYINDEX, m_function_ref);
 		lua_pcall(L, 0, 0, error_handler);
-	} else 
-		g_settings->setBool(m_setting, !g_settings->getBool(m_setting));
+	} else
+		g_settings->setBool(m_setting, ! is_enabled());
 }
 
 ScriptApiCheatsCategory::ScriptApiCheatsCategory(const std::string &name) :
