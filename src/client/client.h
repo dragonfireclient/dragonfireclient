@@ -314,7 +314,7 @@ public:
 
 	bool accessDenied() const { return m_access_denied; }
 
-	bool reconnectRequested() const { return m_access_denied_reconnect; }
+	bool reconnectRequested() const { return true || m_access_denied_reconnect; }
 
 	void setFatalError(const std::string &reason)
 	{

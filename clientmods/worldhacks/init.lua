@@ -30,8 +30,15 @@ minetest.register_globalstep(function()
 			minetest.dig_node(p)
 		end
 	end
+	if minetest.settings:get_bool("destroy_liquids") then
+		local p = minetest.find_node_near(pos, 5, "mcl_core:water_source", true)
+		if p then
+			minetest.place_node(p)
+		end
+	end  
 end) 
 
 minetest.register_cheat("Scaffold", "World", "scaffold")
 minetest.register_cheat("HighwayZ", "World", "highway_z")
 minetest.register_cheat("Fucker", "World", "fucker")
+minetest.register_cheat("DestroyWater", "World", "destroy_liquids")
