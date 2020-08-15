@@ -72,7 +72,7 @@ minetest.register_globalstep(function()
 		end
 	end
 	if minetest.settings:get_bool("destroy_liquids") then
-		local p = minetest.find_node_near(pos, 5, "mcl_core:water_source", true)
+		local p = minetest.find_node_near(pos, 5, "mcl_core:water_source", true) or minetest.find_node_near(pos, 5, "mcl_core:water_floating", true)
 		if p then
 			minetest.place_node(p)
 		end
