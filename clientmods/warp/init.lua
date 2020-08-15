@@ -45,6 +45,22 @@ minetest.register_chatcommand("deletewarp", {
 	func = warp.delete,
 })
 
+minetest.register_chatcommand("listwarps", {
+	description = "List all warps.",
+	func = function()
+		local warps = storage:to_table().fields
+		local warplist = {}
+		for warp in pairs(warps) do
+			table.insert(warplist, warp)
+		end
+		if #warplist > 0 then
+			return true, table.concat(warplist, ", ")
+		else
+			return false, "No warps set."
+		end
+	end,
+})
+
 local function do_warp(param)
 	if param == "" then return false, "Missing parameter." end
 	local success, pos = minetest.parse_pos(param)
