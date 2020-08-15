@@ -3,7 +3,7 @@ chat = {}
 chat.rainbow = dofile(minetest.get_modpath("chat") .. "/rainbow.lua")
 
 function chat.send(message)
-	local starts_with = message:sub(1,1) == "/"
+	local starts_with = message:sub(1, 1)
 	
 	if starts_with == "/" or starts_with == "." then return end
 
