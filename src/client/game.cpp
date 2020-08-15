@@ -2290,7 +2290,7 @@ void Game::processPlayerInteraction(f32 dtime, bool show_hud, bool show_debug)
 	f32 d = getToolRange(selected_def, hand_item.getDefinition(itemdef_manager));
 	
 	if (g_settings->getBool("increase_tool_range"))
-		d++;
+		d += 2;
 	if (g_settings->getBool("increase_tool_range_plus"))
 		d = 1000;
 

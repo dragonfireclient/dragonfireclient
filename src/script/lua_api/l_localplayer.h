@@ -43,6 +43,9 @@ private:
 
 	// get_wield_index(self)
 	static int l_get_wield_index(lua_State *L);
+	
+	// set_wield_index(self)
+	static int l_set_wield_index(lua_State *L);
 
 	// get_wielded_item(self)
 	static int l_get_wielded_item(lua_State *L);

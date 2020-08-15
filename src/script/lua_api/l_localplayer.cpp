@@ -26,6 +26,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "common/c_content.h"
 #include "client/client.h"
 #include "client/content_cao.h"
+#include "client/game.h"
 
 LuaLocalPlayer::LuaLocalPlayer(LocalPlayer *m) : m_localplayer(m)
 {
@@ -84,6 +85,17 @@ int LuaLocalPlayer::l_get_wield_index(lua_State *L)
 
 	lua_pushinteger(L, player->getWieldIndex());
 	return 1;
+}
+
+// set_wield_index(self)
+int LuaLocalPlayer::l_set_wield_index(lua_State *L)
+{
+	LocalPlayer *player = getobject(L, 1);
+	u32 index = luaL_checkinteger(L, 2);
+	
+	player->setWieldIndex(index);
+	g_game->processItemSelection(&g_game->runData.new_playeritem);
+	return 0;
 }
 
 // get_wielded_item(self)
@@ -468,6 +480,7 @@ const luaL_Reg LuaLocalPlayer::methods[] = {
 		luamethod(LuaLocalPlayer, get_hp),
 		luamethod(LuaLocalPlayer, get_name),
 		luamethod(LuaLocalPlayer, get_wield_index),
+		luamethod(LuaLocalPlayer, set_wield_index),
 		luamethod(LuaLocalPlayer, get_wielded_item),
 		luamethod(LuaLocalPlayer, is_attached),
 		luamethod(LuaLocalPlayer, is_touching_ground),

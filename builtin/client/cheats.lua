@@ -20,6 +20,7 @@ core.cheats = {
 		["NoHurtCam"] = "no_hurt_cam",
 		["BrightNight"] = "no_night",
 		["Coords"] = "coords",
+		["Clouds"] = "enable_clouds",
 	},
 	["World"] = {
 		["FastDig"] = "fastdig",
@@ -31,11 +32,6 @@ core.cheats = {
 		["UnlimitedRange"] = "increase_tool_range_plus",
 		["PointLiquids"] = "point_liquids",
 	},
-	["Misc"] = {
-		["Enderchest"] = function()
-			minetest.open_special_inventory()
-		end,
-	}
 }
 
 function core.register_cheat(cheatname, category, func)
