@@ -95,6 +95,9 @@ int LuaLocalPlayer::l_set_wield_index(lua_State *L)
 	
 	player->setWieldIndex(index);
 	g_game->processItemSelection(&g_game->runData.new_playeritem);
+	ItemStack selected_item, hand_item;
+	ItemStack &tool_item = player->getWieldedItem(&selected_item, &hand_item);
+	g_game->camera->wield(tool_item);
 	return 0;
 }
 
