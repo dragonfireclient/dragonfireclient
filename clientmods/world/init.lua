@@ -59,19 +59,18 @@ minetest.register_globalstep(function()
 				{x = 2, y = 0, z = z}
 			}
 			for i, p in pairs(positions) do
-				if i > count then break end
 				minetest.place_node(p)
 			end
 		elseif minetest.settings:get_bool("destroy_liquids") then
-			local p = minetest.find_node_near(pos, 5, "mcl_core:water_source", true) or minetest.find_node_near(pos, 5, "mcl_core:water_floating", true)
-			if p then
+			local positions = minetest.find_nodes_near(pos, 5, {"mcl_core:water_source", "mcl_core:water_floating"}, true)
+			for _, p in pairs(positions) do
 				minetest.place_node(p)
 			end
-		elseif minetest.settings:get_bool("fill") then
-			local positions = minetest.find_nodes_in_area(vector.add(pos, {x = 5, y = -0.6, z = 5}), vector.add(pos, {x = -5, y = -5.6, z = -5}), "air")
+		elseif minetest.settings:get_bool("placeoncobble") then
+			local positions = minetest.find_nodes_near_under_air(pos, 5, "mcl_core:cobble", true)
 			for i, p in pairs(positions) do
-				if i > count then break end
-				minetest.place_node(p)
+				if i > 8 then break end
+				minetest.place_node(vector.add(p, {x = 0, y = 1, z = 0}))
 			end
 		end
 	end
@@ -87,4 +86,4 @@ minetest.register_cheat("Scaffold", "World", "scaffold")
 minetest.register_cheat("HighwayZ", "World", "highway_z")
 minetest.register_cheat("Fucker", "World", "fucker")
 minetest.register_cheat("BlockWater", "World", "destroy_liquids")
-minetest.register_cheat("Fill", "World", "fill")
+minetest.register_cheat("PlaceOnCobble", "World", "placeoncobble")

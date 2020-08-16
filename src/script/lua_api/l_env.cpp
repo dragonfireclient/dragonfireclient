@@ -805,6 +805,112 @@ int ModApiEnvMod::l_find_node_near(lua_State *L)
 	return 0;
 }
 
+// find_nodes_near(pos, radius, nodenames, [search_center])
+// nodenames: eg. {"ignore", "group:tree"} or "default:dirt"
+int ModApiEnvMod::l_find_nodes_near(lua_State *L)
+{
+	GET_PLAIN_ENV_PTR;
+
+	const NodeDefManager *ndef = env->getGameDef()->ndef();
+	Map &map = env->getMap();
+
+	v3s16 pos = read_v3s16(L, 1);
+	int radius = luaL_checkinteger(L, 2);
+	std::vector<content_t> filter;
+	collectNodeIds(L, 3, ndef, filter);
+
+	int start_radius = (lua_isboolean(L, 4) && readParam<bool>(L, 4)) ? 0 : 1;
+
+#ifndef SERVER
+	// Client API limitations
+	if (Client *client = getClient(L))
+		radius = client->CSMClampRadius(pos, radius);
+#endif
+	
+	std::vector<u32> individual_count;
+	individual_count.resize(filter.size());
+	
+	lua_newtable(L);
+	u32 i = 0;
+	
+	for (int d = start_radius; d <= radius; d++) {
+		const std::vector<v3s16> &list = FacePositionCache::getFacePositions(d);
+		for (const v3s16 &posi : list) {
+			v3s16 p = pos + posi;
+			content_t c = map.getNode(p).getContent();
+			auto it = std::find(filter.begin(), filter.end(), c);
+			if (it != filter.end()) {
+				push_v3s16(L, p);
+				lua_rawseti(L, -2, ++i);
+
+				u32 filt_index = it - filter.begin();
+				individual_count[filt_index]++;
+			}
+		}
+	}
+	lua_createtable(L, 0, filter.size());
+	for (u32 i = 0; i < filter.size(); i++) {
+		lua_pushinteger(L, individual_count[i]);
+		lua_setfield(L, -2, ndef->get(filter[i]).name.c_str());
+	}
+	return 2;
+}
+
+// find_nodes_near_under_air(pos, radius, nodenames, [search_center])
+// nodenames: eg. {"ignore", "group:tree"} or "default:dirt"
+int ModApiEnvMod::l_find_nodes_near_under_air(lua_State *L)
+{
+	GET_PLAIN_ENV_PTR;
+
+	const NodeDefManager *ndef = env->getGameDef()->ndef();
+	Map &map = env->getMap();
+
+	v3s16 pos = read_v3s16(L, 1);
+	int radius = luaL_checkinteger(L, 2);
+	std::vector<content_t> filter;
+	collectNodeIds(L, 3, ndef, filter);
+
+	int start_radius = (lua_isboolean(L, 4) && readParam<bool>(L, 4)) ? 0 : 1;
+
+#ifndef SERVER
+	// Client API limitations
+	if (Client *client = getClient(L))
+		radius = client->CSMClampRadius(pos, radius);
+#endif
+	
+	std::vector<u32> individual_count;
+	individual_count.resize(filter.size());
+	
+	lua_newtable(L);
+	u32 i = 0;
+	
+	for (int d = start_radius; d <= radius; d++) {
+		const std::vector<v3s16> &list = FacePositionCache::getFacePositions(d);
+		for (const v3s16 &posi : list) {
+			v3s16 p = pos + posi;
+			content_t c = map.getNode(p).getContent();
+			v3s16 psurf(p.X, p.Y + 1, p.Z);
+			content_t csurf = map.getNode(psurf).getContent();
+			if (c == CONTENT_AIR || csurf != CONTENT_AIR)
+				continue;
+			auto it = std::find(filter.begin(), filter.end(), c);
+			if (it != filter.end()) {
+				push_v3s16(L, p);
+				lua_rawseti(L, -2, ++i);
+
+				u32 filt_index = it - filter.begin();
+				individual_count[filt_index]++;
+			}
+		}
+	}
+	lua_createtable(L, 0, filter.size());
+	for (u32 i = 0; i < filter.size(); i++) {
+		lua_pushinteger(L, individual_count[i]);
+		lua_setfield(L, -2, ndef->get(filter[i]).name.c_str());
+	}
+	return 2;
+}
+
 // find_nodes_in_area(minp, maxp, nodenames, [grouped])
 int ModApiEnvMod::l_find_nodes_in_area(lua_State *L)
 {
@@ -1377,6 +1483,8 @@ void ModApiEnvMod::Initialize(lua_State *L, int top)
 	API_FCT(get_gametime);
 	API_FCT(get_day_count);
 	API_FCT(find_node_near);
+	API_FCT(find_nodes_near);
+	API_FCT(find_nodes_near_under_air);
 	API_FCT(find_nodes_in_area);
 	API_FCT(find_nodes_in_area_under_air);
 	API_FCT(fix_light);
@@ -1405,6 +1513,8 @@ void ModApiEnvMod::InitializeClient(lua_State *L, int top)
 	API_FCT(get_node_level);
 	API_FCT(find_nodes_with_meta);
 	API_FCT(find_node_near);
+	API_FCT(find_nodes_near);
+	API_FCT(find_nodes_near_under_air);
 	API_FCT(find_nodes_in_area);
 	API_FCT(find_nodes_in_area_under_air);
 	API_FCT(line_of_sight);
