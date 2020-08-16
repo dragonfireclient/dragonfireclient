@@ -39,12 +39,17 @@ minetest.register_chatcommand("dig", {
 	end,
 })
 
-minetest.register_globalstep(function()
-	local player = minetest.localplayer 
+local etime = 0
+
+minetest.register_globalstep(function(dtime)
+	etime = etime + dtime
+	if etime < 1 then return end
+	local player = minetest.localplayer
 	if not player then return end
 	local pos = player:get_pos()
-	local count = player:get_wielded_item():get_count()
-	if count > 0 then
+	local item = player:get_wielded_item()
+	local def = minetest.get_item_def(item:get_name())
+	if item:get_count() > 0 and def.node_placement_prediction ~= "" then
 		if minetest.settings:get_bool("scaffold") then
 			minetest.place_node(vector.add(pos, {x = 0, y = -0.6, z = 0}))
 		elseif minetest.settings:get_bool("highway_z") then
