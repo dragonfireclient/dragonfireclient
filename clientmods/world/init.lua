@@ -71,24 +71,17 @@ minetest.register_globalstep(function(dtime)
 			for _, p in pairs(positions) do
 				minetest.place_node(p)
 			end
-		elseif minetest.settings:get_bool("placeoncobble") then
-			local positions = minetest.find_nodes_near_under_air(pos, 5, "mcl_core:cobble", true)
+		elseif minetest.settings:get_bool("autotnt") then
+			local positions = minetest.find_nodes_near_under_air_except(pos, 5, item:get_name(), true)
 			for i, p in pairs(positions) do
 				if i > 8 then break end
 				minetest.place_node(vector.add(p, {x = 0, y = 1, z = 0}))
 			end
 		end
 	end
-	if minetest.settings:get_bool("fucker") then
-		local p = minetest.find_node_near(pos, 5, "group:bed", true)
-		if p then
-			minetest.dig_node(p)
-		end
-	end
 end) 
 
 minetest.register_cheat("Scaffold", "World", "scaffold")
 minetest.register_cheat("HighwayZ", "World", "highway_z")
-minetest.register_cheat("Fucker", "World", "fucker")
 minetest.register_cheat("BlockWater", "World", "destroy_liquids")
-minetest.register_cheat("PlaceOnCobble", "World", "placeoncobble")
+minetest.register_cheat("AutoTNT", "World", "autotnt")
