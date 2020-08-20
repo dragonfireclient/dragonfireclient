@@ -49,6 +49,7 @@ minetest.register_globalstep(function(dtime)
 	local pos = player:get_pos()
 	local item = player:get_wielded_item()
 	local def = minetest.get_item_def(item:get_name())
+	local nodes_per_tick = tonumber(minetest.settings:get("nodes_per_tick")) or 8
 	if item:get_count() > 0 and def.node_placement_prediction ~= "" then
 		if minetest.settings:get_bool("scaffold") then
 			minetest.place_node(vector.add(pos, {x = 0, y = -0.6, z = 0}))
@@ -64,17 +65,19 @@ minetest.register_globalstep(function(dtime)
 				{x = 2, y = 0, z = z}
 			}
 			for i, p in pairs(positions) do
+				if i > nodes_per_tick then break end
 				minetest.place_node(p)
 			end
 		elseif minetest.settings:get_bool("destroy_liquids") then
 			local positions = minetest.find_nodes_near(pos, 5, {"mcl_core:water_source", "mcl_core:water_floating"}, true)
-			for _, p in pairs(positions) do
+			for i, p in pairs(positions) do
+				if i > nodes_per_tick then break end
 				minetest.place_node(p)
 			end
 		elseif minetest.settings:get_bool("autotnt") then
 			local positions = minetest.find_nodes_near_under_air_except(pos, 5, item:get_name(), true)
 			for i, p in pairs(positions) do
-				if i > 8 then break end
+				if i > nodes_per_tick then break end
 				minetest.place_node(vector.add(p, {x = 0, y = 1, z = 0}))
 			end
 		end

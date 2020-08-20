@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 
-CORE_GIT=https://github.com/minetest/minetest
+CORE_GIT=https://github.com/EliasFleckenstein03/dragonfireclient
 CORE_BRANCH=master
-CORE_NAME=minetest
-GAME_GIT=https://github.com/minetest/minetest_game
+CORE_NAME=dragonfireclient
+GAME_GIT=https://git.minetest.land/Wuzzy/MineClone2
 GAME_BRANCH=master
-GAME_NAME=minetest_game
+GAME_NAME=MineClone2
 
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 if [ $# -ne 1 ]; then
