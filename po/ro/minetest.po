@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Romanian (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-06-04 16:41+0000\n"
 "Last-Translator: f0roots <f0rootss@gmail.com>\n"
 "Language-Team: Romanian <https://hosted.weblate.org/projects/minetest/"
@@ -14,14 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
 "X-Generator: Weblate 4.1-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Reînviere"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Ai murit"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -485,6 +477,11 @@ msgid "Browse"
 msgstr "Navighează"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Client"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Dezactivat"
 
@@ -696,6 +693,10 @@ msgstr "Dezvoltatori de bază"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Credite"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1144,7 +1145,7 @@ msgid "Continue"
 msgstr "Continuă"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1155,11 +1156,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Controale:\n"
 "-%s: deplasați înainte\n"
@@ -1273,6 +1277,16 @@ msgid "Fog enabled"
 msgstr "Ceață activată"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Ceață dezactivată"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "Ceață activată"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Informatii despre joc:"
 
@@ -1291,6 +1305,16 @@ msgstr "Definițiile obiectelor..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB / s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Ceață dezactivată"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Daune activate"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1377,6 +1401,10 @@ msgid "Resolving address..."
 msgstr "Se rezolvă adresa..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Reînviere"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Se închide..."
 
@@ -1429,6 +1457,10 @@ msgid "Wireframe shown"
 msgstr "Cadru de sârmă afișat"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Ai murit"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "Zoom dezactivat în prezent de joc sau mod"
 
@@ -1442,6 +1474,16 @@ msgstr "Chat ascuns"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "Chat afișat"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Chat ascuns"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "Chat afișat"
 
 #: src/client/gameui.cpp
@@ -1769,6 +1811,26 @@ msgid "Backward"
 msgstr "Înapoi"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Schimba camera"
 
@@ -1862,8 +1924,28 @@ msgid "Special"
 msgstr "Special"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Special"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Intră pe rapid"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Intră pe rapid"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "Comutați HUD"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Intră pe zbor"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -6457,31 +6539,27 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Intră pe rapid"
+#~ msgid "Ok"
+#~ msgstr "Ok"
+
+#~ msgid "Back"
+#~ msgstr "Înapoi"
+
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Se descarca si se instaleaza $ 1, vă rugăm să așteptați ..."
 
 #, fuzzy
-#~ msgid "Select Package File:"
-#~ msgstr "Selectează Fișierul Modului:"
-
-#, fuzzy
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "Activează Daune"
+#~ msgid "Darkness sharpness"
+#~ msgstr "Mapgen"
 
 #, fuzzy
 #~ msgid "Enable VBO"
 #~ msgstr "Activează MP"
 
 #, fuzzy
-#~ msgid "Darkness sharpness"
-#~ msgstr "Mapgen"
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "Activează Daune"
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Se descarca si se instaleaza $ 1, vă rugăm să așteptați ..."
-
-#~ msgid "Back"
-#~ msgstr "Înapoi"
-
-#~ msgid "Ok"
-#~ msgstr "Ok"
+#, fuzzy
+#~ msgid "Select Package File:"
+#~ msgstr "Selectează Fișierul Modului:"

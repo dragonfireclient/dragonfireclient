@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Vietnamese (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-06-13 21:08+0000\n"
 "Last-Translator: darkcloudcat <leducthn@gmail.com>\n"
 "Language-Team: Vietnamese <https://hosted.weblate.org/projects/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.1-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Hồi sinh"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Bạn đã chết"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -474,6 +466,10 @@ msgid "Browse"
 msgstr ""
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+msgid "Clientmods"
+msgstr ""
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr ""
 
@@ -682,6 +678,10 @@ msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
+msgstr ""
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
 msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
@@ -1140,11 +1140,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 
 #: src/client/game.cpp
@@ -1232,6 +1235,15 @@ msgid "Fog enabled"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "Freecam disabled"
+msgstr ""
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "kích hoạt"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr ""
 
@@ -1250,6 +1262,15 @@ msgstr ""
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr ""
+
+#: src/client/game.cpp
+msgid "Killaura disabled"
+msgstr ""
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "kích hoạt"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1336,6 +1357,10 @@ msgid "Resolving address..."
 msgstr ""
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Hồi sinh"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr ""
 
@@ -1388,6 +1413,10 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Bạn đã chết"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1401,6 +1430,14 @@ msgstr ""
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr ""
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu hidden"
+msgstr ""
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu shown"
 msgstr ""
 
 #: src/client/gameui.cpp
@@ -1722,6 +1759,26 @@ msgid "Backward"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr ""
 
@@ -1814,7 +1871,23 @@ msgid "Special"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "Special Inv."
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle C. Menu"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle Freec."
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle Killaura"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp

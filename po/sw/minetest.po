@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Swahili (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Swahili <https://hosted.weblate.org/projects/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.9-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Respawn"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Umekufa."
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -502,6 +494,11 @@ msgid "Browse"
 msgstr "Vinjari"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Mteja"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Walemavu"
 
@@ -740,6 +737,10 @@ msgstr "Watengenezaji wa msingi"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Mikopo"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1223,11 +1224,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Vidhibiti vya chaguo-msingi:\n"
 "-WASD: hoja\n"
@@ -1343,6 +1347,16 @@ msgid "Fog enabled"
 msgstr "kuwezeshwa"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Walemavu"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "kuwezeshwa"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr ""
 
@@ -1363,6 +1377,16 @@ msgstr "Fasili ya kipengele..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "Kibu/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Walemavu"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Uharibifu kuwezeshwa"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1452,6 +1476,10 @@ msgid "Resolving address..."
 msgstr "Kusuluhisha anwani..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Respawn"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Inazima..."
 
@@ -1506,6 +1534,10 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Umekufa."
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1520,6 +1552,15 @@ msgstr "Ufunguo wa mazungumzo"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr ""
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Ufunguo wa mazungumzo"
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu shown"
 msgstr ""
 
 #: src/client/gameui.cpp
@@ -1852,6 +1893,26 @@ msgid "Backward"
 msgstr "Nyuma"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
 msgid "Change camera"
 msgstr "Badilisha funguo"
@@ -1951,7 +2012,27 @@ msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
+msgid "Special Inv."
+msgstr "Zawadi muhimu"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Togoa Cinematic"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Togoa Cinematic"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Toggle HUD"
+msgstr "Togoa kuruka"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
 msgstr "Togoa kuruka"
 
 #: src/gui/guiKeyChangeMenu.cpp
@@ -7243,59 +7324,24 @@ msgstr "cURL kikomo sambamba"
 msgid "cURL timeout"
 msgstr "muda wa kuisha wa cURL"
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Togoa Cinematic"
+#~ msgid "Ok"
+#~ msgstr "Sawa kabisa"
+
+#~ msgid "Back"
+#~ msgstr "Nyuma"
 
 #, fuzzy
-#~ msgid "Select Package File:"
-#~ msgstr "Teua faili ya Moduli:"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Inapakua $1, Tafadhali subiri..."
 
-#, fuzzy
-#~ msgid "Y of upper limit of lava in large caves."
-#~ msgstr "Y ya upper kikomo ya kubwa pseudorandom cellars."
+#~ msgid "Limit of emerge queues on disk"
+#~ msgstr "Kikomo ya foleni emerge kwenye diski"
 
-#~ msgid "Waving Water"
-#~ msgstr "Waving maji"
+#~ msgid "Parallax occlusion strength"
+#~ msgstr "Parallax occlusion nguvu"
 
-#~ msgid "Waving water"
-#~ msgstr "Waving maji"
-
-#~ msgid "This font will be used for certain languages."
-#~ msgstr "Fonti hii itatumika kwa lugha fulani."
-
-#, fuzzy
-#~ msgid "Shadow limit"
-#~ msgstr "Kikomo cha Mapblock"
-
-#~ msgid "Path to TrueTypeFont or bitmap."
-#~ msgstr "Njia ya TrueTypeFont au vitone michoro."
-
-#, fuzzy
-#~ msgid "Lava depth"
-#~ msgstr "Kina ya pango kubwa"
-
-#~ msgid "IPv6 support."
-#~ msgstr "IPv6 msaada."
-
-#~ msgid "Gamma"
-#~ msgstr "Gamma"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "Fonti kivuli Alfa (opaqueness kati ya 0 na 255)."
-
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "Huwezesha toni filmic ramani"
-
-#~ msgid "Enable VBO"
-#~ msgstr "Wezesha VBO"
-
-#, fuzzy
-#~ msgid "Darkness sharpness"
-#~ msgstr "Mwandishi ramani ziwa gorofa mwinuko"
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr ""
-#~ "Vidhibiti vya upana wa vichuguu, thamani ndogo huunda vichuguu pana."
+#~ msgid "Path to save screenshots at."
+#~ msgstr "Njia ya kuokoa viwambo katika."
 
 #, fuzzy
 #~ msgid ""
@@ -7306,21 +7352,53 @@ msgstr "muda wa kuisha wa cURL"
 #~ "Rekebisha simbiko gamma kwa majedwali mwanga. Idadi ya chini ni mkali.\n"
 #~ "Kipimo hiki ni kwa ajili ya mteja tu na ni kupuuzwa na seva."
 
-#~ msgid "Path to save screenshots at."
-#~ msgstr "Njia ya kuokoa viwambo katika."
-
-#~ msgid "Parallax occlusion strength"
-#~ msgstr "Parallax occlusion nguvu"
-
-#~ msgid "Limit of emerge queues on disk"
-#~ msgstr "Kikomo ya foleni emerge kwenye diski"
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr ""
+#~ "Vidhibiti vya upana wa vichuguu, thamani ndogo huunda vichuguu pana."
 
 #, fuzzy
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Inapakua $1, Tafadhali subiri..."
+#~ msgid "Darkness sharpness"
+#~ msgstr "Mwandishi ramani ziwa gorofa mwinuko"
 
-#~ msgid "Back"
-#~ msgstr "Nyuma"
+#~ msgid "Enable VBO"
+#~ msgstr "Wezesha VBO"
 
-#~ msgid "Ok"
-#~ msgstr "Sawa kabisa"
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "Huwezesha toni filmic ramani"
+
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "Fonti kivuli Alfa (opaqueness kati ya 0 na 255)."
+
+#~ msgid "Gamma"
+#~ msgstr "Gamma"
+
+#~ msgid "IPv6 support."
+#~ msgstr "IPv6 msaada."
+
+#, fuzzy
+#~ msgid "Lava depth"
+#~ msgstr "Kina ya pango kubwa"
+
+#~ msgid "Path to TrueTypeFont or bitmap."
+#~ msgstr "Njia ya TrueTypeFont au vitone michoro."
+
+#, fuzzy
+#~ msgid "Shadow limit"
+#~ msgstr "Kikomo cha Mapblock"
+
+#~ msgid "This font will be used for certain languages."
+#~ msgstr "Fonti hii itatumika kwa lugha fulani."
+
+#~ msgid "Waving water"
+#~ msgstr "Waving maji"
+
+#~ msgid "Waving Water"
+#~ msgstr "Waving maji"
+
+#, fuzzy
+#~ msgid "Y of upper limit of lava in large caves."
+#~ msgstr "Y ya upper kikomo ya kubwa pseudorandom cellars."
+
+#, fuzzy
+#~ msgid "Select Package File:"
+#~ msgstr "Teua faili ya Moduli:"

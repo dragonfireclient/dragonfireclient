@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Norwegian Bokmål (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-06-18 13:41+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.1.1-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Gjenoppstå"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Du døde"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -486,6 +478,11 @@ msgid "Browse"
 msgstr "See gjennom"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Klient"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Deaktivert"
 
@@ -696,6 +693,10 @@ msgstr "Kjerneutviklere"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Bidragsytere"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1144,7 +1145,7 @@ msgid "Continue"
 msgstr "Fortsett"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1155,11 +1156,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Controls:\n"
 "- %s: flytt forover\n"
@@ -1273,6 +1277,16 @@ msgid "Fog enabled"
 msgstr "Tåke på"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Tåke av"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "Tåke på"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Spillinfo:"
 
@@ -1291,6 +1305,16 @@ msgstr "Gjenstandsdefinisjoner…"
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Tåke av"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Skade aktivert"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1377,6 +1401,10 @@ msgid "Resolving address..."
 msgstr "Fortolker adresse…"
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Gjenoppstå"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Slås av…"
 
@@ -1429,6 +1457,10 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Du døde"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1442,6 +1474,16 @@ msgstr "Chat skjult"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "Viser chat"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Chat skjult"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "Viser chat"
 
 #: src/client/gameui.cpp
@@ -1769,6 +1811,26 @@ msgid "Backward"
 msgstr "Tilbake"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Endre visning"
 
@@ -1863,8 +1925,27 @@ msgid "Special"
 msgstr "Spesial"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Spesial"
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle C. Menu"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Gjennomtrengelige blokker av/på"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "HUD (hurtigtilgang) av/på"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Flymodus av/på"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -6705,32 +6786,32 @@ msgstr "Maksimal parallellisering i cURL"
 msgid "cURL timeout"
 msgstr "cURL-tidsgrense"
 
-#~ msgid "Select Package File:"
-#~ msgstr "Velg pakkefil:"
-
-#~ msgid "Y of upper limit of lava in large caves."
-#~ msgstr "Y-verdi for øvre grense for lava i store grotter."
-
-#~ msgid "Y-level to which floatland shadows extend."
-#~ msgstr "Hvilket Y-nivå som skyggen til luftøyer når."
-
-#~ msgid "IPv6 support."
-#~ msgstr "IPv6-støtte."
-
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "Aktiver filmatisk toneoversettelse"
-
-#~ msgid "Enable VBO"
-#~ msgstr "Aktiver VBO"
-
-#~ msgid "Path to save screenshots at."
-#~ msgstr "Filsti til lagring av skjermdumper."
-
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Laster ned og installerer $1, vent…"
+#~ msgid "Ok"
+#~ msgstr "Okei"
 
 #~ msgid "Back"
 #~ msgstr "Tilbake"
 
-#~ msgid "Ok"
-#~ msgstr "Okei"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Laster ned og installerer $1, vent…"
+
+#~ msgid "Path to save screenshots at."
+#~ msgstr "Filsti til lagring av skjermdumper."
+
+#~ msgid "Enable VBO"
+#~ msgstr "Aktiver VBO"
+
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "Aktiver filmatisk toneoversettelse"
+
+#~ msgid "IPv6 support."
+#~ msgstr "IPv6-støtte."
+
+#~ msgid "Y-level to which floatland shadows extend."
+#~ msgstr "Hvilket Y-nivå som skyggen til luftøyer når."
+
+#~ msgid "Y of upper limit of lava in large caves."
+#~ msgstr "Y-verdi for øvre grense for lava i store grotter."
+
+#~ msgid "Select Package File:"
+#~ msgstr "Velg pakkefil:"

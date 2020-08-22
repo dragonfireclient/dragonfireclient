@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Danish (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-03-31 10:14+0000\n"
 "Last-Translator: sfan5 <sfan5@live.de>\n"
 "Language-Team: Danish <https://hosted.weblate.org/projects/minetest/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.0-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Genopstå"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Du døde"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -495,6 +487,11 @@ msgid "Browse"
 msgstr "Gennemse"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Klient"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Deaktiveret"
 
@@ -708,6 +705,10 @@ msgstr "Primære udviklere"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Skabt af"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1172,7 +1173,7 @@ msgid "Continue"
 msgstr "Fortsæt"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1183,11 +1184,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Styring:\n"
 "- %s: bevæg dig fremad\n"
@@ -1308,6 +1312,16 @@ msgid "Fog enabled"
 msgstr "aktiveret"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Deaktivér alle"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "aktiveret"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Spilinfo:"
 
@@ -1327,6 +1341,16 @@ msgstr "Elementdefinitioner ..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Deaktivér alle"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Skade aktiveret"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1415,6 +1439,10 @@ msgid "Resolving address..."
 msgstr "Slår adresse op ..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Genopstå"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Lukker ned..."
 
@@ -1469,6 +1497,10 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Du døde"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1483,6 +1515,15 @@ msgstr "Snakketast"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr ""
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Snakketast"
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu shown"
 msgstr ""
 
 #: src/client/gameui.cpp
@@ -1807,6 +1848,26 @@ msgid "Backward"
 msgstr "Baglæns"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
 msgid "Change camera"
 msgstr "Skift bindinger"
@@ -1905,7 +1966,27 @@ msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
+msgid "Special Inv."
+msgstr "Snigetast"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Aktiver filmisk"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Aktiver filmisk"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Toggle HUD"
+msgstr "Omstil flyvning"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
 msgstr "Omstil flyvning"
 
 #: src/gui/guiKeyChangeMenu.cpp
@@ -7067,42 +7148,17 @@ msgstr ""
 msgid "cURL timeout"
 msgstr "cURL-tidsudløb"
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Aktiver filmisk"
+#~ msgid "Ok"
+#~ msgstr "Ok"
 
-#~ msgid "Select Package File:"
-#~ msgstr "Vælg pakke fil:"
+#~ msgid "Back"
+#~ msgstr "Tilbage"
 
-#, fuzzy
-#~ msgid "Shadow limit"
-#~ msgstr "Skygge grænse"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Henter og installerer $1, vent venligst..."
 
-#, fuzzy
-#~ msgid "Lava depth"
-#~ msgstr "Dybde for stor hule"
-
-#~ msgid "IPv6 support."
-#~ msgstr "Understøttelse af IPv6."
-
-#~ msgid "Gamma"
-#~ msgstr "Gamma"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "Alfa for skrifttypeskygge (uigennemsigtighed, mellem 0 og 255)."
-
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "Aktiverer filmisk toneoversættelse"
-
-#~ msgid "Enable VBO"
-#~ msgstr "Aktiver VBO"
-
-#, fuzzy
-#~ msgid "Darkness sharpness"
-#~ msgstr "Søstejlhed"
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr ""
-#~ "Styrer bredden af tunneller. En lavere værdi giver bredere tunneller."
+#~ msgid "Limit of emerge queues on disk"
+#~ msgstr "Begrænsning af fremkomsten af forespørgsler på disk"
 
 #~ msgid ""
 #~ "Adjust the gamma encoding for the light tables. Higher numbers are "
@@ -7112,14 +7168,36 @@ msgstr "cURL-tidsudløb"
 #~ "Justér gammakodningen for lystabellerne. Et større tal betyder lysere.\n"
 #~ "Denne indstilling gælder kun for klienten og ignoreres af serveren."
 
-#~ msgid "Limit of emerge queues on disk"
-#~ msgstr "Begrænsning af fremkomsten af forespørgsler på disk"
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr ""
+#~ "Styrer bredden af tunneller. En lavere værdi giver bredere tunneller."
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Henter og installerer $1, vent venligst..."
+#, fuzzy
+#~ msgid "Darkness sharpness"
+#~ msgstr "Søstejlhed"
 
-#~ msgid "Back"
-#~ msgstr "Tilbage"
+#~ msgid "Enable VBO"
+#~ msgstr "Aktiver VBO"
 
-#~ msgid "Ok"
-#~ msgstr "Ok"
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "Aktiverer filmisk toneoversættelse"
+
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "Alfa for skrifttypeskygge (uigennemsigtighed, mellem 0 og 255)."
+
+#~ msgid "Gamma"
+#~ msgstr "Gamma"
+
+#~ msgid "IPv6 support."
+#~ msgstr "Understøttelse af IPv6."
+
+#, fuzzy
+#~ msgid "Lava depth"
+#~ msgstr "Dybde for stor hule"
+
+#, fuzzy
+#~ msgid "Shadow limit"
+#~ msgstr "Skygge grænse"
+
+#~ msgid "Select Package File:"
+#~ msgstr "Vælg pakke fil:"

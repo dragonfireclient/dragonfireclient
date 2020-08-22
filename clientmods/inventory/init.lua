@@ -5,7 +5,3 @@ dofile(modpath .. "/invhack.lua")
 dofile(modpath .. "/enderchest.lua") 
 dofile(modpath .. "/next_item.lua") 
 dofile(modpath .. "/autotool.lua") 
-
-minetest.register_on_inventory_open(function(inv)
-	print(inv)
-end)

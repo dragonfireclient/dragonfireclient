@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Swedish (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-03-31 10:14+0000\n"
 "Last-Translator: sfan5 <sfan5@live.de>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.0-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Återföds"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Du dog"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -488,6 +480,11 @@ msgid "Browse"
 msgstr "Bläddra"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Klient"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Inaktiverad"
 
@@ -719,6 +716,10 @@ msgstr "Huvudutvecklare"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Medverkande"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1184,7 +1185,7 @@ msgid "Continue"
 msgstr "Fortsätt"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1195,11 +1196,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Kontroller:\n"
 "- %s: rör dig framåt\n"
@@ -1318,6 +1322,16 @@ msgid "Fog enabled"
 msgstr "aktiverad"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Inaktiverad"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "aktiverad"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Spelinformation:"
 
@@ -1336,6 +1350,16 @@ msgstr "Föremålsdefinitioner..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Inaktiverad"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Skada aktiverat"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1423,6 +1447,10 @@ msgid "Resolving address..."
 msgstr "Kollar upp address...."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Återföds"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Stänger av..."
 
@@ -1477,6 +1505,10 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Du dog"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1491,6 +1523,15 @@ msgstr "Chattangent"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr ""
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Chattangent"
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu shown"
 msgstr ""
 
 #: src/client/gameui.cpp
@@ -1815,6 +1856,26 @@ msgid "Backward"
 msgstr "Bakåt"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
 msgid "Change camera"
 msgstr "Ändra tangenter"
@@ -1911,7 +1972,27 @@ msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
+msgid "Special Inv."
+msgstr "tryck på tangent"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Slå av/på Filmisk Kamera"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Slå av/på Filmisk Kamera"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Toggle HUD"
+msgstr "Slå av/på flygläge"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
 msgstr "Slå av/på flygläge"
 
 #: src/gui/guiKeyChangeMenu.cpp
@@ -6571,34 +6652,14 @@ msgstr "cURL parallellgräns"
 msgid "cURL timeout"
 msgstr "cURL-timeout"
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Slå av/på Filmisk Kamera"
+#~ msgid "Ok"
+#~ msgstr "Ok"
 
-#, fuzzy
-#~ msgid "Select Package File:"
-#~ msgstr "Välj modfil:"
+#~ msgid "Back"
+#~ msgstr "Tillbaka"
 
-#~ msgid "Y-level to which floatland shadows extend."
-#~ msgstr "Y-nivå till vilket luftöars skuggor når."
-
-#~ msgid ""
-#~ "Defines areas of floatland smooth terrain.\n"
-#~ "Smooth floatlands occur when noise > 0."
-#~ msgstr ""
-#~ "Definierar områden för luftöars jämna terräng.\n"
-#~ "Jämna luftöar förekommer när oljud > 0."
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr ""
-#~ "Kontrollerar bredd av tunnlar, mindre värden skapar bredare tunnlar."
-
-#, fuzzy
-#~ msgid ""
-#~ "Controls the density of mountain-type floatlands.\n"
-#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
-#~ msgstr ""
-#~ "Kontrollerar densiteten av luftöars bergsterräng.\n"
-#~ "Är en förskjutning adderad till oljudsvärdet för 'np_mountain'."
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Laddar ner och installerar $1, vänligen vänta..."
 
 #~ msgid ""
 #~ "Adjust the gamma encoding for the light tables. Higher numbers are "
@@ -6608,11 +6669,28 @@ msgstr "cURL-timeout"
 #~ "Justera gammakodningen för ljustabeller. Högre tal är ljusare.\n"
 #~ "Denna inställning påverkar endast klienten och ignoreras av servern."
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Laddar ner och installerar $1, vänligen vänta..."
+#, fuzzy
+#~ msgid ""
+#~ "Controls the density of mountain-type floatlands.\n"
+#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
+#~ msgstr ""
+#~ "Kontrollerar densiteten av luftöars bergsterräng.\n"
+#~ "Är en förskjutning adderad till oljudsvärdet för 'np_mountain'."
 
-#~ msgid "Back"
-#~ msgstr "Tillbaka"
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr ""
+#~ "Kontrollerar bredd av tunnlar, mindre värden skapar bredare tunnlar."
 
-#~ msgid "Ok"
-#~ msgstr "Ok"
+#~ msgid ""
+#~ "Defines areas of floatland smooth terrain.\n"
+#~ "Smooth floatlands occur when noise > 0."
+#~ msgstr ""
+#~ "Definierar områden för luftöars jämna terräng.\n"
+#~ "Jämna luftöar förekommer när oljud > 0."
+
+#~ msgid "Y-level to which floatland shadows extend."
+#~ msgstr "Y-nivå till vilket luftöars skuggor når."
+
+#, fuzzy
+#~ msgid "Select Package File:"
+#~ msgstr "Välj modfil:"

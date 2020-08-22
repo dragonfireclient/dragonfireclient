@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Japanese (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-06-15 22:41+0000\n"
 "Last-Translator: BreadW <toshiharu.uno@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.1\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "リスポーン"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "死んでしまった"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -369,7 +361,8 @@ msgstr "バイオーム間の円滑な移行"
 msgid ""
 "Structures appearing on the terrain (no effect on trees and jungle grass "
 "created by v6)"
-msgstr "地形上に現れる構造物（v6によって生成された木やジャングルの草に影響なし）"
+msgstr ""
+"地形上に現れる構造物（v6によって生成された木やジャングルの草に影響なし）"
 
 #: builtin/mainmenu/dlg_create_world.lua
 msgid "Structures appearing on the terrain, typically trees and plants"
@@ -468,6 +461,11 @@ msgstr "< 設定ページに戻る"
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Browse"
 msgstr "参照"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "クライアント"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
@@ -679,6 +677,10 @@ msgstr "開発者"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "クレジット"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1127,7 +1129,7 @@ msgid "Continue"
 msgstr "再開"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1138,11 +1140,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "操作:\n"
 "- %s: 前進\n"
@@ -1256,6 +1261,16 @@ msgid "Fog enabled"
 msgstr "霧 有効"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "霧 無効"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "霧 有効"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "ゲーム情報:"
 
@@ -1274,6 +1289,16 @@ msgstr "アイテムを定義中..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/秒"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "霧 無効"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "ダメージ有効"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1360,6 +1385,10 @@ msgid "Resolving address..."
 msgstr "アドレスを解決中..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "リスポーン"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "終了中..."
 
@@ -1412,6 +1441,10 @@ msgid "Wireframe shown"
 msgstr "ワイヤーフレーム 表示"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "死んでしまった"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "ズームは現在ゲームまたはModにより無効"
 
@@ -1425,6 +1458,16 @@ msgstr "チャット 非表示"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "チャット 表示"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "チャット 非表示"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "チャット 表示"
 
 #: src/client/gameui.cpp
@@ -1752,6 +1795,26 @@ msgid "Backward"
 msgstr "後退"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "視点変更"
 
@@ -1846,8 +1909,28 @@ msgid "Special"
 msgstr "スペシャル"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "スペシャル"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "映画風モード切替"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "映画風モード切替"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "HUD表示切替"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "飛行モード切替"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -5822,7 +5905,8 @@ msgid ""
 "Metrics can be fetch on http://127.0.0.1:30000/metrics"
 msgstr ""
 "プロメテウスリスナーのアドレス。\n"
-"minetest が ENABLE_PROMETHEUS オプションを有効にしてコンパイルされている場合、\n"
+"minetest が ENABLE_PROMETHEUS オプションを有効にしてコンパイルされている場"
+"合、\n"
 "そのアドレスのプロメテウスのメトリックスリスナーを有効にします。\n"
 "メトリックは http://127.0.0.1:30000/metrics で取得可能"
 
@@ -6412,11 +6496,13 @@ msgid ""
 "world surface below."
 msgstr ""
 "密な浮遊大陸層に配置されるオプションの水の表面レベル。\n"
-"水は規定で無効になっており、この値が 'mgv7_floatland_ymax' - 'mgv7_floatland_taper'\n"
+"水は規定で無効になっており、この値が 'mgv7_floatland_ymax' - "
+"'mgv7_floatland_taper'\n"
 "（上部の先細り開始点）より上に設定されている場合にのみ配置されます。\n"
 "***警告、サーバーのパフォーマンスへの潜在的な危険性***：\n"
 "水の配置を有効にする場合、浮遊大陸を密な層にするために\n"
-"'mgv7_floatland_density' を2.0（または 'mgv7_np_floatland' に応じて他の必要な値）に\n"
+"'mgv7_floatland_density' を2.0（または 'mgv7_np_floatland' に応じて他の必要な"
+"値）に\n"
 "設定して、サーバーに集中する極端な水の流れを避け、下の世界表面への大規模な\n"
 "洪水を避けるようにテストする必要があります。"
 
@@ -7175,78 +7261,57 @@ msgstr "cURL並行処理制限"
 msgid "cURL timeout"
 msgstr "cURLタイムアウト"
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "映画風モード切替"
+#~ msgid "Ok"
+#~ msgstr "決定"
 
-#~ msgid "Select Package File:"
-#~ msgstr "パッケージファイルを選択:"
+#~ msgid "Back"
+#~ msgstr "戻る"
 
-#~ msgid "Y of upper limit of lava in large caves."
-#~ msgstr "大きな洞窟内の溶岩のY高さ上限。"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "$1をインストールしています、お待ちください..."
 
-#~ msgid "Waving Water"
-#~ msgstr "揺れる水"
+#~ msgid "Limit of emerge queues on disk"
+#~ msgstr "ディスク上に出現するキューの制限"
 
-#~ msgid "Whether dungeons occasionally project from the terrain."
-#~ msgstr "ダンジョンが時折地形から突出するかどうか。"
+#~ msgid "Parallax occlusion strength"
+#~ msgstr "視差遮蔽強度"
 
-#~ msgid "Projecting dungeons"
-#~ msgstr "突出するダンジョン"
-
-#~ msgid "Y-level to which floatland shadows extend."
-#~ msgstr "浮遊大陸の影が広がるYレベル。"
-
-#~ msgid "Y-level of floatland midpoint and lake surface."
-#~ msgstr "浮遊大陸の中間点と湖面のYレベル。"
-
-#~ msgid "Waving water"
-#~ msgstr "揺れる水"
-
-#~ msgid "Variation of hill height and lake depth on floatland smooth terrain."
-#~ msgstr "浮遊大陸の滑らかな地形における丘の高さと湖の深さの変動。"
+#~ msgid "Path to save screenshots at."
+#~ msgstr "スクリーンショットを保存するパス。"
 
 #~ msgid ""
-#~ "Typical maximum height, above and below midpoint, of floatland mountains."
-#~ msgstr "浮遊大陸の山の中間点の上と下の典型的な最大高さ。"
+#~ "Adjust the gamma encoding for the light tables. Higher numbers are "
+#~ "brighter.\n"
+#~ "This setting is for the client only and is ignored by the server."
+#~ msgstr ""
+#~ "ライトテーブルのガンマ補正を調整します。数値が大きいほど明るくなります。\n"
+#~ "この設定はクライアント専用であり、サーバでは無視されます。"
 
-#~ msgid "This font will be used for certain languages."
-#~ msgstr "このフォントは特定の言語で使用されます。"
+#~ msgid "Alters how mountain-type floatlands taper above and below midpoint."
+#~ msgstr "山型浮遊大陸が中間点の上下でどのように先細くなるかを変更します。"
 
-#~ msgid "Strength of light curve mid-boost."
-#~ msgstr "光度曲線ミッドブーストの強さ。"
+#~ msgid "Center of light curve mid-boost."
+#~ msgstr "光度曲線ミッドブーストの中心。"
 
-#~ msgid "Shadow limit"
-#~ msgstr "影の制限"
+#~ msgid ""
+#~ "Controls the density of mountain-type floatlands.\n"
+#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
+#~ msgstr ""
+#~ "山型浮遊大陸の密度を制御します。\n"
+#~ "ノイズのオフセットは、'mgv7_np_mountain' ノイズ値に追加されます。"
 
-#~ msgid "Path to TrueTypeFont or bitmap."
-#~ msgstr "TrueTypeフォントまたはビットマップへのパス。"
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr "トンネルの幅を制御、小さい方の値ほど広いトンネルを生成します。"
 
-#~ msgid "Lightness sharpness"
-#~ msgstr "明るさの鋭さ"
+#~ msgid "Darkness sharpness"
+#~ msgstr "暗さの鋭さ"
 
-#~ msgid "Lava depth"
-#~ msgstr "溶岩の深さ"
-
-#~ msgid "IPv6 support."
-#~ msgstr "IPv6 サポート。"
-
-#~ msgid "Gamma"
-#~ msgstr "ガンマ"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "フォントの影の透過 (不透明、0～255の間)。"
-
-#~ msgid "Floatland mountain height"
-#~ msgstr "浮遊大陸の山の高さ"
-
-#~ msgid "Floatland base height noise"
-#~ msgstr "浮遊大陸の基準高さノイズ"
-
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "フィルム調トーンマッピング有効にする"
-
-#~ msgid "Enable VBO"
-#~ msgstr "VBOを有効化"
+#~ msgid ""
+#~ "Defines areas of floatland smooth terrain.\n"
+#~ "Smooth floatlands occur when noise > 0."
+#~ msgstr ""
+#~ "浮遊大陸の滑らかな地形の地域を定義します。\n"
+#~ "ノイズが 0 より大きいとき、滑らかな浮遊大陸になります。"
 
 #~ msgid ""
 #~ "Deprecated, define and locate cave liquids using biome definitions "
@@ -7257,54 +7322,72 @@ msgstr "cURLタイムアウト"
 #~ "す。\n"
 #~ "大きな洞窟内の溶岩のY高さ上限。"
 
+#~ msgid "Enable VBO"
+#~ msgstr "VBOを有効化"
+
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "フィルム調トーンマッピング有効にする"
+
+#~ msgid "Floatland base height noise"
+#~ msgstr "浮遊大陸の基準高さノイズ"
+
+#~ msgid "Floatland mountain height"
+#~ msgstr "浮遊大陸の山の高さ"
+
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "フォントの影の透過 (不透明、0～255の間)。"
+
+#~ msgid "Gamma"
+#~ msgstr "ガンマ"
+
+#~ msgid "IPv6 support."
+#~ msgstr "IPv6 サポート。"
+
+#~ msgid "Lava depth"
+#~ msgstr "溶岩の深さ"
+
+#~ msgid "Lightness sharpness"
+#~ msgstr "明るさの鋭さ"
+
+#~ msgid "Path to TrueTypeFont or bitmap."
+#~ msgstr "TrueTypeフォントまたはビットマップへのパス。"
+
+#~ msgid "Shadow limit"
+#~ msgstr "影の制限"
+
+#~ msgid "Strength of light curve mid-boost."
+#~ msgstr "光度曲線ミッドブーストの強さ。"
+
+#~ msgid "This font will be used for certain languages."
+#~ msgstr "このフォントは特定の言語で使用されます。"
+
 #~ msgid ""
-#~ "Defines areas of floatland smooth terrain.\n"
-#~ "Smooth floatlands occur when noise > 0."
-#~ msgstr ""
-#~ "浮遊大陸の滑らかな地形の地域を定義します。\n"
-#~ "ノイズが 0 より大きいとき、滑らかな浮遊大陸になります。"
+#~ "Typical maximum height, above and below midpoint, of floatland mountains."
+#~ msgstr "浮遊大陸の山の中間点の上と下の典型的な最大高さ。"
 
-#~ msgid "Darkness sharpness"
-#~ msgstr "暗さの鋭さ"
+#~ msgid "Variation of hill height and lake depth on floatland smooth terrain."
+#~ msgstr "浮遊大陸の滑らかな地形における丘の高さと湖の深さの変動。"
 
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr "トンネルの幅を制御、小さい方の値ほど広いトンネルを生成します。"
+#~ msgid "Waving water"
+#~ msgstr "揺れる水"
 
-#~ msgid ""
-#~ "Controls the density of mountain-type floatlands.\n"
-#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
-#~ msgstr ""
-#~ "山型浮遊大陸の密度を制御します。\n"
-#~ "ノイズのオフセットは、'mgv7_np_mountain' ノイズ値に追加されます。"
+#~ msgid "Y-level of floatland midpoint and lake surface."
+#~ msgstr "浮遊大陸の中間点と湖面のYレベル。"
 
-#~ msgid "Center of light curve mid-boost."
-#~ msgstr "光度曲線ミッドブーストの中心。"
+#~ msgid "Y-level to which floatland shadows extend."
+#~ msgstr "浮遊大陸の影が広がるYレベル。"
 
-#~ msgid "Alters how mountain-type floatlands taper above and below midpoint."
-#~ msgstr "山型浮遊大陸が中間点の上下でどのように先細くなるかを変更します。"
+#~ msgid "Projecting dungeons"
+#~ msgstr "突出するダンジョン"
 
-#~ msgid ""
-#~ "Adjust the gamma encoding for the light tables. Higher numbers are "
-#~ "brighter.\n"
-#~ "This setting is for the client only and is ignored by the server."
-#~ msgstr ""
-#~ "ライトテーブルのガンマ補正を調整します。数値が大きいほど明るくなります。\n"
-#~ "この設定はクライアント専用であり、サーバでは無視されます。"
+#~ msgid "Whether dungeons occasionally project from the terrain."
+#~ msgstr "ダンジョンが時折地形から突出するかどうか。"
 
-#~ msgid "Path to save screenshots at."
-#~ msgstr "スクリーンショットを保存するパス。"
+#~ msgid "Waving Water"
+#~ msgstr "揺れる水"
 
-#~ msgid "Parallax occlusion strength"
-#~ msgstr "視差遮蔽強度"
+#~ msgid "Y of upper limit of lava in large caves."
+#~ msgstr "大きな洞窟内の溶岩のY高さ上限。"
 
-#~ msgid "Limit of emerge queues on disk"
-#~ msgstr "ディスク上に出現するキューの制限"
-
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "$1をインストールしています、お待ちください..."
-
-#~ msgid "Back"
-#~ msgstr "戻る"
-
-#~ msgid "Ok"
-#~ msgstr "決定"
+#~ msgid "Select Package File:"
+#~ msgstr "パッケージファイルを選択:"

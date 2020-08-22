@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Lithuanian (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-05-10 12:32+0000\n"
 "Last-Translator: restcoser <restcoser.mail@gmail.com>\n"
 "Language-Team: Lithuanian <https://hosted.weblate.org/projects/minetest/"
@@ -15,15 +15,6 @@ msgstr ""
 "19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
 "1 : 2);\n"
 "X-Generator: Weblate 4.1-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Prisikelti"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-#, fuzzy
-msgid "You died"
-msgstr "Jūs numirėte."
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -498,6 +489,11 @@ msgstr "Naršyti"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 #, fuzzy
+msgid "Clientmods"
+msgstr "Žaisti tinkle(klientas)"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
 msgid "Disabled"
 msgstr "Išjungti papildinį"
 
@@ -735,6 +731,10 @@ msgstr "Pagrindiniai kūrėjai"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Padėkos"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1227,11 +1227,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Numatytas valdymas:\n"
 "- WASD: judėti\n"
@@ -1348,6 +1351,16 @@ msgid "Fog enabled"
 msgstr "įjungtas"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Išjungti papildinį"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "įjungtas"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr ""
 
@@ -1368,6 +1381,16 @@ msgstr "Elemento apibrėžimai..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Išjungti papildinį"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Žalojimas įjungtas"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1455,6 +1478,10 @@ msgid "Resolving address..."
 msgstr "Ieškoma adreso..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Prisikelti"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Išjungiama..."
 
@@ -1509,6 +1536,11 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "You died"
+msgstr "Jūs numirėte."
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1523,6 +1555,15 @@ msgstr "Nustatyti klavišus"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr ""
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Nustatyti klavišus"
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu shown"
 msgstr ""
 
 #: src/client/gameui.cpp
@@ -1853,6 +1894,26 @@ msgid "Backward"
 msgstr "Atgal"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
 msgid "Change camera"
 msgstr "Nustatyti klavišus"
@@ -1950,7 +2011,27 @@ msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
+msgid "Special Inv."
+msgstr "Nustatyti klavišus"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Įjungti kinematografinį"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Įjungti kinematografinį"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Toggle HUD"
+msgstr "Įjungti skrydį"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
 msgstr "Įjungti skrydį"
 
 #: src/gui/guiKeyChangeMenu.cpp
@@ -6545,27 +6626,24 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Įjungti kinematografinį"
+#~ msgid "Ok"
+#~ msgstr "Gerai"
+
+#~ msgid "Back"
+#~ msgstr "Atgal"
 
 #, fuzzy
-#~ msgid "Select Package File:"
-#~ msgstr "Pasirinkite papildinio failą:"
-
-#, fuzzy
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "Leisti sužeidimus"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Atsiunčiama $1, prašome palaukti..."
 
 #, fuzzy
 #~ msgid "Enable VBO"
 #~ msgstr "Įjungti papildinį"
 
 #, fuzzy
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Atsiunčiama $1, prašome palaukti..."
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "Leisti sužeidimus"
 
-#~ msgid "Back"
-#~ msgstr "Atgal"
-
-#~ msgid "Ok"
-#~ msgstr "Gerai"
+#, fuzzy
+#~ msgid "Select Package File:"
+#~ msgstr "Pasirinkite papildinio failą:"

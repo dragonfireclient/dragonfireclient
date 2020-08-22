@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Korean (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/minetest/minetest/"
@@ -13,15 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.9-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "리스폰"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-#, fuzzy
-msgid "You died"
-msgstr "사망했습니다."
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -504,6 +495,11 @@ msgid "Browse"
 msgstr "열기"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "클라이언트"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "비활성화됨"
 
@@ -738,6 +734,10 @@ msgstr "코어 개발자"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "만든이"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1216,11 +1216,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "기본 컨트롤:-WASD: 이동\n"
 "-스페이스: 점프/오르기\n"
@@ -1337,6 +1340,16 @@ msgid "Fog enabled"
 msgstr "활성화됨"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "비활성화됨"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "활성화됨"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "게임 정보:"
 
@@ -1356,6 +1369,16 @@ msgstr "아이템 정의중..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "비활성화됨"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "데미지 활성화"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1445,6 +1468,10 @@ msgid "Resolving address..."
 msgstr "주소 분석중..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "리스폰"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "서버가 닫혔습니다..."
 
@@ -1499,6 +1526,11 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "You died"
+msgstr "사망했습니다."
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1513,6 +1545,15 @@ msgstr "채팅"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr ""
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "채팅"
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu shown"
 msgstr ""
 
 #: src/client/gameui.cpp
@@ -1844,6 +1885,26 @@ msgid "Backward"
 msgstr "뒤로"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
 msgid "Change camera"
 msgstr "키 변경"
@@ -1942,7 +2003,27 @@ msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
+msgid "Special Inv."
+msgstr "살금살금걷기 키"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "시네마틱 스위치"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "시네마틱 스위치"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Toggle HUD"
+msgstr "비행 스위치"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
 msgstr "비행 스위치"
 
 #: src/gui/guiKeyChangeMenu.cpp
@@ -7020,57 +7101,54 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "시네마틱 스위치"
+#~ msgid "Ok"
+#~ msgstr "확인"
 
-#, fuzzy
-#~ msgid "Select Package File:"
-#~ msgstr "선택한 모드 파일:"
-
-#~ msgid "Waving Water"
-#~ msgstr "물결 효과"
-
-#~ msgid "Waving water"
-#~ msgstr "물결 효과"
-
-#~ msgid "This font will be used for certain languages."
-#~ msgstr "이 글꼴은 특정 언어에 사용 됩니다."
-
-#~ msgid "Shadow limit"
-#~ msgstr "그림자 제한"
-
-#~ msgid "Path to TrueTypeFont or bitmap."
-#~ msgstr "TrueTypeFont 또는 비트맵의 경로입니다."
-
-#, fuzzy
-#~ msgid "Lava depth"
-#~ msgstr "큰 동굴 깊이"
-
-#~ msgid "Gamma"
-#~ msgstr "감마"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "글꼴 그림자 투명도 (불투명 함, 0과 255 사이)."
-
-#~ msgid "Enable VBO"
-#~ msgstr "VBO 적용"
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr "터널 너비를 조절, 작은 수치는 넓은 터널을 만듭니다."
-
-#~ msgid "Path to save screenshots at."
-#~ msgstr "스크린샷 저장 경로입니다."
-
-#, fuzzy
-#~ msgid "Parallax occlusion strength"
-#~ msgstr "시차 교합 강도"
+#~ msgid "Back"
+#~ msgstr "뒤로"
 
 #, fuzzy
 #~ msgid "Downloading and installing $1, please wait..."
 #~ msgstr "$1 를(을) 다운로드중입니다. 기다려주세요..."
 
-#~ msgid "Back"
-#~ msgstr "뒤로"
+#, fuzzy
+#~ msgid "Parallax occlusion strength"
+#~ msgstr "시차 교합 강도"
 
-#~ msgid "Ok"
-#~ msgstr "확인"
+#~ msgid "Path to save screenshots at."
+#~ msgstr "스크린샷 저장 경로입니다."
+
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr "터널 너비를 조절, 작은 수치는 넓은 터널을 만듭니다."
+
+#~ msgid "Enable VBO"
+#~ msgstr "VBO 적용"
+
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "글꼴 그림자 투명도 (불투명 함, 0과 255 사이)."
+
+#~ msgid "Gamma"
+#~ msgstr "감마"
+
+#, fuzzy
+#~ msgid "Lava depth"
+#~ msgstr "큰 동굴 깊이"
+
+#~ msgid "Path to TrueTypeFont or bitmap."
+#~ msgstr "TrueTypeFont 또는 비트맵의 경로입니다."
+
+#~ msgid "Shadow limit"
+#~ msgstr "그림자 제한"
+
+#~ msgid "This font will be used for certain languages."
+#~ msgstr "이 글꼴은 특정 언어에 사용 됩니다."
+
+#~ msgid "Waving water"
+#~ msgstr "물결 효과"
+
+#~ msgid "Waving Water"
+#~ msgstr "물결 효과"
+
+#, fuzzy
+#~ msgid "Select Package File:"
+#~ msgstr "선택한 모드 파일:"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Slovenian (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2019-11-29 23:04+0000\n"
 "Last-Translator: Matej Mlinar <mlinar.matej@gmail.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/minetest/"
@@ -14,14 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
 "%100==4 ? 2 : 3;\n"
 "X-Generator: Weblate 3.10-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Ponovno oživi"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Umrl si"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -485,6 +477,11 @@ msgid "Browse"
 msgstr "Prebrskaj"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Odjemalec"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Onemogočeno"
 
@@ -696,6 +693,10 @@ msgstr "Glavni razvijalci"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Zasluge"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1146,7 +1147,7 @@ msgid "Continue"
 msgstr "Nadaljuj"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1157,11 +1158,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Tipkovne bližnjice:\n"
 "- %s 1: premakne se naprej\n"
@@ -1275,6 +1279,16 @@ msgid "Fog enabled"
 msgstr "Megla omogočena"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Megla onemogočena"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "Megla omogočena"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Podrobnosti o igri:"
 
@@ -1293,6 +1307,16 @@ msgstr "Določila predmetov ..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Megla onemogočena"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Poškodbe so omogočene"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1382,6 +1406,10 @@ msgid "Resolving address..."
 msgstr "Poteka razreševanje naslova ..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Ponovno oživi"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Poteka zaustavljanje ..."
 
@@ -1434,6 +1462,10 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Umrl si"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "Približanje (zoom) je trenutno onemogočen zaradi igre ali prilagoditve"
 
@@ -1447,6 +1479,16 @@ msgstr "Pogovor je skrit"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "Pogovor je prikazan"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Pogovor je skrit"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "Pogovor je prikazan"
 
 #: src/client/gameui.cpp
@@ -1773,6 +1815,26 @@ msgid "Backward"
 msgstr "Nazaj"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Sprememba kamere"
 
@@ -1865,8 +1927,28 @@ msgid "Special"
 msgstr "Specialen"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Specialen"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Preklopi gladek pogled"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Preklopi gladek pogled"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "Preklopi HUD"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Preklopi letenje"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -6452,27 +6534,24 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Preklopi gladek pogled"
+#~ msgid "Ok"
+#~ msgstr "V redu"
 
-#~ msgid "Select Package File:"
-#~ msgstr "Izberi datoteko paketa:"
+#~ msgid "Back"
+#~ msgstr "Nazaj"
 
-#~ msgid "IPv6 support."
-#~ msgstr "IPv6 podpora."
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Prenašanje in nameščanje $1, prosimo počakajte..."
+
+#~ msgid "Darkness sharpness"
+#~ msgstr "Ostrina teme"
 
 #, fuzzy
 #~ msgid "Enable VBO"
 #~ msgstr "Omogoči VBO"
 
-#~ msgid "Darkness sharpness"
-#~ msgstr "Ostrina teme"
+#~ msgid "IPv6 support."
+#~ msgstr "IPv6 podpora."
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Prenašanje in nameščanje $1, prosimo počakajte..."
-
-#~ msgid "Back"
-#~ msgstr "Nazaj"
-
-#~ msgid "Ok"
-#~ msgstr "V redu"
+#~ msgid "Select Package File:"
+#~ msgstr "Izberi datoteko paketa:"

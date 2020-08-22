@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Turkish (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-06-15 22:41+0000\n"
 "Last-Translator: monolifed <monolifed@protonmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.1\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Yeniden Canlan"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Öldün"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -474,6 +466,11 @@ msgid "Browse"
 msgstr "Gözat"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "İstemci"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Devre dışı"
 
@@ -683,6 +680,10 @@ msgstr "Çekirdek Geliştiriciler"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Hakkında"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1131,7 +1132,7 @@ msgid "Continue"
 msgstr "Devam et"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1142,11 +1143,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Kontroller:\n"
 "- %s: ileri hareket\n"
@@ -1260,6 +1264,16 @@ msgid "Fog enabled"
 msgstr "Sis etkin"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Sis devre dışı"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "Sis etkin"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Oyun Bilgisi:"
 
@@ -1278,6 +1292,16 @@ msgstr "Öge tanımları..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Sis devre dışı"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Hasar etkin"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1364,6 +1388,10 @@ msgid "Resolving address..."
 msgstr "Adres çözümleniyor..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Yeniden Canlan"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Kapatılıyor..."
 
@@ -1416,6 +1444,10 @@ msgid "Wireframe shown"
 msgstr "Telkafes gösteriliyor"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Öldün"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "Yakınlaştırma şu anda oyun veya mod tarafından devre dışı"
 
@@ -1429,6 +1461,16 @@ msgstr "Sohbet gizli"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "Sohbet gösteriliyor"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Sohbet gizli"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "Sohbet gösteriliyor"
 
 #: src/client/gameui.cpp
@@ -1755,6 +1797,26 @@ msgid "Backward"
 msgstr "Geri"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Kamera değiştir"
 
@@ -1847,8 +1909,28 @@ msgid "Special"
 msgstr "Özel"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Özel"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Sinematik Aç/Kapa"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Sinematik Aç/Kapa"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "HUD'ı aç/kapa"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Uçmayı aç/kapa"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -3360,8 +3442,8 @@ msgid ""
 "Font size of the recent chat text and chat prompt in point (pt).\n"
 "Value 0 will use the default font size."
 msgstr ""
-"Son sohbet metninin ve sohbet isteminin nokta(pt) cinsinden yazı tipi boyutu."
-"\n"
+"Son sohbet metninin ve sohbet isteminin nokta(pt) cinsinden yazı tipi "
+"boyutu.\n"
 "0 değer öntanımlı yazı tipi boyutunu kullanır."
 
 #: src/settings_translation_file.cpp
@@ -7231,120 +7313,23 @@ msgstr "cURL paralel sınırı"
 msgid "cURL timeout"
 msgstr "cURL zaman aşımı"
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Sinematik Aç/Kapa"
+#~ msgid "Ok"
+#~ msgstr "Tamam"
 
-#~ msgid "Select Package File:"
-#~ msgstr "Paket Dosyası Seç:"
+#~ msgid "Back"
+#~ msgstr "Geri"
 
-#~ msgid "Y of upper limit of lava in large caves."
-#~ msgstr "Büyük mağaralardaki lavın üst sınırının Y'si."
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "$1 indiriliyor ve kuruluyor, lütfen bekleyin..."
 
-#~ msgid "Waving Water"
-#~ msgstr "Dalgalanan Su"
+#~ msgid "Limit of emerge queues on disk"
+#~ msgstr "Diskte emerge sıralarının sınırı"
 
-#~ msgid "Whether dungeons occasionally project from the terrain."
-#~ msgstr "Zindanların bazen araziden yansıyıp yansımayacağı."
+#~ msgid "Parallax occlusion strength"
+#~ msgstr "Paralaks oklüzyon gücü"
 
-#~ msgid "Projecting dungeons"
-#~ msgstr "İzdüşüm zindanlar"
-
-#~ msgid "Y-level to which floatland shadows extend."
-#~ msgstr "Yüzenkara gölgelerinin uzanacağı Y-seviyesi."
-
-#~ msgid "Y-level of floatland midpoint and lake surface."
-#~ msgstr "Yüzenkara orta noktasının ve göl yüzeyinin Y-seviyesi."
-
-#~ msgid "Waving water"
-#~ msgstr "Dalgalanan su"
-
-#~ msgid "Variation of hill height and lake depth on floatland smooth terrain."
-#~ msgstr ""
-#~ "Tepe yüksekliğinin ve göl derinliğinin yüzenkara düz arazide değişimi."
-
-#~ msgid ""
-#~ "Typical maximum height, above and below midpoint, of floatland mountains."
-#~ msgstr ""
-#~ "Yüzenkara dağların, orta noktanın altındaki ve üstündeki, tipik maksimum "
-#~ "yüksekliği."
-
-#~ msgid "This font will be used for certain languages."
-#~ msgstr "Belirli diller için bu yazı tipi kullanılacak."
-
-#~ msgid "Strength of light curve mid-boost."
-#~ msgstr "Işık eğrisi orta-artırmanın kuvveti."
-
-#~ msgid "Shadow limit"
-#~ msgstr "Gölge sınırı"
-
-#~ msgid "Path to TrueTypeFont or bitmap."
-#~ msgstr "TrueTypeFont veya bitmap konumu."
-
-#~ msgid "Lightness sharpness"
-#~ msgstr "Aydınlık keskinliği"
-
-#~ msgid "Lava depth"
-#~ msgstr "Lav derinliği"
-
-#~ msgid "IPv6 support."
-#~ msgstr "IPv6 desteği."
-
-#~ msgid "Gamma"
-#~ msgstr "Gama"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "Yazı tipi gölge saydamlığı (solukluk, 0 ve 255 arası)."
-
-#~ msgid "Floatland mountain height"
-#~ msgstr "Yüzenkara dağ yüksekliği"
-
-#~ msgid "Floatland base height noise"
-#~ msgstr "Yüzenkara taban yükseklik gürültüsü"
-
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "Filmsel ton eşlemeyi etkinleştirir"
-
-#~ msgid "Enable VBO"
-#~ msgstr "VBO'yu etkinleştir"
-
-#~ msgid ""
-#~ "Deprecated, define and locate cave liquids using biome definitions "
-#~ "instead.\n"
-#~ "Y of upper limit of lava in large caves."
-#~ msgstr ""
-#~ "Kullanılmıyor, bunun yerine biyom tanımlarını kullanarak mağara "
-#~ "sıvılarını tanımlayın ve bulun.\n"
-#~ "Büyük mağaralarda lav üst sınırının Y'si."
-
-#~ msgid ""
-#~ "Defines areas of floatland smooth terrain.\n"
-#~ "Smooth floatlands occur when noise > 0."
-#~ msgstr ""
-#~ "Yüzenkara düz arazilerin alanlarını belirler.\n"
-#~ "Gürültü > 0 iken düz yüzenkaralar oluşur."
-
-#~ msgid "Darkness sharpness"
-#~ msgstr "Karanlık keskinliği"
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr ""
-#~ "Tünellerin genişliğini denetler, daha küçük bir değer daha geniş tüneller "
-#~ "yaratır."
-
-#~ msgid ""
-#~ "Controls the density of mountain-type floatlands.\n"
-#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
-#~ msgstr ""
-#~ "Dağ-türü yüzenkaraların yoğunluğunu denetler.\n"
-#~ "'mgv7_np_mountain' gürültü değerine eklenen bir gürültü kaydırmadır."
-
-#~ msgid "Center of light curve mid-boost."
-#~ msgstr "Işık eğrisi orta-artırmanın merkezi."
-
-#~ msgid "Alters how mountain-type floatlands taper above and below midpoint."
-#~ msgstr ""
-#~ "Dağ-türü yüzerkaraların orta noktanın üstünde ve altında nasıl "
-#~ "konikleştiğini değiştirir."
+#~ msgid "Path to save screenshots at."
+#~ msgstr "Ekran yakalamaların kaydedileceği konum."
 
 #~ msgid ""
 #~ "Adjust the gamma encoding for the light tables. Higher numbers are "
@@ -7355,20 +7340,114 @@ msgstr "cURL zaman aşımı"
 #~ "aydınlıktır.\n"
 #~ "Bu ayar yalnızca istemci içindir ve sunucu tarafından yok sayılır."
 
-#~ msgid "Path to save screenshots at."
-#~ msgstr "Ekran yakalamaların kaydedileceği konum."
+#~ msgid "Alters how mountain-type floatlands taper above and below midpoint."
+#~ msgstr ""
+#~ "Dağ-türü yüzerkaraların orta noktanın üstünde ve altında nasıl "
+#~ "konikleştiğini değiştirir."
 
-#~ msgid "Parallax occlusion strength"
-#~ msgstr "Paralaks oklüzyon gücü"
+#~ msgid "Center of light curve mid-boost."
+#~ msgstr "Işık eğrisi orta-artırmanın merkezi."
 
-#~ msgid "Limit of emerge queues on disk"
-#~ msgstr "Diskte emerge sıralarının sınırı"
+#~ msgid ""
+#~ "Controls the density of mountain-type floatlands.\n"
+#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
+#~ msgstr ""
+#~ "Dağ-türü yüzenkaraların yoğunluğunu denetler.\n"
+#~ "'mgv7_np_mountain' gürültü değerine eklenen bir gürültü kaydırmadır."
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "$1 indiriliyor ve kuruluyor, lütfen bekleyin..."
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr ""
+#~ "Tünellerin genişliğini denetler, daha küçük bir değer daha geniş tüneller "
+#~ "yaratır."
 
-#~ msgid "Back"
-#~ msgstr "Geri"
+#~ msgid "Darkness sharpness"
+#~ msgstr "Karanlık keskinliği"
 
-#~ msgid "Ok"
-#~ msgstr "Tamam"
+#~ msgid ""
+#~ "Defines areas of floatland smooth terrain.\n"
+#~ "Smooth floatlands occur when noise > 0."
+#~ msgstr ""
+#~ "Yüzenkara düz arazilerin alanlarını belirler.\n"
+#~ "Gürültü > 0 iken düz yüzenkaralar oluşur."
+
+#~ msgid ""
+#~ "Deprecated, define and locate cave liquids using biome definitions "
+#~ "instead.\n"
+#~ "Y of upper limit of lava in large caves."
+#~ msgstr ""
+#~ "Kullanılmıyor, bunun yerine biyom tanımlarını kullanarak mağara "
+#~ "sıvılarını tanımlayın ve bulun.\n"
+#~ "Büyük mağaralarda lav üst sınırının Y'si."
+
+#~ msgid "Enable VBO"
+#~ msgstr "VBO'yu etkinleştir"
+
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "Filmsel ton eşlemeyi etkinleştirir"
+
+#~ msgid "Floatland base height noise"
+#~ msgstr "Yüzenkara taban yükseklik gürültüsü"
+
+#~ msgid "Floatland mountain height"
+#~ msgstr "Yüzenkara dağ yüksekliği"
+
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "Yazı tipi gölge saydamlığı (solukluk, 0 ve 255 arası)."
+
+#~ msgid "Gamma"
+#~ msgstr "Gama"
+
+#~ msgid "IPv6 support."
+#~ msgstr "IPv6 desteği."
+
+#~ msgid "Lava depth"
+#~ msgstr "Lav derinliği"
+
+#~ msgid "Lightness sharpness"
+#~ msgstr "Aydınlık keskinliği"
+
+#~ msgid "Path to TrueTypeFont or bitmap."
+#~ msgstr "TrueTypeFont veya bitmap konumu."
+
+#~ msgid "Shadow limit"
+#~ msgstr "Gölge sınırı"
+
+#~ msgid "Strength of light curve mid-boost."
+#~ msgstr "Işık eğrisi orta-artırmanın kuvveti."
+
+#~ msgid "This font will be used for certain languages."
+#~ msgstr "Belirli diller için bu yazı tipi kullanılacak."
+
+#~ msgid ""
+#~ "Typical maximum height, above and below midpoint, of floatland mountains."
+#~ msgstr ""
+#~ "Yüzenkara dağların, orta noktanın altındaki ve üstündeki, tipik maksimum "
+#~ "yüksekliği."
+
+#~ msgid "Variation of hill height and lake depth on floatland smooth terrain."
+#~ msgstr ""
+#~ "Tepe yüksekliğinin ve göl derinliğinin yüzenkara düz arazide değişimi."
+
+#~ msgid "Waving water"
+#~ msgstr "Dalgalanan su"
+
+#~ msgid "Y-level of floatland midpoint and lake surface."
+#~ msgstr "Yüzenkara orta noktasının ve göl yüzeyinin Y-seviyesi."
+
+#~ msgid "Y-level to which floatland shadows extend."
+#~ msgstr "Yüzenkara gölgelerinin uzanacağı Y-seviyesi."
+
+#~ msgid "Projecting dungeons"
+#~ msgstr "İzdüşüm zindanlar"
+
+#~ msgid "Whether dungeons occasionally project from the terrain."
+#~ msgstr "Zindanların bazen araziden yansıyıp yansımayacağı."
+
+#~ msgid "Waving Water"
+#~ msgstr "Dalgalanan Su"
+
+#~ msgid "Y of upper limit of lava in large caves."
+#~ msgstr "Büyük mağaralardaki lavın üst sınırının Y'si."
+
+#~ msgid "Select Package File:"
+#~ msgstr "Paket Dosyası Seç:"

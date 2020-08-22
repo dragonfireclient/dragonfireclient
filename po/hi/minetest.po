@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: minetest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-06-29 07:53+0000\n"
 "Last-Translator: Agastya <acagastya@outlook.com>\n"
 "Language-Team: Hindi <https://hosted.weblate.org/projects/minetest/minetest/"
@@ -18,14 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 4.2-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "वापस ज़िंदा होएं"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "आपकी मौत हो गयी"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -477,6 +469,10 @@ msgid "Browse"
 msgstr "ढूंढें"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+msgid "Clientmods"
+msgstr ""
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "रुका हुआ"
 
@@ -686,6 +682,10 @@ msgstr "मुख्य डेवेलपर"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "आभार सूची"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1134,7 +1134,7 @@ msgid "Continue"
 msgstr "आगे बढ़ें"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1145,11 +1145,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "कंट्रोल्स:\n"
 "- %s : आगे बढ़ने के लिए\n"
@@ -1263,6 +1266,16 @@ msgid "Fog enabled"
 msgstr "कोहरा चालू"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "कोहरा रुका हुआ"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "कोहरा चालू"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "खेल की जानकारी :"
 
@@ -1281,6 +1294,16 @@ msgstr "वस्तुओं के अर्थ ..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "कि॰बी॰/एस॰"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "कोहरा रुका हुआ"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "हानि व मृत्यु हो सकती है"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1367,6 +1390,10 @@ msgid "Resolving address..."
 msgstr "एड्रेस समझा जा रहा है ..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "वापस ज़िंदा होएं"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "शट डाउन हो रहा है ..."
 
@@ -1419,6 +1446,10 @@ msgid "Wireframe shown"
 msgstr "डिब्बे रेखांकित"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "आपकी मौत हो गयी"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "खेल या मॉड़ के वजह से इस समय ज़ूम मना है"
 
@@ -1432,6 +1463,16 @@ msgstr "बातें दिखाई नहीं देंगी"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "बातें दिखाई देंगी"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "बातें दिखाई नहीं देंगी"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "बातें दिखाई देंगी"
 
 #: src/client/gameui.cpp
@@ -1758,6 +1799,26 @@ msgid "Backward"
 msgstr "पीछे जाएं"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "कैमरा बदलना"
 
@@ -1850,8 +1911,27 @@ msgid "Special"
 msgstr "स्पेशल"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "स्पेशल"
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle C. Menu"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "तरल चाल"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "हे. अ. डि"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "उड़ना"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -6380,11 +6460,11 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#~ msgid "Back"
-#~ msgstr "पीछे"
+#~ msgid "Ok"
+#~ msgstr "ठीक है"
 
 #~ msgid "Downloading and installing $1, please wait..."
 #~ msgstr "$1 का डाऊनलोड व इन्स्टाल चल रहा है, कृपया ठहरें ..."
 
-#~ msgid "Ok"
-#~ msgstr "ठीक है"
+#~ msgid "Back"
+#~ msgstr "पीछे"

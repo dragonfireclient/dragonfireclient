@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Russian (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-06-18 13:41+0000\n"
 "Last-Translator: Maksim Gamarnik <MoNTE48@mail.ua>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/minetest/"
@@ -14,14 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 4.1.1-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Возродиться"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Вы умерли"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -490,6 +482,11 @@ msgid "Browse"
 msgstr "Обзор"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Клиент"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Отключено"
 
@@ -703,6 +700,10 @@ msgstr "Основные разработчики"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Благодарности"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1153,7 +1154,7 @@ msgid "Continue"
 msgstr "Продолжить"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1164,11 +1165,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Управление:\n"
 "- %s: вперёд\n"
@@ -1283,6 +1287,16 @@ msgid "Fog enabled"
 msgstr "Туман включён"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Туман отключён"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "Туман включён"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Информация об игре:"
 
@@ -1301,6 +1315,16 @@ msgstr "Описания предметов..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "КиБ/с"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Туман отключён"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Урон включён"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1387,6 +1411,10 @@ msgid "Resolving address..."
 msgstr "Получение адреса..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Возродиться"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Завершение..."
 
@@ -1439,6 +1467,10 @@ msgid "Wireframe shown"
 msgstr "Отображение каркаса включено"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Вы умерли"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "Приближение в настоящее время отключено игрой или модом"
 
@@ -1452,6 +1484,16 @@ msgstr "Чат скрыт"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "Отображение чата включено"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Чат скрыт"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "Отображение чата включено"
 
 #: src/client/gameui.cpp
@@ -1779,6 +1821,26 @@ msgid "Backward"
 msgstr "Назад"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Камера"
 
@@ -1873,8 +1935,28 @@ msgid "Special"
 msgstr "Использовать"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Использовать"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Кино"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Кино"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "Игровой интерфейс"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Полёт"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -7231,117 +7313,25 @@ msgstr "Лимит одновременных соединений cURL"
 msgid "cURL timeout"
 msgstr "cURL тайм-аут"
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Кино"
+#~ msgid "Ok"
+#~ msgstr "Oк"
 
-#~ msgid "Select Package File:"
-#~ msgstr "Выберите файл дополнения:"
+#~ msgid "Back"
+#~ msgstr "Назад"
 
-#, fuzzy
-#~ msgid "Y of upper limit of lava in large caves."
-#~ msgstr "Верхний предел по Y для больших псевдослучайных пещер."
-
-#~ msgid "Waving Water"
-#~ msgstr "Волны на воде"
-
-#~ msgid "Projecting dungeons"
-#~ msgstr "Проступающие подземелья"
-
-#~ msgid "Y-level to which floatland shadows extend."
-#~ msgstr "Y-уровень, на который распространяются тени с плавающей точкой."
-
-#~ msgid "Y-level of floatland midpoint and lake surface."
-#~ msgstr "Y-уровень середины поплавка и поверхности озера."
-
-#~ msgid "Waving water"
-#~ msgstr "Волны на воде"
-
-#~ msgid "Variation of hill height and lake depth on floatland smooth terrain."
+#~ msgid "Downloading and installing $1, please wait..."
 #~ msgstr ""
-#~ "Вариация высоты холмов и глубин озёр на гладкой местности парящих "
-#~ "островов."
+#~ "Загружается и устанавливается $1.\n"
+#~ "Пожалуйста, подождите..."
 
-#~ msgid ""
-#~ "Typical maximum height, above and below midpoint, of floatland mountains."
-#~ msgstr ""
-#~ "Типичная максимальная высота, выше и ниже средней точки гор парящих "
-#~ "островов."
+#~ msgid "Limit of emerge queues on disk"
+#~ msgstr "Ограничение очередей emerge на диске"
 
-#~ msgid "This font will be used for certain languages."
-#~ msgstr "Этот шрифт будет использован для некоторых языков."
+#~ msgid "Parallax occlusion strength"
+#~ msgstr "Сила параллакса"
 
-#~ msgid "Strength of light curve mid-boost."
-#~ msgstr "Сила среднего подъёма кривой света."
-
-#~ msgid "Shadow limit"
-#~ msgstr "Лимит теней"
-
-#~ msgid "Path to TrueTypeFont or bitmap."
-#~ msgstr "Путь к шрифту TrueType или картинке со шрифтом."
-
-#~ msgid "Lightness sharpness"
-#~ msgstr "Резкость освещённости"
-
-#~ msgid "Lava depth"
-#~ msgstr "Глубина лавы"
-
-#~ msgid "IPv6 support."
-#~ msgstr "Поддержка IPv6."
-
-#~ msgid "Gamma"
-#~ msgstr "Гамма"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "Прозрачность тени шрифта (непрозрачность от 0 до 255)."
-
-#~ msgid "Floatland mountain height"
-#~ msgstr "Высота гор на парящих островах"
-
-#~ msgid "Floatland base height noise"
-#~ msgstr "Шум базовой высоты парящих островов"
-
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "Включить кинематографическое тональное отображение"
-
-#~ msgid "Enable VBO"
-#~ msgstr "Включить объекты буфера вершин (VBO)"
-
-#~ msgid ""
-#~ "Deprecated, define and locate cave liquids using biome definitions "
-#~ "instead.\n"
-#~ "Y of upper limit of lava in large caves."
-#~ msgstr ""
-#~ "Устарело, определяет и располагает жидкости в пещерах с использованием "
-#~ "определений биома.\n"
-#~ "Y верхней границы лавы в больших пещерах."
-
-#~ msgid ""
-#~ "Defines areas of floatland smooth terrain.\n"
-#~ "Smooth floatlands occur when noise > 0."
-#~ msgstr ""
-#~ "Определяет области гладкой поверхности на парящих островах.\n"
-#~ "Гладкие парящие острова появляются, когда шум больше ноля."
-
-#~ msgid "Darkness sharpness"
-#~ msgstr "Резкость темноты"
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr ""
-#~ "Контролирует ширину тоннелей. Меньшие значения создают более широкие "
-#~ "тоннели."
-
-#~ msgid ""
-#~ "Controls the density of mountain-type floatlands.\n"
-#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
-#~ msgstr ""
-#~ "Контролирует плотность горной местности парящих островов.\n"
-#~ "Является смещением, добавляемым к значению шума 'mgv7_np_mountain'."
-
-#~ msgid "Center of light curve mid-boost."
-#~ msgstr "Центр среднего подъёма кривой света."
-
-#~ msgid "Alters how mountain-type floatlands taper above and below midpoint."
-#~ msgstr "Управляет сужением островов горного типа ниже средней точки."
+#~ msgid "Path to save screenshots at."
+#~ msgstr "Путь для сохранения скриншотов."
 
 #~ msgid ""
 #~ "Adjust the gamma encoding for the light tables. Higher numbers are "
@@ -7352,22 +7342,111 @@ msgstr "cURL тайм-аут"
 #~ "ярче.\n"
 #~ "Этот параметр предназначен только для клиента и игнорируется сервером."
 
-#~ msgid "Path to save screenshots at."
-#~ msgstr "Путь для сохранения скриншотов."
+#~ msgid "Alters how mountain-type floatlands taper above and below midpoint."
+#~ msgstr "Управляет сужением островов горного типа ниже средней точки."
 
-#~ msgid "Parallax occlusion strength"
-#~ msgstr "Сила параллакса"
+#~ msgid "Center of light curve mid-boost."
+#~ msgstr "Центр среднего подъёма кривой света."
 
-#~ msgid "Limit of emerge queues on disk"
-#~ msgstr "Ограничение очередей emerge на диске"
-
-#~ msgid "Downloading and installing $1, please wait..."
+#~ msgid ""
+#~ "Controls the density of mountain-type floatlands.\n"
+#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
 #~ msgstr ""
-#~ "Загружается и устанавливается $1.\n"
-#~ "Пожалуйста, подождите..."
+#~ "Контролирует плотность горной местности парящих островов.\n"
+#~ "Является смещением, добавляемым к значению шума 'mgv7_np_mountain'."
 
-#~ msgid "Back"
-#~ msgstr "Назад"
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr ""
+#~ "Контролирует ширину тоннелей. Меньшие значения создают более широкие "
+#~ "тоннели."
 
-#~ msgid "Ok"
-#~ msgstr "Oк"
+#~ msgid "Darkness sharpness"
+#~ msgstr "Резкость темноты"
+
+#~ msgid ""
+#~ "Defines areas of floatland smooth terrain.\n"
+#~ "Smooth floatlands occur when noise > 0."
+#~ msgstr ""
+#~ "Определяет области гладкой поверхности на парящих островах.\n"
+#~ "Гладкие парящие острова появляются, когда шум больше ноля."
+
+#~ msgid ""
+#~ "Deprecated, define and locate cave liquids using biome definitions "
+#~ "instead.\n"
+#~ "Y of upper limit of lava in large caves."
+#~ msgstr ""
+#~ "Устарело, определяет и располагает жидкости в пещерах с использованием "
+#~ "определений биома.\n"
+#~ "Y верхней границы лавы в больших пещерах."
+
+#~ msgid "Enable VBO"
+#~ msgstr "Включить объекты буфера вершин (VBO)"
+
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "Включить кинематографическое тональное отображение"
+
+#~ msgid "Floatland base height noise"
+#~ msgstr "Шум базовой высоты парящих островов"
+
+#~ msgid "Floatland mountain height"
+#~ msgstr "Высота гор на парящих островах"
+
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "Прозрачность тени шрифта (непрозрачность от 0 до 255)."
+
+#~ msgid "Gamma"
+#~ msgstr "Гамма"
+
+#~ msgid "IPv6 support."
+#~ msgstr "Поддержка IPv6."
+
+#~ msgid "Lava depth"
+#~ msgstr "Глубина лавы"
+
+#~ msgid "Lightness sharpness"
+#~ msgstr "Резкость освещённости"
+
+#~ msgid "Path to TrueTypeFont or bitmap."
+#~ msgstr "Путь к шрифту TrueType или картинке со шрифтом."
+
+#~ msgid "Shadow limit"
+#~ msgstr "Лимит теней"
+
+#~ msgid "Strength of light curve mid-boost."
+#~ msgstr "Сила среднего подъёма кривой света."
+
+#~ msgid "This font will be used for certain languages."
+#~ msgstr "Этот шрифт будет использован для некоторых языков."
+
+#~ msgid ""
+#~ "Typical maximum height, above and below midpoint, of floatland mountains."
+#~ msgstr ""
+#~ "Типичная максимальная высота, выше и ниже средней точки гор парящих "
+#~ "островов."
+
+#~ msgid "Variation of hill height and lake depth on floatland smooth terrain."
+#~ msgstr ""
+#~ "Вариация высоты холмов и глубин озёр на гладкой местности парящих "
+#~ "островов."
+
+#~ msgid "Waving water"
+#~ msgstr "Волны на воде"
+
+#~ msgid "Y-level of floatland midpoint and lake surface."
+#~ msgstr "Y-уровень середины поплавка и поверхности озера."
+
+#~ msgid "Y-level to which floatland shadows extend."
+#~ msgstr "Y-уровень, на который распространяются тени с плавающей точкой."
+
+#~ msgid "Projecting dungeons"
+#~ msgstr "Проступающие подземелья"
+
+#~ msgid "Waving Water"
+#~ msgstr "Волны на воде"
+
+#, fuzzy
+#~ msgid "Y of upper limit of lava in large caves."
+#~ msgstr "Верхний предел по Y для больших псевдослучайных пещер."
+
+#~ msgid "Select Package File:"
+#~ msgstr "Выберите файл дополнения:"

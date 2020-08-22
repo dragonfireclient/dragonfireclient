@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Thai (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-07-08 08:41+0000\n"
 "Last-Translator: TZTarzan <khunsatyptiphan@gmail.com>\n"
 "Language-Team: Thai <https://hosted.weblate.org/projects/minetest/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.2-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "เกิดใหม่"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "คุณตายแล้ว"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -65,9 +57,7 @@ msgstr "เซิร์ฟเวอร์ที่สนับสนุนเว
 
 #: builtin/mainmenu/common.lua
 msgid "Try reenabling public serverlist and check your internet connection."
-msgstr ""
-"ลองเปิดใช้งานเซิร์ฟเวอร์ลิสต์สาธารณะอีกครั้งและตรวจสอบการเชื่อมต่ออินเทอร์เน็"
-"ต"
+msgstr "ลองเปิดใช้งานเซิร์ฟเวอร์ลิสต์สาธารณะอีกครั้งและตรวจสอบการเชื่อมต่ออินเทอร์เน็ต"
 
 #: builtin/mainmenu/common.lua
 msgid "We only support protocol version $1."
@@ -112,8 +102,8 @@ msgid ""
 "Failed to enable mod \"$1\" as it contains disallowed characters. Only "
 "characters [a-z0-9_] are allowed."
 msgstr ""
-"ไม่สามารถเปิดใช้งานม็อด '$1' ซึ่งประกอบด้วยตัวอักษรที่ไม่ได้รับอนุญาต ตัวอั"
-"กษร [a-z0-9_] เท่านั้นที่ได้รับอนุญาต"
+"ไม่สามารถเปิดใช้งานม็อด '$1' ซึ่งประกอบด้วยตัวอักษรที่ไม่ได้รับอนุญาต ตัวอักษร [a-z0-9_] "
+"เท่านั้นที่ได้รับอนุญาต"
 
 #: builtin/mainmenu/dlg_config_world.lua
 msgid "Find More Mods"
@@ -461,9 +451,7 @@ msgstr "เปลี่ยนชื่อม็อดแพ็ค:"
 msgid ""
 "This modpack has an explicit name given in its modpack.conf which will "
 "override any renaming here."
-msgstr ""
-"ม็อดแพ็คมีชื่อชื่อที่ถูกตั้งในไฟล์ modpack.conf "
-"ซึ่งจะแทนที่ชื่อที่เปลี่ยนตรงนี้"
+msgstr "ม็อดแพ็คมีชื่อชื่อที่ถูกตั้งในไฟล์ modpack.conf ซึ่งจะแทนที่ชื่อที่เปลี่ยนตรงนี้"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "(No description of setting given)"
@@ -480,6 +468,11 @@ msgstr "< กลับไปที่หน้าการตั้งค่า"
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Browse"
 msgstr "เรียกดู"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "ไคลเอนต์"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
@@ -693,6 +686,10 @@ msgstr "นักพัฒนาหลัก"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "เครดิต"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1159,11 +1156,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "การควบคุม:\n"
 "-%s1: เลื่อนไปข้างหน้า\n"
@@ -1277,6 +1277,16 @@ msgid "Fog enabled"
 msgstr "หมอกเปิดใช้งาน"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "หมอกปิดการใช้งาน"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "หมอกเปิดใช้งาน"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "ข้อมูลเกม:"
 
@@ -1295,6 +1305,16 @@ msgstr "ข้อกำหนดของสินค้า..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "หมอกปิดการใช้งาน"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "ความเสียหาย ที่เปิดใช้งาน"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1385,6 +1405,10 @@ msgid "Resolving address..."
 msgstr "การแก้ไขที่อยู่..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "เกิดใหม่"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "ปิด..."
 
@@ -1437,6 +1461,10 @@ msgid "Wireframe shown"
 msgstr "แสดงโครงลวด"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "คุณตายแล้ว"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "ซูมถูกปิดใช้งานในปัจจุบันโดยเกมหรือตัวดัดแปลง"
 
@@ -1450,6 +1478,16 @@ msgstr "สนทนาซ่อนอยู่"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "สนทนาแสดง"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "สนทนาซ่อนอยู่"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "สนทนาแสดง"
 
 #: src/client/gameui.cpp
@@ -1800,6 +1838,26 @@ msgid "Backward"
 msgstr "ย้อนหลัง"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "เปลี่ยนกล้อง"
 
@@ -1892,8 +1950,28 @@ msgid "Special"
 msgstr "พิเศษ"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "พิเศษ"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "สลับโรงภาพยนตร์"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "สลับโรงภาพยนตร์"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "สลับ HUD"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "สลับบิน"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -6729,8 +6807,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Whether node texture animations should be desynchronized per mapblock."
-msgstr ""
-"ระบุว่าควรสร้างการซิงโครไนซ์ภาพเคลื่อนไหวพื้นผิวของโหนดต่อแม็ปบล็อกหรือไม่"
+msgstr "ระบุว่าควรสร้างการซิงโครไนซ์ภาพเคลื่อนไหวพื้นผิวของโหนดต่อแม็ปบล็อกหรือไม่"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -6876,47 +6953,20 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "สลับโรงภาพยนตร์"
+#~ msgid "Ok"
+#~ msgstr "ตกลง"
 
-#~ msgid "Select Package File:"
-#~ msgstr "เลือกแฟ้มแพคเกจ:"
+#~ msgid "Back"
+#~ msgstr "หลัง"
 
-#~ msgid "Waving Water"
-#~ msgstr "น้ำโบก"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "ดาวน์โหลด และติดตั้ง $1 กรุณารอสักครู่..."
 
-#~ msgid "Waving water"
-#~ msgstr "โบกน้ำ"
+#~ msgid "Parallax occlusion strength"
+#~ msgstr "กำลังบดเคี้ยวของ Parallax"
 
-#~ msgid "This font will be used for certain languages."
-#~ msgstr "แบบอักษรนี้จะใช้สำหรับบางภาษา"
-
-#~ msgid "Strength of light curve mid-boost."
-#~ msgstr "ความแข็งแรงของแสงโค้งกลาง - เพิ่ม"
-
-#~ msgid "Path to TrueTypeFont or bitmap."
-#~ msgstr "เส้นทางแบบอักษร."
-
-#~ msgid "Lightness sharpness"
-#~ msgstr "ความคมชัดของแสง"
-
-#~ msgid "Gamma"
-#~ msgstr "แกมมา"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "ตัวอักษรเงาอัลฟา (ความทึบระหว่าง 0 และ 255)."
-
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "เปิดใช้งานการจับคู่โทนภาพยนตร์"
-
-#~ msgid "Enable VBO"
-#~ msgstr "ทำให้สามารถ VBO"
-
-#~ msgid "Darkness sharpness"
-#~ msgstr "ความมืดมิด"
-
-#~ msgid "Center of light curve mid-boost."
-#~ msgstr "กึ่งกลางของเส้นโค้งแสง - กลางเพิ่ม"
+#~ msgid "Path to save screenshots at."
+#~ msgstr "พา ธ เพื่อบันทึกภาพหน้าจอที่ ..."
 
 #~ msgid ""
 #~ "Adjust the gamma encoding for the light tables. Higher numbers are "
@@ -6926,17 +6976,41 @@ msgstr ""
 #~ "ปรับการเข้ารหัสแกมม่าสำหรับตารางแสง ตัวเลขที่สูงกว่านั้นจะสว่างกว่า\n"
 #~ "การตั้งค่านี้มีไว้สำหรับไคลเอ็นต์เท่านั้นและเซิร์ฟเวอร์จะเพิกเฉย"
 
-#~ msgid "Path to save screenshots at."
-#~ msgstr "พา ธ เพื่อบันทึกภาพหน้าจอที่ ..."
+#~ msgid "Center of light curve mid-boost."
+#~ msgstr "กึ่งกลางของเส้นโค้งแสง - กลางเพิ่ม"
 
-#~ msgid "Parallax occlusion strength"
-#~ msgstr "กำลังบดเคี้ยวของ Parallax"
+#~ msgid "Darkness sharpness"
+#~ msgstr "ความมืดมิด"
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "ดาวน์โหลด และติดตั้ง $1 กรุณารอสักครู่..."
+#~ msgid "Enable VBO"
+#~ msgstr "ทำให้สามารถ VBO"
 
-#~ msgid "Back"
-#~ msgstr "หลัง"
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "เปิดใช้งานการจับคู่โทนภาพยนตร์"
 
-#~ msgid "Ok"
-#~ msgstr "ตกลง"
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "ตัวอักษรเงาอัลฟา (ความทึบระหว่าง 0 และ 255)."
+
+#~ msgid "Gamma"
+#~ msgstr "แกมมา"
+
+#~ msgid "Lightness sharpness"
+#~ msgstr "ความคมชัดของแสง"
+
+#~ msgid "Path to TrueTypeFont or bitmap."
+#~ msgstr "เส้นทางแบบอักษร."
+
+#~ msgid "Strength of light curve mid-boost."
+#~ msgstr "ความแข็งแรงของแสงโค้งกลาง - เพิ่ม"
+
+#~ msgid "This font will be used for certain languages."
+#~ msgstr "แบบอักษรนี้จะใช้สำหรับบางภาษา"
+
+#~ msgid "Waving water"
+#~ msgstr "โบกน้ำ"
+
+#~ msgid "Waving Water"
+#~ msgstr "น้ำโบก"
+
+#~ msgid "Select Package File:"
+#~ msgstr "เลือกแฟ้มแพคเกจ:"

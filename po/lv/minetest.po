@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: minetest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-06-04 16:41+0000\n"
 "Last-Translator: Uko Koknevics <TheZeus121@gmail.com>\n"
 "Language-Team: Latvian <https://hosted.weblate.org/projects/minetest/"
@@ -19,14 +19,6 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100 <= "
 "19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
 "X-Generator: Weblate 4.1-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Atdzīvoties"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Jūs nomirāt"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -483,6 +475,10 @@ msgid "Browse"
 msgstr "Pārlūkot"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+msgid "Clientmods"
+msgstr ""
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Atspējots"
 
@@ -694,6 +690,10 @@ msgstr "Pamata izstrādātāji"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Pateicības"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1143,7 +1143,7 @@ msgid "Continue"
 msgstr "Turpināt"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1154,11 +1154,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Kontroles:\n"
 "- %s: uz priekšu\n"
@@ -1273,6 +1276,16 @@ msgid "Fog enabled"
 msgstr "Migla iespējota"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Migla atspējota"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "Migla iespējota"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Spēles informācija:"
 
@@ -1291,6 +1304,16 @@ msgstr "Priekšmetu apraksti..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Migla atspējota"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Bojājumi iespējoti"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1377,6 +1400,10 @@ msgid "Resolving address..."
 msgstr "Atrisina adresi..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Atdzīvoties"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Beidz darbu..."
 
@@ -1429,6 +1456,10 @@ msgid "Wireframe shown"
 msgstr "Karkasattēlojums iespējots"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Jūs nomirāt"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "Tuvināšana šobrīd atspējota vai nu spēlei, vai modam"
 
@@ -1442,6 +1473,16 @@ msgstr "Čats paslēpts"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "Čats parādīts"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Čats paslēpts"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "Čats parādīts"
 
 #: src/client/gameui.cpp
@@ -1769,6 +1810,26 @@ msgid "Backward"
 msgstr "Atmuguriski"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Mainīt kameru"
 
@@ -1863,8 +1924,27 @@ msgid "Special"
 msgstr "Speciālais"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Speciālais"
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle C. Menu"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "“Noclip”"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "Spēles saskarne"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Lidot"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -6385,11 +6465,11 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#~ msgid "Back"
-#~ msgstr "Atpakaļ"
+#~ msgid "Ok"
+#~ msgstr "Ok"
 
 #~ msgid "Downloading and installing $1, please wait..."
 #~ msgstr "Lejuplādējas un instalējas $1, lūdzu uzgaidiet..."
 
-#~ msgid "Ok"
-#~ msgstr "Ok"
+#~ msgid "Back"
+#~ msgstr "Atpakaļ"

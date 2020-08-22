@@ -902,6 +902,8 @@ Call these functions only at load time!
     * Delete `ParticleSpawner` with `id` (return value from `minetest.add_particlespawner`)
 
 ### Misc
+* `minetest.get_inventory(location)`
+    * Returns the inventory at location
 * `minetest.register_cheat(name, category, setting | function)`
     * Register an entry for the cheat menu
     * If the Category is nonexistant, it will be created

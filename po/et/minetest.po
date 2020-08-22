@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Estonian (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-05-03 19:14+0000\n"
 "Last-Translator: Janar Leas <janar.leas@gmail.com>\n"
 "Language-Team: Estonian <https://hosted.weblate.org/projects/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.1-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Ärka ellu"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Said surma"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -481,6 +473,10 @@ msgid "Browse"
 msgstr "Sirvi"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+msgid "Clientmods"
+msgstr ""
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Keelatud"
 
@@ -691,6 +687,10 @@ msgstr "Põhiline arendaja"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Tänuavaldused"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1139,7 +1139,7 @@ msgid "Continue"
 msgstr "Jätka"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1150,11 +1150,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Klahvid:\n"
 "- %s: liigu edasi\n"
@@ -1268,6 +1271,16 @@ msgid "Fog enabled"
 msgstr "Udu lubatud"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Udu keelatud"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "Udu lubatud"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Mängu teave:"
 
@@ -1286,6 +1299,16 @@ msgstr "Esemete määratlused..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr ""
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Udu keelatud"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Kahjustamine lubatud"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1372,6 +1395,10 @@ msgid "Resolving address..."
 msgstr ""
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Ärka ellu"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr ""
 
@@ -1424,6 +1451,10 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Said surma"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1437,6 +1468,15 @@ msgstr "Vestlus peidetud"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr ""
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Vestlus peidetud"
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu shown"
 msgstr ""
 
 #: src/client/gameui.cpp
@@ -1765,6 +1805,26 @@ msgid "Backward"
 msgstr "Tagasi"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Muuda kaamerat"
 
@@ -1859,8 +1919,28 @@ msgid "Special"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Hiilimine"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Lülita kiirus sisse"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Lülita kiirus sisse"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "Lülita HUD sisse/välja"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Lülita lendamine sisse"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -6443,29 +6523,25 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Lülita kiirus sisse"
+#~ msgid "Ok"
+#~ msgstr "Olgu."
 
-#, fuzzy
-#~ msgid "Select Package File:"
-#~ msgstr "Vali modifikatsiooni fail:"
+#~ msgid "Back"
+#~ msgstr "Tagasi"
+
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Palun oota $1 allalaadimist ja paigaldamist…"
+
+#~ msgid "Darkness sharpness"
+#~ msgstr "Pimeduse teravus"
+
+#~ msgid "Enable VBO"
+#~ msgstr "Luba VBO"
 
 #, fuzzy
 #~ msgid "Enables filmic tone mapping"
 #~ msgstr "Lubab filmic tone mapping"
 
-#~ msgid "Enable VBO"
-#~ msgstr "Luba VBO"
-
-#~ msgid "Darkness sharpness"
-#~ msgstr "Pimeduse teravus"
-
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Palun oota $1 allalaadimist ja paigaldamist…"
-
-#~ msgid "Back"
-#~ msgstr "Tagasi"
-
-#~ msgid "Ok"
-#~ msgstr "Olgu."
+#, fuzzy
+#~ msgid "Select Package File:"
+#~ msgstr "Vali modifikatsiooni fail:"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Czech (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-07-08 20:47+0000\n"
 "Last-Translator: sfan5 <sfan5@live.de>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/minetest/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 4.2-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Oživit"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Zemřel jsi"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -487,6 +479,11 @@ msgid "Browse"
 msgstr "Procházet"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Klient"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Vypnuto"
 
@@ -699,6 +696,10 @@ msgstr "Hlavní vývojáři"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Autoři"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1148,7 +1149,7 @@ msgid "Continue"
 msgstr "Pokračovat"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1159,11 +1160,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Ovládání:\n"
 "- %s: pohyb dopředu\n"
@@ -1277,6 +1281,16 @@ msgid "Fog enabled"
 msgstr "Mlha je povolena"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Mlha je zakázána"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "Mlha je povolena"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Informace o hře:"
 
@@ -1295,6 +1309,16 @@ msgstr "Definice věcí..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Mlha je zakázána"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Zranění povoleno"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1381,6 +1405,10 @@ msgid "Resolving address..."
 msgstr "Překládám adresu..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Oživit"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Vypínání..."
 
@@ -1433,6 +1461,10 @@ msgid "Wireframe shown"
 msgstr "Obrysy zobrazeny"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Zemřel jsi"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "Přiblížení je aktuálně zakázáno"
 
@@ -1446,6 +1478,16 @@ msgstr "Chat skryt"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "Chat zobrazen"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Chat skryt"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "Chat zobrazen"
 
 #: src/client/gameui.cpp
@@ -1772,6 +1814,26 @@ msgid "Backward"
 msgstr "Vzad"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Změnit nastavení kamery"
 
@@ -1866,8 +1928,28 @@ msgid "Special"
 msgstr "Speciální"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Speciální"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Plynulá kamera"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Plynulá kamera"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "Zapnout/Vypnout ovládací prvky"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Zapnout/Vypnout létání"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -6926,61 +7008,14 @@ msgstr "cURL limit paralelních stahování"
 msgid "cURL timeout"
 msgstr "cURL timeout"
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Plynulá kamera"
+#~ msgid "Ok"
+#~ msgstr "OK"
 
-#, fuzzy
-#~ msgid "Select Package File:"
-#~ msgstr "Vybrat soubor s modem:"
+#~ msgid "Back"
+#~ msgstr "Zpět"
 
-#~ msgid "Waving Water"
-#~ msgstr "Vlnění vody"
-
-#~ msgid "Waving water"
-#~ msgstr "Vlnění vody"
-
-#, fuzzy
-#~ msgid "Lava depth"
-#~ msgstr "Hloubka velké jeskyně"
-
-#~ msgid "IPv6 support."
-#~ msgstr ""
-#~ "Nastavuje reálnou délku dne.\n"
-#~ "Např.: 72 = 20 minut, 360 = 4 minuty, 1 = 24 hodin, 0 = čas zůstává stále "
-#~ "stejný."
-
-#~ msgid "Gamma"
-#~ msgstr "Gamma"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "Neprůhlednost stínu písma (od 0 do 255)."
-
-#~ msgid "Floatland base height noise"
-#~ msgstr "Šum základní výšky létajících ostrovů"
-
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "Zapne filmový tone mapping"
-
-#~ msgid "Enable VBO"
-#~ msgstr "Zapnout VBO"
-
-#~ msgid ""
-#~ "Defines areas of floatland smooth terrain.\n"
-#~ "Smooth floatlands occur when noise > 0."
-#~ msgstr ""
-#~ "Určuje oblasti létajících ostrovů s rovinný terénem.\n"
-#~ "Terén bude rovný v místech, kde hodnota šumu bude větší než 0."
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr "Ovládá šířku tunelů, menší hodnota vytváří širší tunely."
-
-#, fuzzy
-#~ msgid ""
-#~ "Controls the density of mountain-type floatlands.\n"
-#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
-#~ msgstr ""
-#~ "Stanovuje hustotu horského terénu na létajících ostrovech.\n"
-#~ "Jedná se o posun přidaný k hodnotě šumu 'np_mountain'."
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Stahuji a instaluji $1, prosím čekejte..."
 
 #~ msgid ""
 #~ "Adjust the gamma encoding for the light tables. Higher numbers are "
@@ -6991,11 +7026,55 @@ msgstr "cURL timeout"
 #~ "hodnoty.\n"
 #~ "Toto nastavení ovlivňuje pouze klienta a serverem není použito."
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Stahuji a instaluji $1, prosím čekejte..."
+#, fuzzy
+#~ msgid ""
+#~ "Controls the density of mountain-type floatlands.\n"
+#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
+#~ msgstr ""
+#~ "Stanovuje hustotu horského terénu na létajících ostrovech.\n"
+#~ "Jedná se o posun přidaný k hodnotě šumu 'np_mountain'."
 
-#~ msgid "Back"
-#~ msgstr "Zpět"
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr "Ovládá šířku tunelů, menší hodnota vytváří širší tunely."
 
-#~ msgid "Ok"
-#~ msgstr "OK"
+#~ msgid ""
+#~ "Defines areas of floatland smooth terrain.\n"
+#~ "Smooth floatlands occur when noise > 0."
+#~ msgstr ""
+#~ "Určuje oblasti létajících ostrovů s rovinný terénem.\n"
+#~ "Terén bude rovný v místech, kde hodnota šumu bude větší než 0."
+
+#~ msgid "Enable VBO"
+#~ msgstr "Zapnout VBO"
+
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "Zapne filmový tone mapping"
+
+#~ msgid "Floatland base height noise"
+#~ msgstr "Šum základní výšky létajících ostrovů"
+
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "Neprůhlednost stínu písma (od 0 do 255)."
+
+#~ msgid "Gamma"
+#~ msgstr "Gamma"
+
+#~ msgid "IPv6 support."
+#~ msgstr ""
+#~ "Nastavuje reálnou délku dne.\n"
+#~ "Např.: 72 = 20 minut, 360 = 4 minuty, 1 = 24 hodin, 0 = čas zůstává stále "
+#~ "stejný."
+
+#, fuzzy
+#~ msgid "Lava depth"
+#~ msgstr "Hloubka velké jeskyně"
+
+#~ msgid "Waving water"
+#~ msgstr "Vlnění vody"
+
+#~ msgid "Waving Water"
+#~ msgstr "Vlnění vody"
+
+#, fuzzy
+#~ msgid "Select Package File:"
+#~ msgstr "Vybrat soubor s modem:"

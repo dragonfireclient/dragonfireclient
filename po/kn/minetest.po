@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Kannada (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2019-11-10 15:04+0000\n"
 "Last-Translator: Krock <mk939@ymail.com>\n"
 "Language-Team: Kannada <https://hosted.weblate.org/projects/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 3.10-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "ಮತ್ತೆ ಹುಟ್ಟು"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "ನೀನು ಸತ್ತುಹೋದೆ"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -480,6 +472,10 @@ msgid "Browse"
 msgstr ""
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+msgid "Clientmods"
+msgstr ""
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr ""
 
@@ -688,6 +684,10 @@ msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
+msgstr ""
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
 msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
@@ -1146,11 +1146,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 
 #: src/client/game.cpp
@@ -1238,6 +1241,15 @@ msgid "Fog enabled"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "Freecam disabled"
+msgstr ""
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr ""
 
@@ -1256,6 +1268,15 @@ msgstr ""
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr ""
+
+#: src/client/game.cpp
+msgid "Killaura disabled"
+msgstr ""
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1342,6 +1363,10 @@ msgid "Resolving address..."
 msgstr ""
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "ಮತ್ತೆ ಹುಟ್ಟು"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr ""
 
@@ -1394,6 +1419,10 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "ನೀನು ಸತ್ತುಹೋದೆ"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1407,6 +1436,14 @@ msgstr ""
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr ""
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu hidden"
+msgstr ""
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu shown"
 msgstr ""
 
 #: src/client/gameui.cpp
@@ -1728,6 +1765,26 @@ msgid "Backward"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr ""
 
@@ -1820,7 +1877,23 @@ msgid "Special"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "Special Inv."
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle C. Menu"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle Freec."
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle Killaura"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
@@ -6336,11 +6409,11 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "$1 ಡೌನ್ಲೋಡ್ ಮತ್ತು ಇನ್ಸ್ಟಾಲ್ ಮಾಡಲಾಗುತ್ತಿದೆ, ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ..."
+#~ msgid "Ok"
+#~ msgstr "ಸರಿ"
 
 #~ msgid "Back"
 #~ msgstr "ಹಿಂದೆ"
 
-#~ msgid "Ok"
-#~ msgstr "ಸರಿ"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "$1 ಡೌನ್ಲೋಡ್ ಮತ್ತು ಇನ್ಸ್ಟಾಲ್ ಮಾಡಲಾಗುತ್ತಿದೆ, ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ..."

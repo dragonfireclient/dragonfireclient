@@ -456,6 +456,27 @@ int ModApiClient::l_dig_node(lua_State *L)
 	return 0;
 }
 
+// get_inventory(location)
+int ModApiClient::l_get_inventory(lua_State *L)
+{
+	Client *client = getClient(L);
+	InventoryLocation inventory_location;
+	Inventory *inventory;
+	std::string location;
+	
+	location = readParam<std::string>(L, 1);
+
+	try {
+		inventory_location.deSerialize(location);
+		inventory = client->getInventory(inventory_location);
+		push_inventory(L, inventory);
+	} catch (SerializationError) {
+		lua_pushnil(L);
+	}
+	
+	return 1;
+}
+
 void ModApiClient::Initialize(lua_State *L, int top)
 {
 	API_FCT(get_current_modname);
@@ -486,4 +507,5 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(send_damage);
 	API_FCT(place_node);
 	API_FCT(dig_node);
+	API_FCT(get_inventory);
 }

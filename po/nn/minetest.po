@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Norwegian Nynorsk (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-03-31 10:14+0000\n"
 "Last-Translator: sfan5 <sfan5@live.de>\n"
 "Language-Team: Norwegian Nynorsk <https://hosted.weblate.org/projects/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.0-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Du har kome at"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Du døydde"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -480,6 +472,10 @@ msgid "Browse"
 msgstr "Bla gjennom"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+msgid "Clientmods"
+msgstr ""
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Deaktivert"
 
@@ -693,6 +689,10 @@ msgstr "Kjerne-utviklere"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Medvirkende"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1142,7 +1142,7 @@ msgid "Continue"
 msgstr "Fortsetja"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1153,11 +1153,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Styring:\n"
 "- %s: Framsteg\n"
@@ -1271,6 +1274,16 @@ msgid "Fog enabled"
 msgstr "Tåke er aktivert"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Tåke er deaktivert"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "Tåke er aktivert"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Spel info:"
 
@@ -1289,6 +1302,16 @@ msgstr "Definerér gjennstander..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Tåke er deaktivert"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Skade aktivert"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1376,6 +1399,10 @@ msgid "Resolving address..."
 msgstr "Slår opp addressa..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Du har kome at"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Slår av..."
 
@@ -1428,6 +1455,10 @@ msgid "Wireframe shown"
 msgstr "Jern-tråd-ramma er vist"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Du døydde"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "Zoom er for tiden deaktivert tå spelet eller ein modifikasjon"
 
@@ -1441,6 +1472,16 @@ msgstr "Skravlerøret er gøymt"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "Skravlerøret er vist"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Skravlerøret er gøymt"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "Skravlerøret er vist"
 
 #: src/client/gameui.cpp
@@ -1767,6 +1808,26 @@ msgid "Backward"
 msgstr "Bakover"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Byt kamera"
 
@@ -1861,8 +1922,28 @@ msgid "Special"
 msgstr "Spesial"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Spesial"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Slå på/av kameramodus"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Slå på/av kameramodus"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "Slå av/på HUD"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Slåpå/av flyve løyving"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -6382,17 +6463,14 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Slå på/av kameramodus"
-
-#~ msgid "Select Package File:"
-#~ msgstr "Velje eit pakke dokument:"
-
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Henter og installerer $1, ver vennleg og vent..."
+#~ msgid "Ok"
+#~ msgstr "OK"
 
 #~ msgid "Back"
 #~ msgstr "Attende"
 
-#~ msgid "Ok"
-#~ msgstr "OK"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Henter og installerer $1, ver vennleg og vent..."
+
+#~ msgid "Select Package File:"
+#~ msgstr "Velje eit pakke dokument:"

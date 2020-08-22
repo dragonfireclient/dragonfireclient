@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hungarian (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-06-22 17:56+0000\n"
 "Last-Translator: Ács Zoltán <acszoltan111@gmail.com>\n"
 "Language-Team: Hungarian <https://hosted.weblate.org/projects/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.2-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Újraéledés"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Meghaltál"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -477,6 +469,11 @@ msgid "Browse"
 msgstr "Tallózás"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Kliens"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Letiltva"
 
@@ -687,6 +684,10 @@ msgstr "Belső fejlesztők"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Köszönetnyilvánítás"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1135,7 +1136,7 @@ msgid "Continue"
 msgstr "Folytatás"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1146,11 +1147,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Irányítás:\n"
 "- %s: mozgás előre\n"
@@ -1264,6 +1268,16 @@ msgid "Fog enabled"
 msgstr "köd engedélyezve"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Köd letiltva"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "köd engedélyezve"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Játékinformációk:"
 
@@ -1282,6 +1296,16 @@ msgstr "Tárgyak meghatározása…"
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Köd letiltva"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Sérülés engedélyezve"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1368,6 +1392,10 @@ msgid "Resolving address..."
 msgstr "Cím feloldása…"
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Újraéledés"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Leállítás…"
 
@@ -1420,6 +1448,10 @@ msgid "Wireframe shown"
 msgstr "Drótváz megjelenítése"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Meghaltál"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "Nagyítás letiltva (szerver, vagy mod által)"
 
@@ -1433,6 +1465,16 @@ msgstr "Csevegés elrejtve"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "Csevegés megjelenítése"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Csevegés elrejtve"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "Csevegés megjelenítése"
 
 #: src/client/gameui.cpp
@@ -1760,6 +1802,26 @@ msgid "Backward"
 msgstr "Hátra"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Nézet váltása"
 
@@ -1854,8 +1916,28 @@ msgid "Special"
 msgstr "Különleges"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Különleges"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Váltás „mozi” módba"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Váltás „mozi” módba"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "HUD váltása"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Repülés váltása"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -3930,7 +4012,8 @@ msgstr "Játékon belüli csevegő konzol hátterének színe (R,G,B)."
 
 #: src/settings_translation_file.cpp
 msgid "In-game chat console height, between 0.1 (10%) and 1.0 (100%)."
-msgstr "Játékon belüli csevegéskonzol magassága 0,1 (10%) és 1,0 (100%) között."
+msgstr ""
+"Játékon belüli csevegéskonzol magassága 0,1 (10%) és 1,0 (100%) között."
 
 #: src/settings_translation_file.cpp
 msgid "Inc. volume key"
@@ -5741,8 +5824,8 @@ msgid ""
 "Print the engine's profiling data in regular intervals (in seconds).\n"
 "0 = disable. Useful for developers."
 msgstr ""
-"A játékmotor profiladatainak kiírása szabályos időközökben (másodpercekben)."
-"\n"
+"A játékmotor profiladatainak kiírása szabályos időközökben "
+"(másodpercekben).\n"
 "0 a kikapcsoláshoz. Hasznos fejlesztőknek."
 
 #: src/settings_translation_file.cpp
@@ -6912,8 +6995,8 @@ msgid ""
 "Contains the same information as the file debug.txt (default name)."
 msgstr ""
 "Csak Windows rendszeren: Minetest indítása parancssorral a háttérben.\n"
-"Ugyanazokat az információkat tartalmazza, mint a debug.txt fájl ("
-"alapértelmezett név)."
+"Ugyanazokat az információkat tartalmazza, mint a debug.txt fájl "
+"(alapértelmezett név)."
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -7000,81 +7083,17 @@ msgstr "cURL párhuzamossági korlát"
 msgid "cURL timeout"
 msgstr "cURL időkorlát"
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Váltás „mozi” módba"
+#~ msgid "Ok"
+#~ msgstr "Ok"
 
-#~ msgid "Select Package File:"
-#~ msgstr "csomag fájl kiválasztása:"
+#~ msgid "Back"
+#~ msgstr "Vissza"
 
-#~ msgid "Waving Water"
-#~ msgstr "Hullámzó víz"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "$1 letöltése és telepítése, kérlek várj…"
 
-#~ msgid "Waving water"
-#~ msgstr "Hullámzó víz"
-
-#~ msgid "This font will be used for certain languages."
-#~ msgstr "Ezt a betűtípust bizonyos nyelvek használják."
-
-#, fuzzy
-#~ msgid "Shadow limit"
-#~ msgstr "Térképblokk korlát"
-
-#~ msgid "Path to TrueTypeFont or bitmap."
-#~ msgstr "A TrueType betűtípus (ttf) vagy bitmap útvonala."
-
-#, fuzzy
-#~ msgid "Lightness sharpness"
-#~ msgstr "Fényélesség"
-
-#, fuzzy
-#~ msgid "Lava depth"
-#~ msgstr "Nagy barlang mélység"
-
-#~ msgid "IPv6 support."
-#~ msgstr "IPv6 támogatás."
-
-#~ msgid "Gamma"
-#~ msgstr "Gamma"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "Betűtípus árnyék alfa (átlátszatlanság, 0 és 255 között)."
-
-#, fuzzy
-#~ msgid "Floatland mountain height"
-#~ msgstr "Lebegő hegyek magassága"
-
-#, fuzzy
-#~ msgid "Floatland base height noise"
-#~ msgstr "A lebegő hegyek alapmagassága"
-
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "filmes tónus effektek bekapcsolása"
-
-#~ msgid "Enable VBO"
-#~ msgstr "VBO engedélyez"
-
-#~ msgid ""
-#~ "Defines areas of floatland smooth terrain.\n"
-#~ "Smooth floatlands occur when noise > 0."
-#~ msgstr ""
-#~ "A lebegő szigetek sima területeit határozza meg.\n"
-#~ "Lapos szigetek ott fordulnak elő, ahol a zaj értéke pozitív."
-
-#~ msgid "Darkness sharpness"
-#~ msgstr "a sötétség élessége"
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr ""
-#~ "A járatok szélességét határozza meg, alacsonyabb érték szélesebb "
-#~ "járatokat hoz létre."
-
-#, fuzzy
-#~ msgid ""
-#~ "Controls the density of mountain-type floatlands.\n"
-#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
-#~ msgstr ""
-#~ "A lebegő szigetek hegységeinek sűrűségét szabályozza.\n"
-#~ "Az \"np_mountain\" zaj értékéhez hozzáadott eltolás."
+#~ msgid "Path to save screenshots at."
+#~ msgstr "Képernyőmentések mappája."
 
 #~ msgid ""
 #~ "Adjust the gamma encoding for the light tables. Higher numbers are "
@@ -7085,14 +7104,75 @@ msgstr "cURL időkorlát"
 #~ "fényerő.\n"
 #~ "Ez a beállítás csak a kliensre érvényes, a szerver nem veszi figyelembe."
 
-#~ msgid "Path to save screenshots at."
-#~ msgstr "Képernyőmentések mappája."
+#, fuzzy
+#~ msgid ""
+#~ "Controls the density of mountain-type floatlands.\n"
+#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
+#~ msgstr ""
+#~ "A lebegő szigetek hegységeinek sűrűségét szabályozza.\n"
+#~ "Az \"np_mountain\" zaj értékéhez hozzáadott eltolás."
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "$1 letöltése és telepítése, kérlek várj…"
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr ""
+#~ "A járatok szélességét határozza meg, alacsonyabb érték szélesebb "
+#~ "járatokat hoz létre."
 
-#~ msgid "Back"
-#~ msgstr "Vissza"
+#~ msgid "Darkness sharpness"
+#~ msgstr "a sötétség élessége"
 
-#~ msgid "Ok"
-#~ msgstr "Ok"
+#~ msgid ""
+#~ "Defines areas of floatland smooth terrain.\n"
+#~ "Smooth floatlands occur when noise > 0."
+#~ msgstr ""
+#~ "A lebegő szigetek sima területeit határozza meg.\n"
+#~ "Lapos szigetek ott fordulnak elő, ahol a zaj értéke pozitív."
+
+#~ msgid "Enable VBO"
+#~ msgstr "VBO engedélyez"
+
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "filmes tónus effektek bekapcsolása"
+
+#, fuzzy
+#~ msgid "Floatland base height noise"
+#~ msgstr "A lebegő hegyek alapmagassága"
+
+#, fuzzy
+#~ msgid "Floatland mountain height"
+#~ msgstr "Lebegő hegyek magassága"
+
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "Betűtípus árnyék alfa (átlátszatlanság, 0 és 255 között)."
+
+#~ msgid "Gamma"
+#~ msgstr "Gamma"
+
+#~ msgid "IPv6 support."
+#~ msgstr "IPv6 támogatás."
+
+#, fuzzy
+#~ msgid "Lava depth"
+#~ msgstr "Nagy barlang mélység"
+
+#, fuzzy
+#~ msgid "Lightness sharpness"
+#~ msgstr "Fényélesség"
+
+#~ msgid "Path to TrueTypeFont or bitmap."
+#~ msgstr "A TrueType betűtípus (ttf) vagy bitmap útvonala."
+
+#, fuzzy
+#~ msgid "Shadow limit"
+#~ msgstr "Térképblokk korlát"
+
+#~ msgid "This font will be used for certain languages."
+#~ msgstr "Ezt a betűtípust bizonyos nyelvek használják."
+
+#~ msgid "Waving water"
+#~ msgstr "Hullámzó víz"
+
+#~ msgid "Waving Water"
+#~ msgstr "Hullámzó víz"
+
+#~ msgid "Select Package File:"
+#~ msgstr "csomag fájl kiválasztása:"

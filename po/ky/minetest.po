@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Kyrgyz (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2019-11-10 15:04+0000\n"
 "Last-Translator: Krock <mk939@ymail.com>\n"
 "Language-Team: Kyrgyz <https://hosted.weblate.org/projects/minetest/minetest/"
@@ -13,15 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.10-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Кайтадан жаралуу"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-#, fuzzy
-msgid "You died"
-msgstr "Сиз өлдүңүз."
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -482,6 +473,10 @@ msgid "Browse"
 msgstr ""
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+msgid "Clientmods"
+msgstr ""
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 #, fuzzy
 msgid "Disabled"
 msgstr "Баарын өчүрүү"
@@ -704,6 +699,10 @@ msgstr ""
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Алкыштар"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1214,11 +1213,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Жарыяланбас башкаруу:\n"
 "- WASD: басуу\n"
@@ -1324,6 +1326,16 @@ msgid "Fog enabled"
 msgstr "күйгүзүлгөн"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Баарын өчүрүү"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "күйгүзүлгөн"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr ""
 
@@ -1345,6 +1357,16 @@ msgstr "Буюм текстуралары..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr ""
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Баарын өчүрүү"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "күйгүзүлгөн"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1432,6 +1454,10 @@ msgid "Resolving address..."
 msgstr "Дареги чечилүүдө..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Кайтадан жаралуу"
+
+#: src/client/game.cpp
 #, fuzzy
 msgid "Shutting down..."
 msgstr "Оюн өчүрүлүүдө..."
@@ -1487,6 +1513,11 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "You died"
+msgstr "Сиз өлдүңүз."
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1501,6 +1532,15 @@ msgstr "Баскычтарды өзгөртүү"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr ""
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Баскычтарды өзгөртүү"
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu shown"
 msgstr ""
 
 #: src/client/gameui.cpp
@@ -1828,6 +1868,26 @@ msgid "Backward"
 msgstr "Артка"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
 msgid "Change camera"
 msgstr "Баскычтарды өзгөртүү"
@@ -1926,7 +1986,27 @@ msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
+msgid "Special Inv."
+msgstr "Уурданып басуу"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Тез басууга которуу"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Тез басууга которуу"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Toggle HUD"
+msgstr "Учууга которуу"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
 msgstr "Учууга которуу"
 
 #: src/gui/guiKeyChangeMenu.cpp
@@ -6514,21 +6594,17 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Тез басууга которуу"
+#~ msgid "Back"
+#~ msgstr "Артка"
 
 #, fuzzy
-#~ msgid "Select Package File:"
-#~ msgstr "Дүйнөнү тандаңыз:"
+#~ msgid "Enable VBO"
+#~ msgstr "Баарын күйгүзүү"
 
 #, fuzzy
 #~ msgid "Enables filmic tone mapping"
 #~ msgstr "Убалды күйгүзүү"
 
 #, fuzzy
-#~ msgid "Enable VBO"
-#~ msgstr "Баарын күйгүзүү"
-
-#~ msgid "Back"
-#~ msgstr "Артка"
+#~ msgid "Select Package File:"
+#~ msgstr "Дүйнөнү тандаңыз:"

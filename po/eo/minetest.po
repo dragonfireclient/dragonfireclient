@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Esperanto (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-07-06 21:41+0000\n"
 "Last-Translator: Tirifto <tirifto@posteo.cz>\n"
 "Language-Team: Esperanto <https://hosted.weblate.org/projects/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.2-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Renaskiĝi"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Vi mortis"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -477,6 +469,11 @@ msgid "Browse"
 msgstr "Foliumi"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Kliento"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Malŝaltita"
 
@@ -687,6 +684,10 @@ msgstr "Kernprogramistoj"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Kontribuantaro"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1135,7 +1136,7 @@ msgid "Continue"
 msgstr "Daŭrigi"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1146,11 +1147,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Stirado:\n"
 "– %s: moviĝi antaŭen\n"
@@ -1264,6 +1268,16 @@ msgid "Fog enabled"
 msgstr "Nebulo ŝaltita"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Nebulo malŝaltita"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "Nebulo ŝaltita"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Ludaj informoj:"
 
@@ -1282,6 +1296,16 @@ msgstr "Objektaj difinoj…"
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Nebulo malŝaltita"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Difektado estas ŝaltita"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1368,6 +1392,10 @@ msgid "Resolving address..."
 msgstr "Serĉante adreson…"
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Renaskiĝi"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Malŝaltiĝante…"
 
@@ -1420,6 +1448,10 @@ msgid "Wireframe shown"
 msgstr "Dratostaro montrita"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Vi mortis"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "Zomado nuntempe malŝaltita de ludo aŭ modifaĵo"
 
@@ -1433,6 +1465,16 @@ msgstr "Babilo kaŝita"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "Babilo montrita"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Babilo kaŝita"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "Babilo montrita"
 
 #: src/client/gameui.cpp
@@ -1758,6 +1800,26 @@ msgid "Backward"
 msgstr "Malantaŭen"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Ŝanĝi vidpunkton"
 
@@ -1851,8 +1913,28 @@ msgid "Special"
 msgstr "Speciala"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Speciala"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Baskuligi glitan vidpunkton"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Baskuligi glitan vidpunkton"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "Baskuligi travidan fasadon"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Baskuligi flugan reĝimon"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -7170,105 +7252,23 @@ msgstr "Samtempa limo de cURL"
 msgid "cURL timeout"
 msgstr "cURL tempolimo"
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Baskuligi glitan vidpunkton"
+#~ msgid "Ok"
+#~ msgstr "Bone"
 
-#~ msgid "Select Package File:"
-#~ msgstr "Elekti pakaĵan dosieron:"
+#~ msgid "Back"
+#~ msgstr "Reeniri"
 
-#, fuzzy
-#~ msgid "Y of upper limit of lava in large caves."
-#~ msgstr "Y de supera limo de grandaj kvazaŭ-hazardaj kavernoj."
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Elŝutante kaj instalante $1, bonvolu atendi…"
 
-#~ msgid "Waving Water"
-#~ msgstr "Ondanta akvo"
+#~ msgid "Limit of emerge queues on disk"
+#~ msgstr "Limo de viceroj enlegotaj de disko"
 
-#~ msgid "Projecting dungeons"
-#~ msgstr "Planante forgeskelojn"
+#~ msgid "Parallax occlusion strength"
+#~ msgstr "Potenco de paralaksa ombrigo"
 
-#~ msgid "Y-level to which floatland shadows extend."
-#~ msgstr "Y-nivelo kien etendiĝas ombroj de fluginsuloj."
-
-#~ msgid "Waving water"
-#~ msgstr "Ondanta akvo"
-
-#~ msgid "Variation of hill height and lake depth on floatland smooth terrain."
-#~ msgstr ""
-#~ "Variaĵo de alteco de montetoj kaj profundeco de lagoj sur glata tereno de "
-#~ "fluginsuloj."
-
-#~ msgid ""
-#~ "Typical maximum height, above and below midpoint, of floatland mountains."
-#~ msgstr ""
-#~ "Ordinara plejalto, super kaj sub la mezpunkto, de fluginsulaj montoj."
-
-#~ msgid "This font will be used for certain languages."
-#~ msgstr "Tiu ĉi tiparo uziĝos por iuj lingvoj."
-
-#~ msgid "Shadow limit"
-#~ msgstr "Limo por ombroj"
-
-#~ msgid "Path to TrueTypeFont or bitmap."
-#~ msgstr "Dosierindiko al tiparo «TrueType» aŭ bitbildo."
-
-#~ msgid "Lightness sharpness"
-#~ msgstr "Akreco de heleco"
-
-#~ msgid "Lava depth"
-#~ msgstr "Lafo-profundeco"
-
-#~ msgid "IPv6 support."
-#~ msgstr "Subteno de IPv6."
-
-#~ msgid "Gamma"
-#~ msgstr "Helĝustigo"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "Maltravidebleco de tipara ombro (inter 0 kaj 255)."
-
-#~ msgid "Floatland mountain height"
-#~ msgstr "Alteco de fluginsulaj montoj"
-
-#~ msgid "Floatland base height noise"
-#~ msgstr "Bruo de baza alteco de fluginsuloj"
-
-#~ msgid "Enable VBO"
-#~ msgstr "Ŝalti VBO(Vertex Buffer Object)"
-
-#~ msgid ""
-#~ "Deprecated, define and locate cave liquids using biome definitions "
-#~ "instead.\n"
-#~ "Y of upper limit of lava in large caves."
-#~ msgstr ""
-#~ "Evitinda, difini kaj trovi kavernajn fluaĵojn anstataŭe per klimataj "
-#~ "difinoj\n"
-#~ "Y de supra limo de lafo en grandaj kavernoj."
-
-#~ msgid ""
-#~ "Defines areas of floatland smooth terrain.\n"
-#~ "Smooth floatlands occur when noise > 0."
-#~ msgstr ""
-#~ "Difinas zonojn de glata tereno sur fluginsuloj.\n"
-#~ "Glataj fluginsuloj okazas kiam bruo superas nulon."
-
-#~ msgid "Darkness sharpness"
-#~ msgstr "Akreco de mallumo"
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr ""
-#~ "Regas larĝecon de tuneloj; pli malgranda valoro kreas pri larĝajn "
-#~ "tunelojn."
-
-#~ msgid ""
-#~ "Controls the density of mountain-type floatlands.\n"
-#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
-#~ msgstr ""
-#~ "Regas densecon de montecaj fluginsuloj.\n"
-#~ "Temas pri deŝovo de la brua valoro «np_mountain»."
-
-#~ msgid "Alters how mountain-type floatlands taper above and below midpoint."
-#~ msgstr ""
-#~ "Ŝanĝas kiel montecaj fluginsuloj maldikiĝas super kaj sub la mezpunkto."
+#~ msgid "Path to save screenshots at."
+#~ msgstr "Dosierindiko por konservi ekrankopiojn."
 
 #~ msgid ""
 #~ "Adjust the gamma encoding for the light tables. Higher numbers are "
@@ -7279,20 +7279,99 @@ msgstr "cURL tempolimo"
 #~ "helaj.\n"
 #~ "Ĉi tiu agordo estas klientflanka, kaj serviloj ĝin malatentos."
 
-#~ msgid "Path to save screenshots at."
-#~ msgstr "Dosierindiko por konservi ekrankopiojn."
+#~ msgid "Alters how mountain-type floatlands taper above and below midpoint."
+#~ msgstr ""
+#~ "Ŝanĝas kiel montecaj fluginsuloj maldikiĝas super kaj sub la mezpunkto."
 
-#~ msgid "Parallax occlusion strength"
-#~ msgstr "Potenco de paralaksa ombrigo"
+#~ msgid ""
+#~ "Controls the density of mountain-type floatlands.\n"
+#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
+#~ msgstr ""
+#~ "Regas densecon de montecaj fluginsuloj.\n"
+#~ "Temas pri deŝovo de la brua valoro «np_mountain»."
 
-#~ msgid "Limit of emerge queues on disk"
-#~ msgstr "Limo de viceroj enlegotaj de disko"
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr ""
+#~ "Regas larĝecon de tuneloj; pli malgranda valoro kreas pri larĝajn "
+#~ "tunelojn."
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Elŝutante kaj instalante $1, bonvolu atendi…"
+#~ msgid "Darkness sharpness"
+#~ msgstr "Akreco de mallumo"
 
-#~ msgid "Back"
-#~ msgstr "Reeniri"
+#~ msgid ""
+#~ "Defines areas of floatland smooth terrain.\n"
+#~ "Smooth floatlands occur when noise > 0."
+#~ msgstr ""
+#~ "Difinas zonojn de glata tereno sur fluginsuloj.\n"
+#~ "Glataj fluginsuloj okazas kiam bruo superas nulon."
 
-#~ msgid "Ok"
-#~ msgstr "Bone"
+#~ msgid ""
+#~ "Deprecated, define and locate cave liquids using biome definitions "
+#~ "instead.\n"
+#~ "Y of upper limit of lava in large caves."
+#~ msgstr ""
+#~ "Evitinda, difini kaj trovi kavernajn fluaĵojn anstataŭe per klimataj "
+#~ "difinoj\n"
+#~ "Y de supra limo de lafo en grandaj kavernoj."
+
+#~ msgid "Enable VBO"
+#~ msgstr "Ŝalti VBO(Vertex Buffer Object)"
+
+#~ msgid "Floatland base height noise"
+#~ msgstr "Bruo de baza alteco de fluginsuloj"
+
+#~ msgid "Floatland mountain height"
+#~ msgstr "Alteco de fluginsulaj montoj"
+
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "Maltravidebleco de tipara ombro (inter 0 kaj 255)."
+
+#~ msgid "Gamma"
+#~ msgstr "Helĝustigo"
+
+#~ msgid "IPv6 support."
+#~ msgstr "Subteno de IPv6."
+
+#~ msgid "Lava depth"
+#~ msgstr "Lafo-profundeco"
+
+#~ msgid "Lightness sharpness"
+#~ msgstr "Akreco de heleco"
+
+#~ msgid "Path to TrueTypeFont or bitmap."
+#~ msgstr "Dosierindiko al tiparo «TrueType» aŭ bitbildo."
+
+#~ msgid "Shadow limit"
+#~ msgstr "Limo por ombroj"
+
+#~ msgid "This font will be used for certain languages."
+#~ msgstr "Tiu ĉi tiparo uziĝos por iuj lingvoj."
+
+#~ msgid ""
+#~ "Typical maximum height, above and below midpoint, of floatland mountains."
+#~ msgstr ""
+#~ "Ordinara plejalto, super kaj sub la mezpunkto, de fluginsulaj montoj."
+
+#~ msgid "Variation of hill height and lake depth on floatland smooth terrain."
+#~ msgstr ""
+#~ "Variaĵo de alteco de montetoj kaj profundeco de lagoj sur glata tereno de "
+#~ "fluginsuloj."
+
+#~ msgid "Waving water"
+#~ msgstr "Ondanta akvo"
+
+#~ msgid "Y-level to which floatland shadows extend."
+#~ msgstr "Y-nivelo kien etendiĝas ombroj de fluginsuloj."
+
+#~ msgid "Projecting dungeons"
+#~ msgstr "Planante forgeskelojn"
+
+#~ msgid "Waving Water"
+#~ msgstr "Ondanta akvo"
+
+#, fuzzy
+#~ msgid "Y of upper limit of lava in large caves."
+#~ msgstr "Y de supera limo de grandaj kvazaŭ-hazardaj kavernoj."
+
+#~ msgid "Select Package File:"
+#~ msgstr "Elekti pakaĵan dosieron:"

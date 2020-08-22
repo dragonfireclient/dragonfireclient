@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Lojban (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-03-15 18:36+0000\n"
 "Last-Translator: Robin Townsend <iantownsend@disroot.org>\n"
 "Language-Team: Lojban <https://hosted.weblate.org/projects/minetest/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.0-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "tolcanci"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr ".i do morsi"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -484,6 +476,11 @@ msgid "Browse"
 msgstr ""
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "lo samtciselse'u"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "ganda"
 
@@ -698,6 +695,10 @@ msgstr ""
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "liste lu'i ro gunka"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1189,11 +1190,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 
 #: src/client/game.cpp
@@ -1284,6 +1288,16 @@ msgid "Fog enabled"
 msgstr "selpli"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "selpli"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "selpli"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr ".i datni le se kelci"
 
@@ -1303,6 +1317,16 @@ msgstr ".i ca'o samymo'i tu'a le dacti"
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr ""
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "selpli"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "katci"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1390,6 +1414,10 @@ msgid "Resolving address..."
 msgstr ".i ca'o sisku le ka se judri da kau"
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "tolcanci"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr ".i ca'o sisti"
 
@@ -1444,6 +1472,10 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr ".i do morsi"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1457,6 +1489,16 @@ msgstr ".i ca mipri le tavla .uidje"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr ".i ca viska le tavla .uidje"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr ".i ca mipri le tavla .uidje"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr ".i ca viska le tavla .uidje"
 
 #: src/client/gameui.cpp
@@ -1788,6 +1830,26 @@ msgid "Backward"
 msgstr "za'i ti'a muvdu"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
 msgid "Change camera"
 msgstr "gafygau lo lerpoijaspu"
@@ -1885,7 +1947,26 @@ msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
+msgid "Special Inv."
+msgstr "za'i masno cadzu"
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle C. Menu"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "mu'e co'a jonai mo'u vofli"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Toggle HUD"
+msgstr "mu'e co'a jonai mo'u vofli"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
 msgstr "mu'e co'a jonai mo'u vofli"
 
 #: src/gui/guiKeyChangeMenu.cpp
@@ -6458,15 +6539,15 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Enable VBO"
-#~ msgstr "selpli"
-
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr ".i ca'o kibycpa la'o zoi. $1 .zoi je cu samtcise'a ri .i ko denpa"
+#~ msgid "Ok"
+#~ msgstr "je'e"
 
 #~ msgid "Back"
 #~ msgstr "xruti"
 
-#~ msgid "Ok"
-#~ msgstr "je'e"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr ".i ca'o kibycpa la'o zoi. $1 .zoi je cu samtcise'a ri .i ko denpa"
+
+#, fuzzy
+#~ msgid "Enable VBO"
+#~ msgstr "selpli"

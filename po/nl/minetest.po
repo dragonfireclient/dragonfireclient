@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dutch (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-07-08 20:47+0000\n"
 "Last-Translator: sfan5 <sfan5@live.de>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/minetest/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.2-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Herboren worden"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Je bent gestorven"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -492,6 +484,11 @@ msgid "Browse"
 msgstr "Bladeren"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Cliënt"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Uitgeschakeld"
 
@@ -702,6 +699,10 @@ msgstr "Hoofdontwikkelaars"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Credits"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1150,7 +1151,7 @@ msgid "Continue"
 msgstr "Verder spelen"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1161,11 +1162,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Besturing: \n"
 "-%s: ga vooruit \n"
@@ -1279,6 +1283,16 @@ msgid "Fog enabled"
 msgstr "Mist ingeschakeld"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Mist uitgeschakeld"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "Mist ingeschakeld"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Spel info:"
 
@@ -1297,6 +1311,16 @@ msgstr "Voorwerpdefinities..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Mist uitgeschakeld"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Verwondingen ingeschakeld"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1383,6 +1407,10 @@ msgid "Resolving address..."
 msgstr "Server-adres opzoeken..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Herboren worden"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Uitschakelen..."
 
@@ -1436,6 +1464,10 @@ msgid "Wireframe shown"
 msgstr "Draadframe weergegeven"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Je bent gestorven"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "Zoom momenteel uitgeschakeld door game of mod"
 
@@ -1449,6 +1481,16 @@ msgstr "Chat verborgen"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "Chat weergegeven"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Chat verborgen"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "Chat weergegeven"
 
 #: src/client/gameui.cpp
@@ -1778,6 +1820,26 @@ msgid "Backward"
 msgstr "Achteruit"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Camera veranderen"
 
@@ -1872,8 +1934,28 @@ msgid "Special"
 msgstr "Speciaal"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Speciaal"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Cinematic modus aan/uit"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Cinematic modus aan/uit"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "Schakel HUD in/uit"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Vliegen aan/uit"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -7519,97 +7601,23 @@ msgstr "Maximaal parallellisme in cURL"
 msgid "cURL timeout"
 msgstr "cURL time-out"
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Cinematic modus aan/uit"
+#~ msgid "Ok"
+#~ msgstr "Oké"
 
-#, fuzzy
-#~ msgid "Select Package File:"
-#~ msgstr "Selecteer Modbestand:"
+#~ msgid "Back"
+#~ msgstr "Terug"
 
-#, fuzzy
-#~ msgid "Y of upper limit of lava in large caves."
-#~ msgstr "Minimale diepte van grote semi-willekeurige grotten."
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "$1 wordt gedownload, een ogenblik geduld alstublieft..."
 
-#~ msgid "Waving Water"
-#~ msgstr "Golvend water"
+#~ msgid "Limit of emerge queues on disk"
+#~ msgstr "Emerge-wachtrij voor lezen"
 
-#~ msgid "Y-level to which floatland shadows extend."
-#~ msgstr "Y-niveau tot waar de schaduw van drijvend land reikt."
+#~ msgid "Parallax occlusion strength"
+#~ msgstr "Parallax occlusie sterkte"
 
-#~ msgid "Y-level of floatland midpoint and lake surface."
-#~ msgstr "Y-niveau van drijvend land middelpunt en vijver oppervlak."
-
-#~ msgid "Waving water"
-#~ msgstr "Golvend water"
-
-#~ msgid "Variation of hill height and lake depth on floatland smooth terrain."
-#~ msgstr ""
-#~ "Variatie van de heuvel hoogte en vijver diepte op drijvend egaal terrein."
-
-#, fuzzy
-#~ msgid ""
-#~ "Typical maximum height, above and below midpoint, of floatland mountains."
-#~ msgstr ""
-#~ "Typisch maximum hoogte, boven en onder het middelpunt van drijvend berg "
-#~ "terrein."
-
-#~ msgid "This font will be used for certain languages."
-#~ msgstr "Dit font wordt gebruikt voor bepaalde talen."
-
-#~ msgid "Shadow limit"
-#~ msgstr "Schaduw limiet"
-
-#~ msgid "Path to TrueTypeFont or bitmap."
-#~ msgstr "Pad van TrueType font of bitmap."
-
-#, fuzzy
-#~ msgid "Lava depth"
-#~ msgstr "Diepte van grote grotten"
-
-#~ msgid "IPv6 support."
-#~ msgstr "IPv6 ondersteuning."
-
-#, fuzzy
-#~ msgid "Gamma"
-#~ msgstr "Gamma"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "Fontschaduw alphawaarde (ondoorzichtigheid, tussen 0 en 255)."
-
-#~ msgid "Floatland mountain height"
-#~ msgstr "Drijvend gebergte hoogte"
-
-#~ msgid "Floatland base height noise"
-#~ msgstr "Drijvend land basis hoogte ruis"
-
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "Schakelt filmisch tone-mapping in"
-
-#~ msgid "Enable VBO"
-#~ msgstr "VBO aanzetten"
-
-#~ msgid ""
-#~ "Defines areas of floatland smooth terrain.\n"
-#~ "Smooth floatlands occur when noise > 0."
-#~ msgstr ""
-#~ "Bepaalt gebieden van drijvend glijdend terrein.\n"
-#~ "Drijvend glijdend terrein ontstaat wanneer ruis > 0."
-
-#, fuzzy
-#~ msgid "Darkness sharpness"
-#~ msgstr "Steilheid Van de meren"
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr ""
-#~ "Bepaalt breedte van tunnels, een kleinere waarde maakt bredere tunnels."
-
-#, fuzzy
-#~ msgid ""
-#~ "Controls the density of mountain-type floatlands.\n"
-#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
-#~ msgstr ""
-#~ "Bepaalt de dichtheid van drijvende bergen.\n"
-#~ "Dit wordt bijgevoegd bij de 'np_mountain' ruis waarde."
+#~ msgid "Path to save screenshots at."
+#~ msgstr "Pad waar screenshots bewaard worden."
 
 #, fuzzy
 #~ msgid ""
@@ -7621,20 +7629,91 @@ msgstr "cURL time-out"
 #~ "Deze instelling wordt enkel gebruikt door de cliënt, en wordt genegeerd "
 #~ "door de server."
 
-#~ msgid "Path to save screenshots at."
-#~ msgstr "Pad waar screenshots bewaard worden."
+#, fuzzy
+#~ msgid ""
+#~ "Controls the density of mountain-type floatlands.\n"
+#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
+#~ msgstr ""
+#~ "Bepaalt de dichtheid van drijvende bergen.\n"
+#~ "Dit wordt bijgevoegd bij de 'np_mountain' ruis waarde."
 
-#~ msgid "Parallax occlusion strength"
-#~ msgstr "Parallax occlusie sterkte"
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr ""
+#~ "Bepaalt breedte van tunnels, een kleinere waarde maakt bredere tunnels."
 
-#~ msgid "Limit of emerge queues on disk"
-#~ msgstr "Emerge-wachtrij voor lezen"
+#, fuzzy
+#~ msgid "Darkness sharpness"
+#~ msgstr "Steilheid Van de meren"
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "$1 wordt gedownload, een ogenblik geduld alstublieft..."
+#~ msgid ""
+#~ "Defines areas of floatland smooth terrain.\n"
+#~ "Smooth floatlands occur when noise > 0."
+#~ msgstr ""
+#~ "Bepaalt gebieden van drijvend glijdend terrein.\n"
+#~ "Drijvend glijdend terrein ontstaat wanneer ruis > 0."
 
-#~ msgid "Back"
-#~ msgstr "Terug"
+#~ msgid "Enable VBO"
+#~ msgstr "VBO aanzetten"
 
-#~ msgid "Ok"
-#~ msgstr "Oké"
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "Schakelt filmisch tone-mapping in"
+
+#~ msgid "Floatland base height noise"
+#~ msgstr "Drijvend land basis hoogte ruis"
+
+#~ msgid "Floatland mountain height"
+#~ msgstr "Drijvend gebergte hoogte"
+
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "Fontschaduw alphawaarde (ondoorzichtigheid, tussen 0 en 255)."
+
+#, fuzzy
+#~ msgid "Gamma"
+#~ msgstr "Gamma"
+
+#~ msgid "IPv6 support."
+#~ msgstr "IPv6 ondersteuning."
+
+#, fuzzy
+#~ msgid "Lava depth"
+#~ msgstr "Diepte van grote grotten"
+
+#~ msgid "Path to TrueTypeFont or bitmap."
+#~ msgstr "Pad van TrueType font of bitmap."
+
+#~ msgid "Shadow limit"
+#~ msgstr "Schaduw limiet"
+
+#~ msgid "This font will be used for certain languages."
+#~ msgstr "Dit font wordt gebruikt voor bepaalde talen."
+
+#, fuzzy
+#~ msgid ""
+#~ "Typical maximum height, above and below midpoint, of floatland mountains."
+#~ msgstr ""
+#~ "Typisch maximum hoogte, boven en onder het middelpunt van drijvend berg "
+#~ "terrein."
+
+#~ msgid "Variation of hill height and lake depth on floatland smooth terrain."
+#~ msgstr ""
+#~ "Variatie van de heuvel hoogte en vijver diepte op drijvend egaal terrein."
+
+#~ msgid "Waving water"
+#~ msgstr "Golvend water"
+
+#~ msgid "Y-level of floatland midpoint and lake surface."
+#~ msgstr "Y-niveau van drijvend land middelpunt en vijver oppervlak."
+
+#~ msgid "Y-level to which floatland shadows extend."
+#~ msgstr "Y-niveau tot waar de schaduw van drijvend land reikt."
+
+#~ msgid "Waving Water"
+#~ msgstr "Golvend water"
+
+#, fuzzy
+#~ msgid "Y of upper limit of lava in large caves."
+#~ msgstr "Minimale diepte van grote semi-willekeurige grotten."
+
+#, fuzzy
+#~ msgid "Select Package File:"
+#~ msgstr "Selecteer Modbestand:"

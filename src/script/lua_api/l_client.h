@@ -113,6 +113,9 @@ private:
 	
 	// dig_node(pos)
 	static int l_dig_node(lua_State *L);
+	
+	// get_inventory(location)
+	static int l_get_inventory(lua_State *L);
 public:	
 	static void Initialize(lua_State *L, int top);
 };

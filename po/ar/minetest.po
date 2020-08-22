@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: minetest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-06-27 20:41+0000\n"
 "Last-Translator: abidin toumi <abidin24@disroot.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/minetest/minetest/"
@@ -19,14 +19,6 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Weblate 4.2-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "أعِد الإحياء"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "مِت"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -477,6 +469,10 @@ msgid "Browse"
 msgstr "استعرض"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+msgid "Clientmods"
+msgstr ""
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "عطِّل"
 
@@ -686,6 +682,10 @@ msgstr "المطورون الرئيسيون"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "إشادات"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1150,11 +1150,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 
 #: src/client/game.cpp
@@ -1242,6 +1245,15 @@ msgid "Fog enabled"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "Freecam disabled"
+msgstr ""
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "الضرر ممكن"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr ""
 
@@ -1260,6 +1272,15 @@ msgstr ""
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr ""
+
+#: src/client/game.cpp
+msgid "Killaura disabled"
+msgstr ""
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "الضرر ممكن"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1346,6 +1367,10 @@ msgid "Resolving address..."
 msgstr ""
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "أعِد الإحياء"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr ""
 
@@ -1398,6 +1423,10 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "مِت"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1411,6 +1440,14 @@ msgstr ""
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr ""
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu hidden"
+msgstr ""
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu shown"
 msgstr ""
 
 #: src/client/gameui.cpp
@@ -1732,6 +1769,26 @@ msgid "Backward"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr ""
 
@@ -1824,7 +1881,23 @@ msgid "Special"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "Special Inv."
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle C. Menu"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle Freec."
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "Toggle Killaura"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
@@ -6340,11 +6413,11 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "تنزيل وتثبيت $1, يرجى الإنتظار..."
+#~ msgid "Ok"
+#~ msgstr "موافق"
 
 #~ msgid "Back"
 #~ msgstr "عُد"
 
-#~ msgid "Ok"
-#~ msgstr "موافق"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "تنزيل وتثبيت $1, يرجى الإنتظار..."

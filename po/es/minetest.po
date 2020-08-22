@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spanish (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-07-06 21:41+0000\n"
 "Last-Translator: Agustin Calderon <agustin25901@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/minetest/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.2-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Reaparecer"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "Has muerto"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -478,6 +470,11 @@ msgid "Browse"
 msgstr "Explorar"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Cliente"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Desactivado"
 
@@ -689,6 +686,10 @@ msgstr "Desarrolladores principales"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Créditos"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1139,7 +1140,7 @@ msgid "Continue"
 msgstr "Continuar"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1150,11 +1151,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Controles:\n"
 "- %s: moverse adelante\n"
@@ -1268,6 +1272,16 @@ msgid "Fog enabled"
 msgstr "Niebla activada"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Niebla desactivada"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "Niebla activada"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Información del juego:"
 
@@ -1286,6 +1300,16 @@ msgstr "Definiciones de objetos..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/s"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Niebla desactivada"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Daño activado"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1372,6 +1396,10 @@ msgid "Resolving address..."
 msgstr "Resolviendo dirección..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Reaparecer"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Cerrando..."
 
@@ -1424,6 +1452,10 @@ msgid "Wireframe shown"
 msgstr "Wireframe mostrado"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "Has muerto"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "El zoom está actualmente desactivado por el juego o un mod"
 
@@ -1437,6 +1469,16 @@ msgstr "Chat oculto"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "Chat mostrado"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Chat oculto"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "Chat mostrado"
 
 #: src/client/gameui.cpp
@@ -1763,6 +1805,26 @@ msgid "Backward"
 msgstr "Atrás"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "Cambiar cámara"
 
@@ -1857,8 +1919,28 @@ msgid "Special"
 msgstr "Especial"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "Especial"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Activar cinemático"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Activar cinemático"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "Alternar el HUD"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "Activar volar"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -4884,8 +4966,8 @@ msgid ""
 "See http://irrlicht.sourceforge.net/docu/namespaceirr."
 "html#a54da2a0e231901735e3da1b0edf72eb3"
 msgstr ""
-"Tecla para activar/desactivar la visualización de información de depuración."
-"\n"
+"Tecla para activar/desactivar la visualización de información de "
+"depuración.\n"
 "Ver http://irrlicht.sourceforge.net/docu/namespaceirr."
 "html#a54da2a0e231901735e3da1b0edf72eb3"
 
@@ -7063,69 +7145,17 @@ msgstr ""
 msgid "cURL timeout"
 msgstr "Tiempo de espera de cURL"
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Activar cinemático"
+#~ msgid "Ok"
+#~ msgstr "Aceptar"
 
-#~ msgid "Select Package File:"
-#~ msgstr "Seleccionar el archivo del paquete:"
+#~ msgid "Back"
+#~ msgstr "Atrás"
 
-#~ msgid "Waving Water"
-#~ msgstr "Oleaje"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Descargando e instalando $1, por favor espere..."
 
-#~ msgid "Waving water"
-#~ msgstr "Oleaje en el agua"
-
-#, fuzzy
-#~ msgid "Lava depth"
-#~ msgstr "Características de la Lava"
-
-#~ msgid "IPv6 support."
-#~ msgstr "soporte IPv6."
-
-#~ msgid "Gamma"
-#~ msgstr "Gamma"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "Alfa de sombra de fuentes (opacidad, entre 0 y 255)."
-
-#~ msgid "Floatland mountain height"
-#~ msgstr "Altura de las montañas en tierras flotantes"
-
-#~ msgid "Floatland base height noise"
-#~ msgstr "Ruido de altura base para tierra flotante"
-
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "Habilita el mapeado de tonos fílmico"
-
-#~ msgid "Enable VBO"
-#~ msgstr "Activar VBO"
-
-#~ msgid ""
-#~ "Defines areas of floatland smooth terrain.\n"
-#~ "Smooth floatlands occur when noise > 0."
-#~ msgstr ""
-#~ "Define áreas de terreno liso flotante.\n"
-#~ "Las zonas flotantes lisas se producen cuando el ruido > 0."
-
-#, fuzzy
-#~ msgid "Darkness sharpness"
-#~ msgstr "Agudeza de la obscuridad"
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr ""
-#~ "Controla el ancho de los túneles, un valor menor crea túneles más anchos."
-
-#~ msgid ""
-#~ "Controls the density of mountain-type floatlands.\n"
-#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
-#~ msgstr ""
-#~ "Controla la densidad del terreno montañoso flotante.\n"
-#~ "Se agrega un desplazamiento al valor de ruido 'mgv7_np_mountain'."
-
-#~ msgid "Alters how mountain-type floatlands taper above and below midpoint."
-#~ msgstr ""
-#~ "Modifica cómo las tierras flotantes del tipo montaña aparecen arriba y "
-#~ "abajo del punto medio."
+#~ msgid "Path to save screenshots at."
+#~ msgstr "Ruta para guardar las capturas de pantalla."
 
 #~ msgid ""
 #~ "Adjust the gamma encoding for the light tables. Higher numbers are "
@@ -7136,14 +7166,63 @@ msgstr "Tiempo de espera de cURL"
 #~ "mayores son mas brillantes.\n"
 #~ "Este ajuste es solo para cliente y es ignorado por el servidor."
 
-#~ msgid "Path to save screenshots at."
-#~ msgstr "Ruta para guardar las capturas de pantalla."
+#~ msgid "Alters how mountain-type floatlands taper above and below midpoint."
+#~ msgstr ""
+#~ "Modifica cómo las tierras flotantes del tipo montaña aparecen arriba y "
+#~ "abajo del punto medio."
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Descargando e instalando $1, por favor espere..."
+#~ msgid ""
+#~ "Controls the density of mountain-type floatlands.\n"
+#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
+#~ msgstr ""
+#~ "Controla la densidad del terreno montañoso flotante.\n"
+#~ "Se agrega un desplazamiento al valor de ruido 'mgv7_np_mountain'."
 
-#~ msgid "Back"
-#~ msgstr "Atrás"
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr ""
+#~ "Controla el ancho de los túneles, un valor menor crea túneles más anchos."
 
-#~ msgid "Ok"
-#~ msgstr "Aceptar"
+#, fuzzy
+#~ msgid "Darkness sharpness"
+#~ msgstr "Agudeza de la obscuridad"
+
+#~ msgid ""
+#~ "Defines areas of floatland smooth terrain.\n"
+#~ "Smooth floatlands occur when noise > 0."
+#~ msgstr ""
+#~ "Define áreas de terreno liso flotante.\n"
+#~ "Las zonas flotantes lisas se producen cuando el ruido > 0."
+
+#~ msgid "Enable VBO"
+#~ msgstr "Activar VBO"
+
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "Habilita el mapeado de tonos fílmico"
+
+#~ msgid "Floatland base height noise"
+#~ msgstr "Ruido de altura base para tierra flotante"
+
+#~ msgid "Floatland mountain height"
+#~ msgstr "Altura de las montañas en tierras flotantes"
+
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "Alfa de sombra de fuentes (opacidad, entre 0 y 255)."
+
+#~ msgid "Gamma"
+#~ msgstr "Gamma"
+
+#~ msgid "IPv6 support."
+#~ msgstr "soporte IPv6."
+
+#, fuzzy
+#~ msgid "Lava depth"
+#~ msgstr "Características de la Lava"
+
+#~ msgid "Waving water"
+#~ msgstr "Oleaje en el agua"
+
+#~ msgid "Waving Water"
+#~ msgstr "Oleaje"
+
+#~ msgid "Select Package File:"
+#~ msgstr "Seleccionar el archivo del paquete:"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chinese (Traditional) (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-01-29 13:50+0000\n"
 "Last-Translator: pan93412 <pan93412@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -13,14 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.11-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "重生"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "You died"
-msgstr "您已死亡"
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -483,6 +475,11 @@ msgid "Browse"
 msgstr "瀏覽"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "用戶端"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "已停用"
 
@@ -695,6 +692,10 @@ msgstr "核心開發者"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "感謝"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1143,7 +1144,7 @@ msgid "Continue"
 msgstr "繼續"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1154,11 +1155,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "控制：\n"
 "- %s：向前移動\n"
@@ -1272,6 +1276,16 @@ msgid "Fog enabled"
 msgstr "已啟用霧氣"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "已停用霧氣"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "已啟用霧氣"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "遊戲資訊："
 
@@ -1290,6 +1304,16 @@ msgstr "定義物品..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "KiB/秒"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "已停用霧氣"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "已啟用傷害"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1376,6 +1400,10 @@ msgid "Resolving address..."
 msgstr "正在解析地址……"
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "重生"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "正在關閉..."
 
@@ -1428,6 +1456,10 @@ msgid "Wireframe shown"
 msgstr "已顯示線框"
 
 #: src/client/game.cpp
+msgid "You died"
+msgstr "您已死亡"
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr "遠近調整目前已被遊戲或模組停用"
 
@@ -1441,6 +1473,16 @@ msgstr "隱藏聊天室"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr "顯示聊天室"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "隱藏聊天室"
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu shown"
 msgstr "顯示聊天室"
 
 #: src/client/gameui.cpp
@@ -1765,6 +1807,26 @@ msgid "Backward"
 msgstr "後退"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Change camera"
 msgstr "變更相機"
 
@@ -1857,8 +1919,28 @@ msgid "Special"
 msgstr "特殊"
 
 #: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Special Inv."
+msgstr "特殊"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "切換過場動畫"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "切換過場動畫"
+
+#: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle HUD"
 msgstr "切換 HUD"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
+msgstr "切換飛行模式"
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle chat log"
@@ -7041,89 +7123,23 @@ msgstr "cURL 並行限制"
 msgid "cURL timeout"
 msgstr "cURL 逾時"
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "切換過場動畫"
+#~ msgid "Ok"
+#~ msgstr "確定"
 
-#, fuzzy
-#~ msgid "Select Package File:"
-#~ msgstr "選取 Mod 檔案："
+#~ msgid "Back"
+#~ msgstr "返回"
 
-#, fuzzy
-#~ msgid "Y of upper limit of lava in large caves."
-#~ msgstr "大型偽隨機洞穴的 Y 上限。"
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "正在下載並安裝 $1，請稍候……"
 
-#~ msgid "Waving Water"
-#~ msgstr "波動的水"
+#~ msgid "Limit of emerge queues on disk"
+#~ msgstr "在磁碟上出現佇列的限制"
 
-#~ msgid "Y-level to which floatland shadows extend."
-#~ msgstr "浮地陰影擴展的 Y 高度。"
+#~ msgid "Parallax occlusion strength"
+#~ msgstr "視差遮蔽強度"
 
-#~ msgid "Y-level of floatland midpoint and lake surface."
-#~ msgstr "浮地中點與湖表面的 Y 高度。"
-
-#~ msgid "Waving water"
-#~ msgstr "波動的水"
-
-#~ msgid "Variation of hill height and lake depth on floatland smooth terrain."
-#~ msgstr "在平整浮地地形的山丘高度與湖泊深度變化。"
-
-#, fuzzy
-#~ msgid ""
-#~ "Typical maximum height, above and below midpoint, of floatland mountains."
-#~ msgstr "浮地山區域的典型最大高度，高於與低於中點。"
-
-#~ msgid "This font will be used for certain languages."
-#~ msgstr "這個字型將會被用於特定的語言。"
-
-#~ msgid "Shadow limit"
-#~ msgstr "陰影限制"
-
-#~ msgid "Path to TrueTypeFont or bitmap."
-#~ msgstr "TrueType 字型或點陣字的路徑。"
-
-#, fuzzy
-#~ msgid "Lava depth"
-#~ msgstr "大型洞穴深度"
-
-#~ msgid "IPv6 support."
-#~ msgstr "IPv6 支援。"
-
-#~ msgid "Gamma"
-#~ msgstr "Gamma"
-
-#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
-#~ msgstr "字型陰影 alpha（不透明度，介於 0 到 255）。"
-
-#~ msgid "Floatland base height noise"
-#~ msgstr "浮地基礎高度噪音"
-
-#~ msgid "Enables filmic tone mapping"
-#~ msgstr "啟用電影色調映射"
-
-#~ msgid "Enable VBO"
-#~ msgstr "啟用 VBO"
-
-#~ msgid ""
-#~ "Defines areas of floatland smooth terrain.\n"
-#~ "Smooth floatlands occur when noise > 0."
-#~ msgstr ""
-#~ "定義浮地的平整地形區。\n"
-#~ "平整的浮地會在噪音 > 0 時產生。"
-
-#, fuzzy
-#~ msgid "Darkness sharpness"
-#~ msgstr "湖泊坡度"
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr "控制隧道的寬度，較小的值會創造出較寬的隧道。"
-
-#, fuzzy
-#~ msgid ""
-#~ "Controls the density of mountain-type floatlands.\n"
-#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
-#~ msgstr ""
-#~ "控制山地的浮地密度。\n"
-#~ "是加入到 'np_mountain' 噪音值的補償。"
+#~ msgid "Path to save screenshots at."
+#~ msgstr "儲存螢幕截圖的路徑。"
 
 #~ msgid ""
 #~ "Adjust the gamma encoding for the light tables. Higher numbers are "
@@ -7133,20 +7149,83 @@ msgstr "cURL 逾時"
 #~ "調整亮度表的伽瑪編碼。較高的數值會較亮。\n"
 #~ "這個設定是給客戶端使用的，會被伺服器忽略。"
 
-#~ msgid "Path to save screenshots at."
-#~ msgstr "儲存螢幕截圖的路徑。"
+#, fuzzy
+#~ msgid ""
+#~ "Controls the density of mountain-type floatlands.\n"
+#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
+#~ msgstr ""
+#~ "控制山地的浮地密度。\n"
+#~ "是加入到 'np_mountain' 噪音值的補償。"
 
-#~ msgid "Parallax occlusion strength"
-#~ msgstr "視差遮蔽強度"
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr "控制隧道的寬度，較小的值會創造出較寬的隧道。"
 
-#~ msgid "Limit of emerge queues on disk"
-#~ msgstr "在磁碟上出現佇列的限制"
+#, fuzzy
+#~ msgid "Darkness sharpness"
+#~ msgstr "湖泊坡度"
 
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "正在下載並安裝 $1，請稍候……"
+#~ msgid ""
+#~ "Defines areas of floatland smooth terrain.\n"
+#~ "Smooth floatlands occur when noise > 0."
+#~ msgstr ""
+#~ "定義浮地的平整地形區。\n"
+#~ "平整的浮地會在噪音 > 0 時產生。"
 
-#~ msgid "Back"
-#~ msgstr "返回"
+#~ msgid "Enable VBO"
+#~ msgstr "啟用 VBO"
 
-#~ msgid "Ok"
-#~ msgstr "確定"
+#~ msgid "Enables filmic tone mapping"
+#~ msgstr "啟用電影色調映射"
+
+#~ msgid "Floatland base height noise"
+#~ msgstr "浮地基礎高度噪音"
+
+#~ msgid "Font shadow alpha (opaqueness, between 0 and 255)."
+#~ msgstr "字型陰影 alpha（不透明度，介於 0 到 255）。"
+
+#~ msgid "Gamma"
+#~ msgstr "Gamma"
+
+#~ msgid "IPv6 support."
+#~ msgstr "IPv6 支援。"
+
+#, fuzzy
+#~ msgid "Lava depth"
+#~ msgstr "大型洞穴深度"
+
+#~ msgid "Path to TrueTypeFont or bitmap."
+#~ msgstr "TrueType 字型或點陣字的路徑。"
+
+#~ msgid "Shadow limit"
+#~ msgstr "陰影限制"
+
+#~ msgid "This font will be used for certain languages."
+#~ msgstr "這個字型將會被用於特定的語言。"
+
+#, fuzzy
+#~ msgid ""
+#~ "Typical maximum height, above and below midpoint, of floatland mountains."
+#~ msgstr "浮地山區域的典型最大高度，高於與低於中點。"
+
+#~ msgid "Variation of hill height and lake depth on floatland smooth terrain."
+#~ msgstr "在平整浮地地形的山丘高度與湖泊深度變化。"
+
+#~ msgid "Waving water"
+#~ msgstr "波動的水"
+
+#~ msgid "Y-level of floatland midpoint and lake surface."
+#~ msgstr "浮地中點與湖表面的 Y 高度。"
+
+#~ msgid "Y-level to which floatland shadows extend."
+#~ msgstr "浮地陰影擴展的 Y 高度。"
+
+#~ msgid "Waving Water"
+#~ msgstr "波動的水"
+
+#, fuzzy
+#~ msgid "Y of upper limit of lava in large caves."
+#~ msgstr "大型偽隨機洞穴的 Y 上限。"
+
+#, fuzzy
+#~ msgid "Select Package File:"
+#~ msgstr "選取 Mod 檔案："

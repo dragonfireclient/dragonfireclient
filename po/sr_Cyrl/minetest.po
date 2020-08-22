@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Serbian (cyrillic) (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-13 23:17+0200\n"
+"POT-Creation-Date: 2020-08-22 14:59+0200\n"
 "PO-Revision-Date: 2020-07-08 20:47+0000\n"
 "Last-Translator: sfan5 <sfan5@live.de>\n"
 "Language-Team: Serbian (cyrillic) <https://hosted.weblate.org/projects/"
@@ -14,15 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 4.2-dev\n"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-msgid "Respawn"
-msgstr "Врати се у живот"
-
-#: builtin/client/death_formspec.lua src/client/game.cpp
-#, fuzzy
-msgid "You died"
-msgstr "Умро/ла си."
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -503,6 +494,11 @@ msgid "Browse"
 msgstr "Прегледај"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
+#, fuzzy
+msgid "Clientmods"
+msgstr "Клијент"
+
+#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr "Онемогућено"
 
@@ -739,6 +735,10 @@ msgstr "Главни развијачи"
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
 msgstr "Заслуге"
+
+#: builtin/mainmenu/tab_credits.lua
+msgid "Hackers"
+msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Previous Contributors"
@@ -1201,7 +1201,7 @@ msgid "Continue"
 msgstr "Настави"
 
 #: src/client/game.cpp
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Controls:\n"
 "- %s: move forwards\n"
@@ -1212,11 +1212,14 @@ msgid ""
 "- %s: sneak/go down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
+"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse left: dig/punch\n"
 "- Mouse right: place/use\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
+"- %s: Killaura\n"
+"- %s: Freecam\n"
 msgstr ""
 "Уобичајене контроле:\n"
 "- %s: иди напред\n"
@@ -1335,6 +1338,16 @@ msgid "Fog enabled"
 msgstr "укључено"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Freecam disabled"
+msgstr "Онемогућено"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Freecam enabled"
+msgstr "укључено"
+
+#: src/client/game.cpp
 msgid "Game info:"
 msgstr "Информације о игри:"
 
@@ -1353,6 +1366,16 @@ msgstr "Дефиниције предмета..."
 #: src/client/game.cpp
 msgid "KiB/s"
 msgstr "КиБ/с"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura disabled"
+msgstr "Онемогућено"
+
+#: src/client/game.cpp
+#, fuzzy
+msgid "Killaura enabled"
+msgstr "Оштећење омогућено"
 
 #: src/client/game.cpp
 msgid "Media..."
@@ -1440,6 +1463,10 @@ msgid "Resolving address..."
 msgstr "Разлучујем адресу..."
 
 #: src/client/game.cpp
+msgid "Respawn"
+msgstr "Врати се у живот"
+
+#: src/client/game.cpp
 msgid "Shutting down..."
 msgstr "Искључивање..."
 
@@ -1494,6 +1521,11 @@ msgid "Wireframe shown"
 msgstr ""
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "You died"
+msgstr "Умро/ла си."
+
+#: src/client/game.cpp
 msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
@@ -1508,6 +1540,15 @@ msgstr "Кључ за чет"
 
 #: src/client/gameui.cpp
 msgid "Chat shown"
+msgstr ""
+
+#: src/client/gameui.cpp
+#, fuzzy
+msgid "Cheat Menu hidden"
+msgstr "Кључ за чет"
+
+#: src/client/gameui.cpp
+msgid "Cheat Menu shown"
 msgstr ""
 
 #: src/client/gameui.cpp
@@ -1833,6 +1874,26 @@ msgid "Backward"
 msgstr "Назад"
 
 #: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Down"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Enter"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Left"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Right"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
+msgid "C. Menu Up"
+msgstr ""
+
+#: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
 msgid "Change camera"
 msgstr "Промени дугмад"
@@ -1930,7 +1991,27 @@ msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
 #, fuzzy
+msgid "Special Inv."
+msgstr "притисните дугме"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle C. Menu"
+msgstr "Укључи/Искључи Cinematic мод"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Freec."
+msgstr "Укључи/Искључи Cinematic мод"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
 msgid "Toggle HUD"
+msgstr "Укључи/Искључи летење"
+
+#: src/gui/guiKeyChangeMenu.cpp
+#, fuzzy
+msgid "Toggle Killaura"
 msgstr "Укључи/Искључи летење"
 
 #: src/gui/guiKeyChangeMenu.cpp
@@ -6569,23 +6650,15 @@ msgstr ""
 msgid "cURL timeout"
 msgstr ""
 
-#~ msgid "Toggle Cinematic"
-#~ msgstr "Укључи/Искључи Cinematic мод"
+#~ msgid "Ok"
+#~ msgstr "Уреду"
+
+#~ msgid "Back"
+#~ msgstr "Назад"
 
 #, fuzzy
-#~ msgid "Select Package File:"
-#~ msgstr "Изаберите фајл мода:"
-
-#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
-#~ msgstr "Контролише ширину тунела, мања вредност ствара шире тунеле."
-
-#, fuzzy
-#~ msgid ""
-#~ "Controls the density of mountain-type floatlands.\n"
-#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
-#~ msgstr ""
-#~ "Контролише густину планинског терена на лебдећим острвима.\n"
-#~ "Као одступање се додаје на вредност 'np_mountain' семена."
+#~ msgid "Downloading and installing $1, please wait..."
+#~ msgstr "Преузима се $1, молим вас сачекајте..."
 
 #~ msgid ""
 #~ "Adjust the gamma encoding for the light tables. Higher numbers are "
@@ -6596,11 +6669,16 @@ msgstr ""
 #~ "Ово подешавање је само за клијента, сервер га игнорише."
 
 #, fuzzy
-#~ msgid "Downloading and installing $1, please wait..."
-#~ msgstr "Преузима се $1, молим вас сачекајте..."
+#~ msgid ""
+#~ "Controls the density of mountain-type floatlands.\n"
+#~ "Is a noise offset added to the 'mgv7_np_mountain' noise value."
+#~ msgstr ""
+#~ "Контролише густину планинског терена на лебдећим острвима.\n"
+#~ "Као одступање се додаје на вредност 'np_mountain' семена."
 
-#~ msgid "Back"
-#~ msgstr "Назад"
+#~ msgid "Controls width of tunnels, a smaller value creates wider tunnels."
+#~ msgstr "Контролише ширину тунела, мања вредност ствара шире тунеле."
 
-#~ msgid "Ok"
-#~ msgstr "Уреду"
+#, fuzzy
+#~ msgid "Select Package File:"
+#~ msgstr "Изаберите фајл мода:"
