@@ -796,7 +796,6 @@ int ModApiEnvMod::l_find_node_near(lua_State *L)
 			v3s16 p = pos + i;
 			content_t c = map.getNode(p).getContent();
 			if (CONTAINS(filter, c)) {
-				std::cout << p.X << " " << p.Y << " " << p.Z << std::endl;
 				push_v3s16(L, p);
 				return 1;
 			}
