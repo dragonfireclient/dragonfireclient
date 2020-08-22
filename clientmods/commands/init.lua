@@ -8,7 +8,7 @@ minetest.register_chatcommand("say", {
 
 minetest.register_chatcommand("teleport", {
 	params = "<X>,<Y>,<Z>",
-	description = "Teleport to relative coordinates. " .. (core.anticheat_protection and "Only works for short distances." or ""),
+	description = "Teleport to relative coordinates.",
 	func = function(param)
 		local success, pos = minetest.parse_relative_pos(param)
 		if success then

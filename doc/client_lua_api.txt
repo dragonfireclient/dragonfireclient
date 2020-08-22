@@ -86,8 +86,15 @@ Mod directory structure
     clientmods
     ├── modname
     │   ├── mod.conf
+    |   ├── settingtypes.txt
     │   ├── init.lua
     └── another
+
+### `settingtypes.txt`
+
+The format is documented in `builtin/settingtypes.txt`.
+It is parsed by the main menu settings dialogue to list mod-specific
+settings in the "Clientmods" category.    
 
 ### modname
 
@@ -667,6 +674,10 @@ Minetest namespace reference
 ### Global callback registration functions
 Call these functions only at load time!
 
+* `minetest.open_special_inventory()`
+    * This function is called if the client uses the Keybind for it (by default "O")
+    * It is used for a client provided inventory
+    * You can override it
 * `minetest.register_globalstep(function(dtime))`
     * Called every client environment step, usually interval of 0.1s
 * `minetest.register_on_mods_loaded(function())`
@@ -729,6 +740,13 @@ Call these functions only at load time!
     * Called when the local player open inventory
     * Newest functions are called first
     * If any function returns true, inventory doesn't open
+
+### Setting-related
+* `minetest.settings`: Settings object containing all of the settings from the
+  main config file (`minetest.conf`).
+* `minetest.setting_get_pos(name)`: Loads a setting from the main settings and
+  parses it as a position (in the format `(1,2,3)`). Returns a position or nil.
+
 ### Sounds
 * `minetest.sound_play(spec, parameters)`: returns a handle
     * `spec` is a `SimpleSoundSpec`
@@ -752,6 +770,10 @@ Call these functions only at load time!
     * Returns the time of day: `0` for midnight, `0.5` for midday
 
 ### Map
+* `minetest.place_node(pos)`
+    * Places the wielded node/item of the player at pos.
+* `minetest.dig_node(pos)`
+    * Instantly digs the node at pos. This may fuck up with anticheat.
 * `minetest.get_node_or_nil(pos)`
     * Returns the node at the given position as table in the format
       `{name="node_name", param1=0, param2=0}`, returns `nil`
@@ -768,6 +790,26 @@ Call these functions only at load time!
     * `nodenames`: e.g. `{"ignore", "group:tree"}` or `"default:dirt"`
     * `search_center` is an optional boolean (default: `false`)
       If true `pos` is also checked for the nodes
+* `minetest.find_nodes_near(pos, radius, nodenames, [search_center])`: returns a
+  list of positions.
+    * `radius`: using a maximum metric
+    * `nodenames`: e.g. `{"ignore", "group:tree"}` or `"default:dirt"`
+    * `search_center` is an optional boolean (default: `false`)
+      If true `pos` is also checked for the nodes
+* `minetest.find_nodes_near_under_air(pos, radius, nodenames, [search_center])`: returns a
+  list of positions.
+    * `radius`: using a maximum metric
+    * `nodenames`: e.g. `{"ignore", "group:tree"}` or `"default:dirt"`
+    * `search_center` is an optional boolean (default: `false`)
+      If true `pos` is also checked for the nodes
+    * Return value: Table with all node positions with a node air above
+* `minetest.find_nodes_near_under_air_except(pos, radius, nodenames, [search_center])`: returns a
+  list of positions.
+    * `radius`: using a maximum metric
+    * `nodenames`: e.g. `{"ignore", "group:tree"}` or `"default:dirt"`, specifies the nodes to be ignored
+    * `search_center` is an optional boolean (default: `false`)
+      If true `pos` is also checked for the nodes
+    * Return value: Table with all node positions with a node air above
 * `minetest.find_nodes_in_area(pos1, pos2, nodenames, [grouped])`
     * `pos1` and `pos2` are the min and max positions of the area to search.
     * `nodenames`: e.g. `{"ignore", "group:tree"}` or `"default:dirt"`
@@ -807,6 +849,8 @@ Call these functions only at load time!
     * get max available level for leveled node
 
 ### Player
+* `minetest.send_damage(hp)`
+    * Sends fall damage to server
 * `minetest.send_chat_message(message)`
     * Act as if `message` was typed by the player into the terminal.
 * `minetest.run_server_chatcommand(cmd, param)`
@@ -857,7 +901,14 @@ Call these functions only at load time!
 * `minetest.delete_particlespawner(id)`
     * Delete `ParticleSpawner` with `id` (return value from `minetest.add_particlespawner`)
 
-### Misc.
+### Misc
+* `minetest.register_cheat(name, category, setting | function)`
+    * Register an entry for the cheat menu
+    * If the Category is nonexistant, it will be created
+    * If the 3rd argument is a string it will be interpreted as a setting and toggled 
+        when the player selects the entry in the cheat menu
+    * If the 3rd argument is a function it will be called
+        when the player selects the entry in the cheat menu
 * `minetest.parse_json(string[, nullvalue])`: returns something
     * Convert a string containing JSON data into the Lua equivalent
     * `nullvalue`: returned in place of the JSON null; defaults to `nil`
@@ -1001,6 +1052,8 @@ Methods:
 
 * `get_pos()`
     * returns current player current position
+* `set_pos(pos)`
+    * sets the position (anticheat may not like this)
 * `get_velocity()`
     * returns player speed vector
 * `get_hp()`
@@ -1009,6 +1062,8 @@ Methods:
     * returns player name
 * `get_wield_index()`
     * returns the index of the wielded item
+* `set_wield_index()`
+    * sets the index
 * `get_wielded_item()`
     * returns the itemstack the player is holding
 * `is_attached()`
@@ -1178,6 +1233,12 @@ It can be created via `Raycast(pos1, pos2, objects, liquids)` or
 	* Returns [node definition](#node-definition) table of `nodename`
 * `minetest.get_item_def(itemstring)`
 	* Returns item definition table of `itemstring`
+* `minetest.override_item(itemstring, redefinition)`
+    * Overrides fields of an item registered with register_node/tool/craftitem.
+    * Note: Item must already be defined by the server
+    * Example: `minetest.override_item("default:mese",
+      {light_source=minetest.LIGHT_MAX})`
+    * Doesnt really work yet an causes strange bugs, I'm working to make is better
 
 #### Node Definition
 

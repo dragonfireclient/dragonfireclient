@@ -1536,8 +1536,6 @@ void ModApiEnvMod::Initialize(lua_State *L, int top)
 	API_FCT(get_gametime);
 	API_FCT(get_day_count);
 	API_FCT(find_node_near);
-	API_FCT(find_nodes_near);
-	API_FCT(find_nodes_near_under_air);
 	API_FCT(find_nodes_in_area);
 	API_FCT(find_nodes_in_area_under_air);
 	API_FCT(fix_light);

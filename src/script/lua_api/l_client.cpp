@@ -456,19 +456,6 @@ int ModApiClient::l_dig_node(lua_State *L)
 	return 0;
 }
 
-// start_dig(pos)
-int ModApiClient::l_start_dig(lua_State *L)
-{
-	Client *client = getClient(L);
-	v3s16 pos = read_v3s16(L, 1);
-	PointedThing pointed;
-	pointed.type = POINTEDTHING_NODE;
-	pointed.node_abovesurface = pos;
-	pointed.node_undersurface = pos;
-	client->interact(INTERACT_START_DIGGING, pointed);
-	return 0;
-}
-
 void ModApiClient::Initialize(lua_State *L, int top)
 {
 	API_FCT(get_current_modname);
@@ -499,5 +486,4 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(send_damage);
 	API_FCT(place_node);
 	API_FCT(dig_node);
-	API_FCT(start_dig);
 }
