@@ -1,0 +1,2 @@
+next_item (NextItem) bool false
+autotool (AutoTool) bool false

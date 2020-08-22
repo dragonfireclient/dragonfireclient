@@ -39,6 +39,12 @@ minetest.register_chatcommand("dig", {
 	end,
 })
 
+minetest.register_on_dignode(function(pos)
+	if minetest.settings:get_bool("replace") then
+		minetest.after(0, minetest.place_node, pos)
+	end
+end)
+
 local etime = 0
 
 minetest.register_globalstep(function(dtime)
@@ -68,7 +74,7 @@ minetest.register_globalstep(function(dtime)
 				if i > nodes_per_tick then break end
 				minetest.place_node(p)
 			end
-		elseif minetest.settings:get_bool("destroy_liquids") then
+		elseif minetest.settings:get_bool("block_water") then
 			local positions = minetest.find_nodes_near(pos, 5, {"mcl_core:water_source", "mcl_core:water_floating"}, true)
 			for i, p in pairs(positions) do
 				if i > nodes_per_tick then break end
@@ -86,5 +92,6 @@ end)
 
 minetest.register_cheat("Scaffold", "World", "scaffold")
 minetest.register_cheat("HighwayZ", "World", "highway_z")
-minetest.register_cheat("BlockWater", "World", "destroy_liquids")
+minetest.register_cheat("BlockWater", "World", "block_water")
 minetest.register_cheat("AutoTNT", "World", "autotnt")
+minetest.register_cheat("Replace", "World", "replace")

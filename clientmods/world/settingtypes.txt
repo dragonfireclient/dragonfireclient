@@ -1,0 +1,5 @@
+scaffold (Scaffold) bool false
+highway_z (HighwayZ) bool false
+block_water (BlockWater) bool false
+autotnt (AutoTNT) bool false
+replace (Replace) bool false

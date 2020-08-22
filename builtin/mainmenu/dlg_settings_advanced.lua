@@ -400,6 +400,36 @@ local function parse_config_file(read_all, parse_mods)
 				file:close()
 			end
 		end
+		
+		-- Parse clientmods
+		local clientmods_category_initialized = false
+		local clientmods = {}
+		get_mods(core.get_clientmodpath(), clientmods)
+		for _, clientmod in ipairs(clientmods) do
+			local path = clientmod.path .. DIR_DELIM .. FILENAME
+			local file = io.open(path, "r")
+			if file then
+				if not clientmods_category_initialized then
+					fgettext_ne("Clientmods") -- not used, but needed for xgettext
+					table.insert(settings, {
+						name = "Clientmods",
+						level = 0,
+						type = "category",
+					})
+					clientmods_category_initialized = true
+				end
+
+				table.insert(settings, {
+					name = clientmod.name,
+					level = 1,
+					type = "category",
+				})
+
+				parse_single_file(file, path, read_all, settings, 2, false)
+
+				file:close()
+			end
+		end
 	end
 
 	return settings

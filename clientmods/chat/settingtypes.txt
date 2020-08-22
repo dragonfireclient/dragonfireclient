@@ -1,0 +1,4 @@
+chat_color (Chat Color) string white
+chat_reverse (Reverse Chat messages) bool false
+chat_enable_spam (Spam Chat) bool false
+chat_spam (Message to spam into Chat) string
