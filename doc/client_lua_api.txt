@@ -878,6 +878,73 @@ Call these functions only at load time!
 * `minetest.send_respawn()`
     * Sends a respawn request to the server.
 
+### HTTP Requests
+
+* `minetest.get_http_api()`
+    * returns `HTTPApiTable` containing http functions.
+    * The returned table contains the functions `fetch_sync`, `fetch_async` and
+      `fetch_async_get` described below.
+    * Function only exists if minetest server was built with cURL support.
+* `HTTPApiTable.fetch_sync(HTTPRequest req)`: returns HTTPRequestResult
+    * Performs given request synchronously
+* `HTTPApiTable.fetch_async(HTTPRequest req)`: returns handle
+    * Performs given request asynchronously and returns handle for
+      `HTTPApiTable.fetch_async_get`
+* `HTTPApiTable.fetch_async_get(handle)`: returns HTTPRequestResult
+    * Return response data for given asynchronous HTTP request
+
+### `HTTPRequest` definition
+
+Used by `HTTPApiTable.fetch` and `HTTPApiTable.fetch_async`.
+
+    {
+        url = "http://example.org",
+
+        timeout = 10,
+        -- Timeout for connection in seconds. Default is 3 seconds.
+
+        post_data = "Raw POST request data string" OR {field1 = "data1", field2 = "data2"},
+        -- Optional, if specified a POST request with post_data is performed.
+        -- Accepts both a string and a table. If a table is specified, encodes
+        -- table as x-www-form-urlencoded key-value pairs.
+        -- If post_data is not specified, a GET request is performed instead.
+
+        user_agent = "ExampleUserAgent",
+        -- Optional, if specified replaces the default minetest user agent with
+        -- given string
+
+        extra_headers = { "Accept-Language: en-us", "Accept-Charset: utf-8" },
+        -- Optional, if specified adds additional headers to the HTTP request.
+        -- You must make sure that the header strings follow HTTP specification
+        -- ("Key: Value").
+
+        multipart = boolean
+        -- Optional, if true performs a multipart HTTP request.
+        -- Default is false.
+    }
+
+### `HTTPRequestResult` definition
+
+Passed to `HTTPApiTable.fetch` callback. Returned by
+`HTTPApiTable.fetch_async_get`.
+
+    {
+        completed = true,
+        -- If true, the request has finished (either succeeded, failed or timed
+        -- out)
+
+        succeeded = true,
+        -- If true, the request was successful
+
+        timeout = false,
+        -- If true, the request timed out
+
+        code = 200,
+        -- HTTP status code
+
+        data = "response"
+    }
+
 ### Storage API
 * `minetest.get_mod_storage()`:
     * returns reference to mod private `StorageRef`
@@ -1566,3 +1633,4 @@ Same as `image`, but does not accept a `position`; the position is instead deter
         texture = "image.png",
     --  ^ Uses texture (string)
     }
+

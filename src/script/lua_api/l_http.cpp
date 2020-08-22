@@ -216,18 +216,7 @@ int ModApiHttp::l_get_http_api(lua_State *L)
 void ModApiHttp::Initialize(lua_State *L, int top)
 {
 #if USE_CURL
-
-	bool isMainmenu = false;
-#ifndef SERVER
-	isMainmenu = ModApiBase::getGuiEngine(L) != nullptr;
-#endif
-
-	if (isMainmenu) {
-		API_FCT(get_http_api);
-	} else {
-		API_FCT(request_http_api);
-	}
-
+	API_FCT(get_http_api);
 #endif
 }
 
