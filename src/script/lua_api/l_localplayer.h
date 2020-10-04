@@ -34,6 +34,15 @@ private:
 
 	// get_velocity(self)
 	static int l_get_velocity(lua_State *L);
+	
+	// set_velocity(self, vel)
+	static int l_set_velocity(lua_State *L);
+
+	// get_yaw(self)
+	static int l_get_yaw(lua_State *L);
+	
+	// set_yaw(self, yaw)
+	static int l_set_yaw(lua_State *L);
 
 	// get_hp(self)
 	static int l_get_hp(lua_State *L);
@@ -75,6 +84,8 @@ private:
 
 	// get_pos(self)
 	static int l_get_pos(lua_State *L);
+	
+	// set_pos(self, pos)
 	static int l_set_pos(lua_State *L);
 
 	// get_movement_acceleration(self)

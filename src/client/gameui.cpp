@@ -210,8 +210,7 @@ void GameUI::update(const RunStats &stats, Client *client, MapDrawControl *draw_
 		m_guitext_status->enableOverrideColor(true);
 	}
 
-	// Hide chat when console is visible
-	//m_guitext_chat->setVisible(isChatVisible() && !chat_console->isVisible());
+	m_guitext_chat->setVisible(isChatVisible());
 }
 
 void GameUI::initFlags()

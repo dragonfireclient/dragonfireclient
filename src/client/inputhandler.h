@@ -195,7 +195,6 @@ public:
 	TouchScreenGUI *m_touchscreengui;
 #endif
 
-private:
 	// The current state of keys
 	KeyList keyIsDown;
 	// Whether a key has been pressed or not
@@ -225,6 +224,8 @@ public:
 	}
 
 	virtual bool isKeyDown(GameKeyType k) = 0;
+	virtual void setKeypress(const KeyPress &keyCode) = 0;
+	virtual void unsetKeypress(const KeyPress &keyCode) = 0;
 	virtual bool wasKeyDown(GameKeyType k) = 0;
 	virtual bool cancelPressed() = 0;
 
@@ -270,6 +271,15 @@ public:
 	virtual bool isKeyDown(GameKeyType k)
 	{
 		return m_receiver->IsKeyDown(keycache.key[k]) || joystick.isKeyDown(k);
+	}
+	virtual void setKeypress(const KeyPress &keyCode)
+	{
+		m_receiver->keyIsDown.set(keyCode);
+		m_receiver->keyWasDown.set(keyCode);
+	}
+	virtual void unsetKeypress(const KeyPress &keyCode)
+	{
+		m_receiver->keyIsDown.unset(keyCode);
 	}
 	virtual bool wasKeyDown(GameKeyType k)
 	{
@@ -367,7 +377,7 @@ public:
 		m_receiver->clearInput();
 	}
 
-private:
+	private:
 	MyEventReceiver *m_receiver = nullptr;
 	v2s32 m_mousepos;
 };
@@ -383,6 +393,14 @@ public:
 	}
 
 	virtual bool isKeyDown(GameKeyType k) { return keydown[keycache.key[k]]; }
+	virtual void setKeypress(const KeyPress &keyCode)
+	{
+		keydown.set(keyCode);
+	}
+	virtual void unsetKeypress(const KeyPress &keyCode)
+	{
+		keydown.unset(keyCode);
+	}
 	virtual bool wasKeyDown(GameKeyType k) { return false; }
 	virtual bool cancelPressed() { return false; }
 	virtual v2s32 getMousePos() { return mousepos; }

@@ -1,0 +1,3 @@
+goto_max_distance (Maximum distance from the search positions to search in) int 25
+goto_max_jump (Jump height) int 1
+goto_max_drop (Maximum drop height) int 5

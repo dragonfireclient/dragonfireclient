@@ -56,7 +56,7 @@ minetest.register_globalstep(function(dtime)
 	local item = player:get_wielded_item()
 	local def = minetest.get_item_def(item:get_name())
 	local nodes_per_tick = tonumber(minetest.settings:get("nodes_per_tick")) or 8
-	if item:get_count() > 0 and def.node_placement_prediction ~= "" then
+	if item and item:get_count() > 0 and def and def.node_placement_prediction ~= "" then
 		if minetest.settings:get_bool("scaffold") then
 			minetest.place_node(vector.add(pos, {x = 0, y = -0.6, z = 0}))
 		elseif minetest.settings:get_bool("highway_z") then

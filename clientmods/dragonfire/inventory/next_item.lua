@@ -14,5 +14,5 @@ minetest.register_globalstep(function(dtime)
 	elapsed_time = 0
 end)
 
-minetest.register_cheat("NextItem", "Inventory", "next_item")
+minetest.register_cheat("NextItem", "Player", "next_item")
 

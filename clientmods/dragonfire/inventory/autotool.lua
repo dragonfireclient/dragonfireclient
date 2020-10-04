@@ -32,5 +32,5 @@ minetest.register_on_punchnode(function(pos, node)
 	player:set_wield_index(new_index)
 end)
 
-minetest.register_cheat("AutoTool", "Inventory", "autotool")
+minetest.register_cheat("AutoTool", "Player", "autotool")
  

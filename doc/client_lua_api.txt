@@ -837,7 +837,26 @@ Call these functions only at load time!
     * `pos2`: end of the ray
     * `objects`: if false, only nodes will be returned. Default is `true`.
     * `liquids`: if false, liquid nodes won't be returned. Default is `false`.
-
+* `minetest.find_path(pos1,pos2,searchdistance,max_jump,max_drop,algorithm)`
+    * returns table containing path that can be walked on
+    * returns a table of 3D points representing a path from `pos1` to `pos2` or
+      `nil` on failure.
+    * Reasons for failure:
+        * No path exists at all
+        * No path exists within `searchdistance` (see below)
+        * Start or end pos is buried in land
+    * `pos1`: start position
+    * `pos2`: end position
+    * `searchdistance`: maximum distance from the search positions to search in.
+      In detail: Path must be completely inside a cuboid. The minimum
+      `searchdistance` of 1 will confine search between `pos1` and `pos2`.
+      Larger values will increase the size of this cuboid in all directions
+    * `max_jump`: maximum height difference to consider walkable
+    * `max_drop`: maximum height difference to consider droppable
+    * `algorithm`: One of `"A*_noprefetch"` (default), `"A*"`, `"Dijkstra"`.
+      Difference between `"A*"` and `"A*_noprefetch"` is that
+      `"A*"` will pre-calculate the cost-data, the other will calculate it
+      on-the-fly
 * `minetest.find_nodes_with_meta(pos1, pos2)`
     * Get a table of positions of nodes that have metadata within a region
       {pos1, pos2}.
@@ -969,6 +988,10 @@ Passed to `HTTPApiTable.fetch` callback. Returned by
     * Delete `ParticleSpawner` with `id` (return value from `minetest.add_particlespawner`)
 
 ### Misc
+* `minetest.set_keypress(key, value)`
+    * Act as if a key was pressed (value = true) / released (value = false)
+    * The key must be an keymap_* setting
+    * e.g. minetest.set_keypress("jump", true) will cause te player to jump until minetest.set_keypress("jump", false) is called or the player presses & releases the space bar himself
 * `minetest.get_inventory(location)`
     * Returns the inventory at location
 * `minetest.register_cheat(name, category, setting | function)`
@@ -1123,8 +1146,14 @@ Methods:
     * returns current player current position
 * `set_pos(pos)`
     * sets the position (anticheat may not like this)
+* `get_yaw()`
+    * returns the yaw (degrees)
+* `set_yaw(yaw)`
+    * sets the yaw (degrees)
 * `get_velocity()`
     * returns player speed vector
+* `set_velocity(vel)`
+    * sets player speed vector
 * `get_hp()`
     * returns player HP
 * `get_name()`

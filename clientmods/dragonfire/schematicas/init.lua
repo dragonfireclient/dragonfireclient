@@ -1,3 +1,4 @@
+local autoeat = rawget(_G, "autoeat") or {}
 local storage = minetest.get_mod_storage()
 local pos1, pos2
 local min, max = math.min, math.max
@@ -114,7 +115,7 @@ minetest.register_chatcommand("schemeabort", {
 		if not build_data then
 			return false, "Currently not building a scheme."
 		end
-		building, build_index, build_data, build_pos, just_placed_node = nil
+		building, build_index, build_data, build_pos, just_placed_node, failed_count, out_of_blocks = nilw
 		return true, "Aborted."
 	end
 })
@@ -150,10 +151,10 @@ minetest.register_chatcommand("schemesetindex", {
 })
 
 minetest.register_globalstep(function()
-	if building then
+	if building and not autoeat.eating then
 		local data = build_data[build_index]
 		if not data then
-			building, build_index, build_data, build_pos, just_placed_node, failed_count, out_of_blocks  = true, 1, minetest.deserialize(rawdata), vector.new(pos1), false, 0, false
+			building, build_index, build_data, build_pos, just_placed_node, failed_count, out_of_blocks = nil
 			minetest.display_chat_message("Completed Schematica.")
 			return
 		end
@@ -182,16 +183,22 @@ minetest.register_globalstep(function()
 		if not new_index then
 			if not out_of_blocks then
 				minetest.display_chat_message("Out of blocks for schematica. Missing ressource: '" .. node .. "'. It will resume as soon as you got it or use .schemeskip to skip it.")
-				minetest.send_chat_message(node)
+				minetest.send_chat_message("[Schematicas] Missing ressource: " .. node)
 			end
 			out_of_blocks = true
 			return
+		end
+		if out_of_blocks then
+			minetest.send_chat_message("[Schematicas] Resuming.")
 		end
 		out_of_blocks = false
 		minetest.localplayer:set_wield_index(new_index)
 		minetest.localplayer:set_pos(minetest.find_node_near(pos, 5, {"air", "ignore", "mcl_core:water_source", "mcl_core:water_flowing"}, false) or pos)
 		minetest.place_node(pos)
 		just_placed_node = true
+		if build_index % 250 == 0 then
+			minetest.send_chat_message("[Schematicas] " .. build_index .. " of " .. #build_data .. " blocks placed!")
+		end
 	end
 end)
 

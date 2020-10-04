@@ -17,6 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include <iostream>
 #include "client/client.h"
 
 #include "util/base64.h"
@@ -977,7 +978,11 @@ void Client::handleCommand_SpawnParticle(NetworkPacket* pkt)
 	ClientEvent *event = new ClientEvent();
 	event->type           = CE_SPAWN_PARTICLE;
 	event->spawn_particle = new ParticleParameters(p);
-
+	
+	if (g_settings->getBool("log_particles")) {
+		std::cout << p.pos.X << " " << p.pos.Y << " " << p.pos.Z << std::endl;
+	}
+	
 	m_client_event_queue.push(event);
 }
 

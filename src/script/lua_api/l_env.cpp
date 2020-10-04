@@ -1365,7 +1365,7 @@ int ModApiEnvMod::l_delete_area(lua_State *L)
 //     max_jump, max_drop, algorithm) -> table containing path
 int ModApiEnvMod::l_find_path(lua_State *L)
 {
-	GET_ENV_PTR;
+	Environment *env = getEnv(L);
 
 	v3s16 pos1                  = read_v3s16(L, 1);
 	v3s16 pos2                  = read_v3s16(L, 2);
@@ -1382,8 +1382,8 @@ int ModApiEnvMod::l_find_path(lua_State *L)
 		if (algorithm == "Dijkstra")
 			algo = PA_DIJKSTRA;
 	}
-
-	std::vector<v3s16> path = get_path(&env->getServerMap(), env->getGameDef()->ndef(), pos1, pos2,
+	
+	std::vector<v3s16> path = get_path(&env->getMap(), env->getGameDef()->ndef(), pos1, pos2,
 		searchdistance, max_jump, max_drop, algo);
 
 	if (!path.empty()) {
@@ -1568,6 +1568,7 @@ void ModApiEnvMod::InitializeClient(lua_State *L, int top)
 	API_FCT(find_nodes_near_under_air_except);
 	API_FCT(find_nodes_in_area);
 	API_FCT(find_nodes_in_area_under_air);
+	API_FCT(find_path);
 	API_FCT(line_of_sight);
 	API_FCT(raycast);
 }

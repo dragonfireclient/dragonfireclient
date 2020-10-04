@@ -22,7 +22,7 @@ minetest.register_chatcommand("teleport", {
 minetest.register_chatcommand("wielded", {
 	description = "Print itemstring of wieleded item",
 	func = function()
-		return true, minetest.get_wielded_item():get_name()
+		return true, minetest.localplayer:get_wielded_item():get_name()
 	end
 })
 
@@ -44,6 +44,13 @@ minetest.register_chatcommand("kill", {
 	description = "Kill yourself",
 	func = function()
 		minetest.send_damage(minetest.localplayer:get_hp())
+	end,
+})
+
+minetest.register_chatcommand("hop", {
+	description = "Hop",
+	func = function()
+		minetest.set_keypress("jump", true)
 	end,
 })
 
@@ -78,4 +85,4 @@ minetest.register_chatcommand("set", {
 		return false, "Invalid parameters (see .help set)."
 	end,
 })
- 
+

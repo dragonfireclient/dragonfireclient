@@ -35,6 +35,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "map.h"
 #include "util/string.h"
 #include "nodedef.h"
+#include "client/keycode.h"
 
 #define checkCSMRestrictionFlag(flag) \
 	( getClient(L)->checkCSMRestrictionFlag(CSMRestrictionFlags::flag) )
@@ -470,10 +471,28 @@ int ModApiClient::l_get_inventory(lua_State *L)
 		inventory_location.deSerialize(location);
 		inventory = client->getInventory(inventory_location);
 		push_inventory(L, inventory);
-	} catch (SerializationError) {
+	} catch (SerializationError &) {
 		lua_pushnil(L);
 	}
 	
+	return 1;
+}
+
+// set_keypress(key_setting, pressed) -> returns true on success
+int ModApiClient::l_set_keypress(lua_State *L)
+{
+	std::string setting_name = "keymap_" + readParam<std::string>(L, 1);
+	bool pressed = lua_isboolean(L, 2) && readParam<bool>(L, 2);
+	try {
+		KeyPress keyCode = getKeySetting(setting_name.c_str());
+		if (pressed)
+			g_game->input->setKeypress(keyCode);
+		else
+			g_game->input->unsetKeypress(keyCode);
+		lua_pushboolean(L, true);
+	} catch (SettingNotFoundException &) {
+		lua_pushboolean(L, false);
+	}
 	return 1;
 }
 
@@ -508,4 +527,5 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(place_node);
 	API_FCT(dig_node);
 	API_FCT(get_inventory);
+	API_FCT(set_keypress);
 }

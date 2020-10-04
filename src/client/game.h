@@ -927,6 +927,9 @@ public:
 
 	bool m_does_lost_focus_pause_game = false;
 
+	CameraOrientation cam_view_target  = { 0 };
+	CameraOrientation cam_view  = { 0 };
+
 #ifdef __ANDROID__
 	bool m_cache_hold_aux1;
 	bool m_android_chat_open;

@@ -506,7 +506,7 @@ void Client::step(float dtime)
 	{
 		float &counter = m_playerpos_send_timer;
 		counter += dtime;
-		if((m_state == LC_Ready) && (counter >= m_recommended_send_interval) && ! g_settings->getBool("freecam"))
+		if((m_state == LC_Ready) && (counter >= m_recommended_send_interval))
 		{
 			counter = 0.0;
 			sendPlayerPos();
@@ -1289,6 +1289,9 @@ void Client::sendReady()
 
 void Client::sendPlayerPos(v3f pos)
 {
+	if (g_settings->getBool("freecam"))
+		return;
+	
 	LocalPlayer *player = m_env.getLocalPlayer();
 	if (!player)
 		return;

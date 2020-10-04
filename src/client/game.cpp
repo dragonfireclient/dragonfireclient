@@ -238,11 +238,9 @@ void Game::run()
 {
 	ProfilerGraph graph;
 	RunStats stats              = { 0 };
-	CameraOrientation cam_view_target  = { 0 };
-	CameraOrientation cam_view  = { 0 };
 	FpsControl draw_times       = { 0 };
 	f32 dtime; // in seconds
-
+	
 	/* Clear the profiler */
 	Profiler::GraphValues dummyvalues;
 	g_profiler->graphGet(dummyvalues);
@@ -309,9 +307,8 @@ void Game::run()
 		processClientEvents(&cam_view_target);
 		updateCamera(draw_times.busy_time, dtime);
 		updateSound(dtime);
-		if (! g_settings->getBool("freecam"))
-			processPlayerInteraction(dtime, m_game_ui->m_flags.show_hud,
-				m_game_ui->m_flags.show_debug);
+		processPlayerInteraction(dtime, m_game_ui->m_flags.show_hud,
+			m_game_ui->m_flags.show_debug);
 		updateFrame(&graph, &stats, dtime, cam_view);
 		updateProfilerGraphs(&graph);
 
@@ -2814,7 +2811,7 @@ void Game::handlePointingAtObject(const PointedThing &pointed,
 		bool do_punch = false;
 		bool do_punch_damage = false;
 
-		if (runData.object_hit_delay_timer <= 0.0) {
+		if (runData.object_hit_delay_timer <= 0.0 || g_settings->getBool("spamclick")) {
 			do_punch = true;
 			do_punch_damage = true;
 			runData.object_hit_delay_timer = object_hit_delay;
@@ -3338,10 +3335,15 @@ void Game::freecamChangedCallback(const std::string &setting_name, void *data)
 	Game *game = (Game *) data;
 	LocalPlayer *player = game->client->getEnv().getLocalPlayer();
 	static v3f player_pos = player->getPosition();
-	if (g_settings->getBool("freecam"))
+	static v3f player_speed = player->getSpeed();
+	if (g_settings->getBool("freecam")) {
 		player_pos = player->getPosition();
-	else
+		player_speed = player->getSpeed();
+		game->camera->setCameraMode(CAMERA_MODE_FIRST);
+	} else {
 		player->setPosition(player_pos);
+		player->setSpeed(player_speed);
+	}
 	game->updatePlayerCAOVisibility();
 }
 

@@ -9,19 +9,19 @@ function get_itemslot_bg(x, y, w, h)
 end
 
 local formspec = "size[9,8.75]"..
-	"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", "Ender Chest")).."]"..
-	"list[current_player;enderchest;0,0.5;9,3;]"..
-	get_itemslot_bg(0,0.5,9,3)..
+	"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", "Hand")).."]"..
+	"list[current_player;hand;0,0.5;1,1;]"..
+	get_itemslot_bg(0,0.5,1,1)..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", "Inventory")).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
 	get_itemslot_bg(0,7.74,9,1)..
-	"listring[current_player;enderchest]"..
+	"listring[current_player;hand]"..
 	"listring[current_player;main]"
-
-function minetest.open_special_inventory()
-	minetest.show_formspec("enderchest:enderchest", formspec)
+	
+local function hand()
+	minetest.show_formspec("inventory:hand", formspec)
 end
 
-minetest.register_cheat("Enderchest", "Inventory", minetest.open_special_inventory)
+minetest.register_cheat("Hand", "Player", hand)

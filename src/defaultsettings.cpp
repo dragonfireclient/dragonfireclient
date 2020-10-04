@@ -88,6 +88,8 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("no_night", "false");
 	settings->setDefault("coords", "false");
 	settings->setDefault("point_liquids", "false");
+	settings->setDefault("log_particles", "false");
+	settings->setDefault("spamclick", "false");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");
@@ -386,7 +388,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("max_simultaneous_block_sends_per_client", "40");
 	settings->setDefault("time_send_interval", "5");
 
-	settings->setDefault("default_game", "minetest");
+	settings->setDefault("default_game", "mineclone2");
 	settings->setDefault("motd", "");
 	settings->setDefault("max_users", "15");
 	settings->setDefault("creative_mode", "false");

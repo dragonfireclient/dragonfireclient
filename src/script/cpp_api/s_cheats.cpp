@@ -41,7 +41,7 @@ bool ScriptApiCheatsCheat::is_enabled()
 {
 	try {
 		return ! m_function_ref && g_settings->getBool(m_setting);
-	} catch (SettingNotFoundException) {
+	} catch (SettingNotFoundException &) {
 		return false;
 	}
 }
