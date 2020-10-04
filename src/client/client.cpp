@@ -1289,9 +1289,6 @@ void Client::sendReady()
 
 void Client::sendPlayerPos(v3f pos)
 {
-	if (g_settings->getBool("freecam"))
-		return;
-	
 	LocalPlayer *player = m_env.getLocalPlayer();
 	if (!player)
 		return;
@@ -1309,7 +1306,7 @@ void Client::sendPlayerPos(v3f pos)
 
 	if (
 			player->last_position     == pos &&
-			player->last_speed        == player->getSpeed()    &&
+			player->last_speed        == player->getLegitSpeed()    &&
 			player->last_pitch        == player->getPitch()    &&
 			player->last_yaw          == player->getYaw()      &&
 			player->last_keyPressed   == player->keyPressed    &&
@@ -1318,7 +1315,7 @@ void Client::sendPlayerPos(v3f pos)
 		return;
 
 	player->last_position     = pos;
-	player->last_speed        = player->getSpeed();
+	player->last_speed        = player->getLegitSpeed();
 	player->last_pitch        = player->getPitch();
 	player->last_yaw          = player->getYaw();
 	player->last_keyPressed   = player->keyPressed;
@@ -1337,7 +1334,7 @@ void Client::sendPlayerPos()
 	LocalPlayer *player = m_env.getLocalPlayer();
 	if (!player)
 		return;
-	sendPlayerPos(player->getPosition());
+	sendPlayerPos(player->getLegitPosition());
 }
 
 void Client::removeNode(v3s16 p)
@@ -1678,7 +1675,7 @@ void Client::updateAllMapBlocks()
 		MapBlockVect blocks;
 		sector->getBlocks(blocks);
 		for (MapBlock *block : blocks) {
-			addUpdateMeshTask(block->getPos(), false, true);
+			addUpdateMeshTask(block->getPos(), false, false);
 		}
 	}
 }

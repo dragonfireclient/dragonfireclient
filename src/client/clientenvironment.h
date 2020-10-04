@@ -92,6 +92,11 @@ public:
 	{
 		return m_ao_manager.getActiveObject(id);
 	}
+	
+	std::unordered_map<u16, ClientActiveObject*> getAllActiveObjects()
+	{
+		return m_ao_manager.getAllActiveObjects();
+	}
 
 	/*
 		Adds an active object to the environment.
