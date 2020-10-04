@@ -25,6 +25,7 @@ class Camera;
 class Client;
 class Hud;
 class Minimap;
+class Tracers;
 
 class RenderingCore
 {
@@ -36,6 +37,7 @@ protected:
 	bool show_minimap;
 	bool draw_wield_tool;
 	bool draw_crosshair;
+	bool draw_tracers;
 
 	IrrlichtDevice *device;
 	video::IVideoDriver *driver;
@@ -46,6 +48,7 @@ protected:
 	Camera *camera;
 	Minimap *mapper;
 	Hud *hud;
+	Tracers *tracers;
 
 	void updateScreenSize();
 	virtual void initTextures() {}
@@ -59,7 +62,7 @@ protected:
 	void drawPostFx();
 
 public:
-	RenderingCore(IrrlichtDevice *_device, Client *_client, Hud *_hud);
+	RenderingCore(IrrlichtDevice *_device, Client *_client, Hud *_hud, Tracers *_tracers);
 	RenderingCore(const RenderingCore &) = delete;
 	RenderingCore(RenderingCore &&) = delete;
 	virtual ~RenderingCore();
@@ -69,7 +72,7 @@ public:
 
 	void initialize();
 	void draw(video::SColor _skycolor, bool _show_hud, bool _show_minimap,
-			bool _draw_wield_tool, bool _draw_crosshair);
+			bool _draw_wield_tool, bool _draw_crosshair, bool _draw_tracers);
 
 	inline v2u32 getVirtualSize() const { return virtual_size; }
 };

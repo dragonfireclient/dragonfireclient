@@ -90,6 +90,9 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("point_liquids", "false");
 	settings->setDefault("log_particles", "false");
 	settings->setDefault("spamclick", "false");
+	settings->setDefault("no_force_rotate", "false");
+	settings->setDefault("enable_tracers", "false");
+	settings->setDefault("no_slow", "false");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");

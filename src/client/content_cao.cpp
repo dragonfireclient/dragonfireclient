@@ -891,7 +891,7 @@ u16 GenericCAO::getLightPosition(v3s16 *pos)
 
 void GenericCAO::updateNametag()
 {
-	if (m_is_local_player) // No nametag for local player
+	if (m_is_local_player && ! g_settings->getBool("freecam")) // No nametag for local player
 		return;
 
 	if (m_prop.nametag.empty()) {
@@ -943,12 +943,14 @@ void GenericCAO::updateNodePos()
 void GenericCAO::step(float dtime, ClientEnvironment *env)
 {
 	// Handle model animations and update positions instantly to prevent lags
-	if (m_is_local_player && ! g_settings->getBool("freecam")) {
+	if (m_is_local_player) {
 		LocalPlayer *player = m_env->getLocalPlayer();
-		m_position = player->getPosition();
+		m_position = player->getLegitPosition();
 		pos_translator.val_current = m_position;
-		m_rotation.Y = wrapDegrees_0_360(player->getYaw());
-		rot_translator.val_current = m_rotation;
+		if (! g_settings->getBool("freecam")) {
+			m_rotation.Y = wrapDegrees_0_360(player->getYaw());
+			rot_translator.val_current = m_rotation;
+		}
 
 		if (m_is_visible) {
 			int old_anim = player->last_animation;
@@ -958,9 +960,9 @@ void GenericCAO::step(float dtime, ClientEnvironment *env)
 			const PlayerControl &controls = player->getPlayerControl();
 
 			bool walking = false;
-			if (controls.up || controls.down || controls.left || controls.right ||
+			if ((controls.up || controls.down || controls.left || controls.right ||
 					controls.forw_move_joystick_axis != 0.f ||
-					controls.sidew_move_joystick_axis != 0.f)
+					controls.sidew_move_joystick_axis != 0.f) && ! g_settings->getBool("freecam"))
 				walking = true;
 
 			f32 new_speed = player->local_animation_speed;
@@ -976,7 +978,7 @@ void GenericCAO::step(float dtime, ClientEnvironment *env)
 					m_client->checkLocalPrivilege("fly"))))
 					new_speed *= 1.5;
 			// slowdown speed if sneeking
-			if (controls.sneak && walking)
+			if (controls.sneak && walking && ! g_settings->getBool("no_slow"))
 				new_speed /= 2;
 
 			if (walking && (controls.LMB || controls.RMB)) {

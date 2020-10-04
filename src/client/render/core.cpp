@@ -24,11 +24,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/clientmap.h"
 #include "client/hud.h"
 #include "client/minimap.h"
+#include "gui/tracers.h"
 
-RenderingCore::RenderingCore(IrrlichtDevice *_device, Client *_client, Hud *_hud)
+RenderingCore::RenderingCore(IrrlichtDevice *_device, Client *_client, Hud *_hud, Tracers *_tracers)
 	: device(_device), driver(device->getVideoDriver()), smgr(device->getSceneManager()),
 	guienv(device->getGUIEnvironment()), client(_client), camera(client->getCamera()),
-	mapper(client->getMinimap()), hud(_hud)
+	mapper(client->getMinimap()), hud(_hud), tracers(_tracers)
 {
 	screensize = driver->getScreenSize();
 	virtual_size = screensize;
@@ -53,7 +54,7 @@ void RenderingCore::updateScreenSize()
 }
 
 void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_minimap,
-		bool _draw_wield_tool, bool _draw_crosshair)
+		bool _draw_wield_tool, bool _draw_crosshair, bool _draw_tracers)
 {
 	v2u32 ss = driver->getScreenSize();
 	if (screensize != ss) {
@@ -65,6 +66,7 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 	show_minimap = _show_minimap;
 	draw_wield_tool = _draw_wield_tool;
 	draw_crosshair = _draw_crosshair;
+	draw_tracers = _draw_tracers;
 
 	beforeDraw();
 	drawAll();
@@ -72,11 +74,14 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 
 void RenderingCore::draw3D()
 {
+	
 	smgr->drawAll();
 	driver->setTransform(video::ETS_WORLD, core::IdentityMatrix);
 	if (!show_hud)
 		return;
 	hud->drawSelectionMesh();
+	if (draw_tracers)
+		tracers->draw(driver, client);
 	if (draw_wield_tool)
 		camera->drawWieldedTool();
 }

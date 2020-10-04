@@ -2262,3 +2262,13 @@ no_night (BrightNight) bool false
 coords (Coords) bool false
 
 point_liquids (PointLiquids) bool false
+
+log_particles (ParticleExploit) bool false
+
+spamclick (FastHit) bool false
+
+no_force_rotate (NoForceRotate) bool false
+
+enable_tracers (Tracers) bool false
+
+no_slow (NoSlow) bool false

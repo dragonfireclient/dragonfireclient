@@ -11,6 +11,8 @@ core.cheats = {
 		["PitchMove"] = "pitch_move",
 		["AutoJump"] = "autojump",
 		["Jesus"] = "jesus",
+		["NoSlow"] = "no_slow",
+		
 	},
 	["Render"] = {
 		["Xray"] = "xray",
@@ -19,6 +21,7 @@ core.cheats = {
 		["NoHurtCam"] = "no_hurt_cam",
 		["BrightNight"] = "no_night",
 		["Coords"] = "coords",
+		["Tracers"] = "enable_tracers",
 	},
 	["World"] = {
 		["FastDig"] = "fastdig",
@@ -36,6 +39,7 @@ core.cheats = {
 	},
 	["Player"] = {
 		["NoFallDamage"] = "prevent_natural_damage",
+		["NoForceRotate"] = "no_force_rotate",
 	},
 }
 

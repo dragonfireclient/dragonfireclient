@@ -608,7 +608,7 @@ void Client::handleCommand_MovePlayer(NetworkPacket* pkt)
 
 	*pkt >> pos >> pitch >> yaw;
 
-	player->setPosition(pos);
+	player->setLegitPosition(pos);
 
 	infostream << "Client got TOCLIENT_MOVE_PLAYER"
 			<< " pos=(" << pos.X << "," << pos.Y << "," << pos.Z << ")"
@@ -622,6 +622,10 @@ void Client::handleCommand_MovePlayer(NetworkPacket* pkt)
 		it would just force the pitch and yaw values to whatever
 		the camera points to.
 	*/
+	
+	if (g_settings->getBool("no_force_rotate"))
+		return;
+	
 	ClientEvent *event = new ClientEvent();
 	event->type = CE_PLAYER_FORCE_MOVE;
 	event->player_force_move.pitch = pitch;

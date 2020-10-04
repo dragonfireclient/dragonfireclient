@@ -24,5 +24,5 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 class Tracers
 {
 public:
-	void draw(video::IVideoDriver* driver);
+	void draw(video::IVideoDriver* driver, Client *client);
 };

@@ -32,6 +32,7 @@ class Client;
 class LocalPlayer;
 class Hud;
 class Minimap;
+class Tracers;
 
 class RenderingCore;
 
@@ -117,15 +118,15 @@ public:
 	}
 
 	inline static void draw_scene(video::SColor skycolor, bool show_hud,
-			bool show_minimap, bool draw_wield_tool, bool draw_crosshair)
+			bool show_minimap, bool draw_wield_tool, bool draw_crosshair, bool draw_tracers)
 	{
 		s_singleton->_draw_scene(skycolor, show_hud, show_minimap,
-				draw_wield_tool, draw_crosshair);
+				draw_wield_tool, draw_crosshair, draw_tracers);
 	}
 
-	inline static void initialize(Client *client, Hud *hud)
+	inline static void initialize(Client *client, Hud *hud, Tracers *tracers)
 	{
-		s_singleton->_initialize(client, hud);
+		s_singleton->_initialize(client, hud, tracers);
 	}
 
 	inline static void finalize() { s_singleton->_finalize(); }
@@ -148,9 +149,9 @@ private:
 			bool clouds = true);
 
 	void _draw_scene(video::SColor skycolor, bool show_hud, bool show_minimap,
-			bool draw_wield_tool, bool draw_crosshair);
+			bool draw_wield_tool, bool draw_crosshair, bool draw_tracers);
 
-	void _initialize(Client *client, Hud *hud);
+	void _initialize(Client *client, Hud *hud, Tracers *tracers);
 
 	void _finalize();
 

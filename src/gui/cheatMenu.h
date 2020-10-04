@@ -59,10 +59,11 @@ private:
 	int m_entry_width = 200;
 	int m_gap = 3;
 	
-	video::SColor m_bg_color = video::SColor(192, 255, 175, 191);
-	video::SColor m_active_bg_color = video::SColor(192, 255, 32, 76);
+	video::SColor m_bg_color = video::SColor(192, 255, 145, 88);
+	video::SColor m_active_bg_color = video::SColor(192, 255, 87, 53);
 	video::SColor m_font_color = video::SColor(255, 0, 0, 0);
-	video::SColor m_selected_font_color = video::SColor(255, 250, 32, 129); 
+	video::SColor m_selected_font_color = video::SColor(255, 255, 252, 88); 
+
 	
 	Client *m_client;
 	

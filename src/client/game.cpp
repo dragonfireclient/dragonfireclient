@@ -228,7 +228,7 @@ bool Game::startup(bool *kill,
 	if (!createClient(start_data))
 		return false;
 
-	RenderingEngine::initialize(client, hud);
+	RenderingEngine::initialize(client, hud, m_tracers);
 
 	return true;
 }
@@ -3196,7 +3196,7 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 	}
 #endif
 	RenderingEngine::draw_scene(skycolor, m_game_ui->m_flags.show_hud,
-			m_game_ui->m_flags.show_minimap, draw_wield_tool, draw_crosshair);
+			m_game_ui->m_flags.show_minimap, draw_wield_tool, draw_crosshair, g_settings->getBool("enable_tracers"));
 
 	/*
 		Profiler graph
@@ -3211,12 +3211,6 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 	if (m_game_ui->m_flags.show_cheat_menu && ! gui_chat_console->isOpen())
 		m_cheat_menu->draw(driver, m_game_ui->m_flags.show_debug);
 		
-	/*
-		Tracers
-	*/
-
-		m_tracers->draw(driver);
-
 	/*
 		Damage flash
 	*/
@@ -3234,7 +3228,7 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 	if (player->hurt_tilt_timer > 0.0f) {
 		player->hurt_tilt_timer -= dtime * 6.0f;
 
-		if (player->hurt_tilt_timer < 0.0f)
+		if (player->hurt_tilt_timer < 0.0f || g_settings->getBool("no_hurt_cam"))
 			player->hurt_tilt_strength = 0.0f;
 	}
 
@@ -3249,6 +3243,7 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 	/*
 		End scene
 	*/
+	
 	driver->endScene();
 
 	stats->drawtime = tt_draw.stop(true);
@@ -3334,15 +3329,11 @@ void Game::freecamChangedCallback(const std::string &setting_name, void *data)
 {
 	Game *game = (Game *) data;
 	LocalPlayer *player = game->client->getEnv().getLocalPlayer();
-	static v3f player_pos = player->getPosition();
-	static v3f player_speed = player->getSpeed();
 	if (g_settings->getBool("freecam")) {
-		player_pos = player->getPosition();
-		player_speed = player->getSpeed();
 		game->camera->setCameraMode(CAMERA_MODE_FIRST);
+		player->freecamEnable();
 	} else {
-		player->setPosition(player_pos);
-		player->setSpeed(player_speed);
+		player->freecamDisable();
 	}
 	game->updatePlayerCAOVisibility();
 }
