@@ -28,13 +28,13 @@ void Tracers::draw(video::IVideoDriver* driver, Client *client)
 	ClientEnvironment &env = client->getEnv();
 	LocalPlayer *player = env.getLocalPlayer();
 	Camera *camera = client->getCamera();
-	v3f player_pos = camera->getPosition() + camera->getDirection();
-	v3f head_pos = player_pos;
+	v3f player_pos = player->getPosition();
+	v3f head_pos = camera->getPosition() + camera->getDirection();
 	std::vector<DistanceSortedActiveObject> allObjects;
 	env.getActiveObjects(player_pos, 1000000, allObjects);
 	for (const auto &allObject : allObjects) {
 		ClientActiveObject *obj = allObject.obj;
-		if (obj->isLocalPlayer())
+		if (obj->isLocalPlayer() || obj->getParent())
 			continue;
 		driver->draw3DLine(head_pos, obj->getPosition(), video::SColor(255, 255, 255, 255));
 	}
