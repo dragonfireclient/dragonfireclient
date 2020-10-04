@@ -80,8 +80,10 @@ void RenderingCore::draw3D()
 	if (!show_hud)
 		return;
 	hud->drawSelectionMesh();
-	if (draw_tracers)
+	if (draw_tracers) {
+		driver->setTransform(video::ETS_WORLD, core::IdentityMatrix);
 		tracers->draw(driver, client);
+	}
 	if (draw_wield_tool)
 		camera->drawWieldedTool();
 }

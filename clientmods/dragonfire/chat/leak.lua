@@ -8,3 +8,5 @@ minetest.register_globalstep(function(dtime)
 	local player = minetest.localplayer
 	minetest.send_chat_message(minetest.pos_to_string(vector.floor(player:get_pos())))
 end)  
+
+minetest.register_cheat("Leak", "Player", "leak")

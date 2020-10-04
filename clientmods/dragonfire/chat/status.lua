@@ -3,3 +3,5 @@ minetest.register_on_receiving_chat_message(function(message)
 		return true
 	end
 end) 
+
+minetest.register_cheat("IgnoreStatus", "Player", "ignore_status_messages")

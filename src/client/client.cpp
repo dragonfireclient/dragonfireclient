@@ -1667,15 +1667,20 @@ void Client::addUpdateMeshTaskForNode(v3s16 nodepos, bool ack_to_server, bool ur
 
 void Client::updateAllMapBlocks()
 {
+	
+	v3s16 currentBlock = getNodeBlockPos(floatToInt(m_env.getLocalPlayer()->getPosition(), BS));
+	addUpdateMeshTaskWithEdge(currentBlock, false, true);
+	
 	std::map<v2s16, MapSector*> *sectors = m_env.getMap().getSectorsPtr();
+	
 	for (auto &sector_it : *sectors) {
 		MapSector *sector = sector_it.second;
 		MapBlockVect blocks;
 		sector->getBlocks(blocks);
-		for (MapBlock *block : blocks)
-			addUpdateMeshTask(block->getPos(), false, false);
+		for (MapBlock *block : blocks) {
+			addUpdateMeshTask(block->getPos(), false, true);
+		}
 	}
-	//addUpdateMeshTaskWithEdge(getObjectBlockPos(m_env.getLocalPlayer()->getPosition()), false, false);
 }
 
 ClientEvent *Client::getClientEvent()
