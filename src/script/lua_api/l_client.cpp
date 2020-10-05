@@ -496,6 +496,13 @@ int ModApiClient::l_set_keypress(lua_State *L)
 	return 1;
 }
 
+// drop_selected_item()
+int ModApiClient::l_drop_selected_item(lua_State *L)
+{
+	g_game->dropSelectedItem();
+	return 0;
+}
+
 void ModApiClient::Initialize(lua_State *L, int top)
 {
 	API_FCT(get_current_modname);
@@ -528,4 +535,5 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(dig_node);
 	API_FCT(get_inventory);
 	API_FCT(set_keypress);
+	API_FCT(drop_selected_item);
 }

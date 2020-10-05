@@ -876,6 +876,8 @@ Call these functions only at load time!
     * Alias for `minetest.send_chat_message("/" .. cmd .. " " .. param)`
 * `minetest.clear_out_chat_queue()`
     * Clears the out chat queue
+* `minetest.drop_selected_item()`
+    * Drops the selected item
 * `minetest.localplayer`
     * Reference to the LocalPlayer object. See [`LocalPlayer`](#localplayer) class reference for methods.
 

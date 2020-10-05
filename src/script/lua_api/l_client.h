@@ -117,8 +117,11 @@ private:
 	// get_inventory(location)
 	static int l_get_inventory(lua_State *L);
 	
-	// l_set_keypress(key_setting, pressed)
+	// set_keypress(key_setting, pressed)
 	static int l_set_keypress(lua_State *L);
+	
+	// drop_selected_item()
+	static int l_drop_selected_item(lua_State *L);
 public:	
 	static void Initialize(lua_State *L, int top);
 };
