@@ -16,8 +16,9 @@
 --51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --------------------------------------------------------------------------------
-local hackers = {
-	"Elias Fleckenstein <eliasfleckenstein@web.de>"
+local dragonfire_team = {
+	"Elias Fleckenstein <eliasfleckenstein@web.de> [Main Developer]",
+	"DerZombiiie [Bots, User Support]",
 }
 
 local core_developers = {
@@ -109,8 +110,8 @@ return {
 			"tablecolumns[color;text]" ..
 			"tableoptions[background=#00000000;highlight=#00000000;border=false]" ..
 			"table[3.5,-0.25;8.5,6.05;list_credits;" ..
-			"#FFFF00," .. fgettext("Hackers") .. ",," ..
-			buildCreditList(hackers) .. ",,," ..
+			"#FFFF00," .. fgettext("Dragonfire Team") .. ",," ..
+			buildCreditList(dragonfire_team) .. ",,," ..
 			"#FFFF00," .. fgettext("Core Developers") .. ",," ..
 			buildCreditList(core_developers) .. ",,," ..
 			"#FFFF00," .. fgettext("Active Contributors") .. ",," ..

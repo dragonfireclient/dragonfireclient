@@ -112,7 +112,7 @@ Game::Game() :
 		&freecamChangedCallback, this);
 	g_settings->registerChangedCallback("xray",
 		&updateAllMapBlocksCallback, this);
-	g_settings->registerChangedCallback("xray_node",
+	g_settings->registerChangedCallback("xray_nodes",
 		&updateAllMapBlocksCallback, this);
 	g_settings->registerChangedCallback("fullbright",
 		&updateAllMapBlocksCallback, this);
@@ -178,7 +178,7 @@ Game::~Game()
 		&freecamChangedCallback, this);
 	g_settings->deregisterChangedCallback("xray",
 		&updateAllMapBlocksCallback, this);
-	g_settings->deregisterChangedCallback("xray_node",
+	g_settings->deregisterChangedCallback("xray_nodes",
 		&updateAllMapBlocksCallback, this);
 	g_settings->deregisterChangedCallback("fullbright",
 		&updateAllMapBlocksCallback, this);

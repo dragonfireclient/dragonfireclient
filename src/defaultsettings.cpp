@@ -66,7 +66,7 @@ void set_default_settings(Settings *settings)
 	
 	// Cheats
 	settings->setDefault("xray", "false");
-	settings->setDefault("xray_node", "default:stone");
+	settings->setDefault("xray_nodes", "default:stone,mcl_core:stone");
 	settings->setDefault("fullbright", "false");
 	settings->setDefault("priv_bypass", "true");
 	settings->setDefault("fastdig", "false");

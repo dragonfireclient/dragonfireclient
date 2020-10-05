@@ -788,6 +788,24 @@ void getNodeTile(MapNode mn, const v3s16 &p, const v3s16 &dir, MeshMakeData *dat
 	tile.rotation = tile.world_aligned ? 0 : dir_to_tile[tile_index + 1];
 }
 
+std::set<content_t> splitToContentT(std::string str, const NodeDefManager *ndef)
+{
+	str += "\n";
+	std::set<content_t> dat;
+	std::string buf;
+	for (char c : str) {
+		if (c == ',' || c == '\n') {
+			if (! buf.empty()) {
+				dat.insert(ndef->getId(buf));
+			}
+			buf.clear();
+		} else if (c != ' ') {
+			buf += c;
+		}
+	}
+	return dat;
+}
+
 static void getTileInfo(
 		// Input:
 		MeshMakeData *data,
@@ -799,19 +817,19 @@ static void getTileInfo(
 		v3s16 &face_dir_corrected,
 		u16 *lights,
 		u8 &waving,
-		TileSpec &tile
+		TileSpec &tile,
+		bool xray,
+		std::set<content_t> xraySet
 	)
 {
 	VoxelManipulator &vmanip = data->m_vmanip;
 	const NodeDefManager *ndef = data->m_client->ndef();
 	v3s16 blockpos_nodes = data->m_blockpos * MAP_BLOCKSIZE;
-	content_t cXray = ndef->getId(g_settings->get("xray_node"));
-	bool xray = g_settings->getBool("xray");
 	
 	const MapNode &n0 = vmanip.getNodeRefUnsafe(blockpos_nodes + p);
 
 	content_t c0 = n0.getContent();
-	if (xray && c0 == cXray)
+	if (xray && xraySet.find(c0) != xraySet.end())
 		c0 = CONTENT_AIR;
 
 	// Don't even try to get n1 if n0 is already CONTENT_IGNORE
@@ -823,7 +841,7 @@ static void getTileInfo(
 	const MapNode &n1 = vmanip.getNodeRefUnsafeCheckFlags(blockpos_nodes + p + face_dir);
 
 	content_t c1 = n1.getContent();
-	if (xray && c1 == cXray)
+	if (xray && xraySet.find(c1) != xraySet.end())
 		c1 = CONTENT_AIR;
 
 	if (c1 == CONTENT_IGNORE) {
@@ -889,7 +907,9 @@ static void updateFastFaceRow(
 		v3s16 translate_dir,
 		const v3f &&translate_dir_f,
 		const v3s16 &&face_dir,
-		std::vector<FastFace> &dest)
+		std::vector<FastFace> &dest,
+		bool xray,
+		std::set<content_t> xraySet)
 {
 	static thread_local const bool waving_liquids =
 		g_settings->getBool("enable_shaders") &&
@@ -909,7 +929,7 @@ static void updateFastFaceRow(
 	// Get info of first tile
 	getTileInfo(data, p, face_dir,
 			makes_face, p_corrected, face_dir_corrected,
-			lights, waving, tile);
+			lights, waving, tile, xray, xraySet);
 
 	// Unroll this variable which has a significant build cost
 	TileSpec next_tile;
@@ -931,7 +951,9 @@ static void updateFastFaceRow(
 					next_makes_face, next_p_corrected,
 					next_face_dir_corrected, next_lights,
 					waving,
-					next_tile);
+					next_tile,
+					xray,
+					xraySet);
 
 			if (next_makes_face == makes_face
 					&& next_p_corrected == p_corrected + translate_dir
@@ -981,7 +1003,7 @@ static void updateFastFaceRow(
 }
 
 static void updateAllFastFaceRows(MeshMakeData *data,
-		std::vector<FastFace> &dest)
+		std::vector<FastFace> &dest, bool xray, std::set<content_t> xraySet)
 {
 	/*
 		Go through every y,z and get top(y+) faces in rows of x+
@@ -993,7 +1015,9 @@ static void updateAllFastFaceRows(MeshMakeData *data,
 				v3s16(1, 0, 0), //dir
 				v3f  (1, 0, 0),
 				v3s16(0, 1, 0), //face dir
-				dest);
+				dest,
+				xray,
+				xraySet);
 
 	/*
 		Go through every x,y and get right(x+) faces in rows of z+
@@ -1005,7 +1029,9 @@ static void updateAllFastFaceRows(MeshMakeData *data,
 				v3s16(0, 0, 1), //dir
 				v3f  (0, 0, 1),
 				v3s16(1, 0, 0), //face dir
-				dest);
+				dest,
+				xray,
+				xraySet);
 
 	/*
 		Go through every y,z and get back(z+) faces in rows of x+
@@ -1017,7 +1043,9 @@ static void updateAllFastFaceRows(MeshMakeData *data,
 				v3s16(1, 0, 0), //dir
 				v3f  (1, 0, 0),
 				v3s16(0, 0, 1), //face dir
-				dest);
+				dest,
+				xray,
+				xraySet);
 }
 
 static void applyTileColor(PreMeshBuffer &pmb)
@@ -1064,18 +1092,25 @@ MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
 
 	std::vector<FastFace> fastfaces_new;
 	fastfaces_new.reserve(512);
-
+	/*
+		X-Ray
+	*/
+	bool xray = g_settings->getBool("xray");
+	std::set<content_t> xraySet;
+	if (xray)
+		xraySet = splitToContentT(g_settings->get("xray_nodes"), data->m_client->ndef());
+	
 	/*
 		We are including the faces of the trailing edges of the block.
 		This means that when something changes, the caller must
 		also update the meshes of the blocks at the leading edges.
 
 		NOTE: This is the slowest part of this method.
-	*/
+	*/	
 	{
 		// 4-23ms for MAP_BLOCKSIZE=16  (NOTE: probably outdated)
 		//TimeTaker timer2("updateAllFastFaceRows()");
-		updateAllFastFaceRows(data, fastfaces_new);
+		updateAllFastFaceRows(data, fastfaces_new, xray, xraySet);
 	}
 	// End of slow part
 

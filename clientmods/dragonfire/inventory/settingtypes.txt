@@ -1,2 +1,4 @@
 next_item (NextItem) bool false
 autotool (AutoTool) bool false
+autoeject (AutoEject) bool false
+eject_items (AutoEject Items) string
