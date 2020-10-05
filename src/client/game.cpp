@@ -228,7 +228,7 @@ bool Game::startup(bool *kill,
 	if (!createClient(start_data))
 		return false;
 
-	RenderingEngine::initialize(client, hud, m_tracers);
+	RenderingEngine::initialize(client, hud);
 
 	return true;
 }
@@ -348,9 +348,6 @@ void Game::shutdown()
 
 	if (m_cheat_menu)
 		delete m_cheat_menu;
-		
-	if (m_tracers)
-		delete m_tracers;
 
 	if (sky)
 		sky->drop();
@@ -623,14 +620,6 @@ bool Game::initGui()
 
 	if (!m_cheat_menu) {
 		*error_message = "Could not allocate memory for cheat menu";
-		errorstream << *error_message << std::endl;
-		return false;
-	}
-	
-	m_tracers = new Tracers();
-
-	if (!m_tracers) {
-		*error_message = "Could not allocate memory for tracers";
 		errorstream << *error_message << std::endl;
 		return false;
 	}
@@ -3196,7 +3185,7 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 	}
 #endif
 	RenderingEngine::draw_scene(skycolor, m_game_ui->m_flags.show_hud,
-			m_game_ui->m_flags.show_minimap, draw_wield_tool, draw_crosshair, g_settings->getBool("enable_tracers"));
+			m_game_ui->m_flags.show_minimap, draw_wield_tool, draw_crosshair, g_settings->getBool("enable_tracers"), g_settings->getBool("enable_esp"));
 
 	/*
 		Profiler graph

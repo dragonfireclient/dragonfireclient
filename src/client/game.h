@@ -50,7 +50,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "gui/guiVolumeChange.h"
 #include "gui/mainmenumanager.h"
 #include "gui/profilergraph.h"
-#include "gui/tracers.h"
 #include "mapblock.h"
 #include "minimap.h"
 #include "nodedef.h"         // Needed for determining pointing to nodes
@@ -869,7 +868,6 @@ public:
 	std::unique_ptr<GameUI> m_game_ui;
 	GUIChatConsole *gui_chat_console = nullptr; // Free using ->Drop()
 	CheatMenu *m_cheat_menu = nullptr;
-	Tracers *m_tracers = nullptr;
 	MapDrawControl *draw_control = nullptr;
 	Camera *camera = nullptr;
 	Clouds *clouds = nullptr;	                  // Free using ->Drop()

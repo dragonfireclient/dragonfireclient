@@ -301,7 +301,7 @@ void LocalPlayer::move(f32 dtime, Environment *env, f32 pos_max_d,
 
 	collisionMoveResult result = collisionMoveSimple(env, m_client,
 		pos_max_d, m_collisionbox, player_stepheight, dtime,
-		&position, &m_speed, accel_f);
+		&position, &m_speed, accel_f, NULL, true, true);
 
 	bool could_sneak = control.sneak && !free_move && !in_liquid &&
 		!is_climbing && physics_override_sneak;
@@ -923,7 +923,7 @@ void LocalPlayer::old_move(f32 dtime, Environment *env, f32 pos_max_d,
 
 	collisionMoveResult result = collisionMoveSimple(env, m_client,
 		pos_max_d, m_collisionbox, player_stepheight, dtime,
-		&position, &m_speed, accel_f);
+		&position, &m_speed, accel_f, NULL, true, true);
 
 	// Positition was slightly changed; update standing node pos
 	if (touching_ground)
@@ -1175,7 +1175,7 @@ void LocalPlayer::handleAutojump(f32 dtime, Environment *env,
 
 	// try at peak of jump, zero step height
 	collisionMoveResult jump_result = collisionMoveSimple(env, m_client, pos_max_d,
-		m_collisionbox, 0.0f, dtime, &jump_pos, &jump_speed, v3f(0.0f));
+		m_collisionbox, 0.0f, dtime, &jump_pos, &jump_speed, v3f(0.0f), NULL, true, true);
 
 	// see if we can get a little bit farther horizontally if we had
 	// jumped

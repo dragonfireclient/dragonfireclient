@@ -44,7 +44,6 @@ public:
 
 	virtual void updateLight(u32 day_night_ratio) {}
 
-	virtual bool isItem() const { return false; }
 	virtual bool getCollisionBox(aabb3f *toset) const { return false; }
 	virtual bool getSelectionBox(aabb3f *toset) const { return false; }
 	virtual bool collideWithObjects() const { return false; }

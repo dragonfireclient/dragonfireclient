@@ -591,10 +591,10 @@ std::vector<irr::video::E_DRIVER_TYPE> RenderingEngine::getSupportedVideoDrivers
 	return drivers;
 }
 
-void RenderingEngine::_initialize(Client *client, Hud *hud, Tracers *tracers)
+void RenderingEngine::_initialize(Client *client, Hud *hud)
 {
 	const std::string &draw_mode = g_settings->get("3d_mode");
-	core.reset(createRenderingCore(draw_mode, m_device, client, hud, tracers));
+	core.reset(createRenderingCore(draw_mode, m_device, client, hud));
 	core->initialize();
 }
 
@@ -604,9 +604,9 @@ void RenderingEngine::_finalize()
 }
 
 void RenderingEngine::_draw_scene(video::SColor skycolor, bool show_hud,
-		bool show_minimap, bool draw_wield_tool, bool draw_crosshair, bool draw_tracers)
+		bool show_minimap, bool draw_wield_tool, bool draw_crosshair, bool draw_tracers, bool draw_esp)
 {
-	core->draw(skycolor, show_hud, show_minimap, draw_wield_tool, draw_crosshair, draw_tracers);
+	core->draw(skycolor, show_hud, show_minimap, draw_wield_tool, draw_crosshair, draw_tracers, draw_esp);
 }
 
 const char *RenderingEngine::getVideoDriverName(irr::video::E_DRIVER_TYPE type)

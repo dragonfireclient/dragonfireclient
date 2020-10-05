@@ -92,6 +92,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("spamclick", "false");
 	settings->setDefault("no_force_rotate", "false");
 	settings->setDefault("enable_tracers", "false");
+	settings->setDefault("enable_esp", "false");
 	settings->setDefault("no_slow", "false");
 	
 	// Keymap

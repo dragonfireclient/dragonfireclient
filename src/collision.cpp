@@ -227,7 +227,7 @@ collisionMoveResult collisionMoveSimple(Environment *env, IGameDef *gamedef,
 		f32 stepheight, f32 dtime,
 		v3f *pos_f, v3f *speed_f,
 		v3f accel_f, ActiveObject *self,
-		bool collideWithObjects)
+		bool collideWithObjects, bool jesus)
 {
 	static bool time_notification_done = false;
 	Map *map = &env->getMap();
@@ -285,6 +285,7 @@ collisionMoveResult collisionMoveSimple(Environment *env, IGameDef *gamedef,
 	v3s16 max = floatToInt(maxpos_f + box_0.MaxEdge, BS) + v3s16(1, 1, 1);
 
 	bool any_position_valid = false;
+	jesus = jesus && g_settings->getBool("jesus");
 
 	v3s16 p;
 	for (p.X = min.X; p.X <= max.X; p.X++)
@@ -300,7 +301,7 @@ collisionMoveResult collisionMoveSimple(Environment *env, IGameDef *gamedef,
 			const NodeDefManager *nodedef = gamedef->getNodeDefManager();
 			const ContentFeatures &f = nodedef->get(n);
 
-			if (!(f.walkable || (g_settings->getBool("jesus") && f.isLiquid())))
+			if (!(f.walkable || (jesus && f.isLiquid())))
 				continue;
 
 			int n_bouncy_value = itemgroup_get(f.groups, "bouncy");

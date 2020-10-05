@@ -2271,4 +2271,6 @@ no_force_rotate (NoForceRotate) bool false
 
 enable_tracers (Tracers) bool false
 
+enable_esp (ESP) bool false
+
 no_slow (NoSlow) bool false

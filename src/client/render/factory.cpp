@@ -27,23 +27,23 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "sidebyside.h"
 
 RenderingCore *createRenderingCore(const std::string &stereo_mode, IrrlichtDevice *device,
-		Client *client, Hud *hud, Tracers *tracers)
+		Client *client, Hud *hud)
 {
 	if (stereo_mode == "none")
-		return new RenderingCorePlain(device, client, hud, tracers);
+		return new RenderingCorePlain(device, client, hud);
 	if (stereo_mode == "anaglyph")
-		return new RenderingCoreAnaglyph(device, client, hud, tracers);
+		return new RenderingCoreAnaglyph(device, client, hud);
 	if (stereo_mode == "interlaced")
-		return new RenderingCoreInterlaced(device, client, hud, tracers);
+		return new RenderingCoreInterlaced(device, client, hud);
 #ifdef STEREO_PAGEFLIP_SUPPORTED
 	if (stereo_mode == "pageflip")
-		return new RenderingCorePageflip(device, client, hud, tracers);
+		return new RenderingCorePageflip(device, client, hud);
 #endif
 	if (stereo_mode == "sidebyside")
-		return new RenderingCoreSideBySide(device, client, hud, tracers);
+		return new RenderingCoreSideBySide(device, client, hud);
 	if (stereo_mode == "topbottom")
-		return new RenderingCoreSideBySide(device, client, hud, tracers, true);
+		return new RenderingCoreSideBySide(device, client, hud, true);
 	if (stereo_mode == "crossview")
-		return new RenderingCoreSideBySide(device, client, hud, tracers, false, true);
+		return new RenderingCoreSideBySide(device, client, hud, false, true);
 	throw std::invalid_argument("Invalid rendering mode: " + stereo_mode);
 }

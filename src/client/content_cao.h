@@ -215,8 +215,6 @@ public:
 		m_is_visible = toset;
 	}
 
-	bool isItem() const { return m_prop.visual == "wielditem" || m_prop.visual == "item"; }
-
 	void setChildrenVisible(bool toset);
 	void setAttachment(int parent_id, const std::string &bone, v3f position, v3f rotation);
 	void getAttachment(int *parent_id, std::string *bone, v3f *position,

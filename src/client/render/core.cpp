@@ -18,18 +18,19 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include <iostream>
 #include "core.h"
 #include "client/camera.h"
 #include "client/client.h"
 #include "client/clientmap.h"
 #include "client/hud.h"
 #include "client/minimap.h"
-#include "gui/tracers.h"
+#include "client/content_cao.h"
 
-RenderingCore::RenderingCore(IrrlichtDevice *_device, Client *_client, Hud *_hud, Tracers *_tracers)
+RenderingCore::RenderingCore(IrrlichtDevice *_device, Client *_client, Hud *_hud)
 	: device(_device), driver(device->getVideoDriver()), smgr(device->getSceneManager()),
 	guienv(device->getGUIEnvironment()), client(_client), camera(client->getCamera()),
-	mapper(client->getMinimap()), hud(_hud), tracers(_tracers)
+	mapper(client->getMinimap()), hud(_hud)
 {
 	screensize = driver->getScreenSize();
 	virtual_size = screensize;
@@ -54,7 +55,7 @@ void RenderingCore::updateScreenSize()
 }
 
 void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_minimap,
-		bool _draw_wield_tool, bool _draw_crosshair, bool _draw_tracers)
+		bool _draw_wield_tool, bool _draw_crosshair, bool _draw_tracers, bool _draw_esp)
 {
 	v2u32 ss = driver->getScreenSize();
 	if (screensize != ss) {
@@ -67,23 +68,63 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 	draw_wield_tool = _draw_wield_tool;
 	draw_crosshair = _draw_crosshair;
 	draw_tracers = _draw_tracers;
+	draw_esp = _draw_esp;
 
 	beforeDraw();
 	drawAll();
 }
 
+void RenderingCore::drawTracersAndESP()
+{
+	ClientEnvironment &env = client->getEnv();
+	Camera *camera = client->getCamera();
+	
+	v3f camera_offset = intToFloat(camera->getOffset(), BS);
+	
+	v3f eye_pos = (camera->getPosition() + camera->getDirection() - camera_offset);
+ 	
+ 	video::SMaterial material, oldmaterial;
+ 	oldmaterial = driver->getMaterial2D();
+	material.setFlag(video::EMF_LIGHTING, false);
+	material.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material.setFlag(video::EMF_ZBUFFER, false);
+	material.setFlag(video::EMF_ZWRITE_ENABLE, false);
+	driver->setMaterial(material);
+ 	
+	auto allObjects = env.getAllActiveObjects();
+	for (auto &it : allObjects) {
+		ClientActiveObject *cao = it.second;
+		if (cao->isLocalPlayer() || cao->getParent())
+			continue;
+		GenericCAO *obj = dynamic_cast<GenericCAO *>(cao);
+		if (! obj)
+			continue;
+		aabb3f box;
+		if (! obj->getSelectionBox(&box))
+			continue;
+		v3f pos = obj->getPosition();
+		pos -= camera_offset;
+		box.MinEdge += pos;
+		box.MaxEdge += pos;
+		pos = box.getCenter();
+		if (draw_esp)
+			driver->draw3DBox(box, video::SColor(255, 255, 255, 255));
+		if (draw_tracers)
+			driver->draw3DLine(eye_pos, pos, video::SColor(255, 255, 255, 255));
+	}
+	
+	driver->setMaterial(oldmaterial);
+}
+
 void RenderingCore::draw3D()
 {
-	
 	smgr->drawAll();
 	driver->setTransform(video::ETS_WORLD, core::IdentityMatrix);
 	if (!show_hud)
 		return;
 	hud->drawSelectionMesh();
-	if (draw_tracers) {
-		driver->setTransform(video::ETS_WORLD, core::IdentityMatrix);
-		tracers->draw(driver, client);
-	}
+	if (draw_tracers || draw_esp)
+		drawTracersAndESP();
 	if (draw_wield_tool)
 		camera->drawWieldedTool();
 }
