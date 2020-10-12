@@ -23,6 +23,7 @@ core.cheats = {
 		["Coords"] = "coords",
 		["Tracers"] = "enable_tracers",
 		["ESP"] = "enable_esp",
+		["AttachmentFloat"] = "float_above_parent",
 	},
 	["World"] = {
 		["FastDig"] = "fastdig",

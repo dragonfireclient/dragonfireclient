@@ -94,6 +94,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_tracers", "false");
 	settings->setDefault("enable_esp", "false");
 	settings->setDefault("no_slow", "false");
+	settings->setDefault("float_above_parent", "false");
 	
 	// Keymap
 	settings->setDefault("remote_port", "30000");

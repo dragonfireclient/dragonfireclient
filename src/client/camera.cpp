@@ -340,7 +340,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, f32 busytime, f32 tool_r
 	// mods expect the player head to be at the parent's position
 	// plus eye height.
 	if (player->getParent())
-		player_position = player->getParent()->getPosition();
+		player_position = player->getParent()->getPosition() + v3f(0,  g_settings->getBool("float_above_parent") ? BS : 0, 0);
 
 	// Smooth the camera movement when the player instantly moves upward due to stepheight.
 	// To smooth the 'not touching_ground' stepheight, smoothing is necessary when jumping
