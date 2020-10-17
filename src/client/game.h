@@ -724,7 +724,7 @@ public:
 
 	void dropSelectedItem(bool single_item = false);
 	void openInventory();
-	void openSpecialInventory();
+	void openEnderchest();
 	void openConsole(float scale, const wchar_t *line=NULL);
 	void toggleFreeMove();
 	void toggleFreeMoveAlt();
@@ -733,6 +733,8 @@ public:
 	void toggleNoClip();
 	void toggleKillaura();
 	void toggleFreecam();
+	void toggleScaffold();
+	void toggleNextItem();
 	void toggleCinematic();
 	void toggleAutoforward();
 

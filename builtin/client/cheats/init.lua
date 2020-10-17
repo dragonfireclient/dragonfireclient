@@ -3,16 +3,16 @@ core.cheats = {
 		["Killaura"] = "killaura",
 		["AntiKnockback"] = "antiknockback",
 		["FastHit"] = "spamclick",
+		["AttachmentFloat"] = "float_above_parent",
 	},
 	["Movement"] = {
 		["Freecam"] = "freecam",
-		["PrivBypass"] = "priv_bypass",
 		["AutoForward"] = "continuous_forward",
 		["PitchMove"] = "pitch_move",
 		["AutoJump"] = "autojump",
 		["Jesus"] = "jesus",
 		["NoSlow"] = "no_slow",
-		
+		["AutoSneak"] = "autosneak",
 	},
 	["Render"] = {
 		["Xray"] = "xray",
@@ -23,7 +23,6 @@ core.cheats = {
 		["Coords"] = "coords",
 		["Tracers"] = "enable_tracers",
 		["ESP"] = "enable_esp",
-		["AttachmentFloat"] = "float_above_parent",
 	},
 	["World"] = {
 		["FastDig"] = "fastdig",
@@ -31,9 +30,11 @@ core.cheats = {
 		["AutoDig"] = "autodig",
 		["AutoPlace"] = "autoplace",
 		["InstantBreak"] = "instant_break",
-		["IncreasedRange"] = "increase_tool_range",
-		["UnlimitedRange"] = "increase_tool_range_plus",
-		["PointLiquids"] = "point_liquids",
+		["Scaffold"] = "scaffold",
+		["ScaffoldPlus"] = "scaffold_plus",
+		["BlockWater"] = "block_water",
+		["PlaceOnTop"] = "autotnt",
+		["Replace"] = "replace"
 	},
 	["Exploit"] = {
 		["EntitySpeed"] = "entity_speed",
@@ -42,10 +43,35 @@ core.cheats = {
 	["Player"] = {
 		["NoFallDamage"] = "prevent_natural_damage",
 		["NoForceRotate"] = "no_force_rotate",
+		["IncreasedRange"] = "increase_tool_range",
+		["UnlimitedRange"] = "increase_tool_range_plus",
+		["PointLiquids"] = "point_liquids",
+		["PrivBypass"] = "priv_bypass",
+		["AutoRespawn"] = "autorespawn",
 	},
+	["Chat"] = {
+		["IgnoreStatus"] = "ignore_status_messages",
+		["Deathmessages"] = "mark_deathmessages"
+	},
+	["Inventory"] = {
+		["AutoEject"] = "autoeject",
+		["AutoTool"] = "autotool",
+		["Enderchest"] = function() core.open_enderchest() end,
+		["HandSlot"] = function() core.open_handslot() end,
+		["NextItem"] = "next_item",
+	}
 }
 
 function core.register_cheat(cheatname, category, func)
 	core.cheats[category] = core.cheats[category] or {}
 	core.cheats[category][cheatname] = func
 end
+
+local cheatpath = core.get_builtin_path() .. "client" .. DIR_DELIM .. "cheats" .. DIR_DELIM
+
+dofile(cheatpath .. "chat.lua")
+dofile(cheatpath .. "inventory.lua")
+dofile(cheatpath .. "movement.lua")
+dofile(cheatpath .. "player.lua")
+dofile(cheatpath .. "render.lua")
+dofile(cheatpath .. "world.lua")

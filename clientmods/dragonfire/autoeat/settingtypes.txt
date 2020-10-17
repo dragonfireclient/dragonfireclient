@@ -1,1 +1,0 @@
-autoeat (Automatically eat when damage was taken) bool false

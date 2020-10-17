@@ -59,7 +59,7 @@ enum
 	GUI_ID_KEY_SNEAK_BUTTON,
 	GUI_ID_KEY_DROP_BUTTON,
 	GUI_ID_KEY_INVENTORY_BUTTON,
-	GUI_ID_KEY_SPECIAL_INVENTORY_BUTTON,
+	GUI_ID_KEY_ENDERCHEST_BUTTON,
 	GUI_ID_KEY_HOTBAR_PREV_BUTTON,
 	GUI_ID_KEY_HOTBAR_NEXT_BUTTON,
 	GUI_ID_KEY_MUTE_BUTTON,
@@ -79,6 +79,8 @@ enum
 	GUI_ID_KEY_AUTOFWD_BUTTON,
 	GUI_ID_KEY_KILLAURA_BUTTON,
 	GUI_ID_KEY_FREECAM_BUTTON,
+	GUI_ID_KEY_SCAFFOLD_BUTTON,
+	GUI_ID_KEY_NEXT_ITEM_BUTTON,
 	GUI_ID_KEY_SELECT_UP_BUTTON,
 	GUI_ID_KEY_SELECT_DOWN_BUTTON,
 	GUI_ID_KEY_SELECT_LEFT_BUTTON,
@@ -430,7 +432,7 @@ void GUIKeyChangeMenu::init_keys()
 	this->add_key(GUI_ID_KEY_SNEAK_BUTTON,     wgettext("Sneak"),            "keymap_sneak");
 	this->add_key(GUI_ID_KEY_DROP_BUTTON,      wgettext("Drop"),             "keymap_drop");
 	this->add_key(GUI_ID_KEY_INVENTORY_BUTTON, wgettext("Inventory"),        "keymap_inventory");
-	this->add_key(GUI_ID_KEY_SPECIAL_INVENTORY_BUTTON,wgettext("Special Inv."),"keymap_special_inventory");
+	this->add_key(GUI_ID_KEY_ENDERCHEST_BUTTON,wgettext("Enderchest"),		 "keymap_enderchest");
 	this->add_key(GUI_ID_KEY_HOTBAR_PREV_BUTTON,wgettext("Prev. item"),      "keymap_hotbar_previous");
 	this->add_key(GUI_ID_KEY_HOTBAR_NEXT_BUTTON,wgettext("Next item"),       "keymap_hotbar_next");
 	this->add_key(GUI_ID_KEY_ZOOM_BUTTON,      wgettext("Zoom"),             "keymap_zoom");
@@ -456,8 +458,10 @@ void GUIKeyChangeMenu::init_keys()
 	this->add_key(GUI_ID_KEY_CHATLOG_BUTTON,   wgettext("Toggle chat log"),  "keymap_toggle_chat");
 	this->add_key(GUI_ID_KEY_FOG_BUTTON,       wgettext("Toggle fog"),       "keymap_toggle_fog");
 	this->add_key(GUI_ID_KEY_CHEAT_MENU_BUTTON,wgettext("Toggle C. Menu"),"keymap_toggle_cheat_menu");
-	this->add_key(GUI_ID_KEY_KILLAURA_BUTTON,  wgettext("Toggle Killaura"),  "keymap_toggle_killaura");
-	this->add_key(GUI_ID_KEY_FREECAM_BUTTON,   wgettext("Toggle Freec."),    "keymap_toggle_freecam");
+	this->add_key(GUI_ID_KEY_KILLAURA_BUTTON,  wgettext("Killaura"),  "keymap_toggle_killaura");
+	this->add_key(GUI_ID_KEY_FREECAM_BUTTON,   wgettext("Freecam"),    "keymap_toggle_freecam");
+	this->add_key(GUI_ID_KEY_SCAFFOLD_BUTTON,  wgettext("Scaffold"),    "keymap_toggle_scaffold");
+	this->add_key(GUI_ID_KEY_NEXT_ITEM_BUTTON, wgettext("NextItem"),    "keymap_toggle_next_item");
 	this->add_key(GUI_ID_KEY_SELECT_UP_BUTTON, wgettext("C. Menu Up"),    "keymap_select_up");
 	this->add_key(GUI_ID_KEY_SELECT_DOWN_BUTTON,wgettext("C. Menu Down"), "keymap_select_down");
 	this->add_key(GUI_ID_KEY_SELECT_LEFT_BUTTON,wgettext("C. Menu Left"), "keymap_select_left");

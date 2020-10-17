@@ -2217,13 +2217,10 @@ contentdb_flag_blacklist (ContentDB Flag Blacklist) string nonfree, desktop_defa
 
 fullbright (Fullbright) bool false
 
-# Enable xray, requires fullbright
-xray (X-Ray) bool false
+xray (XRay) bool false
 
-# Node to apply xray
-xray_node (X-RayTexture) string default:stone
+xray_nodes (XRay Nodes) string default:stone,mcl_core:stone
 
-# Make the Client think it has all privs
 priv_bypass (PrivBypass) bool true
 
 fastdig (FastDig) bool false
@@ -2246,7 +2243,6 @@ increase_tool_range (IncreasedRange) bool true
 
 increase_tool_range_plus (IncreasedRangePlus) bool true
 
-# HUD Flags Bypass
 hud_flags_bypass (HUDBypass) bool true
 
 antiknockback (AntiKnockback) bool false
@@ -2274,3 +2270,29 @@ enable_tracers (Tracers) bool false
 enable_esp (ESP) bool false
 
 no_slow (NoSlow) bool false
+
+ignore_status_messages (IgnoreStatus) bool true
+
+mark_deathmessages (Deathmessages) bool true
+
+autosneak (AutoSneak) bool false
+
+autoeject (AutoEject) bool false
+
+eject_items (AutoEject Items) string
+
+autotool (AutoTool) bool false
+
+autorespawn (AutoRespawn) bool false
+
+next_item (NextItem) bool false
+
+scaffold (Scaffold) bool false
+
+scaffold_plus (ScaffoldPlus) bool false
+
+block_water (BlockWater) bool false
+
+autotnt (PlaceOnTop) bool false
+
+replace (Replace) bool false

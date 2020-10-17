@@ -42,7 +42,7 @@ void KeyCache::populate()
 
 	key[KeyType::DROP] = getKeySetting("keymap_drop");
 	key[KeyType::INVENTORY] = getKeySetting("keymap_inventory");
-	key[KeyType::SPECIAL_INVENTORY] = getKeySetting("keymap_special_inventory");
+	key[KeyType::ENDERCHEST] = getKeySetting("keymap_enderchest");
 	key[KeyType::CHAT] = getKeySetting("keymap_chat");
 	key[KeyType::CMD] = getKeySetting("keymap_cmd");
 	key[KeyType::CMD_LOCAL] = getKeySetting("keymap_cmd_local");
@@ -75,6 +75,8 @@ void KeyCache::populate()
 	key[KeyType::ZOOM] = getKeySetting("keymap_zoom");
 	key[KeyType::KILLAURA] = getKeySetting("keymap_toggle_killaura");
 	key[KeyType::FREECAM] = getKeySetting("keymap_toggle_freecam");
+	key[KeyType::SCAFFOLD] = getKeySetting("keymap_toggle_scaffold");
+	key[KeyType::NEXT_ITEM] = getKeySetting("keymap_toggle_next_item");
 	key[KeyType::SELECT_UP] = getKeySetting("keymap_select_up");
 	key[KeyType::SELECT_DOWN] = getKeySetting("keymap_select_down");
 	key[KeyType::SELECT_LEFT] = getKeySetting("keymap_select_left");

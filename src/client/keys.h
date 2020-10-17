@@ -41,7 +41,7 @@ public:
 		// Other
 		DROP,
 		INVENTORY,
-		SPECIAL_INVENTORY,
+		ENDERCHEST,
 		CHAT,
 		CMD,
 		CMD_LOCAL,
@@ -72,6 +72,8 @@ public:
 		ZOOM,
 		KILLAURA,
 		FREECAM,
+		SCAFFOLD,
+		NEXT_ITEM,
 		SELECT_UP,
 		SELECT_DOWN,
 		SELECT_LEFT,

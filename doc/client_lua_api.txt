@@ -1480,6 +1480,8 @@ The following functions provide escape sequences:
       `minetest.get_color_escape_sequence(color) ..
        message ..
        minetest.get_color_escape_sequence("#ffffff")`
+* `minetest.rainbow(message)`:
+    * Rainbow colorizes the message.
 * `minetest.get_background_escape_sequence(color)`
     * `color` is a [ColorString](#colorstring)
     * The escape sequence sets the background of the whole text element to

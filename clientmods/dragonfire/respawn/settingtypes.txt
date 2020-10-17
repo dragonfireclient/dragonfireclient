@@ -1,1 +1,0 @@
-autorespawn (AutoRespawn) bool false

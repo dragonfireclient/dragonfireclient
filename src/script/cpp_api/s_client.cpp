@@ -234,7 +234,7 @@ bool ScriptApiClient::on_inventory_open(Inventory *inventory)
 	return readParam<bool>(L, -1);
 }
 
-void ScriptApiClient::open_special_inventory()
+void ScriptApiClient::open_enderchest()
 {
 	SCRIPTAPI_PRECHECKHEADER
 	
@@ -243,7 +243,7 @@ void ScriptApiClient::open_special_inventory()
 	lua_insert(L, error_handler);
 	
 	lua_getglobal(L, "core");
-	lua_getfield(L, -1, "open_special_inventory");
+	lua_getfield(L, -1, "open_enderchest");
 	if (lua_isfunction(L, -1))
 		lua_pcall(L, 0, 0, error_handler);
 }

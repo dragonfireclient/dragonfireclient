@@ -95,7 +95,20 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_esp", "false");
 	settings->setDefault("no_slow", "false");
 	settings->setDefault("float_above_parent", "false");
-	
+	settings->setDefault("ignore_status_messages", "true");
+	settings->setDefault("mark_deathmessages", "true");
+	settings->setDefault("autosneak", "false");
+	settings->setDefault("autoeject", "false");
+	settings->setDefault("eject_items", "");
+	settings->setDefault("autotool", "false");
+	settings->setDefault("autorespawn", "false");
+	settings->setDefault("next_item", "false");
+	settings->setDefault("scaffold", "false");
+	settings->setDefault("scaffold_plus", "false");
+	settings->setDefault("block_water", "false");
+	settings->setDefault("autotnt", "false");
+	settings->setDefault("replace", "false");
+
 	// Keymap
 	settings->setDefault("remote_port", "30000");
 	settings->setDefault("keymap_forward", "KEY_KEY_W");
@@ -108,7 +121,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_drop", "KEY_KEY_Q");
 	settings->setDefault("keymap_zoom", "KEY_KEY_Z");
 	settings->setDefault("keymap_inventory", "KEY_KEY_I");
-	settings->setDefault("keymap_special_inventory", "KEY_KEY_O");
+	settings->setDefault("keymap_enderchest", "KEY_KEY_O");
 	settings->setDefault("keymap_special1", "KEY_KEY_E");
 	settings->setDefault("keymap_chat", "KEY_KEY_T");
 	settings->setDefault("keymap_cmd", "/");
@@ -143,6 +156,8 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_decrease_viewing_range_min", "-");
 	settings->setDefault("keymap_toggle_killaura", "KEY_KEY_X");
 	settings->setDefault("keymap_toggle_freecam", "KEY_KEY_G");
+	settings->setDefault("keymap_toggle_scaffold", "KEY_KEY_Y");
+	settings->setDefault("keymap_toggle_next_item", "KEY_KEY_U");
 	settings->setDefault("keymap_select_up", "KEY_UP");
 	settings->setDefault("keymap_select_down", "KEY_DOWN");
 	settings->setDefault("keymap_select_left", "KEY_LEFT");

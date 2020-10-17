@@ -1071,8 +1071,8 @@ void Game::processKeyInput()
 			toggleAutoforward();
 	} else if (wasKeyDown(KeyType::INVENTORY)) {
 		openInventory();
-	} else if (wasKeyDown(KeyType::SPECIAL_INVENTORY)) {
-		openSpecialInventory();
+	} else if (wasKeyDown(KeyType::ENDERCHEST)) {
+		openEnderchest();
 	} else if (input->cancelPressed()) {
 #ifdef __ANDROID__
 		m_android_chat_open = false;
@@ -1105,6 +1105,10 @@ void Game::processKeyInput()
 		toggleKillaura();
 	} else if (wasKeyDown(KeyType::FREECAM)) {
 		toggleFreecam();
+	} else if (wasKeyDown(KeyType::SCAFFOLD)) {
+		toggleScaffold();
+	} else if (wasKeyDown(KeyType::NEXT_ITEM)) {
+		toggleNextItem();
 	} else if (wasKeyDown(KeyType::SELECT_UP)) {
 		m_cheat_menu->selectUp();
 	} else if (wasKeyDown(KeyType::SELECT_DOWN)) {
@@ -1285,7 +1289,7 @@ void Game::openInventory()
 	}
 }
 
-void Game::openSpecialInventory()
+void Game::openEnderchest()
 {
 	LocalPlayer *player = client->getEnv().getLocalPlayer();
 	if (!player || !player->getCAO())
@@ -1294,7 +1298,7 @@ void Game::openSpecialInventory()
 	infostream << "Game: Launching special inventory" << std::endl;
 
 	if (client->modsLoaded())
-		client->getScript()->open_special_inventory();
+		client->getScript()->open_enderchest();
 }
 
 
@@ -1425,6 +1429,30 @@ void Game::toggleFreecam()
 		m_game_ui->showTranslatedStatusText("Freecam enabled");
 	} else {
 		m_game_ui->showTranslatedStatusText("Freecam disabled");
+	}
+}
+
+void Game::toggleScaffold()
+{
+	bool scaffold = ! g_settings->getBool("scaffold");
+	g_settings->set("scaffold", bool_to_cstr(scaffold));
+
+	if (scaffold) {
+		m_game_ui->showTranslatedStatusText("Scaffold enabled");
+	} else {
+		m_game_ui->showTranslatedStatusText("Scaffold disabled");
+	}
+}
+
+void Game::toggleNextItem()
+{
+	bool next_item = ! g_settings->getBool("next_item");
+	g_settings->set("next_item", bool_to_cstr(next_item));
+
+	if (next_item) {
+		m_game_ui->showTranslatedStatusText("NextItem enabled");
+	} else {
+		m_game_ui->showTranslatedStatusText("NextItem disabled");
 	}
 }
 
@@ -3432,7 +3460,7 @@ void Game::showPauseMenu()
 		"- %s: sneak/go down\n"
 		"- %s: drop item\n"
 		"- %s: inventory\n"
-		"- %s: special inventory\n"
+		"- %s: enderchest\n"
 		"- Mouse: turn/look\n"
 		"- Mouse left: dig/punch\n"
 		"- Mouse right: place/use\n"
@@ -3440,6 +3468,8 @@ void Game::showPauseMenu()
 		"- %s: chat\n"
 		"- %s: Killaura\n"
 		"- %s: Freecam\n"
+		"- %s: Scaffold\n"
+		"- %s: NextItem\n"
 	);
 
 	 char control_text_buf[600];
@@ -3453,10 +3483,12 @@ void Game::showPauseMenu()
 			GET_KEY_NAME(keymap_sneak),
 			GET_KEY_NAME(keymap_drop),
 			GET_KEY_NAME(keymap_inventory),
-			GET_KEY_NAME(keymap_special_inventory),
+			GET_KEY_NAME(keymap_enderchest),
 			GET_KEY_NAME(keymap_chat),
 			GET_KEY_NAME(keymap_toggle_killaura),
-			GET_KEY_NAME(keymap_toggle_freecam)
+			GET_KEY_NAME(keymap_toggle_freecam),
+			GET_KEY_NAME(keymap_toggle_scaffold),
+			GET_KEY_NAME(keymap_toggle_next_item)
 			);
 
 	std::string control_text = std::string(control_text_buf);

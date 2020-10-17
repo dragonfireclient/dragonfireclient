@@ -69,7 +69,7 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 	draw_crosshair = _draw_crosshair;
 	draw_tracers = _draw_tracers;
 	draw_esp = _draw_esp;
-
+		
 	beforeDraw();
 	drawAll();
 }

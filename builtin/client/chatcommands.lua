@@ -40,4 +40,137 @@ function core.run_server_chatcommand(cmd, param)
 	core.send_chat_message("/" .. cmd .. " " .. param)
 end
 
+core.register_chatcommand("say", {
+	description = "Send raw text",
+	func = function(text)
+		core.send_chat_message(text)
+		return true
+	end,
+})
 
+core.register_chatcommand("teleport", {
+	params = "<X>,<Y>,<Z>",
+	description = "Teleport to coordinates.",
+	func = function(param)
+		local success, pos = core.parse_pos(param)
+		if success then
+			core.localplayer:set_pos(pos)
+			return true, "Teleporting to " .. core.pos_to_string(pos)
+		end
+		return false, pos
+	end,
+})
+
+core.register_chatcommand("teleportjump", {
+	params = "<X>,<Y>,<Z>",
+	description = "Teleport to relative coordinates.",
+	func = function(param)
+		local success, pos = core.parse_relative_pos(param)
+		if success then
+			core.localplayer:set_pos(pos)
+			return true, "Teleporting to " .. core.pos_to_string(pos)
+		end
+		return false, pos
+	end,
+})
+
+core.register_chatcommand("wielded", {
+	description = "Print itemstring of wieleded item",
+	func = function()
+		return true, core.localplayer:get_wielded_item():get_name()
+	end
+})
+
+core.register_chatcommand("disconnect", {
+	description = "Exit to main menu",
+	func = function(param)
+		core.disconnect()
+	end,
+})
+
+core.register_chatcommand("players", {
+	description = "List online players",
+	func = function(param)
+		return true, "Online players: " .. table.concat(core.get_player_names(), ", ")
+	end
+})
+
+core.register_chatcommand("kill", {
+	description = "Kill yourself",
+	func = function()
+		core.send_damage(10000)
+	end,
+})
+
+core.register_chatcommand("set", {
+	params = "([-n] <name> <value>) | <name>",
+	description = "Set or read client configuration setting",
+	func = function(param)
+		local arg, setname, setvalue = string.match(param, "(-[n]) ([^ ]+) (.+)")
+		if arg and arg == "-n" and setname and setvalue then
+			core.settings:set(setname, setvalue)
+			return true, setname .. " = " .. setvalue
+		end
+
+		setname, setvalue = string.match(param, "([^ ]+) (.+)")
+		if setname and setvalue then
+			if not core.settings:get(setname) then
+				return false, "Failed. Use '.set -n <name> <value>' to create a new setting."
+			end
+			core.settings:set(setname, setvalue)
+			return true, setname .. " = " .. setvalue
+		end
+
+		setname = string.match(param, "([^ ]+)")
+		if setname then
+			setvalue = core.settings:get(setname)
+			if not setvalue then
+				setvalue = "<not set>"
+			end
+			return true, setname .. " = " .. setvalue
+		end
+
+		return false, "Invalid parameters (see .help set)."
+	end,
+})
+
+core.register_chatcommand("findnodes", {
+	description = "Scan for one or multible nodes in a radius around you",
+	param = "<radius> <node1>[,<node2>...]",
+	func = function(param)
+		local radius = tonumber(param:split(" ")[1])
+		local nodes = param:split(" ")[2]:split(",")
+		local pos = core.localplayer:get_pos()
+		local fpos = core.find_node_near(pos, radius, nodes, true)
+		if fpos then
+			return true, "Found " .. table.concat(nodes, " or ") .. " at " .. core.pos_to_string(fpos)
+		end
+		return false, "None of " .. table.concat(nodes, " or ") .. " found in a radius of " .. tostring(radius)
+	end,
+}) 
+
+core.register_chatcommand("place", {
+	params = "<X>,<Y>,<Z>",
+	description = "Place wielded item",
+	func = function(param)
+		local success, pos = core.parse_relative_pos(param)
+		if success then
+			cores.place_node(pos)
+			return true, "Node placed at " .. core.pos_to_string(pos)
+		end
+		return false, pos
+	end,
+})
+
+core.register_chatcommand("dig", {
+	params = "<X>,<Y>,<Z>",
+	description = "Dig node",
+	func = function(param)
+		local success, pos = core.parse_relative_pos(param)
+		if success then
+			core.dig_node(pos)
+			return true, "Node at " .. core.pos_to_string(pos) .. " dug"
+		end
+		return false, pos
+	end,
+})

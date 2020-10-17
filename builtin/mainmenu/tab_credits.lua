@@ -17,8 +17,10 @@
 
 --------------------------------------------------------------------------------
 local dragonfire_team = {
-	"Elias Fleckenstein <eliasfleckenstein@web.de> [Main Developer]",
-	"DerZombiiie [Bots, User Support]",
+	"Elias Fleckenstein",
+	"cora",
+	"system32",
+	"DerZombiiie",
 }
 
 local core_developers = {
