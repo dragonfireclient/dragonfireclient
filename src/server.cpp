@@ -1376,13 +1376,6 @@ void Server::SendAccessDenied_Legacy(session_t peer_id,const std::wstring &reaso
 	Send(&pkt);
 }
 
-void Server::SendRedirect(session_t peer_id, const std::string address, u16 port)
-{
-	NetworkPacket pkt(TOCLIENT_REDIRECT, 0, peer_id);
-	pkt << address << port;
-	Send(&pkt);
-}
-
 void Server::SendDeathscreen(session_t peer_id, bool set_camera_point_target,
 		v3f camera_point_target)
 {
@@ -2782,11 +2775,6 @@ void Server::DisconnectPeer(session_t peer_id)
 {
 	m_modchannel_mgr->leaveAllChannels(peer_id);
 	m_con->DisconnectPeer(peer_id);
-}
-
-void Server::RedirectPeer(session_t peer_id, const std::string address, u16 port)
-{
-	SendRedirect(peer_id, address, port);
 }
 
 void Server::acceptAuth(session_t peer_id, bool forSudoMode)

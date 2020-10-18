@@ -41,12 +41,12 @@ public:
 				m_active_objects.find(id);
 		return (n != m_active_objects.end() ? n->second : nullptr);
 	}
-	
+
 	std::unordered_map<u16, T *> getAllActiveObjects() const
 	{
 		return m_active_objects;
 	}
-	
+
 protected:
 	u16 getFreeId() const
 	{
