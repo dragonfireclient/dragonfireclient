@@ -108,6 +108,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("block_water", "false");
 	settings->setDefault("autotnt", "false");
 	settings->setDefault("replace", "false");
+	settings->setDefault("crystal_pvp", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");

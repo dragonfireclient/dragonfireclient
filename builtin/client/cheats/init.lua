@@ -4,6 +4,7 @@ core.cheats = {
 		["AntiKnockback"] = "antiknockback",
 		["FastHit"] = "spamclick",
 		["AttachmentFloat"] = "float_above_parent",
+		["CrystalPvP"] = "crystal_pvp",
 	},
 	["Movement"] = {
 		["Freecam"] = "freecam",
@@ -70,6 +71,7 @@ end
 local cheatpath = core.get_builtin_path() .. "client" .. DIR_DELIM .. "cheats" .. DIR_DELIM
 
 dofile(cheatpath .. "chat.lua")
+dofile(cheatpath .. "combat.lua")
 dofile(cheatpath .. "inventory.lua")
 dofile(cheatpath .. "movement.lua")
 dofile(cheatpath .. "player.lua")

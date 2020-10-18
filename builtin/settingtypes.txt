@@ -2296,3 +2296,5 @@ block_water (BlockWater) bool false
 autotnt (PlaceOnTop) bool false
 
 replace (Replace) bool false
+
+crystal_pvp (CrystalPvP) bool false

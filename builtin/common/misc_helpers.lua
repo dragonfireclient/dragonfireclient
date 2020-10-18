@@ -708,6 +708,19 @@ function core.get_translator(textdomain)
 	return function(str, ...) return core.translate(textdomain or "", str, ...) end
 end
 
+function core.get_pointed_thing_position(pointed_thing, above)
+	if pointed_thing.type == "node" then
+		if above then
+			-- The position where a node would be placed
+			return pointed_thing.above
+		end
+		-- The position where a node would be dug
+		return pointed_thing.under
+	elseif pointed_thing.type == "object" then
+		return pointed_thing.ref and pointed_thing.ref:get_pos()
+	end
+end
+
 --------------------------------------------------------------------------------
 -- Returns the exact coordinate of a pointed surface
 --------------------------------------------------------------------------------

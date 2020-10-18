@@ -20,3 +20,21 @@ function core.parse_relative_pos(param)
 	if success then pos = vector.round(vector.add(core.localplayer:get_pos(), pos)) end
 	return success, pos
 end 
+
+function core.switch_to_item(item)
+	for index, stack in ipairs(core.get_inventory("current_player").main) do
+		if stack:get_name() == item then
+			core.localplayer:set_wield_index(index - 1)
+			return true
+		end
+	end
+	return false
+end
+
+function core.get_pointed_thing()
+	local pos = core.camera:get_pos()
+	local pos2 = vector.add(pos, vector.multiply(core.camera:get_look_dir(), 5))
+	local ray = core.raycast(pos, pos2, true, true)
+	
+	return ray:next()
+end	

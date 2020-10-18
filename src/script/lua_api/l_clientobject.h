@@ -31,6 +31,7 @@ public:
 	static void Register(lua_State *L);
 
 	static void create(lua_State *L, ClientActiveObject *object);
+	static void create(lua_State *L, s16 id);
 
 	static ClientObjectRef *checkobject(lua_State *L, int narg);
 
@@ -74,4 +75,10 @@ private:
 
 	// get_hp(self)
 	static int l_get_max_hp(lua_State *L);
+
+	// punch(self)
+	static int l_punch(lua_State *L);
+
+	// rightclick(self)
+	static int l_rightclick(lua_State *L);
 };

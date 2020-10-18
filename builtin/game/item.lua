@@ -24,19 +24,6 @@ function core.inventorycube(img1, img2, img3)
 			.. "{" .. img3:gsub("%^", "&")
 end
 
-function core.get_pointed_thing_position(pointed_thing, above)
-	if pointed_thing.type == "node" then
-		if above then
-			-- The position where a node would be placed
-			return pointed_thing.above
-		end
-		-- The position where a node would be dug
-		return pointed_thing.under
-	elseif pointed_thing.type == "object" then
-		return pointed_thing.ref and pointed_thing.ref:get_pos()
-	end
-end
-
 function core.dir_to_facedir(dir, is6d)
 	--account for y if requested
 	if is6d and math.abs(dir.y) > math.abs(dir.x) and math.abs(dir.y) > math.abs(dir.z) then

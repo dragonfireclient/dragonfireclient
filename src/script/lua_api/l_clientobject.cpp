@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "common/c_converter.h"
 #include "client/client.h"
 #include "object_properties.h"
+#include "util/pointedthing.h"
 
 ClientObjectRef *ClientObjectRef::checkobject(lua_State *L, int narg)
 {
@@ -133,6 +134,24 @@ int ClientObjectRef::l_get_max_hp(lua_State *L)
 	return 1;
 }
 
+int ClientObjectRef::l_punch(lua_State *L)
+{
+	ClientObjectRef *ref = checkobject(L, 1);
+	GenericCAO *gcao = get_generic_cao(ref, L);
+	PointedThing pointed(gcao->getId(), v3f(0,0,0), v3s16(0,0,0), 0);
+	getClient(L)->interact(INTERACT_START_DIGGING, pointed);
+	return 0;
+}
+
+int ClientObjectRef::l_rightclick(lua_State *L)
+{
+	ClientObjectRef *ref = checkobject(L, 1);
+	GenericCAO *gcao = get_generic_cao(ref, L);
+	PointedThing pointed(gcao->getId(), v3f(0,0,0), v3s16(0,0,0), 0);
+	getClient(L)->interact(INTERACT_PLACE, pointed);
+	return 0;
+}
+
 ClientObjectRef::ClientObjectRef(ClientActiveObject *object) : m_object(object)
 {
 }
@@ -145,6 +164,11 @@ void ClientObjectRef::create(lua_State *L, ClientActiveObject *object)
 		luaL_getmetatable(L, className);
 		lua_setmetatable(L, -2);
 	}
+}
+
+void ClientObjectRef::create(lua_State *L, s16 id)
+{
+	create(L, ((ClientEnvironment *)getEnv(L))->getActiveObject(id));
 }
 
 int ClientObjectRef::gc_object(lua_State *L)
@@ -190,4 +214,6 @@ luaL_Reg ClientObjectRef::methods[] = {luamethod(ClientObjectRef, get_pos),
 		luamethod(ClientObjectRef, get_attach),
 		luamethod(ClientObjectRef, get_nametag),
 		luamethod(ClientObjectRef, get_item_textures),
-		luamethod(ClientObjectRef, get_max_hp), {0, 0}};
+		luamethod(ClientObjectRef, get_max_hp),
+		luamethod(ClientObjectRef, punch),
+		luamethod(ClientObjectRef, rightclick), {0, 0}};

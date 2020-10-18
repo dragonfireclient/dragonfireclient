@@ -23,6 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "object_properties.h"
 #include "collision.h"
 #include "cpp_api/s_node.h"
+#include "lua_api/l_clientobject.h"
 #include "lua_api/l_object.h"
 #include "lua_api/l_item.h"
 #include "common/c_internal.h"
@@ -1838,12 +1839,12 @@ void push_pointed_thing(lua_State *L, const PointedThing &pointed, bool csm,
 		lua_setfield(L, -2, "type");
 
 		if (csm) {
-			lua_pushinteger(L, pointed.object_id);
-			lua_setfield(L, -2, "id");
+			ClientObjectRef::create(L, pointed.object_id);
 		} else {
 			push_objectRef(L, pointed.object_id);
-			lua_setfield(L, -2, "ref");
 		}
+		
+		lua_setfield(L, -2, "ref");
 	} else {
 		lua_pushstring(L, "nothing");
 		lua_setfield(L, -2, "type");

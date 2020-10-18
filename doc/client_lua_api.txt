@@ -219,7 +219,7 @@ For helper functions see "Vector helpers".
 ### pointed_thing
 * `{type="nothing"}`
 * `{type="node", under=pos, above=pos}`
-* `{type="object", id=ObjectID}`
+* `{type="object", ref=ClientObjectRef}`
 
 Flag Specifier Format
 ---------------------
@@ -843,6 +843,13 @@ Call these functions only at load time!
     * `pos2`: end of the ray
     * `objects`: if false, only nodes will be returned. Default is `true`.
     * `liquids`: if false, liquid nodes won't be returned. Default is `false`.
+* `minetest.get_pointed_thing()` returns `PointedThing`
+    * Returns the thing currently pointed by player
+* `minetest.get_pointed_thing_position(pointed_thing, above)`
+    * Returns the position of a `pointed_thing` or `nil` if the `pointed_thing`
+      does not refer to a node or entity.
+    * If the optional `above` parameter is true and the `pointed_thing` refers
+      to a node, then it will return the `above` position of the `pointed_thing`.
 * `minetest.find_path(pos1,pos2,searchdistance,max_jump,max_drop,algorithm)`
     * returns table containing path that can be walked on
     * returns a table of 3D points representing a path from `pos1` to `pos2` or
@@ -897,6 +904,9 @@ Call these functions only at load time!
 ### Client Environment
 * `minetest.get_player_names()`
     * Returns list of player names on server (nil if CSM_RF_READ_PLAYERINFO is enabled by server)
+* `minetest.get_objects_inside_radius(pos, radius)`: returns a list of
+  ClientObjectRefs.
+    * `radius`: using an euclidean metric
 * `minetest.disconnect()`
     * Disconnect from the server and exit to main menu.
     * Returns `false` if the client is already disconnecting otherwise returns `true`.
@@ -1002,6 +1012,10 @@ Passed to `HTTPApiTable.fetch` callback. Returned by
     * e.g. minetest.set_keypress("jump", true) will cause te player to jump until minetest.set_keypress("jump", false) is called or the player presses & releases the space bar himself
 * `minetest.get_inventory(location)`
     * Returns the inventory at location
+* `minetest.switch_to_item(item)`
+    * `item` is an Itemstring
+    * searches to item in inventory, sets the wield index to it if found
+    * returns true on success, false if item was not found
 * `minetest.register_cheat(name, category, setting | function)`
     * Register an entry for the cheat menu
     * If the Category is nonexistant, it will be created
@@ -1307,6 +1321,25 @@ Can be obtained via `minetest.get_meta(pos)`.
     * `fields`: key-value storage
     * `inventory`: `{list1 = {}, ...}}`
 
+### ClientObjectRef
+
+Moving things in the game are generally these.
+This is basically a reference to a C++ `GenericCAO`.
+
+#### Methods
+
+* `get_pos()`: returns `{x=num, y=num, z=num}`
+* `get_velocity()`: returns the velocity, a vector
+* `get_acceleration()`: returns the acceleration, a vector
+* `get_rotation()`: returns the rotation, a vector (radians)
+* `is_player()`: returns true if the object is a player
+* `get_attach()`: returns parent or nil if it isn't attached.
+* `get_nametag()`: returns the nametag (string)
+* `get_item_textures()`: returns the textures
+* `get_max_hp()`: returns the maximum heath
+* `punch()`: punches the object
+* `rightclick()`: rightclicks the object
+    
 ### `Raycast`
 
 A raycast on the map. It works with selection boxes.
