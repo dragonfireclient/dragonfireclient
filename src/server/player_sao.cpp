@@ -459,7 +459,7 @@ void PlayerSAO::setHP(s32 hp, const PlayerHPChangeReason &reason)
 {
 	s32 oldhp = m_hp;
 
-	hp = rangelim(hp, 0, m_prop.hp_max);
+	//hp = rangelim(hp, 0, m_prop.hp_max);
 
 	if (oldhp != hp) {
 		s32 hp_change = m_env->getScriptIface()->on_player_hpchange(this, hp - oldhp, reason);
