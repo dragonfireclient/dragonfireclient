@@ -287,6 +287,10 @@ void ScriptApiSecurity::initializeSecurityClient()
 	lua_State *L = getStack();
 	int thread = getThread(L);
 
+	// Backup globals to the registry
+	lua_getglobal(L, "_G");
+	lua_rawseti(L, LUA_REGISTRYINDEX, CUSTOM_RIDX_GLOBALS_BACKUP);
+
 	// create an empty environment
 	createEmptyEnv(L);
 

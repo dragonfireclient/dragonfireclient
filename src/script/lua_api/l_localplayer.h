@@ -111,6 +111,9 @@ private:
 	// hud_get(self, id)
 	static int l_hud_get(lua_State *L);
 
+	// get_object(self)
+	static int l_get_object(lua_State *L);
+
 	LocalPlayer *m_localplayer = nullptr;
 
 public:

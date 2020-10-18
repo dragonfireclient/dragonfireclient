@@ -30,6 +30,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "cpp_api/s_base.h"
 #include "gettext.h"
 #include "l_internal.h"
+#include "l_clientobject.h"
 #include "lua_api/l_nodemeta.h"
 #include "gui/mainmenumanager.h"
 #include "map.h"
@@ -503,6 +504,26 @@ int ModApiClient::l_drop_selected_item(lua_State *L)
 	return 0;
 }
 
+// get_objects_inside_radius(pos, radius)
+int ModApiClient::l_get_objects_inside_radius(lua_State *L)
+{
+	ClientEnvironment &env = getClient(L)->getEnv();
+	
+	v3f pos = checkFloatPos(L, 1);
+	float radius = readParam<float>(L, 2) * BS;
+	
+	std::vector<DistanceSortedActiveObject> objs;
+	env.getActiveObjects(pos, radius, objs);
+	
+	int i = 0;
+	lua_createtable(L, objs.size(), 0);
+	for (const auto obj : objs) {
+		ClientObjectRef::create(L, obj.obj);							// TODO: getObjectRefOrCreate
+		lua_rawseti(L, -2, ++i);
+	}
+	return 1;
+}
+
 void ModApiClient::Initialize(lua_State *L, int top)
 {
 	API_FCT(get_current_modname);
@@ -536,4 +557,5 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(get_inventory);
 	API_FCT(set_keypress);
 	API_FCT(drop_selected_item);
+	API_FCT(get_objects_inside_radius);
 }

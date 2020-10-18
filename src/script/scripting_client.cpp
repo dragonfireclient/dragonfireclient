@@ -23,6 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/game.h"
 #include "cpp_api/s_internal.h"
 #include "lua_api/l_client.h"
+#include "lua_api/l_clientobject.h"
 #include "lua_api/l_env.h"
 #include "lua_api/l_item.h"
 #include "lua_api/l_itemstackmeta.h"
@@ -78,6 +79,7 @@ void ClientScripting::InitializeModApi(lua_State *L, int top)
 	LuaCamera::Register(L);
 	ModChannelRef::Register(L);
 	LuaSettings::Register(L);
+	ClientObjectRef::Register(L);
 
 	ModApiItemMod::Initialize(L, top);
 	ModApiUtil::InitializeClient(L, top);

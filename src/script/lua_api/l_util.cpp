@@ -531,6 +531,8 @@ void ModApiUtil::InitializeClient(lua_State *L, int top)
 	API_FCT(compress);
 	API_FCT(decompress);
 
+	API_FCT(request_insecure_environment);
+
 	API_FCT(encode_base64);
 	API_FCT(decode_base64);
 

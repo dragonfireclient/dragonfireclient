@@ -22,9 +22,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "irrlichttypes_extrabloated.h"
 #include <string>
 
-#define CHEAT_MENU_GET_SCRIPTPTR                                                        \
+#define CHEAT_MENU_GET_SCRIPTPTR                                                         \
 	ClientScripting *script = m_client->getScript();                                 \
-	if (! script || ! script->m_cheats_loaded)                                         \
+	if (!script || !script->m_cheats_loaded)                                         \
 		return;
 
 class Client;

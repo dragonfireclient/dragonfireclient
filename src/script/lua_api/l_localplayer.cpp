@@ -17,6 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include "l_clientobject.h"
 #include "l_localplayer.h"
 #include "l_internal.h"
 #include "lua_api/l_item.h"
@@ -452,6 +453,17 @@ int LuaLocalPlayer::l_hud_get(lua_State *L)
 	return 1;
 }
 
+int LuaLocalPlayer::l_get_object(lua_State *L)
+{
+	LocalPlayer *player = getobject(L, 1);
+	ClientEnvironment &env = getClient(L)->getEnv();
+	ClientActiveObject *obj = env.getGenericCAO(player->getCAO()->getId());
+
+	ClientObjectRef::create(L, obj);
+
+	return 1;
+}
+
 LuaLocalPlayer *LuaLocalPlayer::checkobject(lua_State *L, int narg)
 {
 	luaL_checktype(L, narg, LUA_TUSERDATA);
@@ -546,6 +558,7 @@ const luaL_Reg LuaLocalPlayer::methods[] = {
 		luamethod(LuaLocalPlayer, hud_remove),
 		luamethod(LuaLocalPlayer, hud_change),
 		luamethod(LuaLocalPlayer, hud_get),
+		luamethod(LuaLocalPlayer, get_object),
 
 		{0, 0}
 };

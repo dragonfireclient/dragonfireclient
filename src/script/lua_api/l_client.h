@@ -119,10 +119,13 @@ private:
 
 	// set_keypress(key_setting, pressed)
 	static int l_set_keypress(lua_State *L);
-	
+
 	// drop_selected_item()
 	static int l_drop_selected_item(lua_State *L);
 
-public:	
+	// get_objects_inside_radius(pos, radius)
+	static int l_get_objects_inside_radius(lua_State *L);
+
+public:
 	static void Initialize(lua_State *L, int top);
 };

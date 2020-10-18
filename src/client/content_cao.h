@@ -169,6 +169,16 @@ public:
 
 	inline const v3f &getRotation() const { return m_rotation; }
 
+	inline const v3f getAcceleration() const
+	{
+		return m_acceleration;
+	}
+
+	inline const v3f getVelocity() const
+	{
+		return m_velocity;
+	}
+
 	const bool isImmortal();
 
 	scene::ISceneNode *getSceneNode() const;
@@ -203,6 +213,16 @@ public:
 	inline bool isLocalPlayer() const
 	{
 		return m_is_local_player;
+	}
+
+	inline std::string getName() const
+	{
+		return m_name;
+	}
+
+	inline bool isPlayer() const
+	{
+		return m_is_player;
 	}
 
 	inline bool isVisible() const
@@ -278,4 +298,9 @@ public:
 	}
 	
 	float m_waiting_for_reattach;
+	
+	ObjectProperties *getProperties()
+	{
+		return &m_prop;
+	}
 };
