@@ -23,14 +23,14 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "settings.h"
 
 ScriptApiCheatsCheat::ScriptApiCheatsCheat(
-		const std::string &name, const std::string &setting) : 
+		const std::string &name, const std::string &setting) :
 		m_name(name),
 		m_setting(setting), m_function_ref(0)
 {
 }
 
 
-ScriptApiCheatsCheat::ScriptApiCheatsCheat(const std::string &name, const int &function) : 
+ScriptApiCheatsCheat::ScriptApiCheatsCheat(const std::string &name, const int &function) :
 		m_name(name), m_setting(""), m_function_ref(function)
 {
 }
@@ -53,8 +53,7 @@ void ScriptApiCheatsCheat::toggle(lua_State *L, int error_handler)
 		g_settings->setBool(m_setting, !is_enabled());
 }
 
-ScriptApiCheatsCategory::ScriptApiCheatsCategory(const std::string &name) :
-	m_name(name)
+ScriptApiCheatsCategory::ScriptApiCheatsCategory(const std::string &name) : m_name(name)
 {
 }
 
@@ -102,7 +101,8 @@ void ScriptApiCheats::init_cheats()
 	lua_pushnil(L);
 	while (lua_next(L, -2)) {
 		if (lua_istable(L, -1)) {
-			ScriptApiCheatsCategory *category = new ScriptApiCheatsCategory(lua_tostring(L, -2));
+			ScriptApiCheatsCategory *category =
+					new ScriptApiCheatsCategory(lua_tostring(L, -2));
 			category->read_cheats(L);
 			m_cheat_categories.push_back(category);
 		}

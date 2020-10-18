@@ -31,6 +31,7 @@ public:
 	std::string m_name;
 	bool is_enabled();
 	void toggle(lua_State *L, int error_handler);
+
 private:
 	std::string m_setting;
 	int m_function_ref;
@@ -43,7 +44,7 @@ public:
 	~ScriptApiCheatsCategory();
 	std::string m_name;
 	void read_cheats(lua_State *L);
-	std::vector<ScriptApiCheatsCheat*> m_cheats;	
+	std::vector<ScriptApiCheatsCheat *> m_cheats;	
 };
 
 class ScriptApiCheats : virtual public ScriptApiBase
@@ -53,5 +54,5 @@ public:
 	void init_cheats();
 	void toggle_cheat(ScriptApiCheatsCheat *cheat);
 	bool m_cheats_loaded = false;
-	std::vector<ScriptApiCheatsCategory*> m_cheat_categories;
+	std::vector<ScriptApiCheatsCategory *> m_cheat_categories;
 };

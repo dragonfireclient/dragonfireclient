@@ -22,9 +22,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "irrlichttypes_extrabloated.h"
 #include <string>
 
-#define CHEAT_MENU_GET_SCRIPTPTR										\
-	ClientScripting *script = m_client->getScript();					\
-	if (! script || ! script->m_cheats_loaded)							\
+#define CHEAT_MENU_GET_SCRIPTPTR                                                        \
+	ClientScripting *script = m_client->getScript();                                 \
+	if (! script || ! script->m_cheats_loaded)                                         \
 		return;
 
 class Client;
@@ -39,11 +39,11 @@ typedef enum
 class CheatMenu
 {
 public:
-	CheatMenu(Client* client);
+	CheatMenu(Client *client);
 
-	void draw(video::IVideoDriver* driver, bool show_debug);
+	void draw(video::IVideoDriver *driver, bool show_debug);
 
-	void drawEntry(video::IVideoDriver* driver, std::string name, int number,
+	void drawEntry(video::IVideoDriver *driver, std::string name, int number,
 			bool selected, bool active,
 			CheatMenuEntryType entry_type = CHEAT_MENU_ENTRY_TYPE_ENTRY);
 
@@ -66,7 +66,7 @@ private:
 	video::SColor m_bg_color = video::SColor(192, 255, 145, 88);
 	video::SColor m_active_bg_color = video::SColor(192, 255, 87, 53);
 	video::SColor m_font_color = video::SColor(255, 0, 0, 0);
-	video::SColor m_selected_font_color = video::SColor(255, 255, 252, 88); 
+	video::SColor m_selected_font_color = video::SColor(255, 255, 252, 88);
 
 	Client *m_client;
 

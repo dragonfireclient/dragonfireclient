@@ -674,9 +674,8 @@ Minetest namespace reference
 ### Global callback registration functions
 Call these functions only at load time!
 
-* `minetest.open_special_inventory()`
+* `minetest.open_enderchest()`
     * This function is called if the client uses the Keybind for it (by default "O")
-    * It is used for a client provided inventory
     * You can override it
 * `minetest.register_globalstep(function(dtime))`
     * Called every client environment step, usually interval of 0.1s
@@ -697,6 +696,13 @@ Call these functions only at load time!
     * Adds definition to minetest.registered_chatcommands
 * `minetest.unregister_chatcommand(name)`
     * Unregisters a chatcommands registered with register_chatcommand.
+* `minetest.register_list_command(command, desc, setting)`
+    * Registers a chatcommand `command` to manage a list that takes the args `del | add | list <param>`
+    * The list is stored comma-seperated in `setting`
+    * `desc` is the description
+    * `add` adds something to the list 
+    * `del` del removes something from the list
+    * `list` lists all items on the list
 * `minetest.register_on_death(function())`
     * Called when the local player dies
 * `minetest.register_on_hp_modification(function(hp))`

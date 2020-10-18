@@ -37,8 +37,8 @@ CheatMenu::CheatMenu(Client *client) : m_client(client)
 	m_fontsize.Y = MYMAX(m_fontsize.Y, 1);
 }
 
-void CheatMenu::drawEntry(video::IVideoDriver* driver, std::string name, int number,
-	bool selected, bool active, CheatMenuEntryType entry_type)
+void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name, int number,
+		bool selected, bool active, CheatMenuEntryType entry_type)
 {
 	int x = m_gap, y = m_gap, width = m_entry_width, height = m_entry_height;
 	video::SColor *bgcolor = &m_bg_color, *fontcolor = &m_font_color;
@@ -49,7 +49,7 @@ void CheatMenu::drawEntry(video::IVideoDriver* driver, std::string name, int num
 		bool is_category = entry_type == CHEAT_MENU_ENTRY_TYPE_CATEGORY;
 		y += m_gap + m_head_height +
 			(number + (is_category ? 0 : m_selected_category)) *
-				(m_entry_height + m_gap);	
+					(m_entry_height + m_gap);	
 		x += (is_category ? 0 : m_gap + m_entry_width);
 		if (active)
 			bgcolor = &m_active_bg_color;
@@ -70,7 +70,7 @@ void CheatMenu::drawEntry(video::IVideoDriver* driver, std::string name, int num
 void CheatMenu::draw(video::IVideoDriver* driver, bool show_debug)
 {
 	CHEAT_MENU_GET_SCRIPTPTR
-	
+
 	if (!show_debug)
 		drawEntry(driver, "Dragonfireclient", 0, false, false,
 				CHEAT_MENU_ENTRY_TYPE_HEAD);
@@ -97,11 +97,11 @@ void CheatMenu::draw(video::IVideoDriver* driver, bool show_debug)
 void CheatMenu::selectUp()
 {
 	CHEAT_MENU_GET_SCRIPTPTR
-	
+
 	int max = (m_cheat_layer ? script->m_cheat_categories[m_selected_category]
-															->m_cheats.size()
-							 : script->m_cheat_categories.size()) -
-				1;
+								  ->m_cheats.size()
+				 : script->m_cheat_categories.size()) -
+		  1;
 	int *selected = m_cheat_layer ? &m_selected_cheat : &m_selected_category;
 	--*selected;
 	if (*selected < 0)
@@ -111,11 +111,11 @@ void CheatMenu::selectUp()
 void CheatMenu::selectDown()
 {
 	CHEAT_MENU_GET_SCRIPTPTR
-	
+
 	int max = (m_cheat_layer ? script->m_cheat_categories[m_selected_category]
-															->m_cheats.size()
-							 : script->m_cheat_categories.size()) -
-				1;
+								  ->m_cheats.size()
+				 : script->m_cheat_categories.size()) -
+		  1;
 	int *selected = m_cheat_layer ? &m_selected_cheat : &m_selected_category;
 	++*selected;
 	if (*selected > max)
@@ -140,8 +140,8 @@ void CheatMenu::selectLeft()
 void CheatMenu::selectConfirm()
 {
 	CHEAT_MENU_GET_SCRIPTPTR
-	
+
 	if (m_cheat_layer)
 		script->toggle_cheat(script->m_cheat_categories[m_selected_category]
-												->m_cheats[m_selected_cheat]);
+						     ->m_cheats[m_selected_cheat]);
 }
