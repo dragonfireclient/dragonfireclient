@@ -23,16 +23,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/client.h"
 #include "object_properties.h"
 
-// should prob do some more NULL checking
-
-
 ClientObjectRef *ClientObjectRef::checkobject(lua_State *L, int narg)
 {
 	luaL_checktype(L, narg, LUA_TUSERDATA);
 	void *userdata = luaL_checkudata(L, narg, className);
 	if (!userdata)
 		luaL_typerror(L, narg, className);
-	return *(ClientObjectRef**)userdata;
+	return *(ClientObjectRef **)userdata;
 }
 
 ClientActiveObject *ClientObjectRef::get_cao(ClientObjectRef *ref)
@@ -136,8 +133,7 @@ int ClientObjectRef::l_get_max_hp(lua_State *L)
 	return 1;
 }
 
-ClientObjectRef::ClientObjectRef(ClientActiveObject *object):
-	m_object(object)
+ClientObjectRef::ClientObjectRef(ClientActiveObject *object) : m_object(object)
 {
 }
 
@@ -151,7 +147,8 @@ void ClientObjectRef::create(lua_State *L, ClientActiveObject *object)
 	}
 }
 
-int ClientObjectRef::gc_object(lua_State *L) {
+int ClientObjectRef::gc_object(lua_State *L)
+{
 	ClientObjectRef *obj = *(ClientObjectRef **)(lua_touserdata(L, 1));
 	delete obj;
 	return 0;
@@ -184,16 +181,13 @@ void ClientObjectRef::Register(lua_State *L)
 }
 
 const char ClientObjectRef::className[] = "ClientObjectRef";
-luaL_Reg ClientObjectRef::methods[] = {
-	luamethod(ClientObjectRef, get_pos),
-	luamethod(ClientObjectRef, get_velocity),
-	luamethod(ClientObjectRef, get_acceleration),
-	luamethod(ClientObjectRef, get_rotation),
-	luamethod(ClientObjectRef, is_player),
-	luamethod(ClientObjectRef, get_name),
-	luamethod(ClientObjectRef, get_attach),
-	luamethod(ClientObjectRef, get_nametag),
-	luamethod(ClientObjectRef, get_item_textures),
-	luamethod(ClientObjectRef, get_max_hp),
-	{0, 0}
-};
+luaL_Reg ClientObjectRef::methods[] = {luamethod(ClientObjectRef, get_pos),
+		luamethod(ClientObjectRef, get_velocity),
+		luamethod(ClientObjectRef, get_acceleration),
+		luamethod(ClientObjectRef, get_rotation),
+		luamethod(ClientObjectRef, is_player),
+		luamethod(ClientObjectRef, get_name),
+		luamethod(ClientObjectRef, get_attach),
+		luamethod(ClientObjectRef, get_nametag),
+		luamethod(ClientObjectRef, get_item_textures),
+		luamethod(ClientObjectRef, get_max_hp), {0, 0}};

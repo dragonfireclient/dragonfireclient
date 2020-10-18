@@ -29,7 +29,6 @@ ScriptApiCheatsCheat::ScriptApiCheatsCheat(
 {
 }
 
-
 ScriptApiCheatsCheat::ScriptApiCheatsCheat(const std::string &name, const int &function) :
 		m_name(name), m_setting(""), m_function_ref(function)
 {
