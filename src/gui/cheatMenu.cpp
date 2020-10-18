@@ -48,8 +48,8 @@ void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name, int num
 	} else {
 		bool is_category = entry_type == CHEAT_MENU_ENTRY_TYPE_CATEGORY;
 		y += m_gap + m_head_height +
- 		     (number + (is_category ? 0 : m_selected_category)) *
- 				     (m_entry_height + m_gap);	
+		     (number + (is_category ? 0 : m_selected_category)) *
+				     (m_entry_height + m_gap);	
 		x += (is_category ? 0 : m_gap + m_entry_width);
 		if (active)
 			bgcolor = &m_active_bg_color;

@@ -177,7 +177,7 @@ void ClientObjectRef::Register(lua_State *L)
 	lua_pop(L, 1); // Drop metatable
 
 	luaL_openlib(L, 0, methods, 0); // fill methodtable
-	lua_pop(L, 1);                  // Drop methodtable
+	lua_pop(L, 1);			// Drop methodtable
 }
 
 const char ClientObjectRef::className[] = "ClientObjectRef";
