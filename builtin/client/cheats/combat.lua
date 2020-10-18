@@ -44,3 +44,4 @@ core.register_globalstep(function(dtime)
 		used_sneak = false
 	end
 end)
+
