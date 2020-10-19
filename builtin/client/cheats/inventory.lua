@@ -1,5 +1,6 @@
 local elapsed_time = 0
 local tick_time = 0.05
+local drop_action = InventoryAction("drop")
 
 core.register_globalstep(function(dtime)
 	-- AutoEject
@@ -9,11 +10,8 @@ core.register_globalstep(function(dtime)
 		local inventory = core.get_inventory("current_player")
 		for index, stack in pairs(inventory.main) do
 			if table.indexof(list, stack:get_name()) ~= -1 then
-				local old_index = player:get_wield_index()
-				player:set_wield_index(index - 1)
-				core.drop_selected_item()
-				player:set_wield_index(old_index)
-				return
+				drop_action:from("current_player", "main", index - 1)
+				drop_action:apply()
 			end
 		end
 	end

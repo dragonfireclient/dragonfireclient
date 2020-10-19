@@ -5,6 +5,8 @@ core.cheats = {
 		["FastHit"] = "spamclick",
 		["AttachmentFloat"] = "float_above_parent",
 		["CrystalPvP"] = "crystal_pvp",
+		["AutoTotem"] = "autototem",
+		["ThroughWalls"] = "dont_point_nodes",
 	},
 	["Movement"] = {
 		["Freecam"] = "freecam",

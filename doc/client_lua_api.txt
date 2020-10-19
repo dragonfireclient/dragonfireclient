@@ -1012,6 +1012,9 @@ Passed to `HTTPApiTable.fetch` callback. Returned by
     * e.g. minetest.set_keypress("jump", true) will cause te player to jump until minetest.set_keypress("jump", false) is called or the player presses & releases the space bar himself
 * `minetest.get_inventory(location)`
     * Returns the inventory at location
+* `minetest.find_item(item)`
+    * finds and an item in the inventory
+    * returns index on success or nil if item is not found
 * `minetest.switch_to_item(item)`
     * `item` is an Itemstring
     * searches to item in inventory, sets the wield index to it if found
@@ -1705,4 +1708,47 @@ Same as `image`, but does not accept a `position`; the position is instead deter
         texture = "image.png",
     --  ^ Uses texture (string)
     }
+
+### InventoryAction
+A reference to a C++ InventoryAction. You can move, drop and craft items in all accessible inventories using InventoryActions.
+
+#### methods
+
+* `InventoryAction(type)`:
+    * creates a new InventoryAction
+    * type is on of "move", "drop", or "craft", else returns nil
+* `apply()`:
+    * applies the InventoryAction (InventoryActions can be applied multible times)
+* `from(inventorylocation, listname, stack)`
+    * this is valid for move or drop actions
+    * when `apply()` is called items are moved / dropped from `listname` `inventorylocation` in` at `stack`
+* `to(inventorylocation, listname, stack)`
+    * this is valid for move actions
+    * when `apply()` is called items are moved to `listname` in`inventorylocation` at `stack`
+* `craft(inventoryaction)`
+    * this is valid for craft actions
+    * when `apply()` is called a craft event for this inventory will be triggered
+* `set_count(count)`
+    * this is valid for all actions
+    * it specifies how many items to drop / craft / move
+    * `0` means move all items
+    * default count: `0`
+    
+#### example
+    `local move_act = InventoryAction("move")
+    move_act:from("current_player", "main", 0)
+    move_act:to("current_player", "craft", 0)
+    move_act:set_count(1)
+    local craft_act = InventoryAction("craft")
+    craft_act:craft("current_player")
+    local drop_act = InventoryAction("drop")
+    drop_act:from("current_player", "craft", 0)
+    move_act:apply()
+    craft_act:apply()
+    drop_act:apply()
+    `
+    * e.g. In first hotbar slot there are tree logs: Move one to craft field, then craft wood out of it and immediately drop it
+    
+
+    
 

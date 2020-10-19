@@ -109,6 +109,8 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("autotnt", "false");
 	settings->setDefault("replace", "false");
 	settings->setDefault("crystal_pvp", "false");
+	settings->setDefault("autototem", "false");
+	settings->setDefault("dont_point_nodes", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");

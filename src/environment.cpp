@@ -106,8 +106,10 @@ bool Environment::line_of_sight(v3f pos1, v3f pos2, v3s16 *p)
 	Check if a node is pointable
 */
 inline static bool isPointableNode(const MapNode &n,
-	const NodeDefManager *nodedef , bool liquids_pointable)
+	const NodeDefManager *nodedef , bool liquids_pointable, bool nodes_pointable)
 {
+	if (! nodes_pointable)
+		return false;
 	const ContentFeatures &features = nodedef->get(n);
 	return features.pointable ||
 	       ((liquids_pointable || g_settings->getBool("point_liquids")) && features.isLiquid());
@@ -180,7 +182,7 @@ void Environment::continueRaycast(RaycastState *state, PointedThing *result)
 
 			n = map.getNode(np, &is_valid_position);
 			if (!(is_valid_position && isPointableNode(n, nodedef,
-					state->m_liquids_pointable))) {
+					state->m_liquids_pointable, state->m_nodes_pointable))) {
 				continue;
 			}
 
