@@ -20,6 +20,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #pragma once
 
 #include "irrlichttypes_extrabloated.h"
+#include <cstddef>
 #include <string>
 
 #define CHEAT_MENU_GET_SCRIPTPTR                                                         \
@@ -29,12 +30,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 class Client;
 
-typedef enum
+enum CheatMenuEntryType
 {
 	CHEAT_MENU_ENTRY_TYPE_HEAD,
 	CHEAT_MENU_ENTRY_TYPE_CATEGORY,
 	CHEAT_MENU_ENTRY_TYPE_ENTRY,
-} CheatMenuEntryType;
+};
 
 class CheatMenu
 {
@@ -43,8 +44,9 @@ public:
 
 	void draw(video::IVideoDriver *driver, bool show_debug);
 
-	void drawEntry(video::IVideoDriver *driver, std::string name, int number,
-			bool selected, bool active, int category_count,
+	void drawEntry(video::IVideoDriver *driver, std::string name,
+			std::size_t column_align_index, std::size_t cheat_entry_index,
+			bool is_selected, bool is_enabled,
 			CheatMenuEntryType entry_type = CHEAT_MENU_ENTRY_TYPE_ENTRY);
 
 	void selectUp();

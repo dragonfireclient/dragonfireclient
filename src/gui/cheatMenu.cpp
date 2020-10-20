@@ -21,6 +21,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "script/scripting_client.h"
 #include "client/client.h"
 #include "client/fontengine.h"
+#include <cstddef>
 
 CheatMenu::CheatMenu(Client *client) : m_client(client)
 {
@@ -37,25 +38,39 @@ CheatMenu::CheatMenu(Client *client) : m_client(client)
 	m_fontsize.Y = MYMAX(m_fontsize.Y, 1);
 }
 
-void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name, int number,
-		bool selected, bool active, int number2, CheatMenuEntryType entry_type)
+void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name,
+		std::size_t column_align_index, std::size_t cheat_entry_index,
+		bool is_selected, bool is_enabled, CheatMenuEntryType entry_type)
 {
 	int x = m_gap, y = m_gap, width = m_entry_width, height = m_entry_height;
 	video::SColor *bgcolor = &m_bg_color, *fontcolor = &m_font_color;
-	if (entry_type == CHEAT_MENU_ENTRY_TYPE_HEAD) {
+
+	// Align with correct column.
+	x += m_gap + column_align_index * (m_entry_width + m_gap);
+
+	if (is_selected)
+		fontcolor = &m_selected_font_color;
+	if (is_enabled)
 		bgcolor = &m_active_bg_color;
+
+	switch (entry_type)
+	{
+	case CHEAT_MENU_ENTRY_TYPE_HEAD:
 		height = m_head_height;
-	} else {
-		bool is_category = entry_type == CHEAT_MENU_ENTRY_TYPE_CATEGORY;
-		x += m_gap + (is_category? number : number2) * (m_entry_width + m_gap);
-		y += m_head_height + (is_category ? 0 : number + 1) * (m_entry_height + m_gap);
-		if (active)
-			bgcolor = &m_active_bg_color;
-		if (selected)
-			fontcolor = &m_selected_font_color;
+		break;
+	case CHEAT_MENU_ENTRY_TYPE_CATEGORY:
+		y += m_head_height + m_gap;
+		break;
+	case CHEAT_MENU_ENTRY_TYPE_ENTRY:
+		y += m_head_height + (cheat_entry_index + 1) * (m_entry_height + m_gap);
+		break;
+	default:
+		// TODO log an error or something.
+		break;
 	}
+
 	driver->draw2DRectangle(*bgcolor, core::rect<s32>(x, y, x + width, y + height));
-	if (selected)
+	if (is_selected)
 		driver->draw2DRectangleOutline(
 				core::rect<s32>(x - 1, y - 1, x + width, y + height),
 				*fontcolor);
@@ -70,20 +85,20 @@ void CheatMenu::draw(video::IVideoDriver *driver, bool show_debug)
 	CHEAT_MENU_GET_SCRIPTPTR
 
 	if (!show_debug)
-		drawEntry(driver, "Dragonfireclient", 0, false, false, 0,
+		drawEntry(driver, "Dragonfireclient", 0, 0, false, false,
 				CHEAT_MENU_ENTRY_TYPE_HEAD);
 	int category_count = 0;
 	for (auto category = script->m_cheat_categories.begin();
 			category != script->m_cheat_categories.end(); category++) {
 		bool is_selected = category_count == m_selected_category;
-		drawEntry(driver, (*category)->m_name, category_count, is_selected, false, category_count,
-				CHEAT_MENU_ENTRY_TYPE_CATEGORY);
+		drawEntry(driver, (*category)->m_name, category_count, 0, is_selected,
+				false, CHEAT_MENU_ENTRY_TYPE_CATEGORY);
 		if (is_selected && m_cheat_layer) {
 			int cheat_count = 0;
 			for (auto cheat = (*category)->m_cheats.begin();
 					cheat != (*category)->m_cheats.end(); cheat++) {
-				drawEntry(driver, (*cheat)->m_name, cheat_count,
-						cheat_count == m_selected_cheat, category_count,
+				drawEntry(driver, (*cheat)->m_name, category_count, cheat_count,
+						cheat_count == m_selected_cheat,
 						(*cheat)->is_enabled());
 				cheat_count++;
 			}
