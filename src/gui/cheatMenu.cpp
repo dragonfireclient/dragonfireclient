@@ -24,7 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 CheatMenu::CheatMenu(Client *client) : m_client(client)
 {
-	m_font = g_fontengine->getFont(FONT_SIZE_UNSPECIFIED, FM_Fallback);
+	m_font = g_fontengine->getFont(FONT_SIZE_UNSPECIFIED, FM_Mono);
 
 	if (!m_font) {
 		errorstream << "CheatMenu: Unable to load fallback font" << std::endl;
@@ -38,7 +38,7 @@ CheatMenu::CheatMenu(Client *client) : m_client(client)
 }
 
 void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name, int number,
-		bool selected, bool active, CheatMenuEntryType entry_type)
+		bool selected, bool active, int number2, CheatMenuEntryType entry_type)
 {
 	int x = m_gap, y = m_gap, width = m_entry_width, height = m_entry_height;
 	video::SColor *bgcolor = &m_bg_color, *fontcolor = &m_font_color;
@@ -47,10 +47,8 @@ void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name, int num
 		height = m_head_height;
 	} else {
 		bool is_category = entry_type == CHEAT_MENU_ENTRY_TYPE_CATEGORY;
-		y += m_gap + m_head_height +
-		     (number + (is_category ? 0 : m_selected_category)) *
-				     (m_entry_height + m_gap);
-		x += (is_category ? 0 : m_gap + m_entry_width);
+		x += m_gap + (is_category? number : number2) * (m_entry_width + m_gap);
+		y += m_head_height + (is_category ? 0 : number + 1) * (m_entry_height + m_gap);
 		if (active)
 			bgcolor = &m_active_bg_color;
 		if (selected)
@@ -72,20 +70,20 @@ void CheatMenu::draw(video::IVideoDriver *driver, bool show_debug)
 	CHEAT_MENU_GET_SCRIPTPTR
 
 	if (!show_debug)
-		drawEntry(driver, "Dragonfireclient", 0, false, false,
+		drawEntry(driver, "Dragonfireclient", 0, false, false, 0,
 				CHEAT_MENU_ENTRY_TYPE_HEAD);
 	int category_count = 0;
 	for (auto category = script->m_cheat_categories.begin();
 			category != script->m_cheat_categories.end(); category++) {
 		bool is_selected = category_count == m_selected_category;
-		drawEntry(driver, (*category)->m_name, category_count, is_selected, false,
+		drawEntry(driver, (*category)->m_name, category_count, is_selected, false, category_count,
 				CHEAT_MENU_ENTRY_TYPE_CATEGORY);
 		if (is_selected && m_cheat_layer) {
 			int cheat_count = 0;
 			for (auto cheat = (*category)->m_cheats.begin();
 					cheat != (*category)->m_cheats.end(); cheat++) {
 				drawEntry(driver, (*cheat)->m_name, cheat_count,
-						cheat_count == m_selected_cheat,
+						cheat_count == m_selected_cheat, category_count,
 						(*cheat)->is_enabled());
 				cheat_count++;
 			}
@@ -94,47 +92,57 @@ void CheatMenu::draw(video::IVideoDriver *driver, bool show_debug)
 	}
 }
 
-void CheatMenu::selectUp()
+void CheatMenu::selectLeft()
 {
 	CHEAT_MENU_GET_SCRIPTPTR
 
-	int max = (m_cheat_layer ? script->m_cheat_categories[m_selected_category]
-								  ->m_cheats.size()
-				 : script->m_cheat_categories.size()) -
-		  1;
-	int *selected = m_cheat_layer ? &m_selected_cheat : &m_selected_category;
+	int max = script->m_cheat_categories.size() - 1;
+	int *selected = &m_selected_category;
 	--*selected;
 	if (*selected < 0)
 		*selected = max;
 }
 
-void CheatMenu::selectDown()
+void CheatMenu::selectRight()
 {
 	CHEAT_MENU_GET_SCRIPTPTR
 
-	int max = (m_cheat_layer ? script->m_cheat_categories[m_selected_category]
-								  ->m_cheats.size()
-				 : script->m_cheat_categories.size()) -
-		  1;
-	int *selected = m_cheat_layer ? &m_selected_cheat : &m_selected_category;
+	int max = script->m_cheat_categories.size() - 1;
+	int *selected = &m_selected_category;
 	++*selected;
 	if (*selected > max)
 		*selected = 0;
 }
 
-void CheatMenu::selectRight()
+void CheatMenu::selectDown()
 {
-	if (m_cheat_layer)
-		return;
+	CHEAT_MENU_GET_SCRIPTPTR
+	
 	m_cheat_layer = true;
-	m_selected_cheat = 0;
+
+	int max = script->m_cheat_categories[m_selected_category]->m_cheats.size();
+	int *selected = &m_selected_cheat;
+	++*selected;
+	if (*selected > max) {
+		*selected = 1;
+	}
 }
 
-void CheatMenu::selectLeft()
+void CheatMenu::selectUp()
 {
-	if (!m_cheat_layer)
+	if (!m_cheat_layer) {
 		return;
-	m_cheat_layer = false;
+	}
+
+	CHEAT_MENU_GET_SCRIPTPTR
+
+	int *selected = &m_selected_cheat;
+	--*selected;
+
+	if (*selected < 0) {
+		m_cheat_layer = false;
+		*selected = 1;
+	}
 }
 
 void CheatMenu::selectConfirm()

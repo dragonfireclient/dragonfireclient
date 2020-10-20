@@ -44,7 +44,7 @@ public:
 	void draw(video::IVideoDriver *driver, bool show_debug);
 
 	void drawEntry(video::IVideoDriver *driver, std::string name, int number,
-			bool selected, bool active,
+			bool selected, bool active, int category_count,
 			CheatMenuEntryType entry_type = CHEAT_MENU_ENTRY_TYPE_ENTRY);
 
 	void selectUp();
@@ -58,14 +58,14 @@ private:
 	int m_selected_cheat = 0;
 	int m_selected_category = 0;
 
-	int m_head_height = 50;
-	int m_entry_height = 40;
+	int m_head_height = 20;
+	int m_entry_height = 20;
 	int m_entry_width = 200;
 	int m_gap = 3;
 
-	video::SColor m_bg_color = video::SColor(192, 255, 145, 88);
-	video::SColor m_active_bg_color = video::SColor(192, 255, 87, 53);
-	video::SColor m_font_color = video::SColor(255, 0, 0, 0);
+	video::SColor m_bg_color = video::SColor(39, 38, 51, 173);
+	video::SColor m_active_bg_color = video::SColor(45, 45, 107, 100);
+	video::SColor m_font_color = video::SColor(195, 195, 195, 0);
 	video::SColor m_selected_font_color = video::SColor(255, 255, 252, 88);
 
 	Client *m_client;
