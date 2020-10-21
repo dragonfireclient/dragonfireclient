@@ -62,6 +62,8 @@ core.cheats = {
 		["Enderchest"] = function() core.open_enderchest() end,
 		["HandSlot"] = function() core.open_handslot() end,
 		["NextItem"] = "next_item",
+		["Strip"] = "strip",
+		["AutoRefill"] = "autorefill",
 	}
 }
 

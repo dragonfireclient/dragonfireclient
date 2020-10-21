@@ -2298,3 +2298,11 @@ autotnt (PlaceOnTop) bool false
 replace (Replace) bool false
 
 crystal_pvp (CrystalPvP) bool false
+
+autototem (AutoTotem) bool false
+
+dont_point_nodes (ThroughWalls) bool false
+
+strip (Strip) bool false
+
+autorefill (AutoRefill) bool false

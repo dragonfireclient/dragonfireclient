@@ -116,7 +116,7 @@ int LuaLocalPlayer::l_get_wield_index(lua_State *L)
 {
 	LocalPlayer *player = getobject(L, 1);
 
-	lua_pushinteger(L, player->getWieldIndex());
+	lua_pushinteger(L, player->getWieldIndex() + 1);
 	return 1;
 }
 
@@ -124,7 +124,7 @@ int LuaLocalPlayer::l_get_wield_index(lua_State *L)
 int LuaLocalPlayer::l_set_wield_index(lua_State *L)
 {
 	LocalPlayer *player = getobject(L, 1);
-	u32 index = luaL_checkinteger(L, 2);
+	u32 index = luaL_checkinteger(L, 2) - 1;
 	
 	player->setWieldIndex(index);
 	g_game->processItemSelection(&g_game->runData.new_playeritem);

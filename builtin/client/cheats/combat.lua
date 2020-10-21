@@ -2,7 +2,7 @@ local placed_crystal
 local switched_to_totem = 0
 local used_sneak = true
 local totem_move_action = InventoryAction("move")
-totem_move_action:to("current_player", "main", 8)
+totem_move_action:to("current_player", "main", 9)
 
 core.register_globalstep(function(dtime)
 	local player = core.localplayer
@@ -48,9 +48,9 @@ core.register_globalstep(function(dtime)
 		if totem_stack and totem_stack:get_name() ~= "mobs_mc:totem" then
 			local totem_index = core.find_item("mobs_mc:totem")
 			if totem_index then
-				totem_move_action:from("current_player", "main", totem_index - 1)
+				totem_move_action:from("current_player", "main", totem_index)
 				totem_move_action:apply()
-				player:set_wield_index(8)
+				player:set_wield_index(9)
 			end
 		end
 	end

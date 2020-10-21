@@ -21,9 +21,9 @@ function core.parse_relative_pos(param)
 	return success, pos
 end 
 
-function core.find_item(item)
+function core.find_item(item, mini, maxi)
 	for index, stack in ipairs(core.get_inventory("current_player").main) do
-		if stack:get_name() == item then
+		if (not mini or index >= mini) and (not maxi or index <= maxi) and stack:get_name() == item then
 			return index
 		end
 	end
@@ -32,7 +32,7 @@ end
 function core.switch_to_item(item)
 	local i = core.find_item(item)
 	if i then
-		core.localplayer:set_wield_index(i - 1)
+		core.localplayer:set_wield_index(i)
 		return true
 	else
 		return false
