@@ -86,7 +86,7 @@ void CheatMenu::draw(video::IVideoDriver *driver, bool show_debug)
 	if (!script || !script->m_cheats_loaded)
         return;
 
-    // Draw menu header if debug info is not being drawn.
+	// Draw menu header if debug info is not being drawn.
 	if (!show_debug)
 		drawEntry(driver, "Dragonfireclient", 0, 0, false, false,
 				CHEAT_MENU_ENTRY_TYPE_HEAD);
