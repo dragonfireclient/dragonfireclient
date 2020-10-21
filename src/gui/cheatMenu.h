@@ -1,17 +1,14 @@
 /*
 Dragonfire
 Copyright (C) 2020 Elias Fleckenstein <eliasfleckenstein@web.de>
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
 the Free Software Foundation; either version 2.1 of the License, or
 (at your option) any later version.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Lesser General Public License for more details.
-
 You should have received a copy of the GNU Lesser General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -62,13 +59,13 @@ private:
 
 	int m_head_height = 20;
 	int m_entry_height = 20;
-	int m_entry_width = 200;
+	int m_entry_width = 150;
 	int m_gap = 3;
 
-	video::SColor m_bg_color = video::SColor(39, 38, 51, 173);
-	video::SColor m_active_bg_color = video::SColor(45, 45, 107, 100);
-	video::SColor m_font_color = video::SColor(195, 195, 195, 0);
-	video::SColor m_selected_font_color = video::SColor(255, 255, 252, 88);
+	video::SColor m_bg_color = video::SColor(173, 45, 45, 68);
+	video::SColor m_active_bg_color = video::SColor(210, 0, 0, 0);
+	video::SColor m_font_color = video::SColor(195, 255, 255, 255);
+	video::SColor m_selected_font_color = video::SColor(235, 255, 255, 255);
 
 	Client *m_client;
 
