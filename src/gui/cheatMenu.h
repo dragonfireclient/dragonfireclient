@@ -16,7 +16,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #pragma once
 
+#include "client/client.h"
 #include "irrlichttypes_extrabloated.h"
+#include "script/scripting_client.h"
 #include <cstddef>
 #include <string>
 
@@ -24,8 +26,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	ClientScripting *script = m_client->getScript();                                 \
 	if (!script || !script->m_cheats_loaded)                                         \
 		return;
-
-class Client;
 
 enum CheatMenuEntryType
 {
@@ -39,7 +39,7 @@ class CheatMenu
 public:
 	CheatMenu(Client *client);
 
-	Client* getScript()
+	ClientScripting *getScript()
 	{
 		return m_client->getScript();
 	}

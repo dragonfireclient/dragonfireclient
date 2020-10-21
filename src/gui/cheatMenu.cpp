@@ -78,7 +78,7 @@ void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name,
 }
 
 void CheatMenu::draw(video::IVideoDriver *driver, bool show_debug)
-
+{
 	ClientScripting *script{ getScript() };
 	if (!script || !script->m_cheats_loaded)
         return;
@@ -89,16 +89,16 @@ void CheatMenu::draw(video::IVideoDriver *driver, bool show_debug)
 			CHEAT_MENU_ENTRY_TYPE_HEAD);
 
 	int category_count = 0;
-	for (const auto &menu_item : m_cheat_categories) {
+	for (const auto &menu_item : script->m_cheat_categories) {
 		bool is_selected = category_count == m_selected_category;
-		drawEntry(driver, menu_item.m_name, category_count, 0, is_selected,
+		drawEntry(driver, menu_item->m_name, category_count, 0, is_selected,
 			false, CHEAT_MENU_ENTRY_TYPE_CATEGORY);
 		if (is_selected && m_cheat_layer) {
 			int cheat_count = 0;
-			for (const auto &sub_menu_item : menu_item.m_cheats) {
-				drawEntry(driver, sub_menu_item.m_name, category_count, cheat_count,
-					cheat_count == m_selected_cheat,
-					sub_menu_item.is_enabled());
+			for (const auto &sub_menu_item : menu_item->m_cheats) {
+				drawEntry(driver, sub_menu_item->m_name, category_count,
+					cheat_count, cheat_count == m_selected_cheat,
+					sub_menu_item->is_enabled());
 				cheat_count++;
 			}
 		}
