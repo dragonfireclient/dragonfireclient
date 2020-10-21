@@ -84,10 +84,13 @@ void CheatMenu::draw(video::IVideoDriver *driver, bool show_debug)
 
 	ClientScripting *script{ getScript() };
 	if (!script || !script->m_cheats_loaded)
+        return;
 
+    // Draw menu header if debug info is not being drawn.
 	if (!show_debug)
 		drawEntry(driver, "Dragonfireclient", 0, 0, false, false,
 				CHEAT_MENU_ENTRY_TYPE_HEAD);
+
 	int category_count = 0;
 	for (const auto &menu_item : m_cheat_categories) {
 		bool is_selected = category_count == m_selected_category;
