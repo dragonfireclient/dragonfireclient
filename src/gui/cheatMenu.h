@@ -39,12 +39,17 @@ class CheatMenu
 public:
 	CheatMenu(Client *client);
 
+	Client* getScript()
+	{
+		return m_client->getScript();
+	}
+
 	void draw(video::IVideoDriver *driver, bool show_debug);
 
 	void drawEntry(video::IVideoDriver *driver, std::string name,
-			std::size_t column_align_index, std::size_t cheat_entry_index,
-			bool is_selected, bool is_enabled,
-			CheatMenuEntryType entry_type = CHEAT_MENU_ENTRY_TYPE_ENTRY);
+		std::size_t column_align_index, std::size_t cheat_entry_index,
+		bool is_selected, bool is_enabled,
+		CheatMenuEntryType entry_type = CHEAT_MENU_ENTRY_TYPE_ENTRY);
 
 	void selectUp();
 	void selectDown();

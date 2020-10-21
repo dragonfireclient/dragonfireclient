@@ -36,8 +36,8 @@ CheatMenu::CheatMenu(Client *client) : m_client(client)
 }
 
 void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name,
-		std::size_t column_align_index, std::size_t cheat_entry_index,
-		bool is_selected, bool is_enabled, CheatMenuEntryType entry_type)
+	std::size_t column_align_index, std::size_t cheat_entry_index,
+	bool is_selected, bool is_enabled, CheatMenuEntryType entry_type)
 {
 	int x = m_gap, y = m_gap, width = m_entry_width, height = m_entry_height;
 	video::SColor *bgcolor = &m_bg_color, *fontcolor = &m_font_color;
@@ -78,25 +78,27 @@ void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name,
 }
 
 void CheatMenu::draw(video::IVideoDriver *driver, bool show_debug)
-{
-	CHEAT_MENU_GET_SCRIPTPTR
 
+	ClientScripting *script{ getScript() };
+	if (!script || !script->m_cheats_loaded)
+        return;
+
+	// Draw menu header if debug info is not being drawn.
 	if (!show_debug)
 		drawEntry(driver, "Dragonfireclient", 0, 0, false, false,
-				CHEAT_MENU_ENTRY_TYPE_HEAD);
+			CHEAT_MENU_ENTRY_TYPE_HEAD);
+
 	int category_count = 0;
-	for (auto category = script->m_cheat_categories.begin();
-			category != script->m_cheat_categories.end(); category++) {
+	for (const auto &menu_item : m_cheat_categories) {
 		bool is_selected = category_count == m_selected_category;
-		drawEntry(driver, (*category)->m_name, category_count, 0, is_selected,
-				false, CHEAT_MENU_ENTRY_TYPE_CATEGORY);
+		drawEntry(driver, menu_item.m_name, category_count, 0, is_selected,
+			false, CHEAT_MENU_ENTRY_TYPE_CATEGORY);
 		if (is_selected && m_cheat_layer) {
 			int cheat_count = 0;
-			for (auto cheat = (*category)->m_cheats.begin();
-					cheat != (*category)->m_cheats.end(); cheat++) {
-				drawEntry(driver, (*cheat)->m_name, category_count, cheat_count,
-						cheat_count == m_selected_cheat,
-						(*cheat)->is_enabled());
+			for (const auto &sub_menu_item : menu_item.m_cheats) {
+				drawEntry(driver, sub_menu_item.m_name, category_count, cheat_count,
+					cheat_count == m_selected_cheat,
+					sub_menu_item.is_enabled());
 				cheat_count++;
 			}
 		}
@@ -129,7 +131,7 @@ void CheatMenu::selectRight()
 void CheatMenu::selectDown()
 {
 	CHEAT_MENU_GET_SCRIPTPTR
-	
+
 	m_cheat_layer = true;
 
 	int max = script->m_cheat_categories[m_selected_category]->m_cheats.size();
