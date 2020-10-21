@@ -42,6 +42,11 @@ class CheatMenu
 public:
 	CheatMenu(Client *client);
 
+	Client* getScript()
+	{
+		return m_client->getScript();
+	}
+
 	void draw(video::IVideoDriver *driver, bool show_debug);
 
 	void drawEntry(video::IVideoDriver *driver, std::string name,
