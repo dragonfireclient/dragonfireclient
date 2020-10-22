@@ -20,9 +20,51 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/fontengine.h"
 #include <cstddef>
 
+FontMode fontStringToEnum(std::string str) {
+	if (str == "FM_Standard") 
+		return FM_Standard;
+	else if (str == "FM_Mono")
+		return FM_Mono;
+	else if (str == "FM_Fallback")
+		return FM_Fallback;
+	else if (str == "FM_Simple")
+		return FM_Simple;
+	else if (str == "FM_SimpleMono")
+		return FM_SimpleMono;
+	else if (str == "FM_MaxMode")
+		return FM_MaxMode;
+	else if (str == "FM_Unspecified")
+		return FM_Unspecified;
+	else
+		return FM_Standard;
+}
+
 CheatMenu::CheatMenu(Client *client) : m_client(client)
 {
-	m_font = g_fontengine->getFont(FONT_SIZE_UNSPECIFIED, FM_Mono);
+	FontMode fontMode = fontStringToEnum(g_settings->get("cheat_menu_font"));
+	irr::core::vector3df bg_color;
+	irr::core::vector3df active_bg_color;
+	irr::core::vector3df font_color;
+	irr::core::vector3df selected_font_color;
+
+	g_settings->getV3FNoEx("m_bg_color", bg_color);
+	g_settings->getV3FNoEx("m_active_bg_color", active_bg_color);
+	g_settings->getV3FNoEx("m_font_color", font_color);
+	g_settings->getV3FNoEx("m_selected_font_color", selected_font_color);
+
+	m_bg_color = video::SColor(g_settings->getU32("m_bg_color_alpha"), 
+							   bg_color.X, bg_color.Y, bg_color.Z);
+	
+	m_active_bg_color = video::SColor(g_settings->getU32("m_active_bg_color_alpha"), 
+							          active_bg_color.X, active_bg_color.Y, active_bg_color.Z);
+
+	m_font_color = video::SColor(g_settings->getU32("m_font_color_alpha"),
+								 font_color.X, font_color.Y, font_color.Z);
+
+	m_selected_font_color = video::SColor(g_settings->getU32("m_selected_font_color_alpha"),
+										  selected_font_color.X, selected_font_color.Y, selected_font_color.Z);
+	
+	m_font = g_fontengine->getFont(FONT_SIZE_UNSPECIFIED, fontMode);
 
 	if (!m_font) {
 		errorstream << "CheatMenu: Unable to load fallback font" << std::endl;

@@ -72,6 +72,8 @@ private:
 	video::SColor m_font_color = video::SColor(195, 255, 255, 255);
 	video::SColor m_selected_font_color = video::SColor(235, 255, 255, 255);
 
+	FontMode fontStringToEnum(std::string str);
+
 	Client *m_client;
 
 	gui::IGUIFont *m_font = nullptr;
