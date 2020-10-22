@@ -2298,3 +2298,28 @@ autotnt (PlaceOnTop) bool false
 replace (Replace) bool false
 
 crystal_pvp (CrystalPvP) bool false
+
+[Cheat Menu]
+
+#   Font to use for cheat menu
+cheat_menu_font (MenuFont) enum FM_Standard, FM_Mono, FM_Fallback, FM_Simple, FM_SimpleMono, FM_MaxMode, FM_Unspecified
+
+#   (RGB value)
+m_bg_color (Cell background color) v3f 45 45 68
+
+m_bg_color_alpha (Cell background color alpha) int 173
+
+#   (RGB value)
+m_active_bg_color (Active cell background color) v3f 0 0 0
+
+m_active_bg_color_alpha (Active cell background color alpha) int 210
+
+#   (RGB value)
+m_font_color (Font color) v3f 255 255 255
+
+m_font_color_alpha (Font color alpha) int 195 
+
+#   (RGB value)
+m_selected_font_color (Selected font color) v3f 255 255 255
+
+m_selected_font_color_alpha (Selected font color alpha) int 235

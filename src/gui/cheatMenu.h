@@ -17,6 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #pragma once
 
 #include "irrlichttypes_extrabloated.h"
+#include "settings.h"
 #include <cstddef>
 #include <string>
 
@@ -66,6 +67,8 @@ private:
 	video::SColor m_active_bg_color = video::SColor(210, 0, 0, 0);
 	video::SColor m_font_color = video::SColor(195, 255, 255, 255);
 	video::SColor m_selected_font_color = video::SColor(235, 255, 255, 255);
+
+	FontMode fontStringToEnum(std::string str);
 
 	Client *m_client;
 
