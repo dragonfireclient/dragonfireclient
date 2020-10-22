@@ -18,54 +18,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "script/scripting_client.h"
 #include "client/client.h"
 #include "client/fontengine.h"
-#include "settings.h"
 #include <cstddef>
-
-FontMode fontStringToEnum(std::string str) {
-	if (str == "FM_Standard") 
-		return FM_Standard;
-	else if (str == "FM_Mono")
-		return FM_Mono;
-	else if (str == "FM_Fallback")
-		return FM_Fallback;
-	else if (str == "FM_Simple")
-		return FM_Simple;
-	else if (str == "FM_SimpleMono")
-		return FM_SimpleMono;
-	else if (str == "FM_MaxMode")
-		return FM_MaxMode;
-	else if (str == "FM_Unspecified")
-		return FM_Unspecified;
-	else
-		return FM_Standard;
-}
 
 CheatMenu::CheatMenu(Client *client) : m_client(client)
 {
-	FontMode fontMode = fontStringToEnum(g_settings->get("cheat_menu_font"));
-	irr::core::vector3df bg_color;
-	irr::core::vector3df active_bg_color;
-	irr::core::vector3df font_color;
-	irr::core::vector3df selected_font_color;
-
-	g_settings->getV3FNoEx("m_bg_color", bg_color);
-	g_settings->getV3FNoEx("m_active_bg_color", active_bg_color);
-	g_settings->getV3FNoEx("m_font_color", font_color);
-	g_settings->getV3FNoEx("m_selected_font_color", selected_font_color);
-
-	m_bg_color = video::SColor(g_settings->getU32("m_bg_color_alpha"), 
-							   bg_color.X, bg_color.Y, bg_color.Z);
-	
-	m_active_bg_color = video::SColor(g_settings->getU32("m_active_bg_color_alpha"), 
-							          active_bg_color.X, active_bg_color.Y, active_bg_color.Z);
-
-	m_font_color = video::SColor(g_settings->getU32("m_font_color_alpha"),
-								 font_color.X, font_color.Y, font_color.Z);
-
-	m_selected_font_color = video::SColor(g_settings->getU32("m_selected_font_color_alpha"),
-										  selected_font_color.X, selected_font_color.Y, selected_font_color.Z);
-	
-	m_font = g_fontengine->getFont(FONT_SIZE_UNSPECIFIED, fontMode);
+	m_font = g_fontengine->getFont(FONT_SIZE_UNSPECIFIED, FM_Mono);
 
 	if (!m_font) {
 		errorstream << "CheatMenu: Unable to load fallback font" << std::endl;
@@ -79,8 +36,8 @@ CheatMenu::CheatMenu(Client *client) : m_client(client)
 }
 
 void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name,
-		std::size_t column_align_index, std::size_t cheat_entry_index,
-		bool is_selected, bool is_enabled, CheatMenuEntryType entry_type)
+	std::size_t column_align_index, std::size_t cheat_entry_index,
+	bool is_selected, bool is_enabled, CheatMenuEntryType entry_type)
 {
 	int x = m_gap, y = m_gap, width = m_entry_width, height = m_entry_height;
 	video::SColor *bgcolor = &m_bg_color, *fontcolor = &m_font_color;
@@ -122,24 +79,26 @@ void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name,
 
 void CheatMenu::draw(video::IVideoDriver *driver, bool show_debug)
 {
-	CHEAT_MENU_GET_SCRIPTPTR
+	ClientScripting *script{ getScript() };
+	if (!script || !script->m_cheats_loaded)
+        return;
 
+	// Draw menu header if debug info is not being drawn.
 	if (!show_debug)
 		drawEntry(driver, "Dragonfireclient", 0, 0, false, false,
-				CHEAT_MENU_ENTRY_TYPE_HEAD);
+			CHEAT_MENU_ENTRY_TYPE_HEAD);
+
 	int category_count = 0;
-	for (auto category = script->m_cheat_categories.begin();
-			category != script->m_cheat_categories.end(); category++) {
+	for (const auto &menu_item : script->m_cheat_categories) {
 		bool is_selected = category_count == m_selected_category;
-		drawEntry(driver, (*category)->m_name, category_count, 0, is_selected,
-				false, CHEAT_MENU_ENTRY_TYPE_CATEGORY);
+		drawEntry(driver, menu_item->m_name, category_count, 0, is_selected,
+			false, CHEAT_MENU_ENTRY_TYPE_CATEGORY);
 		if (is_selected && m_cheat_layer) {
 			int cheat_count = 0;
-			for (auto cheat = (*category)->m_cheats.begin();
-					cheat != (*category)->m_cheats.end(); cheat++) {
-				drawEntry(driver, (*cheat)->m_name, category_count, cheat_count,
-						cheat_count == m_selected_cheat,
-						(*cheat)->is_enabled());
+			for (const auto &sub_menu_item : menu_item->m_cheats) {
+				drawEntry(driver, sub_menu_item->m_name, category_count,
+					cheat_count, cheat_count == m_selected_cheat,
+					sub_menu_item->is_enabled());
 				cheat_count++;
 			}
 		}
@@ -172,7 +131,7 @@ void CheatMenu::selectRight()
 void CheatMenu::selectDown()
 {
 	CHEAT_MENU_GET_SCRIPTPTR
-	
+
 	m_cheat_layer = true;
 
 	int max = script->m_cheat_categories[m_selected_category]->m_cheats.size();

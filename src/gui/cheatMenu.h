@@ -16,8 +16,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #pragma once
 
+#include "client/client.h"
 #include "irrlichttypes_extrabloated.h"
-#include "settings.h"
+#include "script/scripting_client.h"
 #include <cstddef>
 #include <string>
 
@@ -25,8 +26,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	ClientScripting *script = m_client->getScript();                                 \
 	if (!script || !script->m_cheats_loaded)                                         \
 		return;
-
-class Client;
 
 enum CheatMenuEntryType
 {
@@ -40,12 +39,17 @@ class CheatMenu
 public:
 	CheatMenu(Client *client);
 
+	ClientScripting *getScript()
+	{
+		return m_client->getScript();
+	}
+
 	void draw(video::IVideoDriver *driver, bool show_debug);
 
 	void drawEntry(video::IVideoDriver *driver, std::string name,
-			std::size_t column_align_index, std::size_t cheat_entry_index,
-			bool is_selected, bool is_enabled,
-			CheatMenuEntryType entry_type = CHEAT_MENU_ENTRY_TYPE_ENTRY);
+		std::size_t column_align_index, std::size_t cheat_entry_index,
+		bool is_selected, bool is_enabled,
+		CheatMenuEntryType entry_type = CHEAT_MENU_ENTRY_TYPE_ENTRY);
 
 	void selectUp();
 	void selectDown();
@@ -67,8 +71,6 @@ private:
 	video::SColor m_active_bg_color = video::SColor(210, 0, 0, 0);
 	video::SColor m_font_color = video::SColor(195, 255, 255, 255);
 	video::SColor m_selected_font_color = video::SColor(235, 255, 255, 255);
-
-	FontMode fontStringToEnum(std::string str);
 
 	Client *m_client;
 
