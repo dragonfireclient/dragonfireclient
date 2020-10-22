@@ -2306,3 +2306,5 @@ dont_point_nodes (ThroughWalls) bool false
 strip (Strip) bool false
 
 autorefill (AutoRefill) bool false
+
+nuke (Nuke) bool false

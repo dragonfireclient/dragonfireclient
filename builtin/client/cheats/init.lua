@@ -38,6 +38,7 @@ core.cheats = {
 		["BlockWater"] = "block_water",
 		["PlaceOnTop"] = "autotnt",
 		["Replace"] = "replace"
+		["Nuke"] = "nuke"
 	},
 	["Exploit"] = {
 		["EntitySpeed"] = "entity_speed",

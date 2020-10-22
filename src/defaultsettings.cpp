@@ -113,6 +113,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("dont_point_nodes", "false");
 	settings->setDefault("strip", "false");
 	settings->setDefault("autorefill", "false");
+	settings->setDefault("nuke", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
