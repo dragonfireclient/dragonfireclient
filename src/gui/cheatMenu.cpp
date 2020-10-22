@@ -14,13 +14,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "cheatMenu.h"
 #include "script/scripting_client.h"
 #include "client/client.h"
 #include "client/fontengine.h"
+#include "cheatMenu.h"
 #include <cstddef>
 
-FontMode fontStringToEnum(std::string str) {
+FontMode CheatMenu::fontStringToEnum(std::string str) {
 	if (str == "FM_Standard") 
 		return FM_Standard;
 	else if (str == "FM_Mono")
