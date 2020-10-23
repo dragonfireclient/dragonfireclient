@@ -957,10 +957,6 @@ void Client::handleCommand_DetachedInventory(NetworkPacket* pkt)
 
 void Client::handleCommand_ShowFormSpec(NetworkPacket* pkt)
 {
-	if (g_settings->getBool("block_formspec")) {
-		return;
-	}
-
 	std::string formspec = pkt->readLongString();
 	std::string formname;
 
