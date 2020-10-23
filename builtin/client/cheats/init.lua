@@ -51,6 +51,7 @@ core.cheats = {
 		["PointLiquids"] = "point_liquids",
 		["PrivBypass"] = "priv_bypass",
 		["AutoRespawn"] = "autorespawn",
+		["BlockFormspec"] = "block_formspec"
 	},
 	["Chat"] = {
 		["IgnoreStatus"] = "ignore_status_messages",

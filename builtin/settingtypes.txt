@@ -2299,6 +2299,8 @@ replace (Replace) bool false
 
 crystal_pvp (CrystalPvP) bool false
 
+block_formspec (BlockFormSpec) bool false
+
 [Cheat Menu]
 
 #   Font to use for cheat menu
