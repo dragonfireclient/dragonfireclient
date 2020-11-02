@@ -42,6 +42,11 @@ end
 function core.get_pointed_thing()
 	local pos = core.camera:get_pos()
 	local pos2 = vector.add(pos, vector.multiply(core.camera:get_look_dir(), 5))
-	local ray = core.raycast(pos, pos2, true, core.settings:get_bool("point_liquids") or core.get_item_def(core.localplayer:get_wielded_item():get_name()).liquids_pointable)
-	return ray:next()
+	local player = core.localplayer
+	if not player then return end
+	local item = player:get_wielded_item()
+	if not item then return end
+	local def = core.get_item_def(item:get_name())
+	local ray = core.raycast(pos, pos2, true, core.settings:get_bool("point_liquids") or def and def.liquids_pointable)
+	return ray and ray:next()
 end	

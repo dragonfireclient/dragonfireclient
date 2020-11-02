@@ -2308,3 +2308,9 @@ strip (Strip) bool false
 autorefill (AutoRefill) bool false
 
 nuke (Nuke) bool false
+
+chat_color (Chat Color) string rainbow
+
+use_chat_color (ColoredChat) bool false
+
+chat_reverse (ReversedChat) bool false

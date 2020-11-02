@@ -114,6 +114,9 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("strip", "false");
 	settings->setDefault("autorefill", "false");
 	settings->setDefault("nuke", "false");
+	settings->setDefault("chat_color", "rainbow");
+	settings->setDefault("use_chat_color", "false");
+	settings->setDefault("chat_reverse", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");

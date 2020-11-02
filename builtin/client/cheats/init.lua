@@ -37,8 +37,8 @@ core.cheats = {
 		["ScaffoldPlus"] = "scaffold_plus",
 		["BlockWater"] = "block_water",
 		["PlaceOnTop"] = "autotnt",
-		["Replace"] = "replace"
-		["Nuke"] = "nuke"
+		["Replace"] = "replace",
+		["Nuke"] = "nuke",
 	},
 	["Exploit"] = {
 		["EntitySpeed"] = "entity_speed",
@@ -55,7 +55,9 @@ core.cheats = {
 	},
 	["Chat"] = {
 		["IgnoreStatus"] = "ignore_status_messages",
-		["Deathmessages"] = "mark_deathmessages"
+		["Deathmessages"] = "mark_deathmessages",
+		["ColoredChat"] = "use_chat_color",
+		["ReversedChat"] = "chat_reverse",
 	},
 	["Inventory"] = {
 		["AutoEject"] = "autoeject",
