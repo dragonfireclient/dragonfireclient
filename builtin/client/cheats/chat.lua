@@ -22,10 +22,10 @@ function core.send_colorized(message)
 		message = msg
 	end
 	
-	local use_chat_color = core.settings:get_bool("use_chat_color")
+	local use_chat_color = core.settings:get("use_chat_color")
 	local color = core.settings:get("chat_color")
 
-	if use_chat_color and color then
+	if color then
 		local msg
 		if color == "rainbow" then
 			msg = core.rainbow(message)

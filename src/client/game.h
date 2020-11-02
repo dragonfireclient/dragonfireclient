@@ -773,6 +773,7 @@ public:
 	PointedThing updatePointedThing(
 			const core::line3d<f32> &shootline, bool liquids_pointable,
 			bool look_for_object, const v3s16 &camera_offset);
+	void handleKillaura(v3f origin, f32 max_d);
 	void handlePointingAtNothing(const ItemStack &playerItem);
 	void handlePointingAtNode(const PointedThing &pointed,
 			const ItemStack &selected_item, const ItemStack &hand_item, f32 dtime);
