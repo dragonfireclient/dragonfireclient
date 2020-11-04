@@ -26,8 +26,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "environment.h"
 #include "util/pointedthing.h"
 
+
 // Should be ordered exactly like enum NodeDrawType in nodedef.h
-struct EnumString ScriptApiNode::es_DrawType[] = {
+struct EnumString ScriptApiNode::es_DrawType[] =
+	{
 		{NDT_NORMAL, "normal"},
 		{NDT_AIRLIKE, "airlike"},
 		{NDT_LIQUID, "liquid"},
@@ -47,9 +49,10 @@ struct EnumString ScriptApiNode::es_DrawType[] = {
 		{NDT_MESH, "mesh"},
 		{NDT_PLANTLIKE_ROOTED, "plantlike_rooted"},
 		{0, NULL},
-};
+	};
 
-struct EnumString ScriptApiNode::es_ContentParamType2[] = {
+struct EnumString ScriptApiNode::es_ContentParamType2[] =
+	{
 		{CPT2_NONE, "none"},
 		{CPT2_FULL, "full"},
 		{CPT2_FLOWINGLIQUID, "flowingliquid"},
@@ -63,32 +66,35 @@ struct EnumString ScriptApiNode::es_ContentParamType2[] = {
 		{CPT2_COLORED_WALLMOUNTED, "colorwallmounted"},
 		{CPT2_GLASSLIKE_LIQUID_LEVEL, "glasslikeliquidlevel"},
 		{0, NULL},
-};
+	};
 
-struct EnumString ScriptApiNode::es_LiquidType[] = {
+struct EnumString ScriptApiNode::es_LiquidType[] =
+	{
 		{LIQUID_NONE, "none"},
 		{LIQUID_FLOWING, "flowing"},
 		{LIQUID_SOURCE, "source"},
 		{0, NULL},
-};
+	};
 
-struct EnumString ScriptApiNode::es_ContentParamType[] = {
+struct EnumString ScriptApiNode::es_ContentParamType[] =
+	{
 		{CPT_NONE, "none"},
 		{CPT_LIGHT, "light"},
 		{0, NULL},
-};
+	};
 
-struct EnumString ScriptApiNode::es_NodeBoxType[] = {
+struct EnumString ScriptApiNode::es_NodeBoxType[] =
+	{
 		{NODEBOX_REGULAR, "regular"},
 		{NODEBOX_FIXED, "fixed"},
 		{NODEBOX_WALLMOUNTED, "wallmounted"},
 		{NODEBOX_LEVELED, "leveled"},
 		{NODEBOX_CONNECTED, "connected"},
 		{0, NULL},
-};
+	};
 
-bool ScriptApiNode::node_on_punch(v3s16 p, MapNode node, ServerActiveObject *puncher,
-		const PointedThing &pointed)
+bool ScriptApiNode::node_on_punch(v3s16 p, MapNode node,
+		ServerActiveObject *puncher, const PointedThing &pointed)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -106,11 +112,12 @@ bool ScriptApiNode::node_on_punch(v3s16 p, MapNode node, ServerActiveObject *pun
 	objectrefGetOrCreate(L, puncher);
 	pushPointedThing(pointed);
 	PCALL_RES(lua_pcall(L, 4, 0, error_handler));
-	lua_pop(L, 1); // Pop error handler
+	lua_pop(L, 1);  // Pop error handler
 	return true;
 }
 
-bool ScriptApiNode::node_on_dig(v3s16 p, MapNode node, ServerActiveObject *digger)
+bool ScriptApiNode::node_on_dig(v3s16 p, MapNode node,
+		ServerActiveObject *digger)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -127,7 +134,7 @@ bool ScriptApiNode::node_on_dig(v3s16 p, MapNode node, ServerActiveObject *digge
 	pushnode(L, node, ndef);
 	objectrefGetOrCreate(L, digger);
 	PCALL_RES(lua_pcall(L, 3, 0, error_handler));
-	lua_pop(L, 1); // Pop error handler
+	lua_pop(L, 1);  // Pop error handler
 	return true;
 }
 
@@ -146,7 +153,7 @@ void ScriptApiNode::node_on_construct(v3s16 p, MapNode node)
 	// Call function
 	push_v3s16(L, p);
 	PCALL_RES(lua_pcall(L, 1, 0, error_handler));
-	lua_pop(L, 1); // Pop error handler
+	lua_pop(L, 1);  // Pop error handler
 }
 
 void ScriptApiNode::node_on_destruct(v3s16 p, MapNode node)
@@ -164,7 +171,7 @@ void ScriptApiNode::node_on_destruct(v3s16 p, MapNode node)
 	// Call function
 	push_v3s16(L, p);
 	PCALL_RES(lua_pcall(L, 1, 0, error_handler));
-	lua_pop(L, 1); // Pop error handler
+	lua_pop(L, 1);  // Pop error handler
 }
 
 bool ScriptApiNode::node_on_flood(v3s16 p, MapNode node, MapNode newnode)
@@ -204,7 +211,7 @@ void ScriptApiNode::node_after_destruct(v3s16 p, MapNode node)
 	push_v3s16(L, p);
 	pushnode(L, node, ndef);
 	PCALL_RES(lua_pcall(L, 2, 0, error_handler));
-	lua_pop(L, 1); // Pop error handler
+	lua_pop(L, 1);  // Pop error handler
 }
 
 bool ScriptApiNode::node_on_timer(v3s16 p, MapNode node, f32 dtime)
@@ -221,14 +228,16 @@ bool ScriptApiNode::node_on_timer(v3s16 p, MapNode node, f32 dtime)
 
 	// Call function
 	push_v3s16(L, p);
-	lua_pushnumber(L, dtime);
+	lua_pushnumber(L,dtime);
 	PCALL_RES(lua_pcall(L, 2, 1, error_handler));
 	lua_remove(L, error_handler);
 	return readParam<bool>(L, -1, false);
 }
 
-void ScriptApiNode::node_on_receive_fields(v3s16 p, const std::string &formname,
-		const StringMap &fields, ServerActiveObject *sender)
+void ScriptApiNode::node_on_receive_fields(v3s16 p,
+		const std::string &formname,
+		const StringMap &fields,
+		ServerActiveObject *sender)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -246,9 +255,9 @@ void ScriptApiNode::node_on_receive_fields(v3s16 p, const std::string &formname,
 		return;
 
 	// Call function
-	push_v3s16(L, p);		     // pos
+	push_v3s16(L, p);                    // pos
 	lua_pushstring(L, formname.c_str()); // formname
-	lua_newtable(L);		     // fields
+	lua_newtable(L);                     // fields
 	StringMap::const_iterator it;
 	for (it = fields.begin(); it != fields.end(); ++it) {
 		const std::string &name = it->first;
@@ -257,7 +266,7 @@ void ScriptApiNode::node_on_receive_fields(v3s16 p, const std::string &formname,
 		lua_pushlstring(L, value.c_str(), value.size());
 		lua_settable(L, -3);
 	}
-	objectrefGetOrCreate(L, sender); // player
+	objectrefGetOrCreate(L, sender);        // player
 	PCALL_RES(lua_pcall(L, 4, 0, error_handler));
-	lua_pop(L, 1); // Pop error handler
+	lua_pop(L, 1);  // Pop error handler
 }

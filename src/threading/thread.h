@@ -33,7 +33,7 @@ DEALINGS IN THE SOFTWARE.
 #include <mutex>
 
 #ifdef _AIX
-#include <sys/thread.h> // for tid_t
+	#include <sys/thread.h> // for tid_t
 #endif
 
 /*
@@ -41,17 +41,18 @@ DEALINGS IN THE SOFTWARE.
  * even divisions between the minimum and maximum reported thread priority.
  */
 #if !defined(_WIN32)
-#define THREAD_PRIORITY_LOWEST 0
-#define THREAD_PRIORITY_BELOW_NORMAL 1
-#define THREAD_PRIORITY_NORMAL 2
-#define THREAD_PRIORITY_ABOVE_NORMAL 3
-#define THREAD_PRIORITY_HIGHEST 4
+	#define THREAD_PRIORITY_LOWEST       0
+	#define THREAD_PRIORITY_BELOW_NORMAL 1
+	#define THREAD_PRIORITY_NORMAL       2
+	#define THREAD_PRIORITY_ABOVE_NORMAL 3
+	#define THREAD_PRIORITY_HIGHEST      4
 #endif
 
-class Thread
-{
+
+
+class Thread {
 public:
-	Thread(const std::string &name = "");
+	Thread(const std::string &name="");
 	virtual ~Thread();
 	DISABLE_CLASS_COPY(Thread)
 
@@ -140,9 +141,7 @@ protected:
 
 private:
 	std::thread::native_handle_type getThreadHandle()
-	{
-		return m_thread_obj->native_handle();
-	}
+		{ return m_thread_obj->native_handle(); }
 
 	static void threadProc(Thread *thr);
 
@@ -155,9 +154,11 @@ private:
 
 	std::thread *m_thread_obj = nullptr;
 
+
 #ifdef _AIX
 	// For AIX, there does not exist any mapping from pthread_t to tid_t
 	// available to us, so we maintain one ourselves.  This is set on thread start.
 	tid_t m_kernel_thread_id;
 #endif
 };
+

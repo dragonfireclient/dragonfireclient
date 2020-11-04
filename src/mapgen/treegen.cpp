@@ -32,8 +32,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 namespace treegen
 {
 
-void make_tree(MMVManip &vmanip, v3s16 p0, bool is_apple_tree, const NodeDefManager *ndef,
-		s32 seed)
+void make_tree(MMVManip &vmanip, v3s16 p0, bool is_apple_tree,
+	const NodeDefManager *ndef, s32 seed)
 {
 	/*
 		NOTE: Tree-placing code is currently duplicated in the engine
@@ -44,14 +44,11 @@ void make_tree(MMVManip &vmanip, v3s16 p0, bool is_apple_tree, const NodeDefMana
 	MapNode leavesnode(ndef->getId("mapgen_leaves"));
 	MapNode applenode(ndef->getId("mapgen_apple"));
 	if (treenode == CONTENT_IGNORE)
-		errorstream << "Treegen: Mapgen alias 'mapgen_tree' is invalid!"
-			    << std::endl;
+		errorstream << "Treegen: Mapgen alias 'mapgen_tree' is invalid!" << std::endl;
 	if (leavesnode == CONTENT_IGNORE)
-		errorstream << "Treegen: Mapgen alias 'mapgen_leaves' is invalid!"
-			    << std::endl;
+		errorstream << "Treegen: Mapgen alias 'mapgen_leaves' is invalid!" << std::endl;
 	if (applenode == CONTENT_IGNORE)
-		errorstream << "Treegen: Mapgen alias 'mapgen_apple' is invalid!"
-			    << std::endl;
+		errorstream << "Treegen: Mapgen alias 'mapgen_apple' is invalid!" << std::endl;
 
 	PseudoRandom pr(seed);
 	s16 trunk_h = pr.range(4, 5);
@@ -75,56 +72,57 @@ void make_tree(MMVManip &vmanip, v3s16 p0, bool is_apple_tree, const NodeDefMana
 	// Force leaves at near the end of the trunk
 	s16 d = 1;
 	for (s16 z = -d; z <= d; z++)
-		for (s16 y = -d; y <= d; y++)
-			for (s16 x = -d; x <= d; x++) {
-				leaves_d[leaves_a.index(v3s16(x, y, z))] = 1;
-			}
+	for (s16 y = -d; y <= d; y++)
+	for (s16 x = -d; x <= d; x++) {
+		leaves_d[leaves_a.index(v3s16(x, y, z))] = 1;
+	}
 
 	// Add leaves randomly
 	for (u32 iii = 0; iii < 7; iii++) {
-		v3s16 p(pr.range(leaves_a.MinEdge.X, leaves_a.MaxEdge.X - d),
-				pr.range(leaves_a.MinEdge.Y, leaves_a.MaxEdge.Y - d),
-				pr.range(leaves_a.MinEdge.Z, leaves_a.MaxEdge.Z - d));
+		v3s16 p(
+			pr.range(leaves_a.MinEdge.X, leaves_a.MaxEdge.X - d),
+			pr.range(leaves_a.MinEdge.Y, leaves_a.MaxEdge.Y - d),
+			pr.range(leaves_a.MinEdge.Z, leaves_a.MaxEdge.Z - d)
+		);
 
 		for (s16 z = 0; z <= d; z++)
-			for (s16 y = 0; y <= d; y++)
-				for (s16 x = 0; x <= d; x++) {
-					leaves_d[leaves_a.index(p + v3s16(x, y, z))] = 1;
-				}
+		for (s16 y = 0; y <= d; y++)
+		for (s16 x = 0; x <= d; x++) {
+			leaves_d[leaves_a.index(p + v3s16(x, y, z))] = 1;
+		}
 	}
 
 	// Blit leaves to vmanip
 	for (s16 z = leaves_a.MinEdge.Z; z <= leaves_a.MaxEdge.Z; z++)
-		for (s16 y = leaves_a.MinEdge.Y; y <= leaves_a.MaxEdge.Y; y++) {
-			v3s16 pmin(leaves_a.MinEdge.X, y, z);
-			u32 i = leaves_a.index(pmin);
-			u32 vi = vmanip.m_area.index(pmin + p1);
-			for (s16 x = leaves_a.MinEdge.X; x <= leaves_a.MaxEdge.X; x++) {
-				v3s16 p(x, y, z);
-				if (vmanip.m_area.contains(p + p1) &&
-						(vmanip.m_data[vi].getContent() ==
-										CONTENT_AIR ||
-								vmanip.m_data[vi].getContent() ==
-										CONTENT_IGNORE)) {
-					if (leaves_d[i] == 1) {
-						bool is_apple = pr.range(0, 99) < 10;
-						if (is_apple_tree && is_apple)
-							vmanip.m_data[vi] = applenode;
-						else
-							vmanip.m_data[vi] = leavesnode;
-					}
+	for (s16 y = leaves_a.MinEdge.Y; y <= leaves_a.MaxEdge.Y; y++) {
+		v3s16 pmin(leaves_a.MinEdge.X, y, z);
+		u32 i = leaves_a.index(pmin);
+		u32 vi = vmanip.m_area.index(pmin + p1);
+		for (s16 x = leaves_a.MinEdge.X; x <= leaves_a.MaxEdge.X; x++) {
+			v3s16 p(x, y, z);
+			if (vmanip.m_area.contains(p + p1) &&
+					(vmanip.m_data[vi].getContent() == CONTENT_AIR ||
+					vmanip.m_data[vi].getContent() == CONTENT_IGNORE)) {
+				if (leaves_d[i] == 1) {
+					bool is_apple = pr.range(0, 99) < 10;
+					if (is_apple_tree && is_apple)
+						vmanip.m_data[vi] = applenode;
+					else
+						vmanip.m_data[vi] = leavesnode;
 				}
-				vi++;
-				i++;
 			}
+			vi++;
+			i++;
 		}
+	}
 }
 
+
 // L-System tree LUA spawner
-treegen::error spawn_ltree(ServerMap *map, v3s16 p0, const NodeDefManager *ndef,
-		const TreeDef &tree_definition)
+treegen::error spawn_ltree(ServerMap *map, v3s16 p0,
+	const NodeDefManager *ndef, const TreeDef &tree_definition)
 {
-	std::map<v3s16, MapBlock *> modified_blocks;
+	std::map<v3s16, MapBlock*> modified_blocks;
 	MMVManip vmanip(map);
 	v3s16 tree_blockp = getNodeBlockPos(p0);
 	treegen::error e;
@@ -145,15 +143,16 @@ treegen::error spawn_ltree(ServerMap *map, v3s16 p0, const NodeDefManager *ndef,
 	return SUCCESS;
 }
 
-// L-System tree generator
-treegen::error make_ltree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef,
-		TreeDef tree_definition)
+
+//L-System tree generator
+treegen::error make_ltree(MMVManip &vmanip, v3s16 p0,
+	const NodeDefManager *ndef, TreeDef tree_definition)
 {
 	s32 seed;
 	if (tree_definition.explicit_seed)
 		seed = tree_definition.seed + 14002;
 	else
-		seed = p0.X * 2 + p0.Y * 4 + p0.Z; // use the tree position to seed PRNG
+		seed = p0.X * 2 + p0.Y * 4 + p0.Z;  // use the tree position to seed PRNG
 	PseudoRandom ps(seed);
 
 	// chance of inserting abcd rules
@@ -162,7 +161,7 @@ treegen::error make_ltree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef
 	double prop_c = 7;
 	double prop_d = 6;
 
-	// randomize tree growth level, minimum=2
+	//randomize tree growth level, minimum=2
 	s16 iterations = tree_definition.iterations;
 	if (tree_definition.iterations_random_level > 0)
 		iterations -= ps.range(0, tree_definition.iterations_random_level);
@@ -171,20 +170,19 @@ treegen::error make_ltree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef
 
 	s16 MAX_ANGLE_OFFSET = 5;
 	double angle_in_radians = (double)tree_definition.angle * M_PI / 180;
-	double angleOffset_in_radians =
-			(s16)(ps.range(0, 1) % MAX_ANGLE_OFFSET) * M_PI / 180;
+	double angleOffset_in_radians = (s16)(ps.range(0, 1) % MAX_ANGLE_OFFSET) * M_PI / 180;
 
-	// initialize rotation matrix, position and stacks for branches
+	//initialize rotation matrix, position and stacks for branches
 	core::matrix4 rotation;
 	rotation = setRotationAxisRadians(rotation, M_PI / 2, v3f(0, 0, 1));
 	v3f position;
 	position.X = p0.X;
 	position.Y = p0.Y;
 	position.Z = p0.Z;
-	std::stack<core::matrix4> stack_orientation;
-	std::stack<v3f> stack_position;
+	std::stack <core::matrix4> stack_orientation;
+	std::stack <v3f> stack_position;
 
-	// generate axiom
+	//generate axiom
 	std::string axiom = tree_definition.initial_axiom;
 	for (s16 i = 0; i < iterations; i++) {
 		std::string temp;
@@ -229,28 +227,42 @@ treegen::error make_ltree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef
 
 	// Add trunk nodes below a wide trunk to avoid gaps when tree is on sloping ground
 	if (tree_definition.trunk_type == "double") {
-		tree_trunk_placement(vmanip,
-				v3f(position.X + 1, position.Y - 1, position.Z),
-				tree_definition);
-		tree_trunk_placement(vmanip,
-				v3f(position.X, position.Y - 1, position.Z + 1),
-				tree_definition);
-		tree_trunk_placement(vmanip,
-				v3f(position.X + 1, position.Y - 1, position.Z + 1),
-				tree_definition);
+		tree_trunk_placement(
+			vmanip,
+			v3f(position.X + 1, position.Y - 1, position.Z),
+			tree_definition
+		);
+		tree_trunk_placement(
+			vmanip,
+			v3f(position.X, position.Y - 1, position.Z + 1),
+			tree_definition
+		);
+		tree_trunk_placement(
+			vmanip,
+			v3f(position.X + 1, position.Y - 1, position.Z + 1),
+			tree_definition
+		);
 	} else if (tree_definition.trunk_type == "crossed") {
-		tree_trunk_placement(vmanip,
-				v3f(position.X + 1, position.Y - 1, position.Z),
-				tree_definition);
-		tree_trunk_placement(vmanip,
-				v3f(position.X - 1, position.Y - 1, position.Z),
-				tree_definition);
-		tree_trunk_placement(vmanip,
-				v3f(position.X, position.Y - 1, position.Z + 1),
-				tree_definition);
-		tree_trunk_placement(vmanip,
-				v3f(position.X, position.Y - 1, position.Z - 1),
-				tree_definition);
+		tree_trunk_placement(
+			vmanip,
+			v3f(position.X + 1, position.Y - 1, position.Z),
+			tree_definition
+		);
+		tree_trunk_placement(
+			vmanip,
+			v3f(position.X - 1, position.Y - 1, position.Z),
+			tree_definition
+		);
+		tree_trunk_placement(
+			vmanip,
+			v3f(position.X, position.Y - 1, position.Z + 1),
+			tree_definition
+		);
+		tree_trunk_placement(
+			vmanip,
+			v3f(position.X, position.Y - 1, position.Z - 1),
+			tree_definition
+		);
 	}
 
 	/* build tree out of generated axiom
@@ -281,7 +293,7 @@ treegen::error make_ltree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef
 
     */
 
-	s16 x, y, z;
+	s16 x,y,z;
 	for (s16 i = 0; i < (s16)axiom.size(); i++) {
 		char axiom_char = axiom.at(i);
 		core::matrix4 temp_rotation;
@@ -294,149 +306,164 @@ treegen::error make_ltree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef
 			position += dir;
 			break;
 		case 'T':
-			tree_trunk_placement(vmanip,
-					v3f(position.X, position.Y, position.Z),
-					tree_definition);
+			tree_trunk_placement(
+				vmanip,
+				v3f(position.X, position.Y, position.Z),
+				tree_definition
+			);
 			if (tree_definition.trunk_type == "double" &&
 					!tree_definition.thin_branches) {
-				tree_trunk_placement(vmanip,
-						v3f(position.X + 1, position.Y,
-								position.Z),
-						tree_definition);
-				tree_trunk_placement(vmanip,
-						v3f(position.X, position.Y,
-								position.Z + 1),
-						tree_definition);
-				tree_trunk_placement(vmanip,
-						v3f(position.X + 1, position.Y,
-								position.Z + 1),
-						tree_definition);
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X + 1, position.Y, position.Z),
+					tree_definition
+				);
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X, position.Y, position.Z + 1),
+					tree_definition
+				);
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X + 1, position.Y, position.Z + 1),
+					tree_definition
+				);
 			} else if (tree_definition.trunk_type == "crossed" &&
 					!tree_definition.thin_branches) {
-				tree_trunk_placement(vmanip,
-						v3f(position.X + 1, position.Y,
-								position.Z),
-						tree_definition);
-				tree_trunk_placement(vmanip,
-						v3f(position.X - 1, position.Y,
-								position.Z),
-						tree_definition);
-				tree_trunk_placement(vmanip,
-						v3f(position.X, position.Y,
-								position.Z + 1),
-						tree_definition);
-				tree_trunk_placement(vmanip,
-						v3f(position.X, position.Y,
-								position.Z - 1),
-						tree_definition);
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X + 1, position.Y, position.Z),
+					tree_definition
+				);
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X - 1, position.Y, position.Z),
+					tree_definition
+				);
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X, position.Y, position.Z + 1),
+					tree_definition
+				);
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X, position.Y, position.Z - 1),
+					tree_definition
+				);
 			}
 			dir = v3f(1, 0, 0);
 			dir = transposeMatrix(rotation, dir);
 			position += dir;
 			break;
 		case 'F':
-			tree_trunk_placement(vmanip,
-					v3f(position.X, position.Y, position.Z),
-					tree_definition);
+			tree_trunk_placement(
+				vmanip,
+				v3f(position.X, position.Y, position.Z),
+				tree_definition
+			);
 			if ((stack_orientation.empty() &&
-					    tree_definition.trunk_type == "double") ||
+					tree_definition.trunk_type == "double") ||
 					(!stack_orientation.empty() &&
-							tree_definition.trunk_type ==
-									"double" &&
-							!tree_definition.thin_branches)) {
-				tree_trunk_placement(vmanip,
-						v3f(position.X + 1, position.Y,
-								position.Z),
-						tree_definition);
-				tree_trunk_placement(vmanip,
-						v3f(position.X, position.Y,
-								position.Z + 1),
-						tree_definition);
-				tree_trunk_placement(vmanip,
-						v3f(position.X + 1, position.Y,
-								position.Z + 1),
-						tree_definition);
+					tree_definition.trunk_type == "double" &&
+					!tree_definition.thin_branches)) {
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X + 1, position.Y, position.Z),
+					tree_definition
+				);
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X, position.Y, position.Z + 1),
+					tree_definition
+				);
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X + 1, position.Y, position.Z + 1),
+					tree_definition
+				);
 			} else if ((stack_orientation.empty() &&
-						   tree_definition.trunk_type ==
-								   "crossed") ||
+					tree_definition.trunk_type == "crossed") ||
 					(!stack_orientation.empty() &&
-							tree_definition.trunk_type ==
-									"crossed" &&
-							!tree_definition.thin_branches)) {
-				tree_trunk_placement(vmanip,
-						v3f(position.X + 1, position.Y,
-								position.Z),
-						tree_definition);
-				tree_trunk_placement(vmanip,
-						v3f(position.X - 1, position.Y,
-								position.Z),
-						tree_definition);
-				tree_trunk_placement(vmanip,
-						v3f(position.X, position.Y,
-								position.Z + 1),
-						tree_definition);
-				tree_trunk_placement(vmanip,
-						v3f(position.X, position.Y,
-								position.Z - 1),
-						tree_definition);
-			}
-			if (!stack_orientation.empty()) {
+					tree_definition.trunk_type == "crossed" &&
+					!tree_definition.thin_branches)) {
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X + 1, position.Y, position.Z),
+					tree_definition
+				);
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X - 1, position.Y, position.Z),
+					tree_definition
+				);
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X, position.Y, position.Z + 1),
+					tree_definition
+				);
+				tree_trunk_placement(
+					vmanip,
+					v3f(position.X, position.Y, position.Z - 1),
+					tree_definition
+				);
+			} if (!stack_orientation.empty()) {
 				s16 size = 1;
 				for (x = -size; x <= size; x++)
-					for (y = -size; y <= size; y++)
-						for (z = -size; z <= size; z++) {
-							if (abs(x) == size &&
-									abs(y) == size &&
-									abs(z) == size) {
-								tree_leaves_placement(
-										vmanip,
-										v3f(position.X + x + 1,
-												position.Y + y,
-												position.Z + z),
-										ps.next(),
-										tree_definition);
-								tree_leaves_placement(
-										vmanip,
-										v3f(position.X + x - 1,
-												position.Y + y,
-												position.Z + z),
-										ps.next(),
-										tree_definition);
-								tree_leaves_placement(
-										vmanip,
-										v3f(position.X + x,
-												position.Y + y,
-												position.Z + z +
-														1),
-										ps.next(),
-										tree_definition);
-								tree_leaves_placement(
-										vmanip,
-										v3f(position.X + x,
-												position.Y + y,
-												position.Z + z -
-														1),
-										ps.next(),
-										tree_definition);
-							}
-						}
+				for (y = -size; y <= size; y++)
+				for (z = -size; z <= size; z++) {
+					if (abs(x) == size &&
+							abs(y) == size &&
+							abs(z) == size) {
+						tree_leaves_placement(
+							vmanip,
+							v3f(position.X + x + 1, position.Y + y,
+									position.Z + z),
+							ps.next(),
+							tree_definition
+						);
+						tree_leaves_placement(
+							vmanip,
+							v3f(position.X + x - 1, position.Y + y,
+									position.Z + z),
+							ps.next(),
+							tree_definition
+						);
+						tree_leaves_placement(
+							vmanip,v3f(position.X + x, position.Y + y,
+									position.Z + z + 1),
+							ps.next(),
+							tree_definition
+						);
+						tree_leaves_placement(
+							vmanip,v3f(position.X + x, position.Y + y,
+									position.Z + z - 1),
+							ps.next(),
+							tree_definition
+						);
+					}
+				}
 			}
 			dir = v3f(1, 0, 0);
 			dir = transposeMatrix(rotation, dir);
 			position += dir;
 			break;
 		case 'f':
-			tree_single_leaves_placement(vmanip,
-					v3f(position.X, position.Y, position.Z),
-					ps.next(), tree_definition);
+			tree_single_leaves_placement(
+				vmanip,
+				v3f(position.X, position.Y, position.Z),
+				ps.next(),
+				tree_definition
+			);
 			dir = v3f(1, 0, 0);
 			dir = transposeMatrix(rotation, dir);
 			position += dir;
 			break;
 		case 'R':
-			tree_fruit_placement(vmanip,
-					v3f(position.X, position.Y, position.Z),
-					tree_definition);
+			tree_fruit_placement(
+				vmanip,
+				v3f(position.X, position.Y, position.Z),
+				tree_definition
+			);
 			dir = v3f(1, 0, 0);
 			dir = transposeMatrix(rotation, dir);
 			position += dir;
@@ -458,41 +485,37 @@ treegen::error make_ltree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef
 		case '+':
 			temp_rotation.makeIdentity();
 			temp_rotation = setRotationAxisRadians(temp_rotation,
-					angle_in_radians + angleOffset_in_radians,
-					v3f(0, 0, 1));
+					angle_in_radians + angleOffset_in_radians, v3f(0, 0, 1));
 			rotation *= temp_rotation;
 			break;
 		case '-':
 			temp_rotation.makeIdentity();
 			temp_rotation = setRotationAxisRadians(temp_rotation,
-					angle_in_radians + angleOffset_in_radians,
-					v3f(0, 0, -1));
+					angle_in_radians + angleOffset_in_radians, v3f(0, 0, -1));
 			rotation *= temp_rotation;
 			break;
 		case '&':
 			temp_rotation.makeIdentity();
 			temp_rotation = setRotationAxisRadians(temp_rotation,
-					angle_in_radians + angleOffset_in_radians,
-					v3f(0, 1, 0));
+					angle_in_radians + angleOffset_in_radians, v3f(0, 1, 0));
 			rotation *= temp_rotation;
 			break;
 		case '^':
 			temp_rotation.makeIdentity();
 			temp_rotation = setRotationAxisRadians(temp_rotation,
-					angle_in_radians + angleOffset_in_radians,
-					v3f(0, -1, 0));
+					angle_in_radians + angleOffset_in_radians, v3f(0, -1, 0));
 			rotation *= temp_rotation;
 			break;
 		case '*':
 			temp_rotation.makeIdentity();
-			temp_rotation = setRotationAxisRadians(
-					temp_rotation, angle_in_radians, v3f(1, 0, 0));
+			temp_rotation = setRotationAxisRadians(temp_rotation,
+					angle_in_radians, v3f(1, 0, 0));
 			rotation *= temp_rotation;
 			break;
 		case '/':
 			temp_rotation.makeIdentity();
-			temp_rotation = setRotationAxisRadians(
-					temp_rotation, angle_in_radians, v3f(-1, 0, 0));
+			temp_rotation = setRotationAxisRadians(temp_rotation,
+					angle_in_radians, v3f(-1, 0, 0));
 			rotation *= temp_rotation;
 			break;
 		default:
@@ -503,17 +526,19 @@ treegen::error make_ltree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef
 	return SUCCESS;
 }
 
+
 void tree_node_placement(MMVManip &vmanip, v3f p0, MapNode node)
 {
 	v3s16 p1 = v3s16(myround(p0.X), myround(p0.Y), myround(p0.Z));
 	if (!vmanip.m_area.contains(p1))
 		return;
 	u32 vi = vmanip.m_area.index(p1);
-	if (vmanip.m_data[vi].getContent() != CONTENT_AIR &&
-			vmanip.m_data[vi].getContent() != CONTENT_IGNORE)
+	if (vmanip.m_data[vi].getContent() != CONTENT_AIR
+			&& vmanip.m_data[vi].getContent() != CONTENT_IGNORE)
 		return;
 	vmanip.m_data[vmanip.m_area.index(p1)] = node;
 }
+
 
 void tree_trunk_placement(MMVManip &vmanip, v3f p0, TreeDef &tree_definition)
 {
@@ -522,16 +547,17 @@ void tree_trunk_placement(MMVManip &vmanip, v3f p0, TreeDef &tree_definition)
 		return;
 	u32 vi = vmanip.m_area.index(p1);
 	content_t current_node = vmanip.m_data[vi].getContent();
-	if (current_node != CONTENT_AIR && current_node != CONTENT_IGNORE &&
-			current_node != tree_definition.leavesnode.getContent() &&
-			current_node != tree_definition.leaves2node.getContent() &&
-			current_node != tree_definition.fruitnode.getContent())
+	if (current_node != CONTENT_AIR && current_node != CONTENT_IGNORE
+			&& current_node != tree_definition.leavesnode.getContent()
+			&& current_node != tree_definition.leaves2node.getContent()
+			&& current_node != tree_definition.fruitnode.getContent())
 		return;
 	vmanip.m_data[vi] = tree_definition.trunknode;
 }
 
-void tree_leaves_placement(
-		MMVManip &vmanip, v3f p0, PseudoRandom ps, TreeDef &tree_definition)
+
+void tree_leaves_placement(MMVManip &vmanip, v3f p0,
+		PseudoRandom ps, TreeDef &tree_definition)
 {
 	MapNode leavesnode = tree_definition.leavesnode;
 	if (ps.range(1, 100) > 100 - tree_definition.leaves2_chance)
@@ -540,13 +566,12 @@ void tree_leaves_placement(
 	if (!vmanip.m_area.contains(p1))
 		return;
 	u32 vi = vmanip.m_area.index(p1);
-	if (vmanip.m_data[vi].getContent() != CONTENT_AIR &&
-			vmanip.m_data[vi].getContent() != CONTENT_IGNORE)
+	if (vmanip.m_data[vi].getContent() != CONTENT_AIR
+			&& vmanip.m_data[vi].getContent() != CONTENT_IGNORE)
 		return;
 	if (tree_definition.fruit_chance > 0) {
 		if (ps.range(1, 100) > 100 - tree_definition.fruit_chance)
-			vmanip.m_data[vmanip.m_area.index(p1)] =
-					tree_definition.fruitnode;
+			vmanip.m_data[vmanip.m_area.index(p1)] = tree_definition.fruitnode;
 		else
 			vmanip.m_data[vmanip.m_area.index(p1)] = leavesnode;
 	} else if (ps.range(1, 100) > 20) {
@@ -554,8 +579,9 @@ void tree_leaves_placement(
 	}
 }
 
-void tree_single_leaves_placement(
-		MMVManip &vmanip, v3f p0, PseudoRandom ps, TreeDef &tree_definition)
+
+void tree_single_leaves_placement(MMVManip &vmanip, v3f p0,
+		PseudoRandom ps, TreeDef &tree_definition)
 {
 	MapNode leavesnode = tree_definition.leavesnode;
 	if (ps.range(1, 100) > 100 - tree_definition.leaves2_chance)
@@ -564,11 +590,12 @@ void tree_single_leaves_placement(
 	if (!vmanip.m_area.contains(p1))
 		return;
 	u32 vi = vmanip.m_area.index(p1);
-	if (vmanip.m_data[vi].getContent() != CONTENT_AIR &&
-			vmanip.m_data[vi].getContent() != CONTENT_IGNORE)
+	if (vmanip.m_data[vi].getContent() != CONTENT_AIR
+			&& vmanip.m_data[vi].getContent() != CONTENT_IGNORE)
 		return;
 	vmanip.m_data[vmanip.m_area.index(p1)] = leavesnode;
 }
+
 
 void tree_fruit_placement(MMVManip &vmanip, v3f p0, TreeDef &tree_definition)
 {
@@ -576,11 +603,12 @@ void tree_fruit_placement(MMVManip &vmanip, v3f p0, TreeDef &tree_definition)
 	if (!vmanip.m_area.contains(p1))
 		return;
 	u32 vi = vmanip.m_area.index(p1);
-	if (vmanip.m_data[vi].getContent() != CONTENT_AIR &&
-			vmanip.m_data[vi].getContent() != CONTENT_IGNORE)
+	if (vmanip.m_data[vi].getContent() != CONTENT_AIR
+			&& vmanip.m_data[vi].getContent() != CONTENT_IGNORE)
 		return;
 	vmanip.m_data[vmanip.m_area.index(p1)] = tree_definition.fruitnode;
 }
+
 
 irr::core::matrix4 setRotationAxisRadians(irr::core::matrix4 M, double angle, v3f axis)
 {
@@ -588,12 +616,12 @@ irr::core::matrix4 setRotationAxisRadians(irr::core::matrix4 M, double angle, v3
 	double s = sin(angle);
 	double t = 1.0 - c;
 
-	double tx = t * axis.X;
-	double ty = t * axis.Y;
-	double tz = t * axis.Z;
-	double sx = s * axis.X;
-	double sy = s * axis.Y;
-	double sz = s * axis.Z;
+	double tx  = t * axis.X;
+	double ty  = t * axis.Y;
+	double tz  = t * axis.Z;
+	double sx  = s * axis.X;
+	double sy  = s * axis.Y;
+	double sz  = s * axis.Z;
 
 	M[0] = tx * axis.X + c;
 	M[1] = tx * axis.Y + sz;
@@ -603,64 +631,65 @@ irr::core::matrix4 setRotationAxisRadians(irr::core::matrix4 M, double angle, v3
 	M[5] = ty * axis.Y + c;
 	M[6] = ty * axis.Z + sx;
 
-	M[8] = tz * axis.X + sy;
-	M[9] = tz * axis.Y - sx;
+	M[8]  = tz * axis.X + sy;
+	M[9]  = tz * axis.Y - sx;
 	M[10] = tz * axis.Z + c;
 	return M;
 }
 
+
 v3f transposeMatrix(irr::core::matrix4 M, v3f v)
 {
 	v3f translated;
-	double x = M[0] * v.X + M[4] * v.Y + M[8] * v.Z + M[12];
-	double y = M[1] * v.X + M[5] * v.Y + M[9] * v.Z + M[13];
-	double z = M[2] * v.X + M[6] * v.Y + M[10] * v.Z + M[14];
+	double x = M[0] * v.X + M[4] * v.Y + M[8]  * v.Z +M[12];
+	double y = M[1] * v.X + M[5] * v.Y + M[9]  * v.Z +M[13];
+	double z = M[2] * v.X + M[6] * v.Y + M[10] * v.Z +M[14];
 	translated.X = x;
 	translated.Y = y;
 	translated.Z = z;
 	return translated;
 }
 
-void make_jungletree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef, s32 seed)
+
+void make_jungletree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef,
+	s32 seed)
 {
 	/*
 		NOTE: Tree-placing code is currently duplicated in the engine
 		and in games that have saplings; both are deprecated but not
 		replaced yet
 	*/
-	content_t c_tree = ndef->getId("mapgen_jungletree");
+	content_t c_tree   = ndef->getId("mapgen_jungletree");
 	content_t c_leaves = ndef->getId("mapgen_jungleleaves");
 	if (c_tree == CONTENT_IGNORE)
 		c_tree = ndef->getId("mapgen_tree");
 	if (c_leaves == CONTENT_IGNORE)
 		c_leaves = ndef->getId("mapgen_leaves");
 	if (c_tree == CONTENT_IGNORE)
-		errorstream << "Treegen: Mapgen alias 'mapgen_jungletree' is invalid!"
-			    << std::endl;
+		errorstream << "Treegen: Mapgen alias 'mapgen_jungletree' is invalid!" << std::endl;
 	if (c_leaves == CONTENT_IGNORE)
-		errorstream << "Treegen: Mapgen alias 'mapgen_jungleleaves' is invalid!"
-			    << std::endl;
+		errorstream << "Treegen: Mapgen alias 'mapgen_jungleleaves' is invalid!" << std::endl;
 
 	MapNode treenode(c_tree);
 	MapNode leavesnode(c_leaves);
 
 	PseudoRandom pr(seed);
-	for (s16 x = -1; x <= 1; x++)
-		for (s16 z = -1; z <= 1; z++) {
-			if (pr.range(0, 2) == 0)
-				continue;
-			v3s16 p1 = p0 + v3s16(x, 0, z);
-			v3s16 p2 = p0 + v3s16(x, -1, z);
-			u32 vi1 = vmanip.m_area.index(p1);
-			u32 vi2 = vmanip.m_area.index(p2);
+	for (s16 x= -1; x <= 1; x++)
+	for (s16 z= -1; z <= 1; z++) {
+		if (pr.range(0, 2) == 0)
+			continue;
+		v3s16 p1 = p0 + v3s16(x, 0, z);
+		v3s16 p2 = p0 + v3s16(x, -1, z);
+		u32 vi1 = vmanip.m_area.index(p1);
+		u32 vi2 = vmanip.m_area.index(p2);
 
-			if (vmanip.m_area.contains(p2) &&
-					vmanip.m_data[vi2].getContent() == CONTENT_AIR)
-				vmanip.m_data[vi2] = treenode;
-			else if (vmanip.m_area.contains(p1) &&
-					vmanip.m_data[vi1].getContent() == CONTENT_AIR)
-				vmanip.m_data[vi1] = treenode;
-		}
+		if (vmanip.m_area.contains(p2) &&
+				vmanip.m_data[vi2].getContent() == CONTENT_AIR)
+			vmanip.m_data[vi2] = treenode;
+		else if (vmanip.m_area.contains(p1) &&
+				vmanip.m_data[vi1].getContent() == CONTENT_AIR)
+			vmanip.m_data[vi1] = treenode;
+	}
 	vmanip.m_data[vmanip.m_area.index(p0)] = treenode;
 
 	s16 trunk_h = pr.range(8, 12);
@@ -677,7 +706,7 @@ void make_jungletree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef, s32
 	p1.Y -= 1;
 
 	VoxelArea leaves_a(v3s16(-3, -2, -3), v3s16(3, 2, 3));
-	// SharedPtr<u8> leaves_d(new u8[leaves_a.getVolume()]);
+	//SharedPtr<u8> leaves_d(new u8[leaves_a.getVolume()]);
 	Buffer<u8> leaves_d(leaves_a.getVolume());
 	for (s32 i = 0; i < leaves_a.getVolume(); i++)
 		leaves_d[i] = 0;
@@ -685,54 +714,56 @@ void make_jungletree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef, s32
 	// Force leaves at near the end of the trunk
 	s16 d = 1;
 	for (s16 z = -d; z <= d; z++)
-		for (s16 y = -d; y <= d; y++)
-			for (s16 x = -d; x <= d; x++) {
-				leaves_d[leaves_a.index(v3s16(x, y, z))] = 1;
-			}
+	for (s16 y = -d; y <= d; y++)
+	for (s16 x = -d; x <= d; x++) {
+		leaves_d[leaves_a.index(v3s16(x,y,z))] = 1;
+	}
 
 	// Add leaves randomly
 	for (u32 iii = 0; iii < 30; iii++) {
-		v3s16 p(pr.range(leaves_a.MinEdge.X, leaves_a.MaxEdge.X - d),
-				pr.range(leaves_a.MinEdge.Y, leaves_a.MaxEdge.Y - d),
-				pr.range(leaves_a.MinEdge.Z, leaves_a.MaxEdge.Z - d));
+		v3s16 p(
+			pr.range(leaves_a.MinEdge.X, leaves_a.MaxEdge.X - d),
+			pr.range(leaves_a.MinEdge.Y, leaves_a.MaxEdge.Y - d),
+			pr.range(leaves_a.MinEdge.Z, leaves_a.MaxEdge.Z - d)
+		);
 
 		for (s16 z = 0; z <= d; z++)
-			for (s16 y = 0; y <= d; y++)
-				for (s16 x = 0; x <= d; x++) {
-					leaves_d[leaves_a.index(p + v3s16(x, y, z))] = 1;
-				}
+		for (s16 y = 0; y <= d; y++)
+		for (s16 x = 0; x <= d; x++) {
+			leaves_d[leaves_a.index(p + v3s16(x, y, z))] = 1;
+		}
 	}
 
 	// Blit leaves to vmanip
 	for (s16 z = leaves_a.MinEdge.Z; z <= leaves_a.MaxEdge.Z; z++)
-		for (s16 y = leaves_a.MinEdge.Y; y <= leaves_a.MaxEdge.Y; y++) {
-			v3s16 pmin(leaves_a.MinEdge.X, y, z);
-			u32 i = leaves_a.index(pmin);
-			u32 vi = vmanip.m_area.index(pmin + p1);
-			for (s16 x = leaves_a.MinEdge.X; x <= leaves_a.MaxEdge.X; x++) {
-				v3s16 p(x, y, z);
-				if (vmanip.m_area.contains(p + p1) &&
-						(vmanip.m_data[vi].getContent() ==
-										CONTENT_AIR ||
-								vmanip.m_data[vi].getContent() ==
-										CONTENT_IGNORE)) {
-					if (leaves_d[i] == 1)
-						vmanip.m_data[vi] = leavesnode;
-				}
-				vi++;
-				i++;
+	for (s16 y = leaves_a.MinEdge.Y; y <= leaves_a.MaxEdge.Y; y++) {
+		v3s16 pmin(leaves_a.MinEdge.X, y, z);
+		u32 i = leaves_a.index(pmin);
+		u32 vi = vmanip.m_area.index(pmin + p1);
+		for (s16 x = leaves_a.MinEdge.X; x <= leaves_a.MaxEdge.X; x++) {
+			v3s16 p(x, y, z);
+			if (vmanip.m_area.contains(p + p1) &&
+					(vmanip.m_data[vi].getContent() == CONTENT_AIR ||
+					vmanip.m_data[vi].getContent() == CONTENT_IGNORE)) {
+				if (leaves_d[i] == 1)
+					vmanip.m_data[vi] = leavesnode;
 			}
+			vi++;
+			i++;
 		}
+	}
 }
 
-void make_pine_tree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef, s32 seed)
+
+void make_pine_tree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef,
+	s32 seed)
 {
 	/*
 		NOTE: Tree-placing code is currently duplicated in the engine
 		and in games that have saplings; both are deprecated but not
 		replaced yet
 	*/
-	content_t c_tree = ndef->getId("mapgen_pine_tree");
+	content_t c_tree   = ndef->getId("mapgen_pine_tree");
 	content_t c_leaves = ndef->getId("mapgen_pine_needles");
 	content_t c_snow = ndef->getId("mapgen_snow");
 	if (c_tree == CONTENT_IGNORE)
@@ -742,11 +773,9 @@ void make_pine_tree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef, s32 
 	if (c_snow == CONTENT_IGNORE)
 		c_snow = CONTENT_AIR;
 	if (c_tree == CONTENT_IGNORE)
-		errorstream << "Treegen: Mapgen alias 'mapgen_pine_tree' is invalid!"
-			    << std::endl;
+		errorstream << "Treegen: Mapgen alias 'mapgen_pine_tree' is invalid!" << std::endl;
 	if (c_leaves == CONTENT_IGNORE)
-		errorstream << "Treegen: Mapgen alias 'mapgen_pine_needles' is invalid!"
-			    << std::endl;
+		errorstream << "Treegen: Mapgen alias 'mapgen_pine_needles' is invalid!" << std::endl;
 
 	MapNode treenode(c_tree);
 	MapNode leavesnode(c_leaves);
@@ -776,7 +805,7 @@ void make_pine_tree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef, s32 
 	for (s16 yy = -1; yy <= 1; yy++) {
 		for (s16 zz = -dev; zz <= dev; zz++) {
 			u32 i = leaves_a.index(v3s16(-dev, yy, zz));
-			u32 ia = leaves_a.index(v3s16(-dev, yy + 1, zz));
+			u32 ia = leaves_a.index(v3s16(-dev, yy+1, zz));
 			for (s16 xx = -dev; xx <= dev; xx++) {
 				if (pr.range(0, 20) <= 19 - dev) {
 					leaves_d[i] = 1;
@@ -834,28 +863,25 @@ void make_pine_tree(MMVManip &vmanip, v3s16 p0, const NodeDefManager *ndef, s32 
 
 	// Blit leaves to vmanip
 	for (s16 z = leaves_a.MinEdge.Z; z <= leaves_a.MaxEdge.Z; z++)
-		for (s16 y = leaves_a.MinEdge.Y; y <= leaves_a.MaxEdge.Y; y++) {
-			v3s16 pmin(leaves_a.MinEdge.X, y, z);
-			u32 i = leaves_a.index(pmin);
-			u32 vi = vmanip.m_area.index(pmin + p1);
-			for (s16 x = leaves_a.MinEdge.X; x <= leaves_a.MaxEdge.X; x++) {
-				v3s16 p(x, y, z);
-				if (vmanip.m_area.contains(p + p1) &&
-						(vmanip.m_data[vi].getContent() ==
-										CONTENT_AIR ||
-								vmanip.m_data[vi].getContent() ==
-										CONTENT_IGNORE ||
-								vmanip.m_data[vi] ==
-										snownode)) {
-					if (leaves_d[i] == 1)
-						vmanip.m_data[vi] = leavesnode;
-					else if (leaves_d[i] == 2)
-						vmanip.m_data[vi] = snownode;
-				}
-				vi++;
-				i++;
+	for (s16 y = leaves_a.MinEdge.Y; y <= leaves_a.MaxEdge.Y; y++) {
+		v3s16 pmin(leaves_a.MinEdge.X, y, z);
+		u32 i = leaves_a.index(pmin);
+		u32 vi = vmanip.m_area.index(pmin + p1);
+		for (s16 x = leaves_a.MinEdge.X; x <= leaves_a.MaxEdge.X; x++) {
+			v3s16 p(x, y, z);
+			if (vmanip.m_area.contains(p + p1) &&
+					(vmanip.m_data[vi].getContent() == CONTENT_AIR ||
+					vmanip.m_data[vi].getContent() == CONTENT_IGNORE ||
+					vmanip.m_data[vi] == snownode)) {
+				if (leaves_d[i] == 1)
+					vmanip.m_data[vi] = leavesnode;
+				else if (leaves_d[i] == 2)
+					vmanip.m_data[vi] = snownode;
 			}
+			vi++;
+			i++;
 		}
+	}
 }
 
 }; // namespace treegen

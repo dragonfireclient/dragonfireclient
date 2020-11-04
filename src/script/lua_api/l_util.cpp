@@ -41,6 +41,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "util/sha1.h"
 #include <algorithm>
 
+
 // log([level,] text)
 // Writes a line to the logger.
 // The one-argument version logs to LL_NONE.
@@ -64,7 +65,7 @@ int ModApiUtil::l_log(lua_State *L)
 		level = Logger::stringToLevel(name);
 		if (level == LL_MAX) {
 			warningstream << "Tried to log at unknown level '" << name
-				      << "'.  Defaulting to \"none\"." << std::endl;
+				<< "'.  Defaulting to \"none\"." << std::endl;
 			level = LL_NONE;
 		}
 	}
@@ -108,10 +109,8 @@ int ModApiUtil::l_parse_json(lua_State *L)
 			size_t jlen = strlen(jsonstr);
 			if (jlen > 100) {
 				errorstream << "Data (" << jlen
-					    << " bytes) printed to warningstream."
-					    << std::endl;
-				warningstream << "data: \"" << jsonstr << "\""
-					      << std::endl;
+					<< " bytes) printed to warningstream." << std::endl;
+				warningstream << "data: \"" << jsonstr << "\"" << std::endl;
 			} else {
 				errorstream << "data: \"" << jsonstr << "\"" << std::endl;
 			}
@@ -122,7 +121,7 @@ int ModApiUtil::l_parse_json(lua_State *L)
 
 	if (!push_json_value(L, root, nullindex)) {
 		errorstream << "Failed to parse json data, "
-			    << "depth exceeds lua stack limit" << std::endl;
+			<< "depth exceeds lua stack limit" << std::endl;
 		errorstream << "data: \"" << jsonstr << "\"" << std::endl;
 		lua_pushnil(L);
 	}
@@ -177,7 +176,7 @@ int ModApiUtil::l_get_hit_params(lua_State *L)
 	std::unordered_map<std::string, int> groups;
 	read_groups(L, 1, groups);
 	ToolCapabilities tp = read_tool_capabilities(L, 2);
-	if (lua_isnoneornil(L, 3))
+	if(lua_isnoneornil(L, 3))
 		push_hit_params(L, getHitParams(groups, &tp));
 	else
 		push_hit_params(L, getHitParams(groups, &tp, readParam<float>(L, 3)));
@@ -229,9 +228,9 @@ int ModApiUtil::l_is_yes(lua_State *L)
 {
 	NO_MAP_LOCK_REQUIRED;
 
-	lua_getglobal(L, "tostring");			 // function to be called
-	lua_pushvalue(L, 1);				 // 1st argument
-	lua_call(L, 1, 1);				 // execute function
+	lua_getglobal(L, "tostring"); // function to be called
+	lua_pushvalue(L, 1); // 1st argument
+	lua_call(L, 1, 1); // execute function
 	std::string str = readParam<std::string>(L, -1); // get result
 	lua_pop(L, 1);
 
@@ -346,7 +345,7 @@ int ModApiUtil::l_get_dir_list(lua_State *L)
 {
 	NO_MAP_LOCK_REQUIRED;
 	const char *path = luaL_checkstring(L, 1);
-	bool list_all = !lua_isboolean(L, 2);	// if its not a boolean list all
+	bool list_all = !lua_isboolean(L, 2); // if its not a boolean list all
 	bool list_dirs = readParam<bool>(L, 2); // true: list dirs, false: list files
 
 	CHECK_SECURE_PATH(L, path, false);
@@ -417,11 +416,12 @@ int ModApiUtil::l_request_insecure_environment(lua_State *L)
 	// Check secure.trusted_mods
 	std::string mod_name = readParam<std::string>(L, -1);
 	std::string trusted_mods = g_settings->get("secure.trusted_mods");
-	trusted_mods.erase(std::remove_if(trusted_mods.begin(), trusted_mods.end(),
-					   static_cast<int (*)(int)>(&std::isspace)),
+	trusted_mods.erase(std::remove_if(trusted_mods.begin(),
+			trusted_mods.end(), static_cast<int(*)(int)>(&std::isspace)),
 			trusted_mods.end());
 	std::vector<std::string> mod_list = str_split(trusted_mods, ',');
-	if (std::find(mod_list.begin(), mod_list.end(), mod_name) == mod_list.end()) {
+	if (std::find(mod_list.begin(), mod_list.end(), mod_name) ==
+			mod_list.end()) {
 		return 0;
 	}
 
@@ -463,7 +463,7 @@ int ModApiUtil::l_sha1(lua_State *L)
 		SHA1 ctx;
 		ctx.addBytes(data, size);
 		unsigned char *data_tmpdigest = ctx.getDigest();
-		data_sha1.assign((char *)data_tmpdigest, 20);
+		data_sha1.assign((char*) data_tmpdigest, 20);
 		free(data_tmpdigest);
 	}
 
@@ -527,7 +527,7 @@ void ModApiUtil::InitializeClient(lua_State *L, int top)
 
 	API_FCT(is_yes);
 	API_FCT(is_nan);
-
+	
 	API_FCT(compress);
 	API_FCT(decompress);
 
@@ -538,7 +538,7 @@ void ModApiUtil::InitializeClient(lua_State *L, int top)
 
 	API_FCT(get_version);
 	API_FCT(sha1);
-
+	
 	LuaSettings::create(L, g_settings, g_settings_path);
 	lua_setfield(L, top, "settings");
 }
@@ -571,3 +571,4 @@ void ModApiUtil::InitializeAsync(lua_State *L, int top)
 	LuaSettings::create(L, g_settings, g_settings_path);
 	lua_setfield(L, top, "settings");
 }
+

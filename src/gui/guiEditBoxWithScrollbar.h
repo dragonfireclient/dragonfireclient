@@ -16,26 +16,26 @@ using namespace irr::gui;
 class GUIEditBoxWithScrollBar : public IGUIEditBox
 {
 public:
+
 	//! constructor
-	GUIEditBoxWithScrollBar(const wchar_t *text, bool border,
-			IGUIEnvironment *environment, IGUIElement *parent, s32 id,
-			const core::rect<s32> &rectangle, bool writable = true,
-			bool has_vscrollbar = true);
+	GUIEditBoxWithScrollBar(const wchar_t* text, bool border, IGUIEnvironment* environment,
+		IGUIElement* parent, s32 id, const core::rect<s32>& rectangle,
+		bool writable = true, bool has_vscrollbar = true);
 
 	//! destructor
 	virtual ~GUIEditBoxWithScrollBar();
 
 	//! Sets another skin independent font.
-	virtual void setOverrideFont(IGUIFont *font = 0);
+	virtual void setOverrideFont(IGUIFont* font = 0);
 
 	//! Gets the override font (if any)
 	/** \return The override font (may be 0) */
-	virtual IGUIFont *getOverrideFont() const;
+	virtual IGUIFont* getOverrideFont() const;
 
 	//! Get the font which is used right now for drawing
 	/** Currently this is the override font when one is set and the
 	font of the active skin otherwise */
-	virtual IGUIFont *getActiveFont() const;
+	virtual IGUIFont* getActiveFont() const;
 
 	//! Sets another color for the text.
 	virtual void setOverrideColor(video::SColor color);
@@ -74,8 +74,7 @@ public:
 	virtual bool isMultiLineEnabled() const;
 
 	//! Enables or disables automatic scrolling with cursor position
-	//! \param enable: If set to true, the text will move around with the cursor
-	//! position
+	//! \param enable: If set to true, the text will move around with the cursor position
 	virtual void setAutoScroll(bool enable);
 
 	//! Checks to see if automatic scrolling is enabled
@@ -90,13 +89,13 @@ public:
 	virtual void setTextAlignment(EGUI_ALIGNMENT horizontal, EGUI_ALIGNMENT vertical);
 
 	//! called if an event happened.
-	virtual bool OnEvent(const SEvent &event);
+	virtual bool OnEvent(const SEvent& event);
 
 	//! draws the element and its children
 	virtual void draw();
 
 	//! Sets the new caption of this element.
-	virtual void setText(const wchar_t *text);
+	virtual void setText(const wchar_t* text);
 
 	//! Sets the maximum amount of characters which may be entered in the box.
 	//! \param max: Maximum amount of characters. If 0, the character amount is
@@ -124,12 +123,10 @@ public:
 	virtual void setBackgroundColor(const video::SColor &bg_color);
 
 	//! Writes attributes of the element.
-	virtual void serializeAttributes(io::IAttributes *out,
-			io::SAttributeReadWriteOptions *options) const;
+	virtual void serializeAttributes(io::IAttributes* out, io::SAttributeReadWriteOptions* options) const;
 
 	//! Reads attributes of the element
-	virtual void deserializeAttributes(
-			io::IAttributes *in, io::SAttributeReadWriteOptions *options);
+	virtual void deserializeAttributes(io::IAttributes* in, io::SAttributeReadWriteOptions* options);
 
 	virtual bool isDrawBackgroundEnabled() const;
 	virtual bool isDrawBorderEnabled() const;
@@ -160,8 +157,8 @@ protected:
 	//! update the vertical scrollBar (visibilty & position)
 	void updateVScrollBar();
 
-	bool processKey(const SEvent &event);
-	bool processMouse(const SEvent &event);
+	bool processKey(const SEvent& event);
+	bool processMouse(const SEvent& event);
 	s32 getCursorPos(s32 x, s32 y);
 
 	bool m_mouse_marking;
@@ -173,7 +170,7 @@ protected:
 
 	video::SColor m_override_color;
 	gui::IGUIFont *m_override_font, *m_last_break_font;
-	IOSOperator *m_operator;
+	IOSOperator* m_operator;
 
 	u32 m_blink_start_time;
 	s32 m_cursor_pos;
@@ -197,4 +194,6 @@ protected:
 	video::SColor m_bg_color;
 };
 
+
 #endif // GUIEDITBOXWITHSCROLLBAR_HEADER
+

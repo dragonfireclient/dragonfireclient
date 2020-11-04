@@ -26,9 +26,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "gamedef.h"
 #include "settings.h"
 #include "log.h"
-#include "porting.h" // strlcpy
+#include "porting.h"  // strlcpy
 
-Player::Player(const char *name, IItemDefManager *idef) : inventory(idef)
+
+Player::Player(const char *name, IItemDefManager *idef):
+	inventory(idef)
 {
 	strlcpy(m_name, name, PLAYERNAME_SIZE);
 
@@ -42,32 +44,33 @@ Player::Player(const char *name, IItemDefManager *idef) : inventory(idef)
 
 	// Can be redefined via Lua
 	inventory_formspec = "size[8,7.5]"
-			     //"image[1,0.6;1,2;player.png]"
-			     "list[current_player;main;0,3.5;8,4;]"
-			     "list[current_player;craft;3,0;3,3;]"
-			     "listring[]"
-			     "list[current_player;craftpreview;7,1;1,1;]";
+		//"image[1,0.6;1,2;player.png]"
+		"list[current_player;main;0,3.5;8,4;]"
+		"list[current_player;craft;3,0;3,3;]"
+		"listring[]"
+		"list[current_player;craftpreview;7,1;1,1;]";
 
 	// Initialize movement settings at default values, so movement can work
 	// if the server fails to send them
-	movement_acceleration_default = 3 * BS;
-	movement_acceleration_air = 2 * BS;
-	movement_acceleration_fast = 10 * BS;
-	movement_speed_walk = 4 * BS;
-	movement_speed_crouch = 1.35 * BS;
-	movement_speed_fast = 20 * BS;
-	movement_speed_climb = 2 * BS;
-	movement_speed_jump = 6.5 * BS;
-	movement_liquid_fluidity = 1 * BS;
-	movement_liquid_fluidity_smooth = 0.5 * BS;
-	movement_liquid_sink = 10 * BS;
-	movement_gravity = 9.81 * BS;
-	local_animation_speed = 0.0;
+	movement_acceleration_default   = 3    * BS;
+	movement_acceleration_air       = 2    * BS;
+	movement_acceleration_fast      = 10   * BS;
+	movement_speed_walk             = 4    * BS;
+	movement_speed_crouch           = 1.35 * BS;
+	movement_speed_fast             = 20   * BS;
+	movement_speed_climb            = 2    * BS;
+	movement_speed_jump             = 6.5  * BS;
+	movement_liquid_fluidity        = 1    * BS;
+	movement_liquid_fluidity_smooth = 0.5  * BS;
+	movement_liquid_sink            = 10   * BS;
+	movement_gravity                = 9.81 * BS;
+	local_animation_speed           = 0.0;
 
-	hud_flags = HUD_FLAG_HOTBAR_VISIBLE | HUD_FLAG_HEALTHBAR_VISIBLE |
-		    HUD_FLAG_CROSSHAIR_VISIBLE | HUD_FLAG_WIELDITEM_VISIBLE |
-		    HUD_FLAG_BREATHBAR_VISIBLE | HUD_FLAG_MINIMAP_VISIBLE |
-		    HUD_FLAG_MINIMAP_RADAR_VISIBLE;
+	hud_flags =
+		HUD_FLAG_HOTBAR_VISIBLE    | HUD_FLAG_HEALTHBAR_VISIBLE |
+		HUD_FLAG_CROSSHAIR_VISIBLE | HUD_FLAG_WIELDITEM_VISIBLE |
+		HUD_FLAG_BREATHBAR_VISIBLE | HUD_FLAG_MINIMAP_VISIBLE   |
+		HUD_FLAG_MINIMAP_RADAR_VISIBLE;
 
 	hud_hotbar_itemcount = HUD_HOTBAR_ITEMCOUNT_DEFAULT;
 
@@ -75,7 +78,7 @@ Player::Player(const char *name, IItemDefManager *idef) : inventory(idef)
 	// Register player setting callbacks
 	for (const std::string &name : m_player_settings.setting_names)
 		g_settings->registerChangedCallback(name,
-				&Player::settingsChangedCallback, &m_player_settings);
+			&Player::settingsChangedCallback, &m_player_settings);
 }
 
 Player::~Player()
@@ -83,7 +86,7 @@ Player::~Player()
 	// m_player_settings becomes invalid, remove callbacks
 	for (const std::string &name : m_player_settings.setting_names)
 		g_settings->deregisterChangedCallback(name,
-				&Player::settingsChangedCallback, &m_player_settings);
+			&Player::settingsChangedCallback, &m_player_settings);
 	clearHud();
 }
 
@@ -124,7 +127,7 @@ u32 Player::addHud(HudElement *toadd)
 	return id;
 }
 
-HudElement *Player::getHud(u32 id)
+HudElement* Player::getHud(u32 id)
 {
 	MutexAutoLock lock(m_mutex);
 
@@ -134,11 +137,11 @@ HudElement *Player::getHud(u32 id)
 	return NULL;
 }
 
-HudElement *Player::removeHud(u32 id)
+HudElement* Player::removeHud(u32 id)
 {
 	MutexAutoLock lock(m_mutex);
 
-	HudElement *retval = NULL;
+	HudElement* retval = NULL;
 	if (id < hud.size()) {
 		retval = hud[id];
 		hud[id] = NULL;
@@ -150,7 +153,7 @@ void Player::clearHud()
 {
 	MutexAutoLock lock(m_mutex);
 
-	while (!hud.empty()) {
+	while(!hud.empty()) {
 		delete hud.back();
 		hud.pop_back();
 	}

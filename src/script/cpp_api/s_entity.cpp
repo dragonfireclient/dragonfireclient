@@ -29,8 +29,8 @@ bool ScriptApiEntity::luaentity_Add(u16 id, const char *name)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
-	verbosestream << "scriptapi_luaentity_add: id=" << id << " name=\"" << name
-		      << "\"" << std::endl;
+	verbosestream<<"scriptapi_luaentity_add: id="<<id<<" name=\""
+			<<name<<"\""<<std::endl;
 
 	// Get core.registered_entities[name]
 	lua_getglobal(L, "core");
@@ -39,14 +39,13 @@ bool ScriptApiEntity::luaentity_Add(u16 id, const char *name)
 	lua_pushstring(L, name);
 	lua_gettable(L, -2);
 	// Should be a table, which we will use as a prototype
-	// luaL_checktype(L, -1, LUA_TTABLE);
-	if (lua_type(L, -1) != LUA_TTABLE) {
-		errorstream << "LuaEntity name \"" << name << "\" not defined"
-			    << std::endl;
+	//luaL_checktype(L, -1, LUA_TTABLE);
+	if (lua_type(L, -1) != LUA_TTABLE){
+		errorstream<<"LuaEntity name \""<<name<<"\" not defined"<<std::endl;
 		return false;
 	}
 	int prototype_table = lua_gettop(L);
-	// dump2(L, "prototype_table");
+	//dump2(L, "prototype_table");
 
 	// Create entity object
 	lua_newtable(L);
@@ -68,15 +67,15 @@ bool ScriptApiEntity::luaentity_Add(u16 id, const char *name)
 	lua_getglobal(L, "core");
 	lua_getfield(L, -1, "luaentities");
 	luaL_checktype(L, -1, LUA_TTABLE);
-	lua_pushnumber(L, id);	  // Push id
+	lua_pushnumber(L, id); // Push id
 	lua_pushvalue(L, object); // Copy object to top of stack
 	lua_settable(L, -3);
 
 	return true;
 }
 
-void ScriptApiEntity::luaentity_Activate(
-		u16 id, const std::string &staticdata, u32 dtime_s)
+void ScriptApiEntity::luaentity_Activate(u16 id,
+		const std::string &staticdata, u32 dtime_s)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -128,7 +127,7 @@ std::string ScriptApiEntity::luaentity_GetStaticdata(u16 id)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
-	// infostream<<"scriptapi_luaentity_get_staticdata: id="<<id<<std::endl;
+	//infostream<<"scriptapi_luaentity_get_staticdata: id="<<id<<std::endl;
 
 	int error_handler = PUSH_ERROR_HANDLER(L);
 
@@ -157,12 +156,12 @@ std::string ScriptApiEntity::luaentity_GetStaticdata(u16 id)
 	return std::string(s, len);
 }
 
-void ScriptApiEntity::luaentity_GetProperties(
-		u16 id, ServerActiveObject *self, ObjectProperties *prop)
+void ScriptApiEntity::luaentity_GetProperties(u16 id,
+		ServerActiveObject *self, ObjectProperties *prop)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
-	// infostream<<"scriptapi_luaentity_get_properties: id="<<id<<std::endl;
+	//infostream<<"scriptapi_luaentity_get_properties: id="<<id<<std::endl;
 
 	// Get core.luaentities[id]
 	luaentity_get(L, id);
@@ -179,8 +178,8 @@ void ScriptApiEntity::luaentity_GetProperties(
 	lua_pop(L, 1);
 }
 
-void ScriptApiEntity::luaentity_Step(
-		u16 id, float dtime, const collisionMoveResult *moveresult)
+void ScriptApiEntity::luaentity_Step(u16 id, float dtime,
+	const collisionMoveResult *moveresult)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -213,18 +212,18 @@ void ScriptApiEntity::luaentity_Step(
 
 // Calls entity:on_punch(ObjectRef puncher, time_from_last_punch,
 //                       tool_capabilities, direction, damage)
-bool ScriptApiEntity::luaentity_Punch(u16 id, ServerActiveObject *puncher,
-		float time_from_last_punch, const ToolCapabilities *toolcap, v3f dir,
-		s16 damage)
+bool ScriptApiEntity::luaentity_Punch(u16 id,
+		ServerActiveObject *puncher, float time_from_last_punch,
+		const ToolCapabilities *toolcap, v3f dir, s16 damage)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
-	// infostream<<"scriptapi_luaentity_step: id="<<id<<std::endl;
+	//infostream<<"scriptapi_luaentity_step: id="<<id<<std::endl;
 
 	int error_handler = PUSH_ERROR_HANDLER(L);
 
 	// Get core.luaentities[id]
-	luaentity_get(L, id);
+	luaentity_get(L,id);
 	int object = lua_gettop(L);
 	// State: object is at top of stack
 	// Get function
@@ -234,8 +233,8 @@ bool ScriptApiEntity::luaentity_Punch(u16 id, ServerActiveObject *puncher,
 		return false;
 	}
 	luaL_checktype(L, -1, LUA_TFUNCTION);
-	lua_pushvalue(L, object);	  // self
-	objectrefGetOrCreate(L, puncher); // Clicker reference
+	lua_pushvalue(L, object);  // self
+	objectrefGetOrCreate(L, puncher);  // Clicker reference
 	lua_pushnumber(L, time_from_last_punch);
 	push_tool_capabilities(L, *toolcap);
 	push_v3f(L, dir);
@@ -250,8 +249,8 @@ bool ScriptApiEntity::luaentity_Punch(u16 id, ServerActiveObject *puncher,
 }
 
 // Calls entity[field](ObjectRef self, ObjectRef sao)
-bool ScriptApiEntity::luaentity_run_simple_callback(
-		u16 id, ServerActiveObject *sao, const char *field)
+bool ScriptApiEntity::luaentity_run_simple_callback(u16 id,
+	ServerActiveObject *sao, const char *field)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -268,8 +267,8 @@ bool ScriptApiEntity::luaentity_run_simple_callback(
 		return false;
 	}
 	luaL_checktype(L, -1, LUA_TFUNCTION);
-	lua_pushvalue(L, object);     // self
-	objectrefGetOrCreate(L, sao); // killer reference
+	lua_pushvalue(L, object);  // self
+	objectrefGetOrCreate(L, sao);  // killer reference
 
 	setOriginFromTable(object);
 	PCALL_RES(lua_pcall(L, 2, 1, error_handler));

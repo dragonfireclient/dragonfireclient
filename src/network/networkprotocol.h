@@ -127,8 +127,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 			TOSERVER_SRP_BYTES_M, TOCLIENT_SRP_BYTES_S_B
 			for the three supported auth mechanisms around srp
 		Add new opcodes TOCLIENT_ACCEPT_SUDO_MODE and TOCLIENT_DENY_SUDO_MODE
-			for sudo mode handling (auth mech generic way of changing
-   password). Add TOCLIENT_HELLO for presenting server to client after client presentation
+			for sudo mode handling (auth mech generic way of changing password).
+		Add TOCLIENT_HELLO for presenting server to client after client
+			presentation
 		Add TOCLIENT_AUTH_ACCEPT to accept connection from client
 		Rename GENERIC_CMD_SET_ATTACHMENT to AO_CMD_ATTACH_TO
 	PROTOCOL_VERSION 26:
@@ -160,14 +161,14 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	PROTOCOL VERSION 34:
 		Add sound pitch
 	PROTOCOL VERSION 35:
-		Rename TOCLIENT_CHAT_MESSAGE to TOCLIENT_CHAT_MESSAGE_OLD (0x30)
-		Add TOCLIENT_CHAT_MESSAGE (0x2F)
-			This chat message is a signalisation message containing various
+ 		Rename TOCLIENT_CHAT_MESSAGE to TOCLIENT_CHAT_MESSAGE_OLD (0x30)
+ 		Add TOCLIENT_CHAT_MESSAGE (0x2F)
+ 			This chat message is a signalisation message containing various
 			informations:
-			* timestamp
-			* sender
-			* type (RAW, NORMAL, ANNOUNCE, SYSTEM)
-			* content
+ 			* timestamp
+ 			* sender
+ 			* type (RAW, NORMAL, ANNOUNCE, SYSTEM)
+ 			* content
 		Add TOCLIENT_CSM_RESTRICTION_FLAGS to define which CSM features should be
 			limited
 		Add settable player collisionbox. Breaks compatibility with older
@@ -221,9 +222,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 // Constant that differentiates the protocol from random data and other protocols
 #define PROTOCOL_ID 0x4f457403
 
-#define PASSWORD_SIZE                                                                    \
-	28 // Maximum password length. Allows for
-	   // base64-encoded SHA-1 (27+\0).
+#define PASSWORD_SIZE 28       // Maximum password length. Allows for
+                               // base64-encoded SHA-1 (27+\0).
 
 /*
 	Changes by FORMSPEC_API_VERSION:
@@ -243,8 +243,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 #define FORMSPEC_API_VERSION 4
 
-#define TEXTURENAME_ALLOWED_CHARS                                                        \
-	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.-"
+#define TEXTURENAME_ALLOWED_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.-"
 
 typedef u16 session_t;
 
@@ -258,8 +257,7 @@ enum ToClientCommand
 		u16 deployed network compression mode
 		u16 deployed protocol version
 		u32 supported auth methods
-		std::string username that should be used for legacy hash (for proper
-	   casing)
+		std::string username that should be used for legacy hash (for proper casing)
 	*/
 	TOCLIENT_AUTH_ACCEPT = 0x03,
 	/*
@@ -288,7 +286,7 @@ enum ToClientCommand
 
 	TOCLIENT_INIT_LEGACY = 0x10, // Obsolete
 
-	TOCLIENT_BLOCKDATA = 0x20, // TODO: Multiple blocks
+	TOCLIENT_BLOCKDATA = 0x20, //TODO: Multiple blocks
 	TOCLIENT_ADDNODE = 0x21,
 	/*
 		v3s16 position
@@ -297,10 +295,10 @@ enum ToClientCommand
 	*/
 	TOCLIENT_REMOVENODE = 0x22,
 
-	TOCLIENT_PLAYERPOS = 0x23,	     // Obsolete
-	TOCLIENT_PLAYERINFO = 0x24,	     // Obsolete
+	TOCLIENT_PLAYERPOS = 0x23, // Obsolete
+	TOCLIENT_PLAYERINFO = 0x24, // Obsolete
 	TOCLIENT_OPT_BLOCK_NOT_FOUND = 0x25, // Obsolete
-	TOCLIENT_SECTORMETA = 0x26,	     // Obsolete
+	TOCLIENT_SECTORMETA = 0x26, // Obsolete
 
 	TOCLIENT_INVENTORY = 0x27,
 	/*
@@ -698,8 +696,8 @@ enum ToClientCommand
 	*/
 	TOCLIENT_UPDATE_PLAYER_LIST = 0x56,
 	/*
-		u8 type
-		u16 number of players
+	 	u8 type
+	 	u16 number of players
 		for each player
 			u16 len
 			u8[len] player name
@@ -708,18 +706,18 @@ enum ToClientCommand
 	TOCLIENT_MODCHANNEL_MSG = 0x57,
 	/*
 		u16 channel name length
-		std::string channel name
-		u16 channel name sender
-		std::string channel name
-		u16 message length
-		std::string message
+	 	std::string channel name
+	 	u16 channel name sender
+	 	std::string channel name
+	 	u16 message length
+	 	std::string message
 	*/
 
 	TOCLIENT_MODCHANNEL_SIGNAL = 0x58,
 	/*
 		u8 signal id
-		u16 channel name length
-		std::string channel name
+	 	u16 channel name length
+	 	std::string channel name
 	*/
 
 	TOCLIENT_NODEMETA_CHANGED = 0x59,
@@ -795,25 +793,25 @@ enum ToServerCommand
 	TOSERVER_MODCHANNEL_JOIN = 0x17,
 	/*
 		u16 channel name length
-		std::string channel name
+	 	std::string channel name
 	 */
 
 	TOSERVER_MODCHANNEL_LEAVE = 0x18,
 	/*
 		u16 channel name length
-		std::string channel name
+	 	std::string channel name
 	 */
 
 	TOSERVER_MODCHANNEL_MSG = 0x19,
 	/*
 		u16 channel name length
-		std::string channel name
-		u16 message length
-		std::string message
+	 	std::string channel name
+	 	u16 message length
+	 	std::string message
 	 */
 
-	TOSERVER_GETBLOCK = 0x20,   // Obsolete
-	TOSERVER_ADDNODE = 0x21,    // Obsolete
+	TOSERVER_GETBLOCK = 0x20, // Obsolete
+	TOSERVER_ADDNODE = 0x21, // Obsolete
 	TOSERVER_REMOVENODE = 0x22, // Obsolete
 
 	TOSERVER_PLAYERPOS = 0x23,
@@ -847,10 +845,10 @@ enum ToServerCommand
 	*/
 
 	TOSERVER_ADDNODE_FROM_INVENTORY = 0x26, // Obsolete
-	TOSERVER_CLICK_OBJECT = 0x27,		// Obsolete
-	TOSERVER_GROUND_ACTION = 0x28,		// Obsolete
-	TOSERVER_RELEASE = 0x29,		// Obsolete
-	TOSERVER_SIGNTEXT = 0x30,		// Obsolete
+	TOSERVER_CLICK_OBJECT = 0x27, // Obsolete
+	TOSERVER_GROUND_ACTION = 0x28, // Obsolete
+	TOSERVER_RELEASE = 0x29, // Obsolete
+	TOSERVER_SIGNTEXT = 0x30, // Obsolete
 
 	TOSERVER_INVENTORY_ACTION = 0x31,
 	/*
@@ -863,7 +861,7 @@ enum ToServerCommand
 		wstring message
 	*/
 
-	TOSERVER_SIGNNODETEXT = 0x33,	    // Obsolete
+	TOSERVER_SIGNNODETEXT = 0x33, // Obsolete
 	TOSERVER_CLICK_ACTIVEOBJECT = 0x34, // Obsolete
 
 	TOSERVER_DAMAGE = 0x35,
@@ -942,7 +940,7 @@ enum ToServerCommand
 	*/
 
 	TOSERVER_RECEIVED_MEDIA = 0x41, // Obsolete
-	TOSERVER_BREATH = 0x42,		// Obsolete
+	TOSERVER_BREATH = 0x42, // Obsolete
 
 	TOSERVER_CLIENT_READY = 0x43,
 	/*
@@ -970,8 +968,8 @@ enum ToServerCommand
 
 		std::string bytes_A
 		u8 current_login_based_on : on which version of the password's
-					    hash this login is based on (0 legacy hash,
-					    or 1 directly the password)
+		                            hash this login is based on (0 legacy hash,
+		                            or 1 directly the password)
 	*/
 
 	TOSERVER_SRP_BYTES_M = 0x52,
@@ -999,8 +997,7 @@ enum AuthMechanism
 	AUTH_MECHANISM_FIRST_SRP = 1 << 2,
 };
 
-enum AccessDeniedCode
-{
+enum AccessDeniedCode {
 	SERVER_ACCESSDENIED_WRONG_PASSWORD,
 	SERVER_ACCESSDENIED_UNEXPECTED_DATA,
 	SERVER_ACCESSDENIED_SINGLEPLAYER,
@@ -1017,58 +1014,54 @@ enum AccessDeniedCode
 	SERVER_ACCESSDENIED_MAX,
 };
 
-enum NetProtoCompressionMode
-{
+enum NetProtoCompressionMode {
 	NETPROTO_COMPRESSION_NONE = 0,
 };
 
 const static std::string accessDeniedStrings[SERVER_ACCESSDENIED_MAX] = {
-		"Invalid password",
-		"Your client sent something the server didn't expect.  Try reconnecting "
-		"or updating your client",
-		"The server is running in simple singleplayer mode.  You cannot connect.",
-		"Your client's version is not supported.\nPlease contact server "
-		"administrator.",
-		"Player name contains disallowed characters.", "Player name not allowed.",
-		"Too many users.",
-		"Empty passwords are disallowed.  Set a password and try again.",
-		"Another client is connected with this name.  If your client closed "
-		"unexpectedly, try again in a minute.",
-		"Server authentication failed.  This is likely a server error.", "",
-		"Server shutting down.",
-		"This server has experienced an internal error. You will now be "
-		"disconnected."};
+	"Invalid password",
+	"Your client sent something the server didn't expect.  Try reconnecting or updating your client",
+	"The server is running in simple singleplayer mode.  You cannot connect.",
+	"Your client's version is not supported.\nPlease contact server administrator.",
+	"Player name contains disallowed characters.",
+	"Player name not allowed.",
+	"Too many users.",
+	"Empty passwords are disallowed.  Set a password and try again.",
+	"Another client is connected with this name.  If your client closed unexpectedly, try again in a minute.",
+	"Server authentication failed.  This is likely a server error.",
+	"",
+	"Server shutting down.",
+	"This server has experienced an internal error. You will now be disconnected."
+};
 
-enum PlayerListModifer : u8
+enum PlayerListModifer: u8
 {
 	PLAYER_LIST_INIT,
 	PLAYER_LIST_ADD,
 	PLAYER_LIST_REMOVE,
 };
 
-enum CSMRestrictionFlags : u64
-{
+enum CSMRestrictionFlags : u64 {
 	CSM_RF_NONE = 0x00000000,
 	// Until server-sent CSM and verifying of builtin are complete,
 	// 'CSM_RF_LOAD_CLIENT_MODS' also disables loading 'builtin'.
 	// When those are complete, this should return to only being a restriction on the
 	// loading of client mods.
-	CSM_RF_LOAD_CLIENT_MODS =
-			0x00000001,	   // Don't load client-provided mods or 'builtin'
-	CSM_RF_CHAT_MESSAGES = 0x00000002, // Disable chat message sending from CSM
-	CSM_RF_READ_ITEMDEFS = 0x00000004, // Disable itemdef lookups
-	CSM_RF_READ_NODEDEFS = 0x00000008, // Disable nodedef lookups
-	CSM_RF_LOOKUP_NODES = 0x00000010,  // Limit node lookups
-	CSM_RF_READ_PLAYERINFO = 0x00000020, // Disable player info lookups
+	CSM_RF_LOAD_CLIENT_MODS = 0x00000001, // Don't load client-provided mods or 'builtin'
+	CSM_RF_CHAT_MESSAGES = 0x00000002,    // Disable chat message sending from CSM
+	CSM_RF_READ_ITEMDEFS = 0x00000004,    // Disable itemdef lookups
+	CSM_RF_READ_NODEDEFS = 0x00000008,    // Disable nodedef lookups
+	CSM_RF_LOOKUP_NODES = 0x00000010,     // Limit node lookups
+	CSM_RF_READ_PLAYERINFO = 0x00000020,  // Disable player info lookups
 	CSM_RF_ALL = 0xFFFFFFFF,
 };
 
 enum InteractAction : u8
 {
-	INTERACT_START_DIGGING,	    // 0: start digging (from undersurface) or use
-	INTERACT_STOP_DIGGING,	    // 1: stop digging (all parameters ignored)
+	INTERACT_START_DIGGING,     // 0: start digging (from undersurface) or use
+	INTERACT_STOP_DIGGING,      // 1: stop digging (all parameters ignored)
 	INTERACT_DIGGING_COMPLETED, // 2: digging completed
-	INTERACT_PLACE,		    // 3: place block or item (to abovesurface)
-	INTERACT_USE,		    // 4: use item
-	INTERACT_ACTIVATE	    // 5: rightclick air ("activate")
+	INTERACT_PLACE,             // 3: place block or item (to abovesurface)
+	INTERACT_USE,               // 4: use item
+	INTERACT_ACTIVATE           // 5: rightclick air ("activate")
 };

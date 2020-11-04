@@ -27,14 +27,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "mapgen/mapgen.h" // for MapgenParams
 #include "map.h"
 
-#define BLOCK_EMERGE_ALLOW_GEN (1 << 0)
+#define BLOCK_EMERGE_ALLOW_GEN   (1 << 0)
 #define BLOCK_EMERGE_FORCE_QUEUE (1 << 1)
 
-#define EMERGE_DBG_OUT(x)                                                                \
-	{                                                                                \
-		if (enable_mapgen_debug_info)                                            \
-			infostream << "EmergeThread: " x << std::endl;                   \
-	}
+#define EMERGE_DBG_OUT(x) {                            \
+	if (enable_mapgen_debug_info)                      \
+		infostream << "EmergeThread: " x << std::endl; \
+}
 
 class EmergeThread;
 class NodeDefManager;
@@ -48,8 +47,7 @@ class Server;
 class ModApiMapgen;
 
 // Structure containing inputs/outputs for chunk generation
-struct BlockMakeData
-{
+struct BlockMakeData {
 	MMVManip *vmanip = nullptr;
 	u64 seed = 0;
 	v3s16 blockpos_min;
@@ -64,8 +62,7 @@ struct BlockMakeData
 };
 
 // Result from processing an item on the emerge queue
-enum EmergeAction
-{
+enum EmergeAction {
 	EMERGE_CANCELLED,
 	EMERGE_ERRORED,
 	EMERGE_FROM_MEMORY,
@@ -75,21 +72,23 @@ enum EmergeAction
 
 // Callback
 typedef void (*EmergeCompletionCallback)(
-		v3s16 blockpos, EmergeAction action, void *param);
+	v3s16 blockpos, EmergeAction action, void *param);
 
-typedef std::vector<std::pair<EmergeCompletionCallback, void *>> EmergeCallbackList;
+typedef std::vector<
+	std::pair<
+		EmergeCompletionCallback,
+		void *
+	>
+> EmergeCallbackList;
 
-struct BlockEmergeData
-{
+struct BlockEmergeData {
 	u16 peer_requested;
 	u16 flags;
 	EmergeCallbackList callbacks;
 };
 
-class EmergeParams
-{
+class EmergeParams {
 	friend class EmergeManager;
-
 public:
 	EmergeParams() = delete;
 	~EmergeParams();
@@ -108,18 +107,16 @@ public:
 
 private:
 	EmergeParams(EmergeManager *parent, const BiomeManager *biomemgr,
-			const OreManager *oremgr, const DecorationManager *decomgr,
-			const SchematicManager *schemmgr);
+		const OreManager *oremgr, const DecorationManager *decomgr,
+		const SchematicManager *schemmgr);
 };
 
-class EmergeManager
-{
+class EmergeManager {
 	/* The mod API needs unchecked access to allow:
 	 * - using decomgr or oremgr to place decos/ores
 	 * - using schemmgr to load and place schematics
 	 */
 	friend class ModApiMapgen;
-
 public:
 	const NodeDefManager *ndef;
 	bool enable_mapgen_debug_info;
@@ -161,11 +158,18 @@ public:
 	void stopThreads();
 	bool isRunning();
 
-	bool enqueueBlockEmerge(session_t peer_id, v3s16 blockpos, bool allow_generate,
-			bool ignore_queue_limits = false);
+	bool enqueueBlockEmerge(
+		session_t peer_id,
+		v3s16 blockpos,
+		bool allow_generate,
+		bool ignore_queue_limits=false);
 
-	bool enqueueBlockEmergeEx(v3s16 blockpos, session_t peer_id, u16 flags,
-			EmergeCompletionCallback callback, void *callback_param);
+	bool enqueueBlockEmergeEx(
+		v3s16 blockpos,
+		session_t peer_id,
+		u16 flags,
+		EmergeCompletionCallback callback,
+		void *callback_param);
 
 	v3s16 getContainingChunk(v3s16 blockpos);
 
@@ -201,9 +205,13 @@ private:
 	// Requires m_queue_mutex held
 	EmergeThread *getOptimalThread();
 
-	bool pushBlockEmergeData(v3s16 pos, u16 peer_requested, u16 flags,
-			EmergeCompletionCallback callback, void *callback_param,
-			bool *entry_already_exists);
+	bool pushBlockEmergeData(
+		v3s16 pos,
+		u16 peer_requested,
+		u16 flags,
+		EmergeCompletionCallback callback,
+		void *callback_param,
+		bool *entry_already_exists);
 
 	bool popBlockEmergeData(v3s16 pos, BlockEmergeData *bedata);
 

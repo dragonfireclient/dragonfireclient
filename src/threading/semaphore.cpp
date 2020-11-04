@@ -23,37 +23,35 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <cstdlib>
 #include <cassert>
 
-#define UNUSED(expr)                                                                     \
-	do {                                                                             \
-		(void)(expr);                                                            \
-	} while (0)
+#define UNUSED(expr) do { (void)(expr); } while (0)
 
 #ifdef _WIN32
-#include <climits>
-#define MAX_SEMAPHORE_COUNT LONG_MAX - 1
+	#include <climits>
+	#define MAX_SEMAPHORE_COUNT LONG_MAX - 1
 #else
-#include <cerrno>
-#include <sys/time.h>
-#include <pthread.h>
-#if defined(__MACH__) && defined(__APPLE__)
-#include <mach/mach.h>
-#include <mach/task.h>
-#include <mach/semaphore.h>
-#include <sys/semaphore.h>
-#include <unistd.h>
+	#include <cerrno>
+	#include <sys/time.h>
+	#include <pthread.h>
+	#if defined(__MACH__) && defined(__APPLE__)
+		#include <mach/mach.h>
+		#include <mach/task.h>
+		#include <mach/semaphore.h>
+		#include <sys/semaphore.h>
+		#include <unistd.h>
 
-#undef sem_t
-#undef sem_init
-#undef sem_wait
-#undef sem_post
-#undef sem_destroy
-#define sem_t semaphore_t
-#define sem_init(s, p, c) semaphore_create(mach_task_self(), (s), 0, (c))
-#define sem_wait(s) semaphore_wait(*(s))
-#define sem_post(s) semaphore_signal(*(s))
-#define sem_destroy(s) semaphore_destroy(mach_task_self(), *(s))
+		#undef sem_t
+		#undef sem_init
+		#undef sem_wait
+		#undef sem_post
+		#undef sem_destroy
+		#define sem_t             semaphore_t
+		#define sem_init(s, p, c) semaphore_create(mach_task_self(), (s), 0, (c))
+		#define sem_wait(s)       semaphore_wait(*(s))
+		#define sem_post(s)       semaphore_signal(*(s))
+		#define sem_destroy(s)    semaphore_destroy(mach_task_self(), *(s))
+	#endif
 #endif
-#endif
+
 
 Semaphore::Semaphore(int val)
 {
@@ -65,6 +63,7 @@ Semaphore::Semaphore(int val)
 	UNUSED(ret);
 #endif
 }
+
 
 Semaphore::~Semaphore()
 {
@@ -82,6 +81,7 @@ Semaphore::~Semaphore()
 #endif
 }
 
+
 void Semaphore::post(unsigned int num)
 {
 	assert(num > 0);
@@ -96,6 +96,7 @@ void Semaphore::post(unsigned int num)
 #endif
 }
 
+
 void Semaphore::wait()
 {
 #ifdef _WIN32
@@ -106,6 +107,7 @@ void Semaphore::wait()
 	UNUSED(ret);
 #endif
 }
+
 
 bool Semaphore::wait(unsigned int time_ms)
 {
@@ -119,7 +121,7 @@ bool Semaphore::wait(unsigned int time_ms)
 		return false;
 	}
 #else
-#if defined(__MACH__) && defined(__APPLE__)
+# if defined(__MACH__) && defined(__APPLE__)
 	mach_timespec_t wait_time;
 	wait_time.tv_sec = time_ms / 1000;
 	wait_time.tv_nsec = 1000000 * (time_ms % 1000);
@@ -137,33 +139,29 @@ bool Semaphore::wait(unsigned int time_ms)
 		if (ret)
 			errno = EINVAL;
 	}
-#else
+# else
 	int ret;
 	if (time_ms > 0) {
 		struct timespec wait_time;
 		struct timeval now;
 
 		if (gettimeofday(&now, NULL) == -1) {
-			std::cerr << "Semaphore::wait(ms): Unable to get time with "
-				     "gettimeofday!"
-				  << std::endl;
+			std::cerr << "Semaphore::wait(ms): Unable to get time with gettimeofday!" << std::endl;
 			abort();
 		}
 
-		wait_time.tv_nsec =
-				((time_ms % 1000) * 1000 * 1000) + (now.tv_usec * 1000);
-		wait_time.tv_sec = (time_ms / 1000) +
-				   (wait_time.tv_nsec / (1000 * 1000 * 1000)) +
-				   now.tv_sec;
+		wait_time.tv_nsec = ((time_ms % 1000) * 1000 * 1000) + (now.tv_usec * 1000);
+		wait_time.tv_sec  = (time_ms / 1000) + (wait_time.tv_nsec / (1000 * 1000 * 1000)) + now.tv_sec;
 		wait_time.tv_nsec %= 1000 * 1000 * 1000;
 
 		ret = sem_timedwait(&semaphore, &wait_time);
 	} else {
 		ret = sem_trywait(&semaphore);
 	}
-#endif
+# endif
 
 	assert(!ret || (errno == ETIMEDOUT || errno == EINTR || errno == EAGAIN));
 	return !ret;
 #endif
 }
+

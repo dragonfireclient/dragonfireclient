@@ -35,6 +35,7 @@ void Event::wait()
 	notified = false;
 }
 
+
 void Event::signal()
 {
 	MutexAutoLock lock(mutex);

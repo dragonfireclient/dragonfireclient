@@ -19,10 +19,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #pragma once
 
-#include "irr_v3d.h" // for irrlicht datatypes
+#include "irr_v3d.h"                   // for irrlicht datatypes
 
 #include "constants.h"
-#include "serialization.h" // for SER_FMT_VER_INVALID
+#include "serialization.h"             // for SER_FMT_VER_INVALID
 #include "network/networkpacket.h"
 #include "network/networkprotocol.h"
 #include "porting.h"
@@ -41,49 +41,49 @@ class EmergeManager;
 
       Start
   (peer connect)
-	|
-	v
+        |
+        v
       /-----------------\
       |                 |
       |    Created      |
       |                 |
       \-----------------/
-	       |                  depending of the incoming packet
-	       ----------------------------------------
-						      v
-				       +-----------------------------+
-				       |IN:                          |
-				       | TOSERVER_INIT               |
-				       +-----------------------------+
-						      | invalid playername
-						      | or denied by mod
-						      v
-				       +-----------------------------+
-				       |OUT:                         |
-				       | TOCLIENT_HELLO              |
-				       +-----------------------------+
-						      |
-						      |
-						      v
+               |                  depending of the incoming packet
+               ----------------------------------------
+                                                      v
+                                       +-----------------------------+
+                                       |IN:                          |
+                                       | TOSERVER_INIT               |
+                                       +-----------------------------+
+                                                      | invalid playername
+                                                      | or denied by mod
+                                                      v
+                                       +-----------------------------+
+                                       |OUT:                         |
+                                       | TOCLIENT_HELLO              |
+                                       +-----------------------------+
+                                                      |
+                                                      |
+                                                      v
       /-----------------\                    /-----------------\
       |                 |                    |                 |
       |  AwaitingInit2  |<---------          |    HelloSent    |
       |                 |         |          |                 |
       \-----------------/         |          \-----------------/
-	       |                  |                   |
+               |                  |                   |
 +-----------------------------+   |    *-----------------------------*     Auth fails
 |IN:                          |   |    |Authentication, depending on |------------------
 | TOSERVER_INIT2              |   |    | packet sent by client       |                 |
 +-----------------------------+   |    *-----------------------------*                 |
-	       |                  |                   |                                |
-	       |                  |                   | Authentication                 |
-	       v                  |                   |  successful                    |
+               |                  |                   |                                |
+               |                  |                   | Authentication                 |
+               v                  |                   |  successful                    |
       /-----------------\         |                   v                                |
       |                 |         |    +-----------------------------+                 |
       |    InitDone     |         |    |OUT:                         |                 |
       |                 |         |    | TOCLIENT_AUTH_ACCEPT        |                 |
       \-----------------/         |    +-----------------------------+                 |
-	       |                  |                   |                                |
+               |                  |                   |                                |
 +-----------------------------+   ---------------------                                |
 |OUT:                         |                                                        |
 | TOCLIENT_MOVEMENT           |                                                        |
@@ -93,25 +93,25 @@ class EmergeManager;
 | TOCLIENT_DETACHED_INVENTORY |                                                        |
 | TOCLIENT_TIME_OF_DAY        |                                                        |
 +-----------------------------+                                                        |
-	       |                                                                       |
-	       |                                                                       |
-	       |      -----------------------------                                    |
-	       v      |                           |                                    |
+               |                                                                       |
+               |                                                                       |
+               |      -----------------------------                                    |
+               v      |                           |                                    |
       /-----------------\                         v                                    |
       |                 |             +-----------------------------+                  |
       | DefinitionsSent |             |IN:                          |                  |
       |                 |             | TOSERVER_REQUEST_MEDIA      |                  |
       \-----------------/             |                             |                  |
-	       |                      +-----------------------------+                  |
-	       |      ^                           |                                    |
-	       |      -----------------------------                                    |
-	       v                                                                       v
+               |                      +-----------------------------+                  |
+               |      ^                           |                                    |
+               |      -----------------------------                                    |
+               v                                                                       v
 +-----------------------------+                        --------------------------------+
 |IN:                          |                        |                               ^
 | TOSERVER_CLIENT_READY       |                        v                               |
 +-----------------------------+            +------------------------+                  |
-	       |                           |OUT:                    |                  |
-	       v                           | TOCLIENT_ACCESS_DENIED |                  |
+               |                           |OUT:                    |                  |
+               v                           | TOCLIENT_ACCESS_DENIED |                  |
 +-----------------------------+            +------------------------+                  |
 |OUT:                         |                        |                               |
 | TOCLIENT_MOVE_PLAYER        |                        v                               |
@@ -123,8 +123,8 @@ class EmergeManager;
 | TOCLIENT_BREATH             |                                                        |
 | TOCLIENT_DEATHSCREEN        |                                                        |
 +-----------------------------+                                                        |
-	      |                                                                        |
-	      v                                                                        |
+              |                                                                        |
+              v                                                                        |
       /-----------------\      async mod action (ban, kick)                            |
       |                 |---------------------------------------------------------------
  ---->|     Active      |
@@ -159,13 +159,13 @@ class EmergeManager;
  |                  |                               +-----------------------------+
  |                  |    sets password accordingly  |IN:                          |
  -------------------+-------------------------------| TOSERVER_FIRST_SRP          |
-						    +-----------------------------+
+                                                    +-----------------------------+
 
 */
-namespace con
-{
-class Connection;
+namespace con {
+	class Connection;
 }
+
 
 // Also make sure to update the ClientInterface::statenames
 // array when modifying these enums
@@ -205,14 +205,13 @@ enum ClientStateEvent
 */
 struct PrioritySortedBlockTransfer
 {
-	PrioritySortedBlockTransfer(
-			float a_priority, const v3s16 &a_pos, session_t a_peer_id)
+	PrioritySortedBlockTransfer(float a_priority, const v3s16 &a_pos, session_t a_peer_id)
 	{
 		priority = a_priority;
 		pos = a_pos;
 		peer_id = a_peer_id;
 	}
-	bool operator<(const PrioritySortedBlockTransfer &other) const
+	bool operator < (const PrioritySortedBlockTransfer &other) const
 	{
 		return priority < other.priority;
 	}
@@ -237,13 +236,15 @@ public:
 	/* Authentication information */
 	std::string enc_pwd = "";
 	bool create_player_on_auth_success = false;
-	AuthMechanism chosen_mech = AUTH_MECHANISM_NONE;
+	AuthMechanism chosen_mech  = AUTH_MECHANISM_NONE;
 	void *auth_data = nullptr;
 	u32 allowed_auth_mechs = 0;
 	u32 allowed_sudo_mechs = 0;
 
-	bool isSudoMechAllowed(AuthMechanism mech) { return allowed_sudo_mechs & mech; }
-	bool isMechAllowed(AuthMechanism mech) { return allowed_auth_mechs & mech; }
+	bool isSudoMechAllowed(AuthMechanism mech)
+	{ return allowed_sudo_mechs & mech; }
+	bool isMechAllowed(AuthMechanism mech)
+	{ return allowed_auth_mechs & mech; }
 
 	RemoteClient();
 	~RemoteClient() = default;
@@ -253,15 +254,15 @@ public:
 		Environment should be locked when this is called.
 		dtime is used for resetting send radius at slow interval
 	*/
-	void GetNextBlocks(ServerEnvironment *env, EmergeManager *emerge, float dtime,
-			std::vector<PrioritySortedBlockTransfer> &dest);
+	void GetNextBlocks(ServerEnvironment *env, EmergeManager* emerge,
+			float dtime, std::vector<PrioritySortedBlockTransfer> &dest);
 
 	void GotBlock(v3s16 p);
 
 	void SentBlock(v3s16 p);
 
 	void SetBlockNotSent(v3s16 p);
-	void SetBlocksNotSent(std::map<v3s16, MapBlock *> &blocks);
+	void SetBlocksNotSent(std::map<v3s16, MapBlock*> &blocks);
 
 	/**
 	 * tell client about this block being modified right now.
@@ -281,15 +282,16 @@ public:
 	// Increments timeouts and removes timed-out blocks from list
 	// NOTE: This doesn't fix the server-not-sending-block bug
 	//       because it is related to emerging, not sending.
-	// void RunSendingTimeouts(float dtime, float timeout);
+	//void RunSendingTimeouts(float dtime, float timeout);
 
 	void PrintInfo(std::ostream &o)
 	{
-		o << "RemoteClient " << peer_id << ": "
-		  << "m_blocks_sent.size()=" << m_blocks_sent.size()
-		  << ", m_blocks_sending.size()=" << m_blocks_sending.size()
-		  << ", m_nearest_unsent_d=" << m_nearest_unsent_d
-		  << ", m_excess_gotblocks=" << m_excess_gotblocks << std::endl;
+		o<<"RemoteClient "<<peer_id<<": "
+				<<"m_blocks_sent.size()="<<m_blocks_sent.size()
+				<<", m_blocks_sending.size()="<<m_blocks_sending.size()
+				<<", m_nearest_unsent_d="<<m_nearest_unsent_d
+				<<", m_excess_gotblocks="<<m_excess_gotblocks
+				<<std::endl;
 		m_excess_gotblocks = 0;
 	}
 
@@ -312,19 +314,13 @@ public:
 
 	/* set expected serialization version */
 	void setPendingSerializationVersion(u8 version)
-	{
-		m_pending_serialization_version = version;
-	}
+		{ m_pending_serialization_version = version; }
 
 	void setDeployedCompressionMode(u16 byteFlag)
-	{
-		m_deployed_compression = byteFlag;
-	}
+		{ m_deployed_compression = byteFlag; }
 
 	void confirmSerializationVersion()
-	{
-		serialization_version = m_pending_serialization_version;
-	}
+		{ serialization_version = m_pending_serialization_version; }
 
 	/* get uptime */
 	u64 uptime() const;
@@ -343,17 +339,16 @@ public:
 	u8 getMinor() const { return m_version_minor; }
 	u8 getPatch() const { return m_version_patch; }
 	const std::string &getFull() const { return m_full_version; }
-
+	
 	void setLangCode(const std::string &code) { m_lang_code = code; }
 	const std::string &getLangCode() const { return m_lang_code; }
-
 private:
 	// Version is stored in here after INIT before INIT2
 	u8 m_pending_serialization_version = SER_FMT_VER_INVALID;
 
 	/* current state of client */
 	ClientState m_state = CS_Created;
-
+	
 	// Client sent language code
 	std::string m_lang_code;
 
@@ -432,11 +427,11 @@ private:
 	const u64 m_connection_time = porting::getTimeS();
 };
 
-typedef std::unordered_map<u16, RemoteClient *> RemoteClientMap;
+typedef std::unordered_map<u16, RemoteClient*> RemoteClientMap;
 
-class ClientInterface
-{
+class ClientInterface {
 public:
+
 	friend class Server;
 
 	ClientInterface(const std::shared_ptr<con::Connection> &con);
@@ -446,7 +441,7 @@ public:
 	void step(float dtime);
 
 	/* get list of active client id's */
-	std::vector<session_t> getClientIDs(ClientState min_state = CS_Active);
+	std::vector<session_t> getClientIDs(ClientState min_state=CS_Active);
 
 	/* mark block as not sent to active client sessions */
 	void markBlockposAsNotSent(const v3s16 &pos);
@@ -462,8 +457,7 @@ public:
 
 	/* send to all clients */
 	void sendToAll(NetworkPacket *pkt);
-	void sendToAllCompat(
-			NetworkPacket *pkt, NetworkPacket *legacypkt, u16 min_proto_ver);
+	void sendToAllCompat(NetworkPacket *pkt, NetworkPacket *legacypkt, u16 min_proto_ver);
 
 	/* delete a client */
 	void DeleteClient(session_t peer_id);
@@ -472,11 +466,10 @@ public:
 	void CreateClient(session_t peer_id);
 
 	/* get a client by peer_id */
-	RemoteClient *getClientNoEx(session_t peer_id, ClientState state_min = CS_Active);
+	RemoteClient *getClientNoEx(session_t peer_id,  ClientState state_min = CS_Active);
 
 	/* get client by peer_id (make sure you have list lock before!*/
-	RemoteClient *lockedGetClientNoEx(
-			session_t peer_id, ClientState state_min = CS_Active);
+	RemoteClient *lockedGetClientNoEx(session_t peer_id,  ClientState state_min = CS_Active);
 
 	/* get state of client by id*/
 	ClientState getClientState(session_t peer_id);
@@ -502,13 +495,12 @@ public:
 	}
 
 	static std::string state2Name(ClientState state);
-
 protected:
-	// TODO find way to avoid this functions
+	//TODO find way to avoid this functions
 	void lock() { m_clients_mutex.lock(); }
 	void unlock() { m_clients_mutex.unlock(); }
 
-	RemoteClientMap &getClientList() { return m_clients; }
+	RemoteClientMap& getClientList() { return m_clients; }
 
 private:
 	/* update internal player list */
@@ -519,7 +511,7 @@ private:
 	std::recursive_mutex m_clients_mutex;
 	// Connected clients (behind the con mutex)
 	RemoteClientMap m_clients;
-	std::vector<std::string> m_clients_names; // for announcing masterserver
+	std::vector<std::string> m_clients_names; //for announcing masterserver
 
 	// Environment
 	ServerEnvironment *m_env;

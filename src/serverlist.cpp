@@ -42,10 +42,11 @@ std::string getFilePath()
 	std::string serverlist_file = g_settings->get("serverlist_file");
 
 	std::string dir_path = "client" DIR_DELIM "serverlist" DIR_DELIM;
-	fs::CreateDir(porting::path_user + DIR_DELIM "client");
+	fs::CreateDir(porting::path_user + DIR_DELIM  "client");
 	fs::CreateDir(porting::path_user + DIR_DELIM + dir_path);
 	return porting::path_user + DIR_DELIM + dir_path + serverlist_file;
 }
+
 
 std::vector<ServerListSpec> getLocal()
 {
@@ -64,15 +65,16 @@ std::vector<ServerListSpec> getLocal()
 	return deSerialize(liststring);
 }
 
+
 std::vector<ServerListSpec> getOnline()
 {
 	std::ostringstream geturl;
 
 	u16 proto_version_min = CLIENT_PROTOCOL_VERSION_MIN;
 
-	geturl << g_settings->get("serverlist_url")
-	       << "/list?proto_version_min=" << proto_version_min
-	       << "&proto_version_max=" << CLIENT_PROTOCOL_VERSION_MAX;
+	geturl << g_settings->get("serverlist_url") <<
+		"/list?proto_version_min=" << proto_version_min <<
+		"&proto_version_max=" << CLIENT_PROTOCOL_VERSION_MAX;
 	Json::Value root = fetchJsonValue(geturl.str(), NULL);
 
 	std::vector<ServerListSpec> server_list;
@@ -94,6 +96,7 @@ std::vector<ServerListSpec> getOnline()
 
 	return server_list;
 }
+
 
 // Delete a server from the local favorites list
 bool deleteEntry(const ServerListSpec &server)
@@ -154,8 +157,8 @@ std::vector<ServerListSpec> deSerialize(const std::string &liststring)
 			server["port"] = tmp;
 			bool unique = true;
 			for (const ServerListSpec &added : serverlist) {
-				if (server["name"] == added["name"] &&
-						server["port"] == added["port"]) {
+				if (server["name"] == added["name"]
+						&& server["port"] == added["port"]) {
 					unique = false;
 					break;
 				}
@@ -196,11 +199,17 @@ const std::string serializeJson(const std::vector<ServerListSpec> &serverlist)
 	return fastWriteJson(root);
 }
 
+
 #if USE_CURL
-void sendAnnounce(AnnounceAction action, const u16 port,
-		const std::vector<std::string> &clients_names, const double uptime,
-		const u32 game_time, const float lag, const std::string &gameid,
-		const std::string &mg_name, const std::vector<ModSpec> &mods,
+void sendAnnounce(AnnounceAction action,
+		const u16 port,
+		const std::vector<std::string> &clients_names,
+		const double uptime,
+		const u32 game_time,
+		const float lag,
+		const std::string &gameid,
+		const std::string &mg_name,
+		const std::vector<ModSpec> &mods,
 		bool dedicated)
 {
 	static const char *aa_names[] = {"start", "update", "delete"};
@@ -211,24 +220,21 @@ void sendAnnounce(AnnounceAction action, const u16 port,
 		server["address"] = g_settings->get("server_address");
 	}
 	if (action != AA_DELETE) {
-		bool strict_checking =
-				g_settings->getBool("strict_protocol_version_checking");
-		server["name"] = g_settings->get("server_name");
-		server["description"] = g_settings->get("server_description");
-		server["version"] = g_version_string;
-		server["proto_min"] = strict_checking ? LATEST_PROTOCOL_VERSION
-						      : SERVER_PROTOCOL_VERSION_MIN;
-		server["proto_max"] = strict_checking ? LATEST_PROTOCOL_VERSION
-						      : SERVER_PROTOCOL_VERSION_MAX;
-		server["url"] = g_settings->get("server_url");
-		server["creative"] = g_settings->getBool("creative_mode");
-		server["damage"] = g_settings->getBool("enable_damage");
-		server["password"] = g_settings->getBool("disallow_empty_password");
-		server["pvp"] = g_settings->getBool("enable_pvp");
-		server["uptime"] = (int)uptime;
-		server["game_time"] = game_time;
-		server["clients"] = (int)clients_names.size();
-		server["clients_max"] = g_settings->getU16("max_users");
+		bool strict_checking = g_settings->getBool("strict_protocol_version_checking");
+		server["name"]         = g_settings->get("server_name");
+		server["description"]  = g_settings->get("server_description");
+		server["version"]      = g_version_string;
+		server["proto_min"]    = strict_checking ? LATEST_PROTOCOL_VERSION : SERVER_PROTOCOL_VERSION_MIN;
+		server["proto_max"]    = strict_checking ? LATEST_PROTOCOL_VERSION : SERVER_PROTOCOL_VERSION_MAX;
+		server["url"]          = g_settings->get("server_url");
+		server["creative"]     = g_settings->getBool("creative_mode");
+		server["damage"]       = g_settings->getBool("enable_damage");
+		server["password"]     = g_settings->getBool("disallow_empty_password");
+		server["pvp"]          = g_settings->getBool("enable_pvp");
+		server["uptime"]       = (int) uptime;
+		server["game_time"]    = game_time;
+		server["clients"]      = (int) clients_names.size();
+		server["clients_max"]  = g_settings->getU16("max_users");
 		server["clients_list"] = Json::Value(Json::arrayValue);
 		for (const std::string &clients_name : clients_names) {
 			server["clients_list"].append(clients_name);
@@ -238,18 +244,16 @@ void sendAnnounce(AnnounceAction action, const u16 port,
 	}
 
 	if (action == AA_START) {
-		server["dedicated"] = dedicated;
-		server["rollback"] = g_settings->getBool("enable_rollback_recording");
-		server["mapgen"] = mg_name;
-		server["privs"] = g_settings->get("default_privs");
-		server["can_see_far_names"] =
-				g_settings->getS16("player_transfer_distance") <= 0;
-		server["mods"] = Json::Value(Json::arrayValue);
+		server["dedicated"]         = dedicated;
+		server["rollback"]          = g_settings->getBool("enable_rollback_recording");
+		server["mapgen"]            = mg_name;
+		server["privs"]             = g_settings->get("default_privs");
+		server["can_see_far_names"] = g_settings->getS16("player_transfer_distance") <= 0;
+		server["mods"]              = Json::Value(Json::arrayValue);
 		for (const ModSpec &mod : mods) {
 			server["mods"].append(mod.name);
 		}
-		actionstream << "Announcing to " << g_settings->get("serverlist_url")
-			     << std::endl;
+		actionstream << "Announcing to " << g_settings->get("serverlist_url") << std::endl;
 	} else if (action == AA_UPDATE) {
 		if (lag)
 			server["lag"] = lag;
@@ -264,3 +268,4 @@ void sendAnnounce(AnnounceAction action, const u16 port,
 #endif
 
 } // namespace ServerList
+

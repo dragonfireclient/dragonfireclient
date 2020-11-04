@@ -28,7 +28,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 //#include "client/gameui.h"
 #include "client/inputhandler.h"
 #include "client/sound.h"
-#include "client/tile.h" // For TextureSource
+#include "client/tile.h"     // For TextureSource
 #include "client/keys.h"
 #include "client/joystick_controller.h"
 #include "clientmap.h"
@@ -52,7 +52,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "gui/profilergraph.h"
 #include "mapblock.h"
 #include "minimap.h"
-#include "nodedef.h" // Needed for determining pointing to nodes
+#include "nodedef.h"         // Needed for determining pointing to nodes
 #include "nodemetadata.h"
 #include "particles.h"
 #include "porting.h"
@@ -75,26 +75,23 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <string>
 
 class InputHandler;
-class ChatBackend; /* to avoid having to include chat.h */
+class ChatBackend;  /* to avoid having to include chat.h */
 struct SubgameSpec;
 struct GameStartData;
 
-struct Jitter
-{
+struct Jitter {
 	f32 max, min, avg, counter, max_sample, min_sample, max_fraction;
 };
 
-struct RunStats
-{
+struct RunStats {
 	u32 drawtime;
 
 	Jitter dtime_jitter, busy_time_jitter;
 };
 
-struct CameraOrientation
-{
-	f32 camera_yaw;	  // "right/left"
-	f32 camera_pitch; // "up/down"
+struct CameraOrientation {
+	f32 camera_yaw;    // "right/left"
+	f32 camera_pitch;  // "up/down"
 };
 
 /*
@@ -149,10 +146,13 @@ struct TextDestPlayerInventory : public TextDest
 
 struct LocalFormspecHandler : public TextDest
 {
-	LocalFormspecHandler(const std::string &formname) { m_formname = formname; }
+	LocalFormspecHandler(const std::string &formname)
+	{
+		m_formname = formname;
+	}
 
-	LocalFormspecHandler(const std::string &formname, Client *client) :
-			m_client(client)
+	LocalFormspecHandler(const std::string &formname, Client *client):
+		m_client(client)
 	{
 		m_formname = formname;
 	}
@@ -212,10 +212,14 @@ struct LocalFormspecHandler : public TextDest
 
 /* Form update callback */
 
-class NodeMetadataFormSource : public IFormSource
+class NodeMetadataFormSource: public IFormSource
 {
 public:
-	NodeMetadataFormSource(ClientMap *map, v3s16 p) : m_map(map), m_p(p) {}
+	NodeMetadataFormSource(ClientMap *map, v3s16 p):
+		m_map(map),
+		m_p(p)
+	{
+	}
 	const std::string &getForm() const
 	{
 		static const std::string empty_string = "";
@@ -241,10 +245,13 @@ public:
 	v3s16 m_p;
 };
 
-class PlayerInventoryFormSource : public IFormSource
+class PlayerInventoryFormSource: public IFormSource
 {
 public:
-	PlayerInventoryFormSource(Client *client) : m_client(client) {}
+	PlayerInventoryFormSource(Client *client):
+		m_client(client)
+	{
+	}
 
 	const std::string &getForm() const
 	{
@@ -255,21 +262,26 @@ public:
 	Client *m_client;
 };
 
-class NodeDugEvent : public MtEvent
+class NodeDugEvent: public MtEvent
 {
 public:
 	v3s16 p;
 	MapNode n;
 
-	NodeDugEvent(v3s16 p, MapNode n) : p(p), n(n) {}
-	MtEvent::Type getType() const { return MtEvent::NODE_DUG; }
+	NodeDugEvent(v3s16 p, MapNode n):
+		p(p),
+		n(n)
+	{}
+	MtEvent::Type getType() const
+	{
+		return MtEvent::NODE_DUG;
+	}
 };
 
 class SoundMaker
 {
 	ISoundManager *m_sound;
 	const NodeDefManager *m_ndef;
-
 public:
 	bool makes_footstep_sound;
 	float m_player_step_timer;
@@ -279,9 +291,12 @@ public:
 	SimpleSoundSpec m_player_leftpunch_sound;
 	SimpleSoundSpec m_player_rightpunch_sound;
 
-	SoundMaker(ISoundManager *sound, const NodeDefManager *ndef) :
-			m_sound(sound), m_ndef(ndef), makes_footstep_sound(true),
-			m_player_step_timer(0), m_player_jump_timer(0.0f)
+	SoundMaker(ISoundManager *sound, const NodeDefManager *ndef):
+		m_sound(sound),
+		m_ndef(ndef),
+		makes_footstep_sound(true),
+		m_player_step_timer(0),
+		m_player_jump_timer(0.0f)
 	{
 	}
 
@@ -348,22 +363,19 @@ public:
 	static void playerFallingDamage(MtEvent *e, void *data)
 	{
 		SoundMaker *sm = (SoundMaker *)data;
-		sm->m_sound->playSound(
-				SimpleSoundSpec("player_falling_damage", 0.5), false);
+		sm->m_sound->playSound(SimpleSoundSpec("player_falling_damage", 0.5), false);
 	}
 
 	void registerReceiver(MtEventManager *mgr)
 	{
 		mgr->reg(MtEvent::VIEW_BOBBING_STEP, SoundMaker::viewBobbingStep, this);
-		mgr->reg(MtEvent::PLAYER_REGAIN_GROUND, SoundMaker::playerRegainGround,
-				this);
+		mgr->reg(MtEvent::PLAYER_REGAIN_GROUND, SoundMaker::playerRegainGround, this);
 		mgr->reg(MtEvent::PLAYER_JUMP, SoundMaker::playerJump, this);
 		mgr->reg(MtEvent::CAMERA_PUNCH_LEFT, SoundMaker::cameraPunchLeft, this);
 		mgr->reg(MtEvent::CAMERA_PUNCH_RIGHT, SoundMaker::cameraPunchRight, this);
 		mgr->reg(MtEvent::NODE_DUG, SoundMaker::nodeDug, this);
 		mgr->reg(MtEvent::PLAYER_DAMAGE, SoundMaker::playerDamage, this);
-		mgr->reg(MtEvent::PLAYER_FALLING_DAMAGE, SoundMaker::playerFallingDamage,
-				this);
+		mgr->reg(MtEvent::PLAYER_FALLING_DAMAGE, SoundMaker::playerFallingDamage, this);
 	}
 
 	void step(float dtime)
@@ -374,40 +386,30 @@ public:
 };
 
 // Locally stored sounds don't need to be preloaded because of this
-class GameOnDemandSoundFetcher : public OnDemandSoundFetcher
+class GameOnDemandSoundFetcher: public OnDemandSoundFetcher
 {
 	std::set<std::string> m_fetched;
-
 private:
-	void paths_insert(std::set<std::string> &dst_paths, const std::string &base,
-			const std::string &name)
+	void paths_insert(std::set<std::string> &dst_paths,
+		const std::string &base,
+		const std::string &name)
 	{
 		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name + ".ogg");
-		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name +
-				 ".0.ogg");
-		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name +
-				 ".1.ogg");
-		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name +
-				 ".2.ogg");
-		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name +
-				 ".3.ogg");
-		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name +
-				 ".4.ogg");
-		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name +
-				 ".5.ogg");
-		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name +
-				 ".6.ogg");
-		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name +
-				 ".7.ogg");
-		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name +
-				 ".8.ogg");
-		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name +
-				 ".9.ogg");
+		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name + ".0.ogg");
+		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name + ".1.ogg");
+		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name + ".2.ogg");
+		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name + ".3.ogg");
+		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name + ".4.ogg");
+		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name + ".5.ogg");
+		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name + ".6.ogg");
+		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name + ".7.ogg");
+		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name + ".8.ogg");
+		dst_paths.insert(base + DIR_DELIM + "sounds" + DIR_DELIM + name + ".9.ogg");
 	}
-
 public:
-	void fetchSounds(const std::string &name, std::set<std::string> &dst_paths,
-			std::set<std::string> &dst_datas)
+	void fetchSounds(const std::string &name,
+		std::set<std::string> &dst_paths,
+		std::set<std::string> &dst_datas)
 	{
 		if (m_fetched.count(name))
 			return;
@@ -415,9 +417,10 @@ public:
 		m_fetched.insert(name);
 
 		paths_insert(dst_paths, porting::path_share, name);
-		paths_insert(dst_paths, porting::path_user, name);
+		paths_insert(dst_paths, porting::path_user,  name);
 	}
 };
+
 
 // before 1.8 there isn't a "integer interface", only float
 #if (IRRLICHT_VERSION_MAJOR == 1 && IRRLICHT_VERSION_MINOR < 8)
@@ -425,6 +428,7 @@ typedef f32 SamplerLayer_t;
 #else
 typedef s32 SamplerLayer_t;
 #endif
+
 
 class GameGlobalShaderConstantSetter : public IShaderConstantSetter
 {
@@ -456,25 +460,30 @@ public:
 
 	static void settingsCallback(const std::string &name, void *userdata)
 	{
-		reinterpret_cast<GameGlobalShaderConstantSetter *>(userdata)
-				->onSettingsChange(name);
+		reinterpret_cast<GameGlobalShaderConstantSetter*>(userdata)->onSettingsChange(name);
 	}
 
 	void setSky(Sky *sky) { m_sky = sky; }
 
-	GameGlobalShaderConstantSetter(
-			Sky *sky, bool *force_fog_off, f32 *fog_range, Client *client) :
-			m_sky(sky),
-			m_force_fog_off(force_fog_off), m_fog_range(fog_range),
-			m_sky_bg_color("skyBgColor"), m_fog_distance("fogDistance"),
-			m_animation_timer_vertex("animationTimer"),
-			m_animation_timer_pixel("animationTimer"),
-			m_day_light("dayLight"), m_eye_position_pixel("eyePosition"),
-			m_eye_position_vertex("eyePosition"), m_minimap_yaw("yawVec"),
-			m_camera_offset_pixel("cameraOffset"),
-			m_camera_offset_vertex("cameraOffset"),
-			m_base_texture("baseTexture"), m_normal_texture("normalTexture"),
-			m_texture_flags("textureFlags"), m_client(client)
+	GameGlobalShaderConstantSetter(Sky *sky, bool *force_fog_off,
+			f32 *fog_range, Client *client) :
+		m_sky(sky),
+		m_force_fog_off(force_fog_off),
+		m_fog_range(fog_range),
+		m_sky_bg_color("skyBgColor"),
+		m_fog_distance("fogDistance"),
+		m_animation_timer_vertex("animationTimer"),
+		m_animation_timer_pixel("animationTimer"),
+		m_day_light("dayLight"),
+		m_eye_position_pixel("eyePosition"),
+		m_eye_position_vertex("eyePosition"),
+		m_minimap_yaw("yawVec"),
+		m_camera_offset_pixel("cameraOffset"),
+		m_camera_offset_vertex("cameraOffset"),
+		m_base_texture("baseTexture"),
+		m_normal_texture("normalTexture"),
+		m_texture_flags("textureFlags"),
+		m_client(client)
 	{
 		g_settings->registerChangedCallback("enable_fog", settingsCallback, this);
 		m_fog_enabled = g_settings->getBool("enable_fog");
@@ -482,12 +491,11 @@ public:
 
 	~GameGlobalShaderConstantSetter()
 	{
-		g_settings->deregisterChangedCallback(
-				"enable_fog", settingsCallback, this);
+		g_settings->deregisterChangedCallback("enable_fog", settingsCallback, this);
 	}
 
-	virtual void onSetConstants(
-			video::IMaterialRendererServices *services, bool is_highlevel)
+	virtual void onSetConstants(video::IMaterialRendererServices *services,
+			bool is_highlevel)
 	{
 		if (!is_highlevel)
 			return;
@@ -496,10 +504,10 @@ public:
 		video::SColor bgcolor = m_sky->getBgColor();
 		video::SColorf bgcolorf(bgcolor);
 		float bgcolorfa[4] = {
-				bgcolorf.r,
-				bgcolorf.g,
-				bgcolorf.b,
-				bgcolorf.a,
+			bgcolorf.r,
+			bgcolorf.g,
+			bgcolorf.b,
+			bgcolorf.a,
 		};
 		m_sky_bg_color.set(bgcolorfa, services);
 
@@ -514,7 +522,10 @@ public:
 		u32 daynight_ratio = (float)m_client->getEnv().getDayNightRatio();
 		video::SColorf sunlight;
 		get_sunlight_color(&sunlight, daynight_ratio);
-		float dnc[3] = {sunlight.r, sunlight.g, sunlight.b};
+		float dnc[3] = {
+			sunlight.r,
+			sunlight.g,
+			sunlight.b };
 		m_day_light.set(dnc, services);
 
 		u32 animation_timer = porting::getTimeMs() % 1000000;
@@ -559,12 +570,15 @@ public:
 		m_camera_offset_pixel.set(camera_offset_array, services);
 		m_camera_offset_vertex.set(camera_offset_array, services);
 
-		SamplerLayer_t base_tex = 0, normal_tex = 1, flags_tex = 2;
+		SamplerLayer_t base_tex = 0,
+				normal_tex = 1,
+				flags_tex = 2;
 		m_base_texture.set(&base_tex, services);
 		m_normal_texture.set(&normal_tex, services);
 		m_texture_flags.set(&flags_tex, services);
 	}
 };
+
 
 class GameGlobalShaderConstantSetterFactory : public IShaderConstantSetterFactory
 {
@@ -573,18 +587,16 @@ class GameGlobalShaderConstantSetterFactory : public IShaderConstantSetterFactor
 	f32 *m_fog_range;
 	Client *m_client;
 	std::vector<GameGlobalShaderConstantSetter *> created_nosky;
-
 public:
-	GameGlobalShaderConstantSetterFactory(
-			bool *force_fog_off, f32 *fog_range, Client *client) :
-			m_sky(NULL),
-			m_force_fog_off(force_fog_off), m_fog_range(fog_range),
-			m_client(client)
-	{
-	}
+	GameGlobalShaderConstantSetterFactory(bool *force_fog_off,
+			f32 *fog_range, Client *client) :
+		m_sky(NULL),
+		m_force_fog_off(force_fog_off),
+		m_fog_range(fog_range),
+		m_client(client)
+	{}
 
-	void setSky(Sky *sky)
-	{
+	void setSky(Sky *sky) {
 		m_sky = sky;
 		for (GameGlobalShaderConstantSetter *ggscs : created_nosky) {
 			ggscs->setSky(m_sky);
@@ -592,7 +604,7 @@ public:
 		created_nosky.clear();
 	}
 
-	virtual IShaderConstantSetter *create()
+	virtual IShaderConstantSetter* create()
 	{
 		GameGlobalShaderConstantSetter *scs = new GameGlobalShaderConstantSetter(
 				m_sky, m_force_fog_off, m_fog_range, m_client);
@@ -614,10 +626,10 @@ public:
 
 const float object_hit_delay = 0.2;
 
-struct FpsControl
-{
+struct FpsControl {
 	u32 last_time, busy_time, sleep_time;
 };
+
 
 /* The reason the following structs are not anonymous structs within the
  * class is that they are not used by the majority of member functions and
@@ -625,8 +637,7 @@ struct FpsControl
  * (so they can be passed as a const qualified parameter)
  */
 
-struct GameRunData
-{
+struct GameRunData {
 	u16 dig_index;
 	u16 new_playeritem;
 	PointedThing pointed_old;
@@ -662,15 +673,18 @@ struct ClientEventHandler
 	void (Game::*handler)(ClientEvent *, CameraOrientation *);
 };
 
-class Game
-{
+class Game {
 public:
 	Game();
 	~Game();
 
-	bool startup(bool *kill, InputHandler *input, const GameStartData &game_params,
-			std::string &error_message, bool *reconnect,
+	bool startup(bool *kill,
+			InputHandler *input,
+			const GameStartData &game_params,
+			std::string &error_message,
+			bool *reconnect,
 			ChatBackend *chat_backend);
+
 
 	void run();
 	void shutdown();
@@ -678,8 +692,8 @@ public:
 	void extendedResourceCleanup();
 
 	// Basic initialisation
-	bool init(const std::string &map_dir, const std::string &address, u16 port,
-			const SubgameSpec &gamespec);
+	bool init(const std::string &map_dir, const std::string &address,
+			u16 port, const SubgameSpec &gamespec);
 	bool initSound();
 	bool createSingleplayerServer(const std::string &map_dir,
 			const SubgameSpec &gamespec, u16 port);
@@ -689,8 +703,8 @@ public:
 	bool initGui();
 
 	// Client connection
-	bool connectToServer(
-			const GameStartData &start_data, bool *connect_ok, bool *aborted);
+	bool connectToServer(const GameStartData &start_data,
+			bool *connect_ok, bool *aborted);
 	bool getServerContent(bool *aborted);
 
 	// Main loop
@@ -699,8 +713,7 @@ public:
 	bool checkConnection();
 	bool handleCallbacks();
 	void processQueues();
-	void updateProfilers(
-			const RunStats &stats, const FpsControl &draw_times, f32 dtime);
+	void updateProfilers(const RunStats &stats, const FpsControl &draw_times, f32 dtime);
 	void updateStats(RunStats *stats, const FpsControl &draw_times, f32 dtime);
 	void updateProfilerGraphs(ProfilerGraph *graph);
 
@@ -712,7 +725,7 @@ public:
 	void dropSelectedItem(bool single_item = false);
 	void openInventory();
 	void openEnderchest();
-	void openConsole(float scale, const wchar_t *line = NULL);
+	void openConsole(float scale, const wchar_t *line=NULL);
 	void toggleFreeMove();
 	void toggleFreeMoveAlt();
 	void togglePitchMove();
@@ -757,19 +770,16 @@ public:
 	 * @param[out] selected_object   the selected object or
 	 * NULL if not found
 	 */
-	PointedThing updatePointedThing(const core::line3d<f32> &shootline,
-			bool liquids_pointable, bool look_for_object,
-			const v3s16 &camera_offset);
+	PointedThing updatePointedThing(
+			const core::line3d<f32> &shootline, bool liquids_pointable,
+			bool look_for_object, const v3s16 &camera_offset);
 	void handlePointingAtNothing(const ItemStack &playerItem);
 	void handlePointingAtNode(const PointedThing &pointed,
-			const ItemStack &selected_item, const ItemStack &hand_item,
-			f32 dtime);
-	void handlePointingAtObject(const PointedThing &pointed,
-			const ItemStack &playeritem, const v3f &player_position,
-			bool show_debug);
+			const ItemStack &selected_item, const ItemStack &hand_item, f32 dtime);
+	void handlePointingAtObject(const PointedThing &pointed, const ItemStack &playeritem,
+			const v3f &player_position, bool show_debug);
 	void handleDigging(const PointedThing &pointed, const v3s16 &nodepos,
-			const ItemStack &selected_item, const ItemStack &hand_item,
-			f32 dtime);
+			const ItemStack &selected_item, const ItemStack &hand_item, f32 dtime);
 	void updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 			const CameraOrientation &cam);
 
@@ -781,19 +791,23 @@ public:
 
 	static void freecamChangedCallback(const std::string &setting_name, void *data);
 	static void settingChangedCallback(const std::string &setting_name, void *data);
-	static void updateAllMapBlocksCallback(
-			const std::string &setting_name, void *data);
+	static void updateAllMapBlocksCallback(const std::string &setting_name, void *data);
 	void readSettings();
 
-	inline bool isKeyDown(GameKeyType k) { return input->isKeyDown(k); }
-	inline bool wasKeyDown(GameKeyType k) { return input->wasKeyDown(k); }
+	inline bool isKeyDown(GameKeyType k)
+	{
+		return input->isKeyDown(k);
+	}
+	inline bool wasKeyDown(GameKeyType k)
+	{
+		return input->wasKeyDown(k);
+	}
 
 #ifdef __ANDROID__
 	void handleAndroidChatInput();
 #endif
 
-	struct Flags
-	{
+	struct Flags {
 		bool force_fog_off = false;
 		bool disable_camera_update = false;
 	};
@@ -804,14 +818,12 @@ public:
 	// ClientEvent handlers
 	void handleClientEvent_None(ClientEvent *event, CameraOrientation *cam);
 	void handleClientEvent_PlayerDamage(ClientEvent *event, CameraOrientation *cam);
-	void handleClientEvent_PlayerForceMove(
-			ClientEvent *event, CameraOrientation *cam);
+	void handleClientEvent_PlayerForceMove(ClientEvent *event, CameraOrientation *cam);
 	void handleClientEvent_Deathscreen(ClientEvent *event, CameraOrientation *cam);
 	void handleClientEvent_ShowFormSpec(ClientEvent *event, CameraOrientation *cam);
-	void handleClientEvent_ShowLocalFormSpec(
-			ClientEvent *event, CameraOrientation *cam);
-	void handleClientEvent_HandleParticleEvent(
-			ClientEvent *event, CameraOrientation *cam);
+	void handleClientEvent_ShowLocalFormSpec(ClientEvent *event, CameraOrientation *cam);
+	void handleClientEvent_HandleParticleEvent(ClientEvent *event,
+		CameraOrientation *cam);
 	void handleClientEvent_HudAdd(ClientEvent *event, CameraOrientation *cam);
 	void handleClientEvent_HudRemove(ClientEvent *event, CameraOrientation *cam);
 	void handleClientEvent_HudChange(ClientEvent *event, CameraOrientation *cam);
@@ -819,16 +831,15 @@ public:
 	void handleClientEvent_SetSun(ClientEvent *event, CameraOrientation *cam);
 	void handleClientEvent_SetMoon(ClientEvent *event, CameraOrientation *cam);
 	void handleClientEvent_SetStars(ClientEvent *event, CameraOrientation *cam);
-	void handleClientEvent_OverrideDayNigthRatio(
-			ClientEvent *event, CameraOrientation *cam);
+	void handleClientEvent_OverrideDayNigthRatio(ClientEvent *event,
+		CameraOrientation *cam);
 	void handleClientEvent_CloudParams(ClientEvent *event, CameraOrientation *cam);
 
 	void updateChat(f32 dtime, const v2u32 &screensize);
 
-	bool nodePlacement(const ItemDefinition &selected_def,
-			const ItemStack &selected_item, const v3s16 &nodepos,
-			const v3s16 &neighbourpos, const PointedThing &pointed,
-			const NodeMetadata *meta);
+	bool nodePlacement(const ItemDefinition &selected_def, const ItemStack &selected_item,
+		const v3s16 &nodepos, const v3s16 &neighbourpos, const PointedThing &pointed,
+		const NodeMetadata *meta);
 	static const ClientEventHandler clientEventHandler[CLIENTEVENT_MAX];
 
 	InputHandler *input = nullptr;
@@ -847,10 +858,10 @@ public:
 	ISoundManager *sound = nullptr;
 	bool sound_is_dummy = false;
 	SoundMaker *soundmaker = nullptr;
-
+	
 	ChatBackend *chat_backend = nullptr;
 	LogOutputBuffer m_chat_log_buf;
-
+	
 	EventManager *eventmgr = nullptr;
 	QuicktuneShortcutter *quicktune = nullptr;
 	bool registration_confirmation_shown = false;
@@ -860,8 +871,8 @@ public:
 	CheatMenu *m_cheat_menu = nullptr;
 	MapDrawControl *draw_control = nullptr;
 	Camera *camera = nullptr;
-	Clouds *clouds = nullptr; // Free using ->Drop()
-	Sky *sky = nullptr;	  // Free using ->Drop()
+	Clouds *clouds = nullptr;	                  // Free using ->Drop()
+	Sky *sky = nullptr;                         // Free using ->Drop()
 	Hud *hud = nullptr;
 	Minimap *mapper = nullptr;
 
@@ -903,11 +914,11 @@ public:
 	bool m_cache_enable_fog;
 	bool m_cache_enable_noclip;
 	bool m_cache_enable_free_move;
-	f32 m_cache_mouse_sensitivity;
-	f32 m_cache_joystick_frustum_sensitivity;
-	f32 m_repeat_right_click_time;
-	f32 m_cache_cam_smoothing;
-	f32 m_cache_fog_start;
+	f32  m_cache_mouse_sensitivity;
+	f32  m_cache_joystick_frustum_sensitivity;
+	f32  m_repeat_right_click_time;
+	f32  m_cache_cam_smoothing;
+	f32  m_cache_fog_start;
 
 	bool m_invert_mouse = false;
 	bool m_first_loop_after_window_activation = false;
@@ -915,8 +926,8 @@ public:
 
 	bool m_does_lost_focus_pause_game = false;
 
-	CameraOrientation cam_view_target = {0};
-	CameraOrientation cam_view = {0};
+	CameraOrientation cam_view_target  = { 0 };
+	CameraOrientation cam_view  = { 0 };
 
 #ifdef __ANDROID__
 	bool m_cache_hold_aux1;
@@ -925,6 +936,9 @@ public:
 };
 extern Game *g_game;
 
-void the_game(bool *kill, InputHandler *input, const GameStartData &start_data,
-		std::string &error_message, ChatBackend &chat_backend,
+void the_game(bool *kill,
+		InputHandler *input,
+		const GameStartData &start_data,
+		std::string &error_message,
+		ChatBackend &chat_backend,
 		bool *reconnect_requested);

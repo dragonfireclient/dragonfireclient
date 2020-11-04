@@ -23,7 +23,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "debug.h" // For assert()
 #include <cstring>
 
-template <typename T> class Buffer
+template <typename T>
+class Buffer
 {
 public:
 	Buffer()
@@ -34,7 +35,7 @@ public:
 	Buffer(unsigned int size)
 	{
 		m_size = size;
-		if (size != 0)
+		if(size != 0)
 			data = new T[size];
 		else
 			data = NULL;
@@ -42,41 +43,61 @@ public:
 	Buffer(const Buffer &buffer)
 	{
 		m_size = buffer.m_size;
-		if (m_size != 0) {
+		if(m_size != 0)
+		{
 			data = new T[buffer.m_size];
 			memcpy(data, buffer.data, buffer.m_size);
-		} else
+		}
+		else
 			data = NULL;
 	}
 	Buffer(const T *t, unsigned int size)
 	{
 		m_size = size;
-		if (size != 0) {
+		if(size != 0)
+		{
 			data = new T[size];
 			memcpy(data, t, size);
-		} else
+		}
+		else
 			data = NULL;
 	}
-	~Buffer() { drop(); }
-	Buffer &operator=(const Buffer &buffer)
+	~Buffer()
 	{
-		if (this == &buffer)
+		drop();
+	}
+	Buffer& operator=(const Buffer &buffer)
+	{
+		if(this == &buffer)
 			return *this;
 		drop();
 		m_size = buffer.m_size;
-		if (m_size != 0) {
+		if(m_size != 0)
+		{
 			data = new T[buffer.m_size];
 			memcpy(data, buffer.data, buffer.m_size);
-		} else
+		}
+		else
 			data = NULL;
 		return *this;
 	}
-	T &operator[](unsigned int i) const { return data[i]; }
-	T *operator*() const { return data; }
-	unsigned int getSize() const { return m_size; }
-
+	T & operator[](unsigned int i) const
+	{
+		return data[i];
+	}
+	T * operator*() const
+	{
+		return data;
+	}
+	unsigned int getSize() const
+	{
+		return m_size;
+	}
 private:
-	void drop() { delete[] data; }
+	void drop()
+	{
+		delete[] data;
+	}
 	T *data;
 	unsigned int m_size;
 };
@@ -88,7 +109,8 @@ private:
  * ONLY use in a single-threaded context!       *
  *                                              *
  ************************************************/
-template <typename T> class SharedBuffer
+template <typename T>
+class SharedBuffer
 {
 public:
 	SharedBuffer()
@@ -101,12 +123,12 @@ public:
 	SharedBuffer(unsigned int size)
 	{
 		m_size = size;
-		if (m_size != 0)
+		if(m_size != 0)
 			data = new T[m_size];
 		else
 			data = NULL;
 		refcount = new unsigned int;
-		memset(data, 0, sizeof(T) * m_size);
+		memset(data,0,sizeof(T)*m_size);
 		(*refcount) = 1;
 	}
 	SharedBuffer(const SharedBuffer &buffer)
@@ -116,9 +138,9 @@ public:
 		refcount = buffer.refcount;
 		(*refcount)++;
 	}
-	SharedBuffer &operator=(const SharedBuffer &buffer)
+	SharedBuffer & operator=(const SharedBuffer & buffer)
 	{
-		if (this == &buffer)
+		if(this == &buffer)
 			return *this;
 		drop();
 		m_size = buffer.m_size;
@@ -133,10 +155,12 @@ public:
 	SharedBuffer(const T *t, unsigned int size)
 	{
 		m_size = size;
-		if (m_size != 0) {
+		if(m_size != 0)
+		{
 			data = new T[m_size];
 			memcpy(data, t, m_size);
-		} else
+		}
+		else
 			data = NULL;
 		refcount = new unsigned int;
 		(*refcount) = 1;
@@ -148,29 +172,42 @@ public:
 	{
 		m_size = buffer.getSize();
 		if (m_size != 0) {
-			data = new T[m_size];
-			memcpy(data, *buffer, buffer.getSize());
-		} else
+				data = new T[m_size];
+				memcpy(data, *buffer, buffer.getSize());
+		}
+		else
 			data = NULL;
 		refcount = new unsigned int;
 		(*refcount) = 1;
 	}
-	~SharedBuffer() { drop(); }
-	T &operator[](unsigned int i) const
+	~SharedBuffer()
+	{
+		drop();
+	}
+	T & operator[](unsigned int i) const
 	{
 		assert(i < m_size);
 		return data[i];
 	}
-	T *operator*() const { return data; }
-	unsigned int getSize() const { return m_size; }
-	operator Buffer<T>() const { return Buffer<T>(data, m_size); }
-
+	T * operator*() const
+	{
+		return data;
+	}
+	unsigned int getSize() const
+	{
+		return m_size;
+	}
+	operator Buffer<T>() const
+	{
+		return Buffer<T>(data, m_size);
+	}
 private:
 	void drop()
 	{
 		assert((*refcount) > 0);
 		(*refcount)--;
-		if (*refcount == 0) {
+		if(*refcount == 0)
+		{
 			delete[] data;
 			delete refcount;
 		}

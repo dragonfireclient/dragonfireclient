@@ -24,7 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 class AsyncEngine;
 
 /** Implementation of lua api support for mainmenu */
-class ModApiMainMenu : public ModApiBase
+class ModApiMainMenu: public ModApiBase
 {
 
 private:
@@ -42,7 +42,7 @@ private:
 	 * @param name name of variable to read
 	 * @return integer value of requested variable
 	 */
-	static int getIntegerData(lua_State *L, std::string name, bool &valid);
+	static int getIntegerData(lua_State *L, std::string name,bool& valid);
 
 	/**
 	 * read a bool variable from gamedata table within lua stack
@@ -50,7 +50,7 @@ private:
 	 * @param name name of variable to read
 	 * @return bool value of requested variable
 	 */
-	static int getBoolData(lua_State *L, std::string name, bool &valid);
+	static int getBoolData(lua_State *L, std::string name,bool& valid);
 
 	/**
 	 * Checks if a path may be modified. Paths in the temp directory or the user
@@ -60,7 +60,7 @@ private:
 	 */
 	static bool mayModifyPath(const std::string &path);
 
-	// api calls
+	//api calls
 
 	static int l_start(lua_State *L);
 
@@ -80,13 +80,13 @@ private:
 
 	static int l_gettext(lua_State *L);
 
-	// packages
+	//packages
 
 	static int l_get_games(lua_State *L);
 
 	static int l_get_content_info(lua_State *L);
 
-	// gui
+	//gui
 
 	static int l_show_keys_menu(lua_State *L);
 
@@ -108,7 +108,7 @@ private:
 
 	static int l_get_screen_info(lua_State *L);
 
-	// filesystem
+	//filesystem
 
 	static int l_get_mainmenu_path(lua_State *L);
 
@@ -140,7 +140,7 @@ private:
 
 	static int l_get_video_modes(lua_State *L);
 
-	// version compatibility
+	//version compatibility
 	static int l_get_min_supp_proto(lua_State *L);
 
 	static int l_get_max_supp_proto(lua_State *L);
@@ -148,10 +148,12 @@ private:
 	// other
 	static int l_open_url(lua_State *L);
 
+
 	// async
 	static int l_do_async_callback(lua_State *L);
 
 public:
+
 	/**
 	 * initialize this API module
 	 * @param L lua stack to initialize
@@ -160,4 +162,5 @@ public:
 	static void Initialize(lua_State *L, int top);
 
 	static void InitializeAsync(lua_State *L, int top);
+
 };

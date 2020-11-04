@@ -103,7 +103,7 @@ void ToolCapabilities::deSerialize(std::istream &is)
 		cap.uses = readS16(is);
 		cap.maxlevel = readS16(is);
 		u32 times_size = readU32(is);
-		for (u32 i = 0; i < times_size; i++) {
+		for(u32 i = 0; i < times_size; i++) {
 			int level = readS16(is);
 			float time = readF32(is);
 			cap.times[level] = time;
@@ -176,13 +176,14 @@ void ToolCapabilities::deserializeJson(std::istream &is)
 				Json::Value &value = *dgiter;
 				if (value.isInt())
 					damageGroups[dgiter.key().asString()] =
-							value.asInt();
+						value.asInt();
 			}
 		}
 	}
 }
 
-DigParams getDigParams(const ItemGroupList &groups, const ToolCapabilities *tp)
+DigParams getDigParams(const ItemGroupList &groups,
+		const ToolCapabilities *tp)
 {
 	// Group dig_immediate defaults to fixed time and no wear
 	if (tp->groupcaps.find("dig_immediate") == tp->groupcaps.cend()) {
@@ -234,13 +235,13 @@ DigParams getDigParams(const ItemGroupList &groups, const ToolCapabilities *tp)
 	return DigParams(result_diggable, result_time, wear_i, result_main_group);
 }
 
-HitParams getHitParams(const ItemGroupList &armor_groups, const ToolCapabilities *tp,
-		float time_from_last_punch)
+HitParams getHitParams(const ItemGroupList &armor_groups,
+		const ToolCapabilities *tp, float time_from_last_punch)
 {
 	s16 damage = 0;
 	float result_wear = 0.0f;
-	float punch_interval_multiplier = rangelim(
-			time_from_last_punch / tp->full_punch_interval, 0.0f, 1.0f);
+	float punch_interval_multiplier =
+			rangelim(time_from_last_punch / tp->full_punch_interval, 0.0f, 1.0f);
 
 	for (const auto &damageGroup : tp->damageGroups) {
 		s16 armor = itemgroup_get(armor_groups, damageGroup.first);
@@ -254,15 +255,18 @@ HitParams getHitParams(const ItemGroupList &armor_groups, const ToolCapabilities
 	return {damage, wear_i};
 }
 
-HitParams getHitParams(const ItemGroupList &armor_groups, const ToolCapabilities *tp)
+HitParams getHitParams(const ItemGroupList &armor_groups,
+		const ToolCapabilities *tp)
 {
 	return getHitParams(armor_groups, tp, 1000000);
 }
 
-PunchDamageResult getPunchDamage(const ItemGroupList &armor_groups,
-		const ToolCapabilities *toolcap, const ItemStack *punchitem,
-		float time_from_last_punch)
-{
+PunchDamageResult getPunchDamage(
+		const ItemGroupList &armor_groups,
+		const ToolCapabilities *toolcap,
+		const ItemStack *punchitem,
+		float time_from_last_punch
+){
 	bool do_hit = true;
 	{
 		if (do_hit && punchitem) {
@@ -272,15 +276,16 @@ PunchDamageResult getPunchDamage(const ItemGroupList &armor_groups,
 		}
 
 		if (do_hit) {
-			if (itemgroup_get(armor_groups, "immortal"))
+			if(itemgroup_get(armor_groups, "immortal"))
 				do_hit = false;
 		}
 	}
 
 	PunchDamageResult result;
-	if (do_hit) {
-		HitParams hitparams =
-				getHitParams(armor_groups, toolcap, time_from_last_punch);
+	if(do_hit)
+	{
+		HitParams hitparams = getHitParams(armor_groups, toolcap,
+				time_from_last_punch);
 		result.did_punch = true;
 		result.wear = hitparams.wear;
 		result.damage = hitparams.hp;
@@ -301,3 +306,4 @@ f32 getToolRange(const ItemDefinition &def_selected, const ItemDefinition &def_h
 
 	return max_d;
 }
+

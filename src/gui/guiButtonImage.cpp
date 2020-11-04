@@ -31,12 +31,11 @@ using namespace gui;
 
 GUIButtonImage::GUIButtonImage(gui::IGUIEnvironment *environment,
 		gui::IGUIElement *parent, s32 id, core::rect<s32> rectangle,
-		ISimpleTextureSource *tsrc, bool noclip) :
-		GUIButton(environment, parent, id, rectangle, tsrc, noclip)
+		ISimpleTextureSource *tsrc, bool noclip)
+	: GUIButton (environment, parent, id, rectangle, tsrc, noclip)
 {
-	m_image = Environment->addImage(core::rect<s32>(0, 0, rectangle.getWidth(),
-							rectangle.getHeight()),
-			this);
+	m_image = Environment->addImage(
+			core::rect<s32>(0,0,rectangle.getWidth(),rectangle.getHeight()), this);
 	m_image->setScaleImage(isScalingImage());
 	sendToBack(m_image);
 }
@@ -57,18 +56,18 @@ void GUIButtonImage::setForegroundImage(video::ITexture *image)
 }
 
 //! Set element properties from a StyleSpec
-void GUIButtonImage::setFromStyle(const StyleSpec &style)
+void GUIButtonImage::setFromStyle(const StyleSpec& style)
 {
 	GUIButton::setFromStyle(style);
 
 	video::IVideoDriver *driver = Environment->getVideoDriver();
 
 	if (style.isNotDefault(StyleSpec::FGIMG)) {
-		video::ITexture *texture =
-				style.getTexture(StyleSpec::FGIMG, getTextureSource());
+		video::ITexture *texture = style.getTexture(StyleSpec::FGIMG,
+				getTextureSource());
 
 		setForegroundImage(guiScalingImageButton(driver, texture,
-				AbsoluteRect.getWidth(), AbsoluteRect.getHeight()));
+			AbsoluteRect.getWidth(), AbsoluteRect.getHeight()));
 		setScaleImage(true);
 	} else {
 		setForegroundImage(nullptr);
@@ -87,8 +86,7 @@ GUIButtonImage *GUIButtonImage::addButton(IGUIEnvironment *environment,
 		const wchar_t *tooltiptext)
 {
 	GUIButtonImage *button = new GUIButtonImage(environment,
-			parent ? parent : environment->getRootGUIElement(), id, rectangle,
-			tsrc);
+			parent ? parent : environment->getRootGUIElement(), id, rectangle, tsrc);
 
 	if (text)
 		button->setText(text);

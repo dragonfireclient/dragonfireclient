@@ -23,8 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "settings.h"
 #include "network/socket.h"
 
-class TestSocket : public TestBase
-{
+class TestSocket : public TestBase {
 public:
 	TestSocket()
 	{
@@ -88,13 +87,13 @@ void TestSocket::testIPv4Socket()
 
 	sleep_ms(50);
 
-	char rcvbuffer[256] = {0};
+	char rcvbuffer[256] = { 0 };
 	Address sender;
 	for (;;) {
 		if (socket.Receive(sender, rcvbuffer, sizeof(rcvbuffer)) < 0)
 			break;
 	}
-	// FIXME: This fails on some systems
+	//FIXME: This fails on some systems
 	UASSERT(strncmp(sendbuffer, rcvbuffer, sizeof(sendbuffer)) == 0);
 
 	if (address != Address(0, 0, 0, 0, port)) {
@@ -134,21 +133,19 @@ void TestSocket::testIPv6Socket()
 
 		sleep_ms(50);
 
-		char rcvbuffer[256] = {0};
+		char rcvbuffer[256] = { 0 };
 		Address sender;
 
-		for (;;) {
+		for(;;) {
 			if (socket6.Receive(sender, rcvbuffer, sizeof(rcvbuffer)) < 0)
 				break;
 		}
-		// FIXME: This fails on some systems
+		//FIXME: This fails on some systems
 		UASSERT(strncmp(sendbuffer, rcvbuffer, sizeof(sendbuffer)) == 0);
 		UASSERT(memcmp(sender.getAddress6().sin6_addr.s6_addr,
-					Address(&bytes, 0)
-							.getAddress6()
-							.sin6_addr.s6_addr,
-					16) == 0);
+				Address(&bytes, 0).getAddress6().sin6_addr.s6_addr, 16) == 0);
 	} catch (SendFailedException &e) {
-		errorstream << "IPv6 support enabled but not available!" << std::endl;
+		errorstream << "IPv6 support enabled but not available!"
+					<< std::endl;
 	}
 }

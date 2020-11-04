@@ -41,7 +41,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "lua_api/l_settings.h"
 #include "lua_api/l_http.h"
 
-ClientScripting::ClientScripting(Client *client) : ScriptApiBase(ScriptingType::Client)
+ClientScripting::ClientScripting(Client *client):
+	ScriptApiBase(ScriptingType::Client)
 {
 	setGameDef(client);
 	setGame(g_game);
