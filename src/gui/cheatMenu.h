@@ -48,6 +48,8 @@ public:
 	}
 
 	void draw(video::IVideoDriver *driver, bool show_debug);
+	
+	void drawHUD(video::IVideoDriver *driver, double dtime);
 
 	void drawEntry(video::IVideoDriver *driver, std::string name,
 		std::size_t column_align_index, std::size_t cheat_entry_index,
@@ -81,4 +83,6 @@ private:
 
 	gui::IGUIFont *m_font = nullptr;
 	v2u32 m_fontsize;
+	
+	float m_rainbow_offset = 0.0;
 };

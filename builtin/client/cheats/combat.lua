@@ -2,7 +2,9 @@ local placed_crystal
 local switched_to_totem = 0
 local used_sneak = true
 local totem_move_action = InventoryAction("move")
-totem_move_action:to("current_player", "main", 8)
+totem_move_action:to("current_player", "main", 9)
+
+core.register_list_command("friend", "Configure Friend List (friends dont get attacked by Killaura or Forcefield)", "friendlist")
 
 core.register_globalstep(function(dtime)
 	local player = core.localplayer
@@ -10,7 +12,25 @@ core.register_globalstep(function(dtime)
 	local control = player:get_control()
 	local pointed = core.get_pointed_thing()
 	local item = player:get_wielded_item():get_name()
-	if core.settings:get_bool("crystal_pvp") then
+	if core.settings:get_bool("killaura") or core.settings:get_bool("forcefield") and control.LMB then
+		local friendlist = core.settings:get("friendlist"):split(",")
+		for _, obj in ipairs(core.get_objects_inside_radius(player:get_pos(), 5)) do
+			local do_attack = true
+			if obj:is_local_player() then
+				do_attack = false
+			else
+				for _, friend in ipairs(friendlist) do
+					if obj:get_name() == friend or obj:get_nametag() == friend then
+						do_attack = false
+						break
+					end
+				end
+			end
+			if do_attack then
+				obj:punch()
+			end
+		end
+	elseif core.settings:get_bool("crystal_pvp") then
 		if placed_crystal then
 			if core.switch_to_item("mobs_mc:totem") then
 				switched_to_totem = 5
@@ -48,9 +68,9 @@ core.register_globalstep(function(dtime)
 		if totem_stack and totem_stack:get_name() ~= "mobs_mc:totem" then
 			local totem_index = core.find_item("mobs_mc:totem")
 			if totem_index then
-				totem_move_action:from("current_player", "main", totem_index - 1)
+				totem_move_action:from("current_player", "main", totem_index)
 				totem_move_action:apply()
-				player:set_wield_index(8)
+				player:set_wield_index(9)
 			end
 		end
 	end

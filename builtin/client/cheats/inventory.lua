@@ -2,15 +2,48 @@ local elapsed_time = 0
 local tick_time = 0.05
 local drop_action = InventoryAction("drop")
 
+local strip_move_act = InventoryAction("move")
+strip_move_act:to("current_player", "craft", 1)
+local strip_craft_act = InventoryAction("craft")
+strip_craft_act:craft("current_player")
+local strip_move_back_act = InventoryAction("move")
+strip_move_back_act:from("current_player", "craftresult", 1)
+
 core.register_globalstep(function(dtime)
+	local player = core.localplayer
+	if not player then return end
+	local item = player:get_wielded_item()
+	local itemdef = core.get_item_def(item:get_name())
+	local wieldindex = player:get_wield_index()
+	-- AutoRefill
+	if core.settings:get_bool("autorefill") and itemdef then
+		local space = item:get_free_space()
+		local i = core.find_item(item:get_name(), wieldindex + 1)
+		if i and space > 0 then
+			local move_act = InventoryAction("move")
+			move_act:to("current_player", "main", wieldindex)
+			move_act:from("current_player", "main", i)
+			move_act:set_count(space)
+			move_act:apply()
+		end
+	end
+	-- Strip
+	if core.settings:get_bool("strip") then
+		if itemdef and itemdef.groups.tree and player:get_control().RMB then
+			strip_move_act:from("current_player", "main", wieldindex)
+			strip_move_back_act:to("current_player", "main", wieldindex)
+			strip_move_act:apply()
+			strip_craft_act:apply()
+			strip_move_back_act:apply()
+		end
+	end
 	-- AutoEject
 	if core.settings:get_bool("autoeject") then
-		local player = core.localplayer
 		local list = (core.settings:get("eject_items") or ""):split(",")
 		local inventory = core.get_inventory("current_player")
 		for index, stack in pairs(inventory.main) do
 			if table.indexof(list, stack:get_name()) ~= -1 then
-				drop_action:from("current_player", "main", index - 1)
+				drop_action:from("current_player", "main", index)
 				drop_action:apply()
 			end
 		end
@@ -19,12 +52,8 @@ core.register_globalstep(function(dtime)
 	if core.settings:get_bool("next_item") then
 		elapsed_time = elapsed_time + dtime
 		if elapsed_time < tick_time then return end
-		local player = minetest.localplayer
-		if not player then return end
-		local item = player:get_wielded_item()
 		if item:get_count() == 0 then
-			local index = player:get_wield_index()
-			player:set_wield_index(index + 1)
+			player:set_wield_index(wieldindex + 1)
 		end
 		elapsed_time = 0
 	end
@@ -62,7 +91,7 @@ core.register_on_punchnode(function(pos, node)
 	for index, stack in pairs(inventory.main) do
 		is_better, best_time = check_tool(stack, node_groups, best_time)
 		if is_better then
-			new_index = index - 1
+			new_index = index
 		end
 	end
 	player:set_wield_index(new_index)
@@ -113,3 +142,6 @@ local hand_formspec = "size[9,8.75]"..
 function core.open_handslot()
 	minetest.show_formspec("__builtin__:hand", hand_formspec)
 end
+
+
+

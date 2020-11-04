@@ -155,7 +155,7 @@ core.register_chatcommand("place", {
 	func = function(param)
 		local success, pos = core.parse_relative_pos(param)
 		if success then
-			cores.place_node(pos)
+			core.place_node(pos)
 			return true, "Node placed at " .. core.pos_to_string(pos)
 		end
 		return false, pos

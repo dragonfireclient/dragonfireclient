@@ -133,7 +133,7 @@ void LuaInventoryAction::readFullInventoryLocationInto(lua_State *L, InventoryLo
 		loc->deSerialize(readParam<std::string>(L, 2));
 		std::string l = readParam<std::string>(L, 3);
 		*list = l;
-		*index = luaL_checkinteger(L, 4);
+		*index = luaL_checkinteger(L, 4) - 1;
 	} catch (SerializationError &) {}
 }
 

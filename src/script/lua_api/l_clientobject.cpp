@@ -87,6 +87,14 @@ int ClientObjectRef::l_is_player(lua_State *L)
 	return 1;
 }
 
+int ClientObjectRef::l_is_local_player(lua_State *L)
+{
+	ClientObjectRef *ref = checkobject(L, 1);
+	GenericCAO *gcao = get_generic_cao(ref, L);
+	lua_pushboolean(L, gcao->isLocalPlayer());
+	return 1;
+}
+
 int ClientObjectRef::l_get_name(lua_State *L)
 {
 	ClientObjectRef *ref = checkobject(L, 1);
@@ -210,6 +218,7 @@ luaL_Reg ClientObjectRef::methods[] = {luamethod(ClientObjectRef, get_pos),
 		luamethod(ClientObjectRef, get_acceleration),
 		luamethod(ClientObjectRef, get_rotation),
 		luamethod(ClientObjectRef, is_player),
+		luamethod(ClientObjectRef, is_local_player),
 		luamethod(ClientObjectRef, get_name),
 		luamethod(ClientObjectRef, get_attach),
 		luamethod(ClientObjectRef, get_nametag),

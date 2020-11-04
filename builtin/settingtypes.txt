@@ -2213,6 +2213,31 @@ contentdb_url (ContentDB URL) string https://content.minetest.net
 #    so see a full list at https://content.minetest.net/help/content_flags/
 contentdb_flag_blacklist (ContentDB Flag Blacklist) string nonfree, desktop_default
 
+[Cheat Menu]
+
+#   Font to use for cheat menu
+cheat_menu_font (MenuFont) enum FM_Standard, FM_Mono, FM_Fallback, FM_Simple, FM_SimpleMono, FM_MaxMode, FM_Unspecified
+
+#   (RGB value)
+m_bg_color (Cell background color) v3f 45 45 68
+
+m_bg_color_alpha (Cell background color alpha) int 173
+
+#   (RGB value)
+m_active_bg_color (Active cell background color) v3f 0 0 0
+
+m_active_bg_color_alpha (Active cell background color alpha) int 210
+
+#   (RGB value)
+m_font_color (Font color) v3f 255 255 255
+
+m_font_color_alpha (Font color alpha) int 195 
+
+#   (RGB value)
+m_selected_font_color (Selected font color) v3f 255 255 255
+
+m_selected_font_color_alpha (Selected font color alpha) int 235
+
 [Cheats]
 
 fullbright (Fullbright) bool false
@@ -2299,27 +2324,24 @@ replace (Replace) bool false
 
 crystal_pvp (CrystalPvP) bool false
 
-[Cheat Menu]
+autototem (AutoTotem) bool false
 
-#   Font to use for cheat menu
-cheat_menu_font (MenuFont) enum FM_Standard, FM_Mono, FM_Fallback, FM_Simple, FM_SimpleMono, FM_MaxMode, FM_Unspecified
+dont_point_nodes (ThroughWalls) bool false
 
-#   (RGB value)
-m_bg_color (Cell background color) v3f 45 45 68
+strip (Strip) bool false
 
-m_bg_color_alpha (Cell background color alpha) int 173
+autorefill (AutoRefill) bool false
 
-#   (RGB value)
-m_active_bg_color (Active cell background color) v3f 0 0 0
+nuke (Nuke) bool false
 
-m_active_bg_color_alpha (Active cell background color alpha) int 210
+chat_color (Chat Color) string rainbow
 
-#   (RGB value)
-m_font_color (Font color) v3f 255 255 255
+use_chat_color (ColoredChat) bool false
 
-m_font_color_alpha (Font color alpha) int 195 
+chat_reverse (ReversedChat) bool false
 
-#   (RGB value)
-m_selected_font_color (Selected font color) v3f 255 255 255
+forcefield (Forcefield) bool false
 
-m_selected_font_color_alpha (Selected font color alpha) int 235
+friendlist (Killaura / Forcefield Friendlist) string
+
+cheat_hud (CheatHUD) bool true
