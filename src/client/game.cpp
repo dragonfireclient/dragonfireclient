@@ -3206,9 +3206,12 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 		Cheat menu
 	*/
 
-	if (m_game_ui->m_flags.show_cheat_menu && ! gui_chat_console->isOpen())
-		m_cheat_menu->draw(driver, m_game_ui->m_flags.show_debug);
-		
+	if (! gui_chat_console->isOpen()) {
+		if (m_game_ui->m_flags.show_cheat_menu)
+			m_cheat_menu->draw(driver, m_game_ui->m_flags.show_debug);
+		if (g_settings->getBool("cheat_hud"))
+			m_cheat_menu->drawHUD(driver, dtime);
+	}
 	/*
 		Damage flash
 	*/

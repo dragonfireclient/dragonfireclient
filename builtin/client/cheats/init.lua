@@ -27,6 +27,7 @@ core.cheats = {
 		["Coords"] = "coords",
 		["Tracers"] = "enable_tracers",
 		["ESP"] = "enable_esp",
+		["CheatHUD"] = "cheat_hud",
 	},
 	["World"] = {
 		["FastDig"] = "fastdig",

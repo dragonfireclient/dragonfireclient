@@ -2318,3 +2318,5 @@ chat_reverse (ReversedChat) bool false
 forcefield (Forcefield) bool false
 
 friendlist (Killaura / Forcefield Friendlist) string
+
+cheat_hud (CheatHUD) bool true

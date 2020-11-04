@@ -119,6 +119,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("chat_reverse", "false");
 	settings->setDefault("forcefield", "false");
 	settings->setDefault("friendlist", "");
+	settings->setDefault("cheat_hud", "true");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
