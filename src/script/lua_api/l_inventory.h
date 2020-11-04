@@ -30,7 +30,8 @@ class RemotePlayer;
 	InvRef
 */
 
-class InvRef : public ModApiBase {
+class InvRef : public ModApiBase
+{
 private:
 	InventoryLocation m_loc;
 
@@ -39,10 +40,9 @@ private:
 
 	static InvRef *checkobject(lua_State *L, int narg);
 
-	static Inventory* getinv(lua_State *L, InvRef *ref);
+	static Inventory *getinv(lua_State *L, InvRef *ref);
 
-	static InventoryList* getlist(lua_State *L, InvRef *ref,
-			const char *listname);
+	static InventoryList *getlist(lua_State *L, InvRef *ref, const char *listname);
 
 	static void reportInventoryChange(lua_State *L, InvRef *ref);
 
@@ -88,16 +88,17 @@ private:
 	// Returns the leftover stack
 	static int l_add_item(lua_State *L);
 
-	// room_for_item(self, listname, itemstack or itemstring or table or nil) -> true/false
-	// Returns true if the item completely fits into the list
+	// room_for_item(self, listname, itemstack or itemstring or table or nil) ->
+	// true/false Returns true if the item completely fits into the list
 	static int l_room_for_item(lua_State *L);
 
-	// contains_item(self, listname, itemstack or itemstring or table or nil, [match_meta]) -> true/false
-	// Returns true if the list contains the given count of the given item name
+	// contains_item(self, listname, itemstack or itemstring or table or nil,
+	// [match_meta]) -> true/false Returns true if the list contains the given count
+	// of the given item name
 	static int l_contains_item(lua_State *L);
 
-	// remove_item(self, listname, itemstack or itemstring or table or nil) -> itemstack
-	// Returns the items that were actually removed
+	// remove_item(self, listname, itemstack or itemstring or table or nil) ->
+	// itemstack Returns the items that were actually removed
 	static int l_remove_item(lua_State *L);
 
 	// get_location() -> location (like get_inventory(location))
@@ -116,7 +117,8 @@ public:
 	static void Register(lua_State *L);
 };
 
-class ModApiInventory : public ModApiBase {
+class ModApiInventory : public ModApiBase
+{
 private:
 	static int l_create_detached_inventory_raw(lua_State *L);
 

@@ -45,9 +45,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 class CAOShaderConstantSetter : public IShaderConstantSetter
 {
 public:
-	CAOShaderConstantSetter():
-			m_emissive_color_setting("emissiveColor")
-	{}
+	CAOShaderConstantSetter() : m_emissive_color_setting("emissiveColor") {}
 
 	~CAOShaderConstantSetter() override = default;
 
@@ -61,15 +59,15 @@ public:
 		video::SColorf emissive_color(m_emissive_color);
 
 		float as_array[4] = {
-			emissive_color.r,
-			emissive_color.g,
-			emissive_color.b,
-			emissive_color.a,
+				emissive_color.r,
+				emissive_color.g,
+				emissive_color.b,
+				emissive_color.a,
 		};
 		m_emissive_color_setting.set(as_array, services);
 	}
 
-	void onSetMaterial(const video::SMaterial& material) override
+	void onSetMaterial(const video::SMaterial &material) override
 	{
 		m_emissive_color = material.EmissiveColor;
 	}
@@ -82,25 +80,19 @@ private:
 class CAOShaderConstantSetterFactory : public IShaderConstantSetterFactory
 {
 public:
-	CAOShaderConstantSetterFactory()
-	{}
+	CAOShaderConstantSetterFactory() {}
 
-	virtual IShaderConstantSetter* create()
-	{
-		return new CAOShaderConstantSetter();
-	}
+	virtual IShaderConstantSetter *create() { return new CAOShaderConstantSetter(); }
 };
 
 /*
 	ClientEnvironment
 */
 
-ClientEnvironment::ClientEnvironment(ClientMap *map,
-	ITextureSource *texturesource, Client *client):
-	Environment(client),
-	m_map(map),
-	m_texturesource(texturesource),
-	m_client(client)
+ClientEnvironment::ClientEnvironment(
+		ClientMap *map, ITextureSource *texturesource, Client *client) :
+		Environment(client),
+		m_map(map), m_texturesource(texturesource), m_client(client)
 {
 	auto *shdrsrc = m_client->getShaderSource();
 	shdrsrc->addShaderConstantSetterFactory(new CAOShaderConstantSetterFactory());
@@ -120,12 +112,12 @@ ClientEnvironment::~ClientEnvironment()
 	delete m_local_player;
 }
 
-Map & ClientEnvironment::getMap()
+Map &ClientEnvironment::getMap()
 {
 	return *m_map;
 }
 
-ClientMap & ClientEnvironment::getClientMap()
+ClientMap &ClientEnvironment::getClientMap()
 {
 	return *m_map;
 }
@@ -135,8 +127,7 @@ void ClientEnvironment::setLocalPlayer(LocalPlayer *player)
 	/*
 		It is a failure if already is a local player
 	*/
-	FATAL_ERROR_IF(m_local_player != NULL,
-		"Local player already allocated");
+	FATAL_ERROR_IF(m_local_player != NULL, "Local player already allocated");
 
 	m_local_player = player;
 }
@@ -166,21 +157,21 @@ void ClientEnvironment::step(float dtime)
 	/*
 		Maximum position increment
 	*/
-	//f32 position_max_increment = 0.05*BS;
-	f32 position_max_increment = 0.1*BS;
+	// f32 position_max_increment = 0.05*BS;
+	f32 position_max_increment = 0.1 * BS;
 
 	// Maximum time increment (for collision detection etc)
 	// time = distance / speed
 	f32 dtime_max_increment = 1;
-	if(player_speed > 0.001)
+	if (player_speed > 0.001)
 		dtime_max_increment = position_max_increment / player_speed;
 
 	// Maximum time increment is 10ms or lower
-	if(dtime_max_increment > 0.01)
+	if (dtime_max_increment > 0.01)
 		dtime_max_increment = 0.01;
 
 	// Don't allow overly huge dtime
-	if(dtime > 0.5)
+	if (dtime > 0.5)
 		dtime = 0.5;
 
 	f32 dtime_downcount = dtime;
@@ -190,23 +181,19 @@ void ClientEnvironment::step(float dtime)
 	*/
 
 	u32 loopcount = 0;
-	do
-	{
+	do {
 		loopcount++;
 
 		f32 dtime_part;
-		if(dtime_downcount > dtime_max_increment)
-		{
+		if (dtime_downcount > dtime_max_increment) {
 			dtime_part = dtime_max_increment;
 			dtime_downcount -= dtime_part;
-		}
-		else
-		{
+		} else {
 			dtime_part = dtime_downcount;
 			/*
-				Setting this to 0 (no -=dtime_part) disables an infinite loop
-				when dtime_part is so small that dtime_downcount -= dtime_part
-				does nothing
+				Setting this to 0 (no -=dtime_part) disables an infinite
+			   loop when dtime_part is so small that dtime_downcount -=
+			   dtime_part does nothing
 			*/
 			dtime_downcount = 0;
 		}
@@ -220,33 +207,40 @@ void ClientEnvironment::step(float dtime)
 			lplayer->applyControl(dtime_part, this);
 
 			// Apply physics
-			if (!free_move && !is_climbing && ! g_settings->getBool("freecam")) {
+			if (!free_move && !is_climbing &&
+					!g_settings->getBool("freecam")) {
 				// Gravity
 				v3f speed = lplayer->getSpeed();
 				if (!lplayer->in_liquid)
 					speed.Y -= lplayer->movement_gravity *
-						lplayer->physics_override_gravity * dtime_part * 2.0f;
+						   lplayer->physics_override_gravity *
+						   dtime_part * 2.0f;
 
 				// Liquid floating / sinking
 				if (lplayer->in_liquid && !lplayer->swimming_vertical &&
 						!lplayer->swimming_pitch)
-					speed.Y -= lplayer->movement_liquid_sink * dtime_part * 2.0f;
+					speed.Y -= lplayer->movement_liquid_sink *
+						   dtime_part * 2.0f;
 
 				// Liquid resistance
 				if (lplayer->in_liquid_stable || lplayer->in_liquid) {
-					// How much the node's viscosity blocks movement, ranges
-					// between 0 and 1. Should match the scale at which viscosity
-					// increase affects other liquid attributes.
+					// How much the node's viscosity blocks movement,
+					// ranges between 0 and 1. Should match the scale
+					// at which viscosity increase affects other
+					// liquid attributes.
 					static const f32 viscosity_factor = 0.3f;
 
-					v3f d_wanted = -speed / lplayer->movement_liquid_fluidity;
+					v3f d_wanted = -speed /
+						       lplayer->movement_liquid_fluidity;
 					f32 dl = d_wanted.getLength();
 					if (dl > lplayer->movement_liquid_fluidity_smooth)
 						dl = lplayer->movement_liquid_fluidity_smooth;
 
-					dl *= (lplayer->liquid_viscosity * viscosity_factor) +
-						(1 - viscosity_factor);
-					v3f d = d_wanted.normalize() * (dl * dtime_part * 100.0f);
+					dl *= (lplayer->liquid_viscosity *
+							      viscosity_factor) +
+					      (1 - viscosity_factor);
+					v3f d = d_wanted.normalize() *
+						(dl * dtime_part * 100.0f);
 					speed += d;
 				}
 
@@ -258,14 +252,15 @@ void ClientEnvironment::step(float dtime)
 				This also does collision detection.
 			*/
 			lplayer->move(dtime_part, this, position_max_increment,
-				&player_collisions);
+					&player_collisions);
 		}
 	} while (dtime_downcount > 0.001);
 
 	bool player_immortal = lplayer->getCAO() && lplayer->getCAO()->isImmortal();
 
 	for (const CollisionInfo &info : player_collisions) {
-		v3f speed_diff = info.new_speed - info.old_speed;;
+		v3f speed_diff = info.new_speed - info.old_speed;
+		;
 		// Handle only fall damage
 		// (because otherwise walking against something in fast_move kills you)
 		if (speed_diff.Y < 0 || info.old_speed.Y >= 0)
@@ -273,12 +268,12 @@ void ClientEnvironment::step(float dtime)
 		// Get rid of other components
 		speed_diff.X = 0;
 		speed_diff.Z = 0;
-		f32 pre_factor = 1; // 1 hp per node/s
-		f32 tolerance = BS*14; // 5 without damage
-		f32 post_factor = 1; // 1 hp per node/s
+		f32 pre_factor = 1;	 // 1 hp per node/s
+		f32 tolerance = BS * 14; // 5 without damage
+		f32 post_factor = 1;	 // 1 hp per node/s
 		if (info.type == COLLISION_NODE) {
-			const ContentFeatures &f = m_client->ndef()->
-				get(m_map->getNode(info.node_p));
+			const ContentFeatures &f = m_client->ndef()->get(
+					m_map->getNode(info.node_p));
 			// Determine fall damage multiplier
 			int addp = itemgroup_get(f.groups, "fall_damage_add_percent");
 			pre_factor = 1.0f + (float)addp / 100.0f;
@@ -289,8 +284,8 @@ void ClientEnvironment::step(float dtime)
 			u16 damage = (u16)MYMIN(damage_f + 0.5, U16_MAX);
 			if (damage != 0) {
 				damageLocalPlayer(damage, true);
-				m_client->getEventManager()->put(
-					new SimpleTriggerEvent(MtEvent::PLAYER_FALLING_DAMAGE));
+				m_client->getEventManager()->put(new SimpleTriggerEvent(
+						MtEvent::PLAYER_FALLING_DAMAGE));
 			}
 		}
 	}
@@ -319,7 +314,8 @@ void ClientEnvironment::step(float dtime)
 	*/
 
 	bool update_lighting = m_active_object_light_update_interval.step(dtime, 0.21);
-	auto cb_state = [this, dtime, update_lighting, day_night_ratio] (ClientActiveObject *cao) {
+	auto cb_state = [this, dtime, update_lighting, day_night_ratio](
+					ClientActiveObject *cao) {
 		// Step object
 		cao->step(dtime, this);
 
@@ -337,11 +333,10 @@ void ClientEnvironment::step(float dtime)
 		ClientSimpleObject *simple = *i;
 
 		simple->step(dtime);
-		if(simple->m_to_be_removed) {
+		if (simple->m_to_be_removed) {
 			delete simple;
 			i = m_simple_objects.erase(i);
-		}
-		else {
+		} else {
 			++i;
 		}
 	}
@@ -352,20 +347,18 @@ void ClientEnvironment::addSimpleObject(ClientSimpleObject *simple)
 	m_simple_objects.push_back(simple);
 }
 
-GenericCAO* ClientEnvironment::getGenericCAO(u16 id)
+GenericCAO *ClientEnvironment::getGenericCAO(u16 id)
 {
 	ClientActiveObject *obj = getActiveObject(id);
 	if (obj && obj->getType() == ACTIVEOBJECT_TYPE_GENERIC)
-		return (GenericCAO*) obj;
+		return (GenericCAO *)obj;
 
 	return NULL;
 }
 
-bool isFreeClientActiveObjectId(const u16 id,
-	ClientActiveObjectMap &objects)
+bool isFreeClientActiveObjectId(const u16 id, ClientActiveObjectMap &objects)
 {
 	return id != 0 && objects.find(id) == objects.end();
-
 }
 
 u16 getFreeClientActiveObjectId(ClientActiveObjectMap &objects)
@@ -373,8 +366,8 @@ u16 getFreeClientActiveObjectId(ClientActiveObjectMap &objects)
 	// try to reuse id's as late as possible
 	static u16 last_used_id = 0;
 	u16 startid = last_used_id;
-	for(;;) {
-		last_used_id ++;
+	for (;;) {
+		last_used_id++;
 		if (isFreeClientActiveObjectId(last_used_id, objects))
 			return last_used_id;
 
@@ -396,33 +389,27 @@ u16 ClientEnvironment::addActiveObject(ClientActiveObject *object)
 	return object->getId();
 }
 
-void ClientEnvironment::addActiveObject(u16 id, u8 type,
-	const std::string &init_data)
+void ClientEnvironment::addActiveObject(u16 id, u8 type, const std::string &init_data)
 {
-	ClientActiveObject* obj =
-		ClientActiveObject::create((ActiveObjectType) type, m_client, this);
-	if(obj == NULL)
-	{
-		infostream<<"ClientEnvironment::addActiveObject(): "
-			<<"id="<<id<<" type="<<type<<": Couldn't create object"
-			<<std::endl;
+	ClientActiveObject *obj = ClientActiveObject::create(
+			(ActiveObjectType)type, m_client, this);
+	if (obj == NULL) {
+		infostream << "ClientEnvironment::addActiveObject(): "
+			   << "id=" << id << " type=" << type
+			   << ": Couldn't create object" << std::endl;
 		return;
 	}
 
 	obj->setId(id);
 
-	try
-	{
+	try {
 		obj->initialize(init_data);
-	}
-	catch(SerializationError &e)
-	{
-		errorstream<<"ClientEnvironment::addActiveObject():"
-			<<" id="<<id<<" type="<<type
-			<<": SerializationError in initialize(): "
-			<<e.what()
-			<<": init_data="<<serializeJsonString(init_data)
-			<<std::endl;
+	} catch (SerializationError &e) {
+		errorstream << "ClientEnvironment::addActiveObject():"
+			    << " id=" << id << " type=" << type
+			    << ": SerializationError in initialize(): " << e.what()
+			    << ": init_data=" << serializeJsonString(init_data)
+			    << std::endl;
 	}
 
 	u16 new_id = addActiveObject(obj);
@@ -437,7 +424,6 @@ void ClientEnvironment::addActiveObject(u16 id, u8 type,
 		}
 	}
 }
-
 
 void ClientEnvironment::removeActiveObject(u16 id)
 {
@@ -460,18 +446,18 @@ void ClientEnvironment::processActiveObjectMessage(u16 id, const std::string &da
 	ClientActiveObject *obj = getActiveObject(id);
 	if (obj == NULL) {
 		infostream << "ClientEnvironment::processActiveObjectMessage():"
-			<< " got message for id=" << id << ", which doesn't exist."
-			<< std::endl;
+			   << " got message for id=" << id << ", which doesn't exist."
+			   << std::endl;
 		return;
 	}
 
 	try {
 		obj->processMessage(data);
 	} catch (SerializationError &e) {
-		errorstream<<"ClientEnvironment::processActiveObjectMessage():"
-			<< " id=" << id << " type=" << obj->getType()
-			<< " SerializationError in processMessage(): " << e.what()
-			<< std::endl;
+		errorstream << "ClientEnvironment::processActiveObjectMessage():"
+			    << " id=" << id << " type=" << obj->getType()
+			    << " SerializationError in processMessage(): " << e.what()
+			    << std::endl;
 	}
 }
 
@@ -513,12 +499,12 @@ ClientEnvEvent ClientEnvironment::getClientEnvEvent()
 }
 
 void ClientEnvironment::getSelectedActiveObjects(
-	const core::line3d<f32> &shootline_on_map,
-	std::vector<PointedThing> &objects)
+		const core::line3d<f32> &shootline_on_map,
+		std::vector<PointedThing> &objects)
 {
 	std::vector<DistanceSortedActiveObject> allObjects;
-	getActiveObjects(shootline_on_map.start,
-		shootline_on_map.getLength() + 10.0f, allObjects);
+	getActiveObjects(shootline_on_map.start, shootline_on_map.getLength() + 10.0f,
+			allObjects);
 	const v3f line_vector = shootline_on_map.getVector();
 
 	for (const auto &allObject : allObjects) {
@@ -528,15 +514,17 @@ void ClientEnvironment::getSelectedActiveObjects(
 			continue;
 
 		const v3f &pos = obj->getPosition();
-		aabb3f offsetted_box(selection_box.MinEdge + pos,
-			selection_box.MaxEdge + pos);
+		aabb3f offsetted_box(
+				selection_box.MinEdge + pos, selection_box.MaxEdge + pos);
 
 		v3f current_intersection;
 		v3s16 current_normal;
 		if (boxLineCollision(offsetted_box, shootline_on_map.start, line_vector,
-				&current_intersection, &current_normal)) {
-			objects.emplace_back((s16) obj->getId(), current_intersection, current_normal,
-				(current_intersection - shootline_on_map.start).getLengthSQ());
+				    &current_intersection, &current_normal)) {
+			objects.emplace_back((s16)obj->getId(), current_intersection,
+					current_normal,
+					(current_intersection - shootline_on_map.start)
+							.getLengthSQ());
 		}
 	}
 }

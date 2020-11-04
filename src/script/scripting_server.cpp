@@ -50,8 +50,7 @@ extern "C" {
 #include "lualib.h"
 }
 
-ServerScripting::ServerScripting(Server* server):
-		ScriptApiBase(ScriptingType::Server)
+ServerScripting::ServerScripting(Server *server) : ScriptApiBase(ScriptingType::Server)
 {
 	setGameDef(server);
 
@@ -63,9 +62,12 @@ ServerScripting::ServerScripting(Server* server):
 	if (g_settings->getBool("secure.enable_security")) {
 		initializeSecurity();
 	} else {
-		warningstream << "\\!/ Mod security should never be disabled, as it allows any mod to "
-				<< "access the host machine."
-				<< "Mods should use minetest.request_insecure_environment() instead \\!/" << std::endl;
+		warningstream << "\\!/ Mod security should never be disabled, as it "
+				 "allows any mod to "
+			      << "access the host machine."
+			      << "Mods should use "
+				 "minetest.request_insecure_environment() instead \\!/"
+			      << std::endl;
 	}
 
 	lua_getglobal(L, "core");

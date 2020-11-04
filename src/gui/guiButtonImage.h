@@ -35,9 +35,9 @@ public:
 	void setForegroundImage(video::ITexture *image = nullptr);
 
 	//! Set element properties from a StyleSpec
-	virtual void setFromStyle(const StyleSpec& style) override;
+	virtual void setFromStyle(const StyleSpec &style) override;
 
-	virtual void setScaleImage(bool scaleImage=true) override;
+	virtual void setScaleImage(bool scaleImage = true) override;
 
 	//! Do not drop returned handle
 	static GUIButtonImage *addButton(gui::IGUIEnvironment *environment,

@@ -134,7 +134,12 @@ public:
 	Tag m_root_tag;
 
 protected:
-	typedef enum { ER_NONE, ER_TAG, ER_NEWLINE } EndReason;
+	typedef enum
+	{
+		ER_NONE,
+		ER_TAG,
+		ER_NEWLINE
+	} EndReason;
 
 	// Parser functions
 	void enterElement(ElementType type);

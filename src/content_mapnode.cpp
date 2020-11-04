@@ -45,27 +45,27 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define CONTENT_LADDER 31
 #define CONTENT_LAVA 32
 #define CONTENT_LAVASOURCE 33
-#define CONTENT_GRASS 0x800 //1
-#define CONTENT_TREE 0x801 //4
-#define CONTENT_LEAVES 0x802 //5
-#define CONTENT_GRASS_FOOTSTEPS 0x803 //6
-#define CONTENT_MESE 0x804 //7
-#define CONTENT_MUD 0x805 //8
-#define CONTENT_CLOUD 0x806 //10
-#define CONTENT_COALSTONE 0x807 //11
-#define CONTENT_WOOD 0x808 //12
-#define CONTENT_SAND 0x809 //13
-#define CONTENT_COBBLE 0x80a //18
-#define CONTENT_STEEL 0x80b //19
-#define CONTENT_GLASS 0x80c //20
-#define CONTENT_MOSSYCOBBLE 0x80d //22
-#define CONTENT_GRAVEL 0x80e //23
-#define CONTENT_SANDSTONE 0x80f //24
-#define CONTENT_CACTUS 0x810 //25
-#define CONTENT_BRICK 0x811 //26
-#define CONTENT_CLAY 0x812 //27
-#define CONTENT_PAPYRUS 0x813 //28
-#define CONTENT_BOOKSHELF 0x814 //29
+#define CONTENT_GRASS 0x800	      // 1
+#define CONTENT_TREE 0x801	      // 4
+#define CONTENT_LEAVES 0x802	      // 5
+#define CONTENT_GRASS_FOOTSTEPS 0x803 // 6
+#define CONTENT_MESE 0x804	      // 7
+#define CONTENT_MUD 0x805	      // 8
+#define CONTENT_CLOUD 0x806	      // 10
+#define CONTENT_COALSTONE 0x807	      // 11
+#define CONTENT_WOOD 0x808	      // 12
+#define CONTENT_SAND 0x809	      // 13
+#define CONTENT_COBBLE 0x80a	      // 18
+#define CONTENT_STEEL 0x80b	      // 19
+#define CONTENT_GLASS 0x80c	      // 20
+#define CONTENT_MOSSYCOBBLE 0x80d     // 22
+#define CONTENT_GRAVEL 0x80e	      // 23
+#define CONTENT_SANDSTONE 0x80f	      // 24
+#define CONTENT_CACTUS 0x810	      // 25
+#define CONTENT_BRICK 0x811	      // 26
+#define CONTENT_CLAY 0x812	      // 27
+#define CONTENT_PAPYRUS 0x813	      // 28
+#define CONTENT_BOOKSHELF 0x814	      // 29
 #define CONTENT_JUNGLETREE 0x815
 #define CONTENT_JUNGLEGRASS 0x816
 #define CONTENT_NC 0x817
@@ -79,34 +79,33 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	Should never be touched.
 */
 content_t trans_table_19[21][2] = {
-	{CONTENT_GRASS, 1},
-	{CONTENT_TREE, 4},
-	{CONTENT_LEAVES, 5},
-	{CONTENT_GRASS_FOOTSTEPS, 6},
-	{CONTENT_MESE, 7},
-	{CONTENT_MUD, 8},
-	{CONTENT_CLOUD, 10},
-	{CONTENT_COALSTONE, 11},
-	{CONTENT_WOOD, 12},
-	{CONTENT_SAND, 13},
-	{CONTENT_COBBLE, 18},
-	{CONTENT_STEEL, 19},
-	{CONTENT_GLASS, 20},
-	{CONTENT_MOSSYCOBBLE, 22},
-	{CONTENT_GRAVEL, 23},
-	{CONTENT_SANDSTONE, 24},
-	{CONTENT_CACTUS, 25},
-	{CONTENT_BRICK, 26},
-	{CONTENT_CLAY, 27},
-	{CONTENT_PAPYRUS, 28},
-	{CONTENT_BOOKSHELF, 29},
+		{CONTENT_GRASS, 1},
+		{CONTENT_TREE, 4},
+		{CONTENT_LEAVES, 5},
+		{CONTENT_GRASS_FOOTSTEPS, 6},
+		{CONTENT_MESE, 7},
+		{CONTENT_MUD, 8},
+		{CONTENT_CLOUD, 10},
+		{CONTENT_COALSTONE, 11},
+		{CONTENT_WOOD, 12},
+		{CONTENT_SAND, 13},
+		{CONTENT_COBBLE, 18},
+		{CONTENT_STEEL, 19},
+		{CONTENT_GLASS, 20},
+		{CONTENT_MOSSYCOBBLE, 22},
+		{CONTENT_GRAVEL, 23},
+		{CONTENT_SANDSTONE, 24},
+		{CONTENT_CACTUS, 25},
+		{CONTENT_BRICK, 26},
+		{CONTENT_CLAY, 27},
+		{CONTENT_PAPYRUS, 28},
+		{CONTENT_BOOKSHELF, 29},
 };
 
 MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 {
 	MapNode result = n_from;
-	if(version <= 19)
-	{
+	if (version <= 19) {
 		content_t c_from = n_from.getContent();
 		for (const auto &tt_i : trans_table_19) {
 			if (tt_i[1] == c_from) {
@@ -164,4 +163,3 @@ void content_mapnode_get_name_id_mapping(NameIdMapping *nimap)
 	nimap->set(CONTENT_IGNORE, "ignore");
 	nimap->set(CONTENT_AIR, "air");
 }
-

@@ -23,12 +23,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "common/c_internal.h"
 #include "itemdef.h"
 
-
-struct EnumString es_ItemType[] =
-	{
+struct EnumString es_ItemType[] = {
 		{ITEM_NONE, "none"},
 		{ITEM_NODE, "node"},
 		{ITEM_CRAFT, "craft"},
 		{ITEM_TOOL, "tool"},
 		{0, NULL},
-	};
+};

@@ -23,7 +23,6 @@ Dummy database class
 
 #include "database-dummy.h"
 
-
 bool Database_Dummy::saveBlock(const v3s16 &pos, const std::string &data)
 {
 	m_database[getBlockAsInteger(pos)] = data;
@@ -56,4 +55,3 @@ void Database_Dummy::listAllLoadableBlocks(std::vector<v3s16> &dst)
 		dst.push_back(getIntegerAsBlock(x->first));
 	}
 }
-

@@ -19,14 +19,12 @@
 
 #include "guiPathSelectMenu.h"
 
-GUIFileSelectMenu::GUIFileSelectMenu(gui::IGUIEnvironment* env,
-		gui::IGUIElement* parent, s32 id, IMenuManager *menumgr,
-		const std::string &title, const std::string &formname,
-		bool is_file_select) :
-	GUIModalMenu(env, parent, id, menumgr),
-	m_title(utf8_to_wide(title)),
-	m_formname(formname),
-	m_file_select_dialog(is_file_select)
+GUIFileSelectMenu::GUIFileSelectMenu(gui::IGUIEnvironment *env, gui::IGUIElement *parent,
+		s32 id, IMenuManager *menumgr, const std::string &title,
+		const std::string &formname, bool is_file_select) :
+		GUIModalMenu(env, parent, id, menumgr),
+		m_title(utf8_to_wide(title)), m_formname(formname),
+		m_file_select_dialog(is_file_select)
 {
 }
 

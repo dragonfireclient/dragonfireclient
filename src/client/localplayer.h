@@ -132,7 +132,7 @@ public:
 	inline void setPosition(const v3f &position)
 	{
 		m_position = position;
-		if (! m_freecam)
+		if (!m_freecam)
 			m_legit_position = position;
 		m_sneak_node_exists = false;
 	}
@@ -140,7 +140,7 @@ public:
 	v3f getPosition() const { return m_position; }
 
 	v3f getLegitPosition() const { return m_legit_position; }
-	
+
 	v3f getLegitSpeed() const { return m_legit_speed; }
 
 	inline void setLegitPosition(const v3f &position)
@@ -151,18 +151,15 @@ public:
 			setPosition(position);
 	}
 
-	inline void freecamEnable() 
-	{
-		m_freecam = true;
-	}
-	
-	inline void freecamDisable() 
+	inline void freecamEnable() { m_freecam = true; }
+
+	inline void freecamDisable()
 	{
 		m_freecam = false;
 		setPosition(m_legit_position);
 		setSpeed(m_legit_speed);
 	}
-	
+
 	// Non-transformed eye offset getters
 	// For accurate positions, use the Camera functions
 	v3f getEyePosition() const { return m_position + getEyeOffset(); }
@@ -171,7 +168,7 @@ public:
 
 	void setCollisionbox(const aabb3f &box) { m_collisionbox = box; }
 
-	const aabb3f& getCollisionbox() const { return m_collisionbox; }
+	const aabb3f &getCollisionbox() const { return m_collisionbox; }
 
 	float getZoomFOV() const { return m_zoom_fov; }
 	void setZoomFOV(float zoom_fov) { m_zoom_fov = zoom_fov; }
@@ -180,26 +177,23 @@ public:
 
 	bool isDead() const;
 
-	inline void addVelocity(const v3f &vel)
-	{
-		added_velocity += vel;
-	}
-	
+	inline void addVelocity(const v3f &vel) { added_velocity += vel; }
+
 	void tryReattach(int id);
-	
+
 	bool isWaitingForReattach() const;
-	
+
 	bool canWalkOn(const ContentFeatures &f);
-	
+
 private:
 	void accelerate(const v3f &target_speed, const f32 max_increase_H,
-		const f32 max_increase_V, const bool use_pitch);
+			const f32 max_increase_V, const bool use_pitch);
 	bool updateSneakNode(Map *map, const v3f &position, const v3f &sneak_max);
 	float getSlipFactor(Environment *env, const v3f &speedH);
 	void handleAutojump(f32 dtime, Environment *env,
-		const collisionMoveResult &result,
-		const v3f &position_before_move, const v3f &speed_before_move,
-		f32 pos_max_d);
+			const collisionMoveResult &result,
+			const v3f &position_before_move, const v3f &speed_before_move,
+			f32 pos_max_d);
 
 	bool m_freecam = false;
 	v3f m_position;
@@ -234,7 +228,7 @@ private:
 	f32 m_pitch = 0.0f;
 	bool camera_barely_in_ceiling = false;
 	aabb3f m_collisionbox = aabb3f(-BS * 0.30f, 0.0f, -BS * 0.30f, BS * 0.30f,
-		BS * 1.75f, BS * 0.30f);
+			BS * 1.75f, BS * 0.30f);
 	float m_eye_height = 1.625f;
 	float m_zoom_fov = 0.0f;
 	bool m_autojump = false;

@@ -67,9 +67,9 @@ public:
 		std::string value;
 
 		Option(const std::string &name_, const std::string &value_) :
-			name(name_),
-			value(value_)
-		{}
+				name(name_), value(value_)
+		{
+		}
 	};
 
 	/*
@@ -87,11 +87,8 @@ public:
 	};
 	typedef std::vector<TableColumn> TableColumns;
 
-
-	GUITable(gui::IGUIEnvironment *env,
-			gui::IGUIElement *parent, s32 id,
-			core::rect<s32> rectangle,
-			ISimpleTextureSource *tsrc);
+	GUITable(gui::IGUIEnvironment *env, gui::IGUIElement *parent, s32 id,
+			core::rect<s32> rectangle, ISimpleTextureSource *tsrc);
 
 	virtual ~GUITable();
 
@@ -99,13 +96,11 @@ public:
 	static Option splitOption(const std::string &str);
 
 	/* Set textlist-like options, columns and data */
-	void setTextList(const std::vector<std::string> &content,
-			bool transparent);
+	void setTextList(const std::vector<std::string> &content, bool transparent);
 
 	/* Set generic table options, columns and content */
 	// Adds empty strings to end of content if there is an incomplete row
-	void setTable(const TableOptions &options,
-			const TableColumns &columns,
+	void setTable(const TableOptions &options, const TableColumns &columns,
 			std::vector<std::string> &content);
 
 	/* Clear the table */
@@ -130,7 +125,7 @@ public:
 	void setDynamicData(const DynamicData &dyndata);
 
 	/* Returns "GUITable" */
-	virtual const c8* getTypeName() const;
+	virtual const c8 *getTypeName() const;
 
 	/* Must be called when position or size changes */
 	virtual void updateAbsolutePosition();
@@ -142,7 +137,8 @@ public:
 	virtual bool OnEvent(const SEvent &event);
 
 protected:
-	enum ColumnType {
+	enum ColumnType
+	{
 		COLUMN_TYPE_TEXT,
 		COLUMN_TYPE_IMAGE,
 		COLUMN_TYPE_COLOR,
@@ -150,7 +146,8 @@ protected:
 		COLUMN_TYPE_TREE,
 	};
 
-	struct Cell {
+	struct Cell
+	{
 		s32 xmin;
 		s32 xmax;
 		s32 xpos;
@@ -162,7 +159,8 @@ protected:
 		s32 reported_column;
 	};
 
-	struct Row {
+	struct Row
+	{
 		Cell *cells;
 		s32 cellcount;
 		s32 indent;
@@ -203,7 +201,7 @@ protected:
 
 	// Allocated strings and images
 	std::vector<core::stringw> m_strings;
-	std::vector<video::ITexture*> m_images;
+	std::vector<video::ITexture *> m_images;
 	std::map<std::string, s32> m_alloc_strings;
 	std::map<std::string, s32> m_alloc_images;
 
@@ -252,6 +250,5 @@ protected:
 
 	// Aligns cell content in column according to alignment specification
 	// align = 0: left aligned, 1: centered, 2: right aligned, 3: inline
-	static void alignContent(Cell *cell, s32 xmax, s32 content_width,
-			s32 align);
+	static void alignContent(Cell *cell, s32 xmax, s32 content_width, s32 align);
 };

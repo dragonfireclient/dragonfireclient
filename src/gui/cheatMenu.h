@@ -42,18 +42,15 @@ class CheatMenu
 public:
 	CheatMenu(Client *client);
 
-	ClientScripting *getScript()
-	{
-		return m_client->getScript();
-	}
+	ClientScripting *getScript() { return m_client->getScript(); }
 
 	void draw(video::IVideoDriver *driver, bool show_debug);
-	
+
 	void drawHUD(video::IVideoDriver *driver, double dtime);
 
 	void drawEntry(video::IVideoDriver *driver, std::string name, int number,
-		bool selected, bool active,
-		CheatMenuEntryType entry_type = CHEAT_MENU_ENTRY_TYPE_ENTRY);
+			bool selected, bool active,
+			CheatMenuEntryType entry_type = CHEAT_MENU_ENTRY_TYPE_ENTRY);
 
 	void selectUp();
 	void selectDown();
@@ -82,6 +79,6 @@ private:
 
 	gui::IGUIFont *m_font = nullptr;
 	v2u32 m_fontsize;
-	
+
 	float m_rainbow_offset = 0.0;
 };

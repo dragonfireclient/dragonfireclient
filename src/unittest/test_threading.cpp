@@ -23,8 +23,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "threading/semaphore.h"
 #include "threading/thread.h"
 
-
-class TestThreading : public TestBase {
+class TestThreading : public TestBase
+{
 public:
 	TestThreading() { TestManager::registerTestModule(this); }
 	const char *getName() { return "TestThreading"; }
@@ -44,11 +44,11 @@ void TestThreading::runTests(IGameDef *gamedef)
 	TEST(testAtomicSemaphoreThread);
 }
 
-class SimpleTestThread : public Thread {
+class SimpleTestThread : public Thread
+{
 public:
 	SimpleTestThread(unsigned int interval) :
-		Thread("SimpleTest"),
-		m_interval(interval)
+			Thread("SimpleTest"), m_interval(interval)
 	{
 	}
 
@@ -110,7 +110,6 @@ void TestThreading::testStartStopWait()
 	delete thread;
 }
 
-
 void TestThreading::testThreadKill()
 {
 	SimpleTestThread *thread = new SimpleTestThread(300);
@@ -134,13 +133,11 @@ void TestThreading::testThreadKill()
 	delete thread;
 }
 
-
-class AtomicTestThread : public Thread {
+class AtomicTestThread : public Thread
+{
 public:
 	AtomicTestThread(std::atomic<u32> &v, Semaphore &trigger) :
-		Thread("AtomicTest"),
-		val(v),
-		trigger(trigger)
+			Thread("AtomicTest"), val(v), trigger(trigger)
 	{
 	}
 
@@ -156,7 +153,6 @@ private:
 	std::atomic<u32> &val;
 	Semaphore &trigger;
 };
-
 
 void TestThreading::testAtomicSemaphoreThread()
 {
@@ -180,4 +176,3 @@ void TestThreading::testAtomicSemaphoreThread()
 
 	UASSERT(val == num_threads * 0x10000);
 }
-

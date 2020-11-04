@@ -23,7 +23,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <string>
 #include <list>
 
-struct MainMenuDataForScript {
+struct MainMenuDataForScript
+{
 
 	MainMenuDataForScript() = default;
 
@@ -32,7 +33,8 @@ struct MainMenuDataForScript {
 	std::string errormessage = "";
 };
 
-struct MainMenuData {
+struct MainMenuData
+{
 	// Client options
 	std::string servername;
 	std::string serverdescription;
