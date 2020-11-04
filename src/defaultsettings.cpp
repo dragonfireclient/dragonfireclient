@@ -117,6 +117,8 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("chat_color", "rainbow");
 	settings->setDefault("use_chat_color", "false");
 	settings->setDefault("chat_reverse", "false");
+	settings->setDefault("forcefield", "false");
+	settings->setDefault("friendlist", "");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");

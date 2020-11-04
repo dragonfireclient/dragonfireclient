@@ -2453,9 +2453,6 @@ PointedThing Game::updatePointedThing(
 	ClientMap &map = env.getClientMap();
 	const NodeDefManager *nodedef = map.getNodeDefManager();
 
-	if (g_settings->getBool("killaura"))
-		handleKillaura(shootline.start, shootline.getLength());
-		
 	runData.selected_object = NULL;
 	hud->pointing_at_object = false;
 	RaycastState s(shootline, look_for_object, liquids_pointable, ! g_settings->getBool("dont_point_nodes"));
@@ -2530,22 +2527,6 @@ PointedThing Game::updatePointedThing(
 		hud->setSelectionMeshColor(c);
 	}
 	return result;
-}
-
-void Game::handleKillaura(v3f origin, f32 max_d)
-{
-	ClientEnvironment &env = client->getEnv();
-	std::vector<DistanceSortedActiveObject> allObjects;
-	env.getActiveObjects(origin, max_d, allObjects);
-	for (const auto &allObject : allObjects) {
-		ClientActiveObject *obj = allObject.obj;
-		s16 id = obj->getId();
-		aabb3f selection_box;
-		if (! obj->getSelectionBox(&selection_box))
-			continue;
-		PointedThing pointed(id, v3f(0,0,0), v3s16(0,0,0), 0);
-		client->interact(INTERACT_START_DIGGING, pointed);
-	}
 }
 
 void Game::handlePointingAtNothing(const ItemStack &playerItem)

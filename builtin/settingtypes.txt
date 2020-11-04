@@ -2314,3 +2314,7 @@ chat_color (Chat Color) string rainbow
 use_chat_color (ColoredChat) bool false
 
 chat_reverse (ReversedChat) bool false
+
+forcefield (Forcefield) bool false
+
+friendlist (Killaura / Forcefield Friendlist) string

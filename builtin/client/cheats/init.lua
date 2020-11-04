@@ -1,6 +1,7 @@
 core.cheats = {
 	["Combat"] = {
 		["Killaura"] = "killaura",
+		["Forcefield"] = "forcefield",
 		["AntiKnockback"] = "antiknockback",
 		["FastHit"] = "spamclick",
 		["AttachmentFloat"] = "float_above_parent",
