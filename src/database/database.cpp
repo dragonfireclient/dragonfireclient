@@ -20,7 +20,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "database.h"
 #include "irrlichttypes.h"
 
-
 /****************
  * Black magic! *
  ****************
@@ -37,7 +36,6 @@ static inline s16 unsigned_to_signed(u16 i, u16 max_positive)
 	return i - (max_positive * 2);
 }
 
-
 // Modulo of a negative number does not work consistently in C
 static inline s64 pythonmodulo(s64 i, s16 mod)
 {
@@ -47,14 +45,10 @@ static inline s64 pythonmodulo(s64 i, s16 mod)
 	return mod - ((-i) % mod);
 }
 
-
 s64 MapDatabase::getBlockAsInteger(const v3s16 &pos)
 {
-	return (u64) pos.Z * 0x1000000 +
-		(u64) pos.Y * 0x1000 +
-		(u64) pos.X;
+	return (u64)pos.Z * 0x1000000 + (u64)pos.Y * 0x1000 + (u64)pos.X;
 }
-
 
 v3s16 MapDatabase::getIntegerAsBlock(s64 i)
 {
@@ -66,4 +60,3 @@ v3s16 MapDatabase::getIntegerAsBlock(s64 i)
 	pos.Z = unsigned_to_signed(pythonmodulo(i, 4096), 2048);
 	return pos;
 }
-

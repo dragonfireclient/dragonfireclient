@@ -41,7 +41,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/renderingengine.h"
 #include "network/networkprotocol.h"
 
-
 /******************************************************************************/
 std::string ModApiMainMenu::getTextData(lua_State *L, std::string name)
 {
@@ -49,39 +48,39 @@ std::string ModApiMainMenu::getTextData(lua_State *L, std::string name)
 
 	lua_getfield(L, -1, name.c_str());
 
-	if(lua_isnil(L, -1))
+	if (lua_isnil(L, -1))
 		return "";
 
 	return luaL_checkstring(L, -1);
 }
 
 /******************************************************************************/
-int ModApiMainMenu::getIntegerData(lua_State *L, std::string name,bool& valid)
+int ModApiMainMenu::getIntegerData(lua_State *L, std::string name, bool &valid)
 {
 	lua_getglobal(L, "gamedata");
 
 	lua_getfield(L, -1, name.c_str());
 
-	if(lua_isnil(L, -1)) {
+	if (lua_isnil(L, -1)) {
 		valid = false;
 		return -1;
-		}
+	}
 
 	valid = true;
 	return luaL_checkinteger(L, -1);
 }
 
 /******************************************************************************/
-int ModApiMainMenu::getBoolData(lua_State *L, std::string name,bool& valid)
+int ModApiMainMenu::getBoolData(lua_State *L, std::string name, bool &valid)
 {
 	lua_getglobal(L, "gamedata");
 
 	lua_getfield(L, -1, name.c_str());
 
-	if(lua_isnil(L, -1)) {
+	if (lua_isnil(L, -1)) {
 		valid = false;
 		return false;
-		}
+	}
 
 	valid = true;
 	return readParam<bool>(L, -1);
@@ -90,13 +89,13 @@ int ModApiMainMenu::getBoolData(lua_State *L, std::string name,bool& valid)
 /******************************************************************************/
 int ModApiMainMenu::l_update_formspec(lua_State *L)
 {
-	GUIEngine* engine = getGuiEngine(L);
+	GUIEngine *engine = getGuiEngine(L);
 	sanity_check(engine != NULL);
 
 	if (engine->m_startgame)
 		return 0;
 
-	//read formspec
+	// read formspec
 	std::string formspec(luaL_checkstring(L, 1));
 
 	if (engine->m_formspecgui != 0) {
@@ -124,28 +123,28 @@ int ModApiMainMenu::l_set_formspec_prepend(lua_State *L)
 /******************************************************************************/
 int ModApiMainMenu::l_start(lua_State *L)
 {
-	GUIEngine* engine = getGuiEngine(L);
+	GUIEngine *engine = getGuiEngine(L);
 	sanity_check(engine != NULL);
 
-	//update c++ gamedata from lua table
+	// update c++ gamedata from lua table
 
 	bool valid = false;
 
 	MainMenuData *data = engine->m_data;
 
-	data->selected_world = getIntegerData(L, "selected_world",valid) -1;
-	data->simple_singleplayer_mode = getBoolData(L,"singleplayer",valid);
+	data->selected_world = getIntegerData(L, "selected_world", valid) - 1;
+	data->simple_singleplayer_mode = getBoolData(L, "singleplayer", valid);
 	data->do_reconnect = getBoolData(L, "do_reconnect", valid);
 	if (!data->do_reconnect) {
-		data->name     = getTextData(L,"playername");
-		data->password = getTextData(L,"password");
-		data->address  = getTextData(L,"address");
-		data->port     = getTextData(L,"port");
+		data->name = getTextData(L, "playername");
+		data->password = getTextData(L, "password");
+		data->address = getTextData(L, "address");
+		data->port = getTextData(L, "port");
 	}
-	data->serverdescription = getTextData(L,"serverdescription");
-	data->servername        = getTextData(L,"servername");
+	data->serverdescription = getTextData(L, "serverdescription");
+	data->servername = getTextData(L, "servername");
 
-	//close menu next time
+	// close menu next time
 	engine->m_startgame = true;
 	return 0;
 }
@@ -153,7 +152,7 @@ int ModApiMainMenu::l_start(lua_State *L)
 /******************************************************************************/
 int ModApiMainMenu::l_close(lua_State *L)
 {
-	GUIEngine* engine = getGuiEngine(L);
+	GUIEngine *engine = getGuiEngine(L);
 	sanity_check(engine != NULL);
 
 	engine->m_kill = true;
@@ -163,14 +162,14 @@ int ModApiMainMenu::l_close(lua_State *L)
 /******************************************************************************/
 int ModApiMainMenu::l_set_background(lua_State *L)
 {
-	GUIEngine* engine = getGuiEngine(L);
+	GUIEngine *engine = getGuiEngine(L);
 	sanity_check(engine != NULL);
 
 	std::string backgroundlevel(luaL_checkstring(L, 1));
 	std::string texturename(luaL_checkstring(L, 2));
 
 	bool tile_image = false;
-	bool retval     = false;
+	bool retval = false;
 	unsigned int minsize = 16;
 
 	if (!lua_isnone(L, 3)) {
@@ -182,36 +181,36 @@ int ModApiMainMenu::l_set_background(lua_State *L)
 	}
 
 	if (backgroundlevel == "background") {
-		retval |= engine->setTexture(TEX_LAYER_BACKGROUND, texturename,
-				tile_image, minsize);
+		retval |= engine->setTexture(
+				TEX_LAYER_BACKGROUND, texturename, tile_image, minsize);
 	}
 
 	if (backgroundlevel == "overlay") {
-		retval |= engine->setTexture(TEX_LAYER_OVERLAY, texturename,
-				tile_image, minsize);
+		retval |= engine->setTexture(
+				TEX_LAYER_OVERLAY, texturename, tile_image, minsize);
 	}
 
 	if (backgroundlevel == "header") {
-		retval |= engine->setTexture(TEX_LAYER_HEADER,  texturename,
-				tile_image, minsize);
+		retval |= engine->setTexture(
+				TEX_LAYER_HEADER, texturename, tile_image, minsize);
 	}
 
 	if (backgroundlevel == "footer") {
-		retval |= engine->setTexture(TEX_LAYER_FOOTER, texturename,
-				tile_image, minsize);
+		retval |= engine->setTexture(
+				TEX_LAYER_FOOTER, texturename, tile_image, minsize);
 	}
 
-	lua_pushboolean(L,retval);
+	lua_pushboolean(L, retval);
 	return 1;
 }
 
 /******************************************************************************/
 int ModApiMainMenu::l_set_clouds(lua_State *L)
 {
-	GUIEngine* engine = getGuiEngine(L);
+	GUIEngine *engine = getGuiEngine(L);
 	sanity_check(engine != NULL);
 
-	bool value = readParam<bool>(L,1);
+	bool value = readParam<bool>(L, 1);
 
 	engine->m_clouds_enabled = value;
 
@@ -228,7 +227,7 @@ int ModApiMainMenu::l_get_textlist_index(lua_State *L)
 /******************************************************************************/
 int ModApiMainMenu::l_get_table_index(lua_State *L)
 {
-	GUIEngine* engine = getGuiEngine(L);
+	GUIEngine *engine = getGuiEngine(L);
 	sanity_check(engine != NULL);
 
 	std::string tablename(luaL_checkstring(L, 1));
@@ -252,20 +251,20 @@ int ModApiMainMenu::l_get_worlds(lua_State *L)
 	unsigned int index = 1;
 
 	for (const WorldSpec &world : worlds) {
-		lua_pushnumber(L,index);
+		lua_pushnumber(L, index);
 
 		lua_newtable(L);
 		int top_lvl2 = lua_gettop(L);
 
-		lua_pushstring(L,"path");
+		lua_pushstring(L, "path");
 		lua_pushstring(L, world.path.c_str());
 		lua_settable(L, top_lvl2);
 
-		lua_pushstring(L,"name");
+		lua_pushstring(L, "name");
 		lua_pushstring(L, world.name.c_str());
 		lua_settable(L, top_lvl2);
 
-		lua_pushstring(L,"gameid");
+		lua_pushstring(L, "gameid");
 		lua_pushstring(L, world.gameid.c_str());
 		lua_settable(L, top_lvl2);
 
@@ -286,7 +285,7 @@ int ModApiMainMenu::l_get_favorites(lua_State *L)
 
 	std::vector<ServerListSpec> servers;
 
-	if(listtype == "online") {
+	if (listtype == "online") {
 		servers = ServerList::getOnline();
 	} else {
 		servers = ServerList::getLocal();
@@ -305,8 +304,8 @@ int ModApiMainMenu::l_get_favorites(lua_State *L)
 
 		if (!server["clients"].asString().empty()) {
 			std::string clients_raw = server["clients"].asString();
-			char* endptr = 0;
-			int numbervalue = strtol(clients_raw.c_str(), &endptr,10);
+			char *endptr = 0;
+			int numbervalue = strtol(clients_raw.c_str(), &endptr, 10);
 
 			if ((!clients_raw.empty()) && (*endptr == 0)) {
 				lua_pushstring(L, "clients");
@@ -318,8 +317,8 @@ int ModApiMainMenu::l_get_favorites(lua_State *L)
 		if (!server["clients_max"].asString().empty()) {
 
 			std::string clients_max_raw = server["clients_max"].asString();
-			char* endptr = 0;
-			int numbervalue = strtol(clients_max_raw.c_str(), &endptr,10);
+			char *endptr = 0;
+			int numbervalue = strtol(clients_max_raw.c_str(), &endptr, 10);
 
 			if ((!clients_max_raw.empty()) && (*endptr == 0)) {
 				lua_pushstring(L, "clients_max");
@@ -450,25 +449,22 @@ int ModApiMainMenu::l_delete_favorite(lua_State *L)
 
 	std::string listtype = "local";
 
-	if (!lua_isnone(L,2)) {
-		listtype = luaL_checkstring(L,2);
+	if (!lua_isnone(L, 2)) {
+		listtype = luaL_checkstring(L, 2);
 	}
 
-	if ((listtype != "local") &&
-		(listtype != "online"))
+	if ((listtype != "local") && (listtype != "online"))
 		return 0;
 
-
-	if(listtype == "online") {
+	if (listtype == "online") {
 		servers = ServerList::getOnline();
 	} else {
 		servers = ServerList::getLocal();
 	}
 
-	int fav_idx	= luaL_checkinteger(L,1) -1;
+	int fav_idx = luaL_checkinteger(L, 1) - 1;
 
-	if ((fav_idx >= 0) &&
-			(fav_idx < (int) servers.size())) {
+	if ((fav_idx >= 0) && (fav_idx < (int)servers.size())) {
 
 		ServerList::deleteEntry(servers[fav_idx]);
 	}
@@ -490,37 +486,37 @@ int ModApiMainMenu::l_get_games(lua_State *L)
 		lua_newtable(L);
 		int top_lvl2 = lua_gettop(L);
 
-		lua_pushstring(L,  "id");
-		lua_pushstring(L,  game.id.c_str());
-		lua_settable(L,    top_lvl2);
+		lua_pushstring(L, "id");
+		lua_pushstring(L, game.id.c_str());
+		lua_settable(L, top_lvl2);
 
-		lua_pushstring(L,  "path");
-		lua_pushstring(L,  game.path.c_str());
-		lua_settable(L,    top_lvl2);
+		lua_pushstring(L, "path");
+		lua_pushstring(L, game.path.c_str());
+		lua_settable(L, top_lvl2);
 
-		lua_pushstring(L,  "type");
-		lua_pushstring(L,  "game");
-		lua_settable(L,    top_lvl2);
+		lua_pushstring(L, "type");
+		lua_pushstring(L, "game");
+		lua_settable(L, top_lvl2);
 
-		lua_pushstring(L,  "gamemods_path");
-		lua_pushstring(L,  game.gamemods_path.c_str());
-		lua_settable(L,    top_lvl2);
+		lua_pushstring(L, "gamemods_path");
+		lua_pushstring(L, game.gamemods_path.c_str());
+		lua_settable(L, top_lvl2);
 
-		lua_pushstring(L,  "name");
-		lua_pushstring(L,  game.name.c_str());
-		lua_settable(L,    top_lvl2);
+		lua_pushstring(L, "name");
+		lua_pushstring(L, game.name.c_str());
+		lua_settable(L, top_lvl2);
 
-		lua_pushstring(L,  "author");
-		lua_pushstring(L,  game.author.c_str());
-		lua_settable(L,    top_lvl2);
+		lua_pushstring(L, "author");
+		lua_pushstring(L, game.author.c_str());
+		lua_settable(L, top_lvl2);
 
-		lua_pushstring(L,  "release");
+		lua_pushstring(L, "release");
 		lua_pushinteger(L, game.release);
-		lua_settable(L,    top_lvl2);
+		lua_settable(L, top_lvl2);
 
-		lua_pushstring(L,  "menuicon_path");
-		lua_pushstring(L,  game.menuicon_path.c_str());
-		lua_settable(L,    top_lvl2);
+		lua_pushstring(L, "menuicon_path");
+		lua_pushstring(L, game.menuicon_path.c_str());
+		lua_settable(L, top_lvl2);
 
 		lua_pushstring(L, "addon_mods_paths");
 		lua_newtable(L);
@@ -529,7 +525,7 @@ int ModApiMainMenu::l_get_games(lua_State *L)
 		for (const std::string &addon_mods_path : game.addon_mods_paths) {
 			lua_pushnumber(L, internal_index);
 			lua_pushstring(L, addon_mods_path.c_str());
-			lua_settable(L,   table2);
+			lua_settable(L, table2);
 			internal_index++;
 		}
 		lua_settable(L, top_lvl2);
@@ -598,13 +594,11 @@ int ModApiMainMenu::l_get_content_info(lua_State *L)
 /******************************************************************************/
 int ModApiMainMenu::l_show_keys_menu(lua_State *L)
 {
-	GUIEngine* engine = getGuiEngine(L);
+	GUIEngine *engine = getGuiEngine(L);
 	sanity_check(engine != NULL);
 
 	GUIKeyChangeMenu *kmenu = new GUIKeyChangeMenu(RenderingEngine::get_gui_env(),
-			engine->m_parent,
-			-1,
-			engine->m_menumanager,
+			engine->m_parent, -1, engine->m_menumanager,
 			engine->m_texture_source);
 	kmenu->drop();
 	return 0;
@@ -613,17 +607,14 @@ int ModApiMainMenu::l_show_keys_menu(lua_State *L)
 /******************************************************************************/
 int ModApiMainMenu::l_create_world(lua_State *L)
 {
-	const char *name	= luaL_checkstring(L, 1);
-	int gameidx			= luaL_checkinteger(L,2) -1;
+	const char *name = luaL_checkstring(L, 1);
+	int gameidx = luaL_checkinteger(L, 2) - 1;
 
-	std::string path = porting::path_user + DIR_DELIM
-			"worlds" + DIR_DELIM
-			+ name;
+	std::string path = porting::path_user + DIR_DELIM "worlds" + DIR_DELIM + name;
 
 	std::vector<SubgameSpec> games = getAvailableGames();
 
-	if ((gameidx >= 0) &&
-			(gameidx < (int) games.size())) {
+	if ((gameidx >= 0) && (gameidx < (int)games.size())) {
 
 		// Create world if it doesn't exist
 		if (!loadGameConfAndInitWorld(path, games[gameidx])) {
@@ -642,7 +633,7 @@ int ModApiMainMenu::l_delete_world(lua_State *L)
 {
 	int world_id = luaL_checkinteger(L, 1) - 1;
 	std::vector<WorldSpec> worlds = getAvailableWorlds();
-	if (world_id < 0 || world_id >= (int) worlds.size()) {
+	if (world_id < 0 || world_id >= (int)worlds.size()) {
 		lua_pushstring(L, "Invalid world index");
 		return 1;
 	}
@@ -657,12 +648,12 @@ int ModApiMainMenu::l_delete_world(lua_State *L)
 /******************************************************************************/
 int ModApiMainMenu::l_set_topleft_text(lua_State *L)
 {
-	GUIEngine* engine = getGuiEngine(L);
+	GUIEngine *engine = getGuiEngine(L);
 	sanity_check(engine != NULL);
 
 	std::string text;
 
-	if (!lua_isnone(L,1) &&	!lua_isnil(L,1))
+	if (!lua_isnone(L, 1) && !lua_isnil(L, 1))
 		text = luaL_checkstring(L, 1);
 
 	engine->setTopleftText(text);
@@ -685,12 +676,11 @@ int ModApiMainMenu::l_get_mapgen_names(lua_State *L)
 	return 1;
 }
 
-
 /******************************************************************************/
 int ModApiMainMenu::l_get_modpath(lua_State *L)
 {
 	std::string modpath = fs::RemoveRelativePathComponents(
-		porting::path_user + DIR_DELIM + "mods" + DIR_DELIM);
+			porting::path_user + DIR_DELIM + "mods" + DIR_DELIM);
 	lua_pushstring(L, modpath.c_str());
 	return 1;
 }
@@ -699,7 +689,7 @@ int ModApiMainMenu::l_get_modpath(lua_State *L)
 int ModApiMainMenu::l_get_clientmodpath(lua_State *L)
 {
 	std::string modpath = fs::RemoveRelativePathComponents(
-		porting::path_user + DIR_DELIM + "clientmods" + DIR_DELIM);
+			porting::path_user + DIR_DELIM + "clientmods" + DIR_DELIM);
 	lua_pushstring(L, modpath.c_str());
 	return 1;
 }
@@ -708,7 +698,7 @@ int ModApiMainMenu::l_get_clientmodpath(lua_State *L)
 int ModApiMainMenu::l_get_gamepath(lua_State *L)
 {
 	std::string gamepath = fs::RemoveRelativePathComponents(
-		porting::path_user + DIR_DELIM + "games" + DIR_DELIM);
+			porting::path_user + DIR_DELIM + "games" + DIR_DELIM);
 	lua_pushstring(L, gamepath.c_str());
 	return 1;
 }
@@ -717,7 +707,7 @@ int ModApiMainMenu::l_get_gamepath(lua_State *L)
 int ModApiMainMenu::l_get_texturepath(lua_State *L)
 {
 	std::string gamepath = fs::RemoveRelativePathComponents(
-		porting::path_user + DIR_DELIM + "textures");
+			porting::path_user + DIR_DELIM + "textures");
 	lua_pushstring(L, gamepath.c_str());
 	return 1;
 }
@@ -725,7 +715,7 @@ int ModApiMainMenu::l_get_texturepath(lua_State *L)
 int ModApiMainMenu::l_get_texturepath_share(lua_State *L)
 {
 	std::string gamepath = fs::RemoveRelativePathComponents(
-		porting::path_share + DIR_DELIM + "textures");
+			porting::path_share + DIR_DELIM + "textures");
 	lua_pushstring(L, gamepath.c_str());
 	return 1;
 }
@@ -737,7 +727,8 @@ int ModApiMainMenu::l_get_cache_path(lua_State *L)
 }
 
 /******************************************************************************/
-int ModApiMainMenu::l_create_dir(lua_State *L) {
+int ModApiMainMenu::l_create_dir(lua_State *L)
+{
 	const char *path = luaL_checkstring(L, 1);
 
 	if (ModApiMainMenu::mayModifyPath(path)) {
@@ -768,38 +759,37 @@ int ModApiMainMenu::l_delete_dir(lua_State *L)
 /******************************************************************************/
 int ModApiMainMenu::l_copy_dir(lua_State *L)
 {
-	const char *source	= luaL_checkstring(L, 1);
-	const char *destination	= luaL_checkstring(L, 2);
+	const char *source = luaL_checkstring(L, 1);
+	const char *destination = luaL_checkstring(L, 2);
 
 	bool keep_source = true;
 
-	if ((!lua_isnone(L,3)) &&
-			(!lua_isnil(L,3))) {
-		keep_source = readParam<bool>(L,3);
+	if ((!lua_isnone(L, 3)) && (!lua_isnil(L, 3))) {
+		keep_source = readParam<bool>(L, 3);
 	}
 
 	std::string absolute_destination = fs::RemoveRelativePathComponents(destination);
 	std::string absolute_source = fs::RemoveRelativePathComponents(source);
 
 	if ((ModApiMainMenu::mayModifyPath(absolute_destination))) {
-		bool retval = fs::CopyDir(absolute_source,absolute_destination);
+		bool retval = fs::CopyDir(absolute_source, absolute_destination);
 
 		if (retval && (!keep_source)) {
 
 			retval &= fs::RecursiveDelete(absolute_source);
 		}
-		lua_pushboolean(L,retval);
+		lua_pushboolean(L, retval);
 		return 1;
 	}
-	lua_pushboolean(L,false);
+	lua_pushboolean(L, false);
 	return 1;
 }
 
 /******************************************************************************/
 int ModApiMainMenu::l_extract_zip(lua_State *L)
 {
-	const char *zipfile	= luaL_checkstring(L, 1);
-	const char *destination	= luaL_checkstring(L, 2);
+	const char *zipfile = luaL_checkstring(L, 1);
+	const char *destination = luaL_checkstring(L, 2);
 
 	std::string absolute_destination = fs::RemoveRelativePathComponents(destination);
 
@@ -809,7 +799,7 @@ int ModApiMainMenu::l_extract_zip(lua_State *L)
 		io::IFileSystem *fs = RenderingEngine::get_filesystem();
 
 		if (!fs->addFileArchive(zipfile, false, false, io::EFAT_ZIP)) {
-			lua_pushboolean(L,false);
+			lua_pushboolean(L, false);
 			return 1;
 		}
 
@@ -818,33 +808,36 @@ int ModApiMainMenu::l_extract_zip(lua_State *L)
 		/**********************************************************************/
 		/* WARNING this is not threadsafe!!                                   */
 		/**********************************************************************/
-		io::IFileArchive* opened_zip =
-			fs->getFileArchive(fs->getFileArchiveCount()-1);
+		io::IFileArchive *opened_zip =
+				fs->getFileArchive(fs->getFileArchiveCount() - 1);
 
-		const io::IFileList* files_in_zip = opened_zip->getFileList();
+		const io::IFileList *files_in_zip = opened_zip->getFileList();
 
 		unsigned int number_of_files = files_in_zip->getFileCount();
 
-		for (unsigned int i=0; i < number_of_files; i++) {
+		for (unsigned int i = 0; i < number_of_files; i++) {
 			std::string fullpath = destination;
 			fullpath += DIR_DELIM;
 			fullpath += files_in_zip->getFullFileName(i).c_str();
 			std::string fullpath_dir = fs::RemoveLastPathComponent(fullpath);
 
 			if (!files_in_zip->isDirectory(i)) {
-				if (!fs::PathExists(fullpath_dir) && !fs::CreateAllDirs(fullpath_dir)) {
-					fs->removeFileArchive(fs->getFileArchiveCount()-1);
-					lua_pushboolean(L,false);
+				if (!fs::PathExists(fullpath_dir) &&
+						!fs::CreateAllDirs(fullpath_dir)) {
+					fs->removeFileArchive(
+							fs->getFileArchiveCount() - 1);
+					lua_pushboolean(L, false);
 					return 1;
 				}
 
-				io::IReadFile* toread = opened_zip->createAndOpenFile(i);
+				io::IReadFile *toread = opened_zip->createAndOpenFile(i);
 
-				FILE *targetfile = fopen(fullpath.c_str(),"wb");
+				FILE *targetfile = fopen(fullpath.c_str(), "wb");
 
 				if (targetfile == NULL) {
-					fs->removeFileArchive(fs->getFileArchiveCount()-1);
-					lua_pushboolean(L,false);
+					fs->removeFileArchive(
+							fs->getFileArchiveCount() - 1);
+					lua_pushboolean(L, false);
 					return 1;
 				}
 
@@ -853,14 +846,18 @@ int ModApiMainMenu::l_extract_zip(lua_State *L)
 
 				while (total_read < toread->getSize()) {
 
-					unsigned int bytes_read =
-							toread->read(read_buffer,sizeof(read_buffer));
-					if ((bytes_read == 0 ) ||
-						(fwrite(read_buffer, 1, bytes_read, targetfile) != bytes_read))
-					{
+					unsigned int bytes_read = toread->read(
+							read_buffer, sizeof(read_buffer));
+					if ((bytes_read == 0) ||
+							(fwrite(read_buffer, 1,
+									 bytes_read,
+									 targetfile) !=
+									bytes_read)) {
 						fclose(targetfile);
-						fs->removeFileArchive(fs->getFileArchiveCount()-1);
-						lua_pushboolean(L,false);
+						fs->removeFileArchive(
+								fs->getFileArchiveCount() -
+								1);
+						lua_pushboolean(L, false);
 						return 1;
 					}
 					total_read += bytes_read;
@@ -868,25 +865,24 @@ int ModApiMainMenu::l_extract_zip(lua_State *L)
 
 				fclose(targetfile);
 			}
-
 		}
 
-		fs->removeFileArchive(fs->getFileArchiveCount()-1);
-		lua_pushboolean(L,true);
+		fs->removeFileArchive(fs->getFileArchiveCount() - 1);
+		lua_pushboolean(L, true);
 		return 1;
 	}
 
-	lua_pushboolean(L,false);
+	lua_pushboolean(L, false);
 	return 1;
 }
 
 /******************************************************************************/
 int ModApiMainMenu::l_get_mainmenu_path(lua_State *L)
 {
-	GUIEngine* engine = getGuiEngine(L);
+	GUIEngine *engine = getGuiEngine(L);
 	sanity_check(engine != NULL);
 
-	lua_pushstring(L,engine->getScriptDir().c_str());
+	lua_pushstring(L, engine->getScriptDir().c_str());
 	return 1;
 }
 
@@ -896,24 +892,30 @@ bool ModApiMainMenu::mayModifyPath(const std::string &path)
 	if (fs::PathStartsWith(path, fs::TempPath()))
 		return true;
 
-	if (fs::PathStartsWith(path, fs::RemoveRelativePathComponents(porting::path_user + DIR_DELIM "games")))
+	if (fs::PathStartsWith(path, fs::RemoveRelativePathComponents(porting::path_user +
+								      DIR_DELIM "games")))
 		return true;
 
-	if (fs::PathStartsWith(path, fs::RemoveRelativePathComponents(porting::path_user + DIR_DELIM "mods")))
+	if (fs::PathStartsWith(path, fs::RemoveRelativePathComponents(porting::path_user +
+								      DIR_DELIM "mods")))
 		return true;
 
-	if (fs::PathStartsWith(path, fs::RemoveRelativePathComponents(porting::path_user + DIR_DELIM "textures")))
+	if (fs::PathStartsWith(path,
+			    fs::RemoveRelativePathComponents(
+					    porting::path_user + DIR_DELIM "textures")))
 		return true;
 
-	if (fs::PathStartsWith(path, fs::RemoveRelativePathComponents(porting::path_user + DIR_DELIM "worlds")))
+	if (fs::PathStartsWith(path,
+			    fs::RemoveRelativePathComponents(
+					    porting::path_user + DIR_DELIM "worlds")))
 		return true;
 
-	if (fs::PathStartsWith(path, fs::RemoveRelativePathComponents(porting::path_cache)))
+	if (fs::PathStartsWith(
+			    path, fs::RemoveRelativePathComponents(porting::path_cache)))
 		return true;
 
 	return false;
 }
-
 
 /******************************************************************************/
 int ModApiMainMenu::l_may_modify_path(lua_State *L)
@@ -927,21 +929,16 @@ int ModApiMainMenu::l_may_modify_path(lua_State *L)
 /******************************************************************************/
 int ModApiMainMenu::l_show_path_select_dialog(lua_State *L)
 {
-	GUIEngine* engine = getGuiEngine(L);
+	GUIEngine *engine = getGuiEngine(L);
 	sanity_check(engine != NULL);
 
-	const char *formname= luaL_checkstring(L, 1);
-	const char *title	= luaL_checkstring(L, 2);
+	const char *formname = luaL_checkstring(L, 1);
+	const char *title = luaL_checkstring(L, 2);
 	bool is_file_select = readParam<bool>(L, 3);
 
-	GUIFileSelectMenu* fileOpenMenu =
-		new GUIFileSelectMenu(RenderingEngine::get_gui_env(),
-				engine->m_parent,
-				-1,
-				engine->m_menumanager,
-				title,
-				formname,
-				is_file_select);
+	GUIFileSelectMenu *fileOpenMenu = new GUIFileSelectMenu(
+			RenderingEngine::get_gui_env(), engine->m_parent, -1,
+			engine->m_menumanager, title, formname, is_file_select);
 	fileOpenMenu->setTextDest(engine->m_buttonhandler);
 	fileOpenMenu->drop();
 	return 0;
@@ -950,34 +947,36 @@ int ModApiMainMenu::l_show_path_select_dialog(lua_State *L)
 /******************************************************************************/
 int ModApiMainMenu::l_download_file(lua_State *L)
 {
-	const char *url    = luaL_checkstring(L, 1);
+	const char *url = luaL_checkstring(L, 1);
 	const char *target = luaL_checkstring(L, 2);
 
-	//check path
+	// check path
 	std::string absolute_destination = fs::RemoveRelativePathComponents(target);
 
 	if (ModApiMainMenu::mayModifyPath(absolute_destination)) {
-		if (GUIEngine::downloadFile(url,absolute_destination)) {
-			lua_pushboolean(L,true);
+		if (GUIEngine::downloadFile(url, absolute_destination)) {
+			lua_pushboolean(L, true);
 			return 1;
 		}
 	} else {
 		errorstream << "DOWNLOAD denied: " << absolute_destination
-				<< " isn't a allowed path" << std::endl;
+			    << " isn't a allowed path" << std::endl;
 	}
-	lua_pushboolean(L,false);
+	lua_pushboolean(L, false);
 	return 1;
 }
 
 /******************************************************************************/
 int ModApiMainMenu::l_get_video_drivers(lua_State *L)
 {
-	std::vector<irr::video::E_DRIVER_TYPE> drivers = RenderingEngine::getSupportedVideoDrivers();
+	std::vector<irr::video::E_DRIVER_TYPE> drivers =
+			RenderingEngine::getSupportedVideoDrivers();
 
 	lua_newtable(L);
 	for (u32 i = 0; i != drivers.size(); i++) {
-		const char *name  = RenderingEngine::getVideoDriverName(drivers[i]);
-		const char *fname = RenderingEngine::getVideoDriverFriendlyName(drivers[i]);
+		const char *name = RenderingEngine::getVideoDriverName(drivers[i]);
+		const char *fname =
+				RenderingEngine::getVideoDriverFriendlyName(drivers[i]);
 
 		lua_newtable(L);
 		lua_pushstring(L, name);
@@ -994,8 +993,8 @@ int ModApiMainMenu::l_get_video_drivers(lua_State *L)
 /******************************************************************************/
 int ModApiMainMenu::l_get_video_modes(lua_State *L)
 {
-	std::vector<core::vector3d<u32> > videomodes
-		= RenderingEngine::getSupportedVideoModes();
+	std::vector<core::vector3d<u32>> videomodes =
+			RenderingEngine::getSupportedVideoModes();
 
 	lua_newtable(L);
 	for (u32 i = 0; i != videomodes.size(); i++) {
@@ -1027,24 +1026,24 @@ int ModApiMainMenu::l_get_screen_info(lua_State *L)
 {
 	lua_newtable(L);
 	int top = lua_gettop(L);
-	lua_pushstring(L,"density");
-	lua_pushnumber(L,RenderingEngine::getDisplayDensity());
+	lua_pushstring(L, "density");
+	lua_pushnumber(L, RenderingEngine::getDisplayDensity());
 	lua_settable(L, top);
 
-	lua_pushstring(L,"display_width");
-	lua_pushnumber(L,RenderingEngine::getDisplaySize().X);
+	lua_pushstring(L, "display_width");
+	lua_pushnumber(L, RenderingEngine::getDisplaySize().X);
 	lua_settable(L, top);
 
-	lua_pushstring(L,"display_height");
-	lua_pushnumber(L,RenderingEngine::getDisplaySize().Y);
+	lua_pushstring(L, "display_height");
+	lua_pushnumber(L, RenderingEngine::getDisplaySize().Y);
 	lua_settable(L, top);
 
 	const v2u32 &window_size = RenderingEngine::get_instance()->getWindowSize();
-	lua_pushstring(L,"window_width");
+	lua_pushstring(L, "window_width");
 	lua_pushnumber(L, window_size.X);
 	lua_settable(L, top);
 
-	lua_pushstring(L,"window_height");
+	lua_pushstring(L, "window_height");
 	lua_pushnumber(L, window_size.Y);
 	lua_settable(L, top);
 	return 1;
@@ -1074,12 +1073,12 @@ int ModApiMainMenu::l_open_url(lua_State *L)
 /******************************************************************************/
 int ModApiMainMenu::l_do_async_callback(lua_State *L)
 {
-	GUIEngine* engine = getGuiEngine(L);
+	GUIEngine *engine = getGuiEngine(L);
 
 	size_t func_length, param_length;
-	const char* serialized_func_raw = luaL_checklstring(L, 1, &func_length);
+	const char *serialized_func_raw = luaL_checklstring(L, 1, &func_length);
 
-	const char* serialized_param_raw = luaL_checklstring(L, 2, &param_length);
+	const char *serialized_param_raw = luaL_checklstring(L, 2, &param_length);
 
 	sanity_check(serialized_func_raw != NULL);
 	sanity_check(serialized_param_raw != NULL);
@@ -1153,8 +1152,8 @@ void ModApiMainMenu::InitializeAsync(lua_State *L, int top)
 	API_FCT(create_dir);
 	API_FCT(delete_dir);
 	API_FCT(copy_dir);
-	//API_FCT(extract_zip); //TODO remove dependency to GuiEngine
+	// API_FCT(extract_zip); //TODO remove dependency to GuiEngine
 	API_FCT(may_modify_path);
 	API_FCT(download_file);
-	//API_FCT(gettext); (gettext lib isn't threadsafe)
+	// API_FCT(gettext); (gettext lib isn't threadsafe)
 }

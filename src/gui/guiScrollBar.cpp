@@ -21,7 +21,8 @@ GUIScrollBar::GUIScrollBar(IGUIEnvironment *environment, IGUIElement *parent, s3
 		is_horizontal(horizontal), is_auto_scaling(auto_scale),
 		dragged_by_slider(false), tray_clicked(false), scroll_pos(0),
 		draw_center(0), thumb_size(0), min_pos(0), max_pos(100), small_step(10),
-		large_step(50), last_change(0), drag_offset(0), page_size(100), border_size(0)
+		large_step(50), last_change(0), drag_offset(0), page_size(100),
+		border_size(0)
 {
 	refreshControls();
 	setNotClipped(false);
@@ -115,8 +116,10 @@ bool GUIScrollBar::OnEvent(const SEvent &event)
 				if (is_inside) {
 					is_dragging = true;
 					dragged_by_slider = slider_rect.isPointInside(p);
-					core::vector2di corner = slider_rect.UpperLeftCorner;
-					drag_offset = is_horizontal ? p.X - corner.X : p.Y - corner.Y;
+					core::vector2di corner =
+							slider_rect.UpperLeftCorner;
+					drag_offset = is_horizontal ? p.X - corner.X
+								    : p.Y - corner.Y;
 					tray_clicked = !dragged_by_slider;
 					if (tray_clicked) {
 						const s32 new_pos = getPosFromMousePos(p);
@@ -130,7 +133,8 @@ bool GUIScrollBar::OnEvent(const SEvent &event)
 							e.EventType = EET_GUI_EVENT;
 							e.GUIEvent.Caller = this;
 							e.GUIEvent.Element = nullptr;
-							e.GUIEvent.EventType = EGET_SCROLL_BAR_CHANGED;
+							e.GUIEvent.EventType =
+									EGET_SCROLL_BAR_CHANGED;
 							Parent->OnEvent(e);
 						}
 					}
@@ -247,7 +251,8 @@ s32 GUIScrollBar::getPosFromMousePos(const core::position2di &pos) const
 		w = RelativeRect.getHeight() - border_size * 2 - thumb_size;
 		p = pos.Y - AbsoluteRect.UpperLeftCorner.Y - border_size - offset;
 	}
-	return core::isnotzero(range()) ? s32(f32(p) / f32(w) * range() + 0.5f) + min_pos : 0;
+	return core::isnotzero(range()) ? s32(f32(p) / f32(w) * range() + 0.5f) + min_pos
+					: 0;
 }
 
 void GUIScrollBar::setPos(const s32 &pos)
@@ -273,7 +278,7 @@ void GUIScrollBar::setPos(const s32 &pos)
 	f32 f = core::isnotzero(range()) ? (f32(thumb_area) - f32(thumb_size)) / range()
 					 : 1.0f;
 	draw_center = s32((f32(scroll_pos - min_pos) * f) + (f32(thumb_size) * 0.5f)) +
-		border_size;
+		      border_size;
 }
 
 void GUIScrollBar::setSmallStep(const s32 &step)

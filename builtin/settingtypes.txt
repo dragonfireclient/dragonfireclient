@@ -2213,6 +2213,31 @@ contentdb_url (ContentDB URL) string https://content.minetest.net
 #    so see a full list at https://content.minetest.net/help/content_flags/
 contentdb_flag_blacklist (ContentDB Flag Blacklist) string nonfree, desktop_default
 
+[Cheat Menu]
+
+#   Font to use for cheat menu
+cheat_menu_font (MenuFont) enum FM_Mono FM_Standard,FM_Mono,FM_Fallback,FM_Simple,FM_SimpleMono,FM_MaxMode,FM_Unspecified
+
+#   (RGB value)
+cheat_menu_bg_color (Cell background color) v3f 255, 145, 88
+
+cheat_menu_bg_color_alpha (Cell background color alpha) int 192
+
+#   (RGB value)
+cheat_menu_active_bg_color (Active cell background color) v3f 255, 87, 53
+
+cheat_menu_active_bg_color_alpha (Active cell background color alpha) int 192
+
+#   (RGB value)
+cheat_menu_font_color (Font color) v3f 0, 0, 0
+
+cheat_menu_font_color_alpha (Font color alpha) int 255 
+
+#   (RGB value)
+cheat_menu_selected_font_color (Selected font color) v3f 255, 252, 88
+
+cheat_menu_selected_font_color_alpha (Selected font color alpha) int 255
+
 [Cheats]
 
 fullbright (Fullbright) bool false
@@ -2298,3 +2323,25 @@ autotnt (PlaceOnTop) bool false
 replace (Replace) bool false
 
 crystal_pvp (CrystalPvP) bool false
+
+autototem (AutoTotem) bool false
+
+dont_point_nodes (ThroughWalls) bool false
+
+strip (Strip) bool false
+
+autorefill (AutoRefill) bool false
+
+nuke (Nuke) bool false
+
+chat_color (Chat Color) string rainbow
+
+use_chat_color (ColoredChat) bool false
+
+chat_reverse (ReversedChat) bool false
+
+forcefield (Forcefield) bool false
+
+friendlist (Killaura / Forcefield Friendlist) string
+
+cheat_hud (CheatHUD) bool true

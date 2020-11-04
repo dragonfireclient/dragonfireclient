@@ -43,9 +43,9 @@ int LuaInventoryAction::l_apply(lua_State *L)
 
 	std::ostringstream os(std::ios::binary);
 	o->m_action->serialize(os);
-	
+
 	std::istringstream is(os.str(), std::ios_base::binary);
-	
+
 	InventoryAction *a = InventoryAction::deSerialize(is);
 
 	getClient(L)->inventoryAction(a);
@@ -69,29 +69,30 @@ int LuaInventoryAction::l_to(lua_State *L)
 int LuaInventoryAction::l_craft(lua_State *L)
 {
 	LuaInventoryAction *o = checkobject(L, 1);
-	
+
 	if (o->m_action->getType() != IAction::Craft)
 		return 0;
-		
+
 	std::string locStr;
 	InventoryLocation loc;
-	
+
 	locStr = readParam<std::string>(L, 2);
-	
+
 	try {
 		loc.deSerialize(locStr);
 		dynamic_cast<ICraftAction *>(o->m_action)->craft_inv = loc;
-	} catch (SerializationError &) {}
-	
+	} catch (SerializationError &) {
+	}
+
 	return 0;
 }
 
 int LuaInventoryAction::l_set_count(lua_State *L)
 {
 	LuaInventoryAction *o = checkobject(L, 1);
-	
+
 	s16 count = luaL_checkinteger(L, 2);
-	
+
 	switch (o->m_action->getType()) {
 	case IAction::Move:
 		((IMoveAction *)o->m_action)->count = count;
@@ -103,7 +104,7 @@ int LuaInventoryAction::l_set_count(lua_State *L)
 		((ICraftAction *)o->m_action)->count = count;
 		break;
 	}
-	
+
 	return 0;
 }
 
@@ -127,23 +128,25 @@ LuaInventoryAction::~LuaInventoryAction()
 	delete m_action;
 }
 
-void LuaInventoryAction::readFullInventoryLocationInto(lua_State *L, InventoryLocation *loc, std::string *list, s16 *index)
+void LuaInventoryAction::readFullInventoryLocationInto(
+		lua_State *L, InventoryLocation *loc, std::string *list, s16 *index)
 {
 	try {
 		loc->deSerialize(readParam<std::string>(L, 2));
 		std::string l = readParam<std::string>(L, 3);
 		*list = l;
-		*index = luaL_checkinteger(L, 4);
-	} catch (SerializationError &) {}
+		*index = luaL_checkinteger(L, 4) - 1;
+	} catch (SerializationError &) {
+	}
 }
 
 int LuaInventoryAction::create_object(lua_State *L)
 {
 	IAction type;
 	std::string typeStr;
-	
+
 	typeStr = readParam<std::string>(L, 1);
-	
+
 	if (typeStr == "move")
 		type = IAction::Move;
 	else if (typeStr == "drop")
@@ -206,11 +209,7 @@ void LuaInventoryAction::Register(lua_State *L)
 }
 
 const char LuaInventoryAction::className[] = "InventoryAction";
-const luaL_Reg LuaInventoryAction::methods[] = {
-	luamethod(LuaInventoryAction, apply),
-	luamethod(LuaInventoryAction, from),
-	luamethod(LuaInventoryAction, to),
-	luamethod(LuaInventoryAction, craft),
-	luamethod(LuaInventoryAction, set_count),
-	{0,0}
-};
+const luaL_Reg LuaInventoryAction::methods[] = {luamethod(LuaInventoryAction, apply),
+		luamethod(LuaInventoryAction, from), luamethod(LuaInventoryAction, to),
+		luamethod(LuaInventoryAction, craft),
+		luamethod(LuaInventoryAction, set_count), {0, 0}};

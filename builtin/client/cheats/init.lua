@@ -1,6 +1,7 @@
 core.cheats = {
 	["Combat"] = {
 		["Killaura"] = "killaura",
+		["Forcefield"] = "forcefield",
 		["AntiKnockback"] = "antiknockback",
 		["FastHit"] = "spamclick",
 		["AttachmentFloat"] = "float_above_parent",
@@ -26,6 +27,7 @@ core.cheats = {
 		["Coords"] = "coords",
 		["Tracers"] = "enable_tracers",
 		["ESP"] = "enable_esp",
+		["CheatHUD"] = "cheat_hud",
 	},
 	["World"] = {
 		["FastDig"] = "fastdig",
@@ -37,7 +39,8 @@ core.cheats = {
 		["ScaffoldPlus"] = "scaffold_plus",
 		["BlockWater"] = "block_water",
 		["PlaceOnTop"] = "autotnt",
-		["Replace"] = "replace"
+		["Replace"] = "replace",
+		["Nuke"] = "nuke",
 	},
 	["Exploit"] = {
 		["EntitySpeed"] = "entity_speed",
@@ -54,7 +57,9 @@ core.cheats = {
 	},
 	["Chat"] = {
 		["IgnoreStatus"] = "ignore_status_messages",
-		["Deathmessages"] = "mark_deathmessages"
+		["Deathmessages"] = "mark_deathmessages",
+		["ColoredChat"] = "use_chat_color",
+		["ReversedChat"] = "chat_reverse",
 	},
 	["Inventory"] = {
 		["AutoEject"] = "autoeject",
@@ -62,6 +67,8 @@ core.cheats = {
 		["Enderchest"] = function() core.open_enderchest() end,
 		["HandSlot"] = function() core.open_handslot() end,
 		["NextItem"] = "next_item",
+		["Strip"] = "strip",
+		["AutoRefill"] = "autorefill",
 	}
 }
 

@@ -32,11 +32,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/client.h"
 #endif
 
-
 extern "C" {
 #include "lualib.h"
 #if USE_LUAJIT
-	#include "luajit.h"
+#include "luajit.h"
 #endif
 }
 
@@ -45,14 +44,13 @@ extern "C" {
 #include "script/common/c_content.h"
 #include <sstream>
 
-
 class ModNameStorer
 {
 private:
 	lua_State *L;
+
 public:
-	ModNameStorer(lua_State *L_, const std::string &mod_name):
-		L(L_)
+	ModNameStorer(lua_State *L_, const std::string &mod_name) : L(L_)
 	{
 		// Store current mod name in registry
 		lua_pushstring(L, mod_name.c_str());
@@ -66,13 +64,11 @@ public:
 	}
 };
 
-
 /*
 	ScriptApiBase
 */
 
-ScriptApiBase::ScriptApiBase(ScriptingType type):
-		m_type(type)
+ScriptApiBase::ScriptApiBase(ScriptingType type) : m_type(type)
 {
 #ifdef SCRIPTAPI_LOCK_DEBUG
 	m_lock_recursion_count = 0;
@@ -86,7 +82,7 @@ ScriptApiBase::ScriptApiBase(ScriptingType type):
 	/*if (m_type == ScriptingType::Client)
 		clientOpenLibs(m_luastack);
 	else*/
-		luaL_openlibs(m_luastack);
+	luaL_openlibs(m_luastack);
 
 	// Make the ScriptApiBase* accessible to ModApiBase
 #if INDIRECT_SCRIPTAPI_RIDX
@@ -105,7 +101,7 @@ ScriptApiBase::ScriptApiBase(ScriptingType type):
 	// If we are using LuaJIT add a C++ wrapper function to catch
 	// exceptions thrown in Lua -> C++ calls
 #if USE_LUAJIT
-	lua_pushlightuserdata(m_luastack, (void*) script_exception_wrapper);
+	lua_pushlightuserdata(m_luastack, (void *)script_exception_wrapper);
 	luaJIT_setmode(m_luastack, -1, LUAJIT_MODE_WRAPCFUNC | LUAJIT_MODE_ON);
 	lua_pop(m_luastack, 1);
 #endif
@@ -136,7 +132,7 @@ int ScriptApiBase::luaPanic(lua_State *L)
 {
 	std::ostringstream oss;
 	oss << "LUA PANIC: unprotected error in call to Lua API ("
-		<< readParam<std::string>(L, -1) << ")";
+	    << readParam<std::string>(L, -1) << ")";
 	FATAL_ERROR(oss.str().c_str());
 	// NOTREACHED
 	return 0;
@@ -145,26 +141,25 @@ int ScriptApiBase::luaPanic(lua_State *L)
 void ScriptApiBase::clientOpenLibs(lua_State *L)
 {
 	static const std::vector<std::pair<std::string, lua_CFunction>> m_libs = {
-		{ "", luaopen_base },
-		{ LUA_TABLIBNAME,  luaopen_table   },
-		{ LUA_OSLIBNAME,   luaopen_os      },
-		{ LUA_STRLIBNAME,  luaopen_string  },
-		{ LUA_MATHLIBNAME, luaopen_math    },
-		{ LUA_DBLIBNAME,   luaopen_debug   },
+		{"", luaopen_base},
+		{LUA_TABLIBNAME, luaopen_table},
+		{LUA_OSLIBNAME, luaopen_os},
+		{LUA_STRLIBNAME, luaopen_string},
+		{LUA_MATHLIBNAME, luaopen_math},
+		{LUA_DBLIBNAME, luaopen_debug},
 #if USE_LUAJIT
-		{ LUA_JITLIBNAME,  luaopen_jit     },
+		{LUA_JITLIBNAME, luaopen_jit},
 #endif
 	};
 
 	for (const std::pair<std::string, lua_CFunction> &lib : m_libs) {
-	    lua_pushcfunction(L, lib.second);
-	    lua_pushstring(L, lib.first.c_str());
-	    lua_call(L, 1, 0);
+		lua_pushcfunction(L, lib.second);
+		lua_pushstring(L, lib.first.c_str());
+		lua_call(L, 1, 0);
 	}
 }
 
-void ScriptApiBase::loadMod(const std::string &script_path,
-		const std::string &mod_name)
+void ScriptApiBase::loadMod(const std::string &script_path, const std::string &mod_name)
 {
 	ModNameStorer mod_name_storer(getStack(), mod_name);
 
@@ -191,8 +186,8 @@ void ScriptApiBase::loadScript(const std::string &script_path)
 		if (!error_msg)
 			error_msg = "(error object is not a string)";
 		lua_pop(L, 2); // Pop error message and error handler
-		throw ModError("Failed to load and run script from " +
-				script_path + ":\n" + error_msg);
+		throw ModError("Failed to load and run script from " + script_path +
+				":\n" + error_msg);
 	}
 	lua_pop(L, 1); // Pop error handler
 }
@@ -225,8 +220,8 @@ void ScriptApiBase::loadModFromMemory(const std::string &mod_name)
 		if (!error_msg)
 			error_msg = "(error object is not a string)";
 		lua_pop(L, 2); // Pop error message and error handler
-		throw ModError("Failed to load and run mod \"" +
-				mod_name + "\":\n" + error_msg);
+		throw ModError("Failed to load and run mod \"" + mod_name + "\":\n" +
+				error_msg);
 	}
 	lua_pop(L, 1); // Pop error handler
 }
@@ -240,14 +235,13 @@ void ScriptApiBase::loadModFromMemory(const std::string &mod_name)
 //     computed depending on mode
 // This function must only be called with scriptlock held (i.e. inside of a
 // code block with SCRIPTAPI_PRECHECKHEADER declared)
-void ScriptApiBase::runCallbacksRaw(int nargs,
-		RunCallbacksMode mode, const char *fxn)
+void ScriptApiBase::runCallbacksRaw(int nargs, RunCallbacksMode mode, const char *fxn)
 {
 #ifndef SERVER
 	// Hard fail for bad guarded callbacks
 	// Only run callbacks when the scripting enviroment is loaded
-	FATAL_ERROR_IF(m_type == ScriptingType::Client &&
-			!getClient()->modsLoaded(), fxn);
+	FATAL_ERROR_IF(m_type == ScriptingType::Client && !getClient()->modsLoaded(),
+			fxn);
 #endif
 
 #ifdef SCRIPTAPI_LOCK_DEBUG
@@ -300,24 +294,25 @@ void ScriptApiBase::scriptError(int result, const char *fxn)
 void ScriptApiBase::stackDump(std::ostream &o)
 {
 	int top = lua_gettop(m_luastack);
-	for (int i = 1; i <= top; i++) {  /* repeat for each level */
+	for (int i = 1; i <= top; i++) { /* repeat for each level */
 		int t = lua_type(m_luastack, i);
 		switch (t) {
-			case LUA_TSTRING:  /* strings */
-				o << "\"" << readParam<std::string>(m_luastack, i) << "\"";
-				break;
-			case LUA_TBOOLEAN:  /* booleans */
-				o << (readParam<bool>(m_luastack, i) ? "true" : "false");
-				break;
-			case LUA_TNUMBER:  /* numbers */ {
-				char buf[10];
-				porting::mt_snprintf(buf, sizeof(buf), "%lf", lua_tonumber(m_luastack, i));
-				o << buf;
-				break;
-			}
-			default:  /* other values */
-				o << lua_typename(m_luastack, t);
-				break;
+		case LUA_TSTRING: /* strings */
+			o << "\"" << readParam<std::string>(m_luastack, i) << "\"";
+			break;
+		case LUA_TBOOLEAN: /* booleans */
+			o << (readParam<bool>(m_luastack, i) ? "true" : "false");
+			break;
+		case LUA_TNUMBER: /* numbers */ {
+			char buf[10];
+			porting::mt_snprintf(buf, sizeof(buf), "%lf",
+					lua_tonumber(m_luastack, i));
+			o << buf;
+			break;
+		}
+		default: /* other values */
+			o << lua_typename(m_luastack, t);
+			break;
 		}
 		o << " ";
 	}
@@ -334,9 +329,10 @@ void ScriptApiBase::setOriginFromTableRaw(int index, const char *fxn)
 #ifdef SCRIPTAPI_DEBUG
 	lua_State *L = getStack();
 
-	m_last_run_mod = lua_istable(L, index) ?
-		getstringfield_default(L, index, "mod_origin", "") : "";
-	//printf(">>>> running %s for mod: %s\n", fxn, m_last_run_mod.c_str());
+	m_last_run_mod = lua_istable(L, index) ? getstringfield_default(L, index,
+								 "mod_origin", "")
+					       : "";
+	// printf(">>>> running %s for mod: %s\n", fxn, m_last_run_mod.c_str());
 #endif
 }
 
@@ -357,7 +353,7 @@ void ScriptApiBase::setOriginFromTableRaw(int index, const char *fxn)
 void ScriptApiBase::addObjectReference(ServerActiveObject *cobj)
 {
 	SCRIPTAPI_PRECHECKHEADER
-	//infostream<<"scriptapi_add_object_reference: id="<<cobj->getId()<<std::endl;
+	// infostream<<"scriptapi_add_object_reference: id="<<cobj->getId()<<std::endl;
 
 	// Create object on stack
 	ObjectRef::create(L, cobj); // Puts ObjectRef (as userdata) on stack
@@ -371,14 +367,14 @@ void ScriptApiBase::addObjectReference(ServerActiveObject *cobj)
 
 	// object_refs[id] = object
 	lua_pushnumber(L, cobj->getId()); // Push id
-	lua_pushvalue(L, object); // Copy object to top of stack
+	lua_pushvalue(L, object);	  // Copy object to top of stack
 	lua_settable(L, objectstable);
 }
 
 void ScriptApiBase::removeObjectReference(ServerActiveObject *cobj)
 {
 	SCRIPTAPI_PRECHECKHEADER
-	//infostream<<"scriptapi_rm_object_reference: id="<<cobj->getId()<<std::endl;
+	// infostream<<"scriptapi_rm_object_reference: id="<<cobj->getId()<<std::endl;
 
 	// Get core.object_refs table
 	lua_getglobal(L, "core");
@@ -400,8 +396,7 @@ void ScriptApiBase::removeObjectReference(ServerActiveObject *cobj)
 }
 
 // Creates a new anonymous reference if cobj=NULL or id=0
-void ScriptApiBase::objectrefGetOrCreate(lua_State *L,
-		ServerActiveObject *cobj)
+void ScriptApiBase::objectrefGetOrCreate(lua_State *L, ServerActiveObject *cobj)
 {
 	if (cobj == NULL || cobj->getId() == 0) {
 		ObjectRef::create(L, cobj);
@@ -409,12 +404,13 @@ void ScriptApiBase::objectrefGetOrCreate(lua_State *L,
 		push_objectRef(L, cobj->getId());
 		if (cobj->isGone())
 			warningstream << "ScriptApiBase::objectrefGetOrCreate(): "
-					<< "Pushing ObjectRef to removed/deactivated object"
-					<< ", this is probably a bug." << std::endl;
+				      << "Pushing ObjectRef to removed/deactivated object"
+				      << ", this is probably a bug." << std::endl;
 	}
 }
 
-void ScriptApiBase::pushPlayerHPChangeReason(lua_State *L, const PlayerHPChangeReason &reason)
+void ScriptApiBase::pushPlayerHPChangeReason(
+		lua_State *L, const PlayerHPChangeReason &reason)
 {
 	if (reason.hasLuaReference())
 		lua_rawgeti(L, LUA_REGISTRYINDEX, reason.lua_reference);
@@ -442,12 +438,12 @@ void ScriptApiBase::pushPlayerHPChangeReason(lua_State *L, const PlayerHPChangeR
 	}
 }
 
-Server* ScriptApiBase::getServer()
+Server *ScriptApiBase::getServer()
 {
 	return dynamic_cast<Server *>(m_gamedef);
 }
 #ifndef SERVER
-Client* ScriptApiBase::getClient()
+Client *ScriptApiBase::getClient()
 {
 	return dynamic_cast<Client *>(m_gamedef);
 }

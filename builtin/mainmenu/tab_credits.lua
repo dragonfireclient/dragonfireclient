@@ -17,10 +17,12 @@
 
 --------------------------------------------------------------------------------
 local dragonfire_team = {
-	"Elias Fleckenstein",
-	"cora",
-	"system32",
-	"DerZombiiie",
+	"Elias Fleckenstein [Main Developer]",
+	"cora [Core Developer]",
+	"emilia [Core Developer]",
+	"oneplustwo [Developer]",
+	"joshia_wi [Developer]",
+	"DerZombiiie [User Support]",
 }
 
 local core_developers = {

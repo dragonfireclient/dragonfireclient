@@ -40,12 +40,13 @@ std::map<io::path, video::ITexture *> g_txrCache;
 /* Manually insert an image into the cache, useful to avoid texture-to-image
  * conversion whenever we can intercept it.
  */
-void guiScalingCache(const io::path &key, video::IVideoDriver *driver, video::IImage *value)
+void guiScalingCache(
+		const io::path &key, video::IVideoDriver *driver, video::IImage *value)
 {
 	if (!g_settings->getBool("gui_scaling_filter"))
 		return;
-	video::IImage *copied = driver->createImage(value->getColorFormat(),
-			value->getDimension());
+	video::IImage *copied = driver->createImage(
+			value->getColorFormat(), value->getDimension());
 	value->copyTo(copied);
 	g_imgCache[key] = copied;
 }
@@ -69,9 +70,8 @@ void guiScalingCacheClear()
  * texture is not already cached, attempt to create it.  Returns a pre-scaled texture,
  * or the original texture if unable to pre-scale it.
  */
-video::ITexture *guiScalingResizeCached(video::IVideoDriver *driver,
-		video::ITexture *src, const core::rect<s32> &srcrect,
-		const core::rect<s32> &destrect)
+video::ITexture *guiScalingResizeCached(video::IVideoDriver *driver, video::ITexture *src,
+		const core::rect<s32> &srcrect, const core::rect<s32> &destrect)
 {
 	if (src == NULL)
 		return src;
@@ -81,12 +81,9 @@ video::ITexture *guiScalingResizeCached(video::IVideoDriver *driver,
 	// Calculate scaled texture name.
 	char rectstr[200];
 	porting::mt_snprintf(rectstr, sizeof(rectstr), "%d:%d:%d:%d:%d:%d",
-		srcrect.UpperLeftCorner.X,
-		srcrect.UpperLeftCorner.Y,
-		srcrect.getWidth(),
-		srcrect.getHeight(),
-		destrect.getWidth(),
-		destrect.getHeight());
+			srcrect.UpperLeftCorner.X, srcrect.UpperLeftCorner.Y,
+			srcrect.getWidth(), srcrect.getHeight(), destrect.getWidth(),
+			destrect.getHeight());
 	io::path origname = src->getName().getPath();
 	io::path scalename = origname + "@guiScalingFilter:" + rectstr;
 
@@ -97,12 +94,12 @@ video::ITexture *guiScalingResizeCached(video::IVideoDriver *driver,
 
 	// Try to find the texture converted to an image in the cache.
 	// If the image was not found, try to extract it from the texture.
-	video::IImage* srcimg = g_imgCache[origname];
+	video::IImage *srcimg = g_imgCache[origname];
 	if (srcimg == NULL) {
 		if (!g_settings->getBool("gui_scaling_filter_txr2img"))
 			return src;
 		srcimg = driver->createImageFromData(src->getColorFormat(),
-			src->getSize(), src->lock(), false);
+				src->getSize(), src->lock(), false);
 		src->unlock();
 		g_imgCache[origname] = srcimg;
 	}
@@ -111,7 +108,7 @@ video::ITexture *guiScalingResizeCached(video::IVideoDriver *driver,
 	imageCleanTransparent(srcimg, 0);
 	video::IImage *destimg = driver->createImage(src->getColorFormat(),
 			core::dimension2d<u32>((u32)destrect.getWidth(),
-			(u32)destrect.getHeight()));
+					(u32)destrect.getHeight()));
 	imageScaleNNAA(srcimg, srcrect, destimg);
 
 #if ENABLE_GLES
@@ -120,7 +117,7 @@ video::ITexture *guiScalingResizeCached(video::IVideoDriver *driver,
 	if (!hasNPotSupport()) {
 		video::IImage *po2img = driver->createImage(src->getColorFormat(),
 				core::dimension2d<u32>(npot2((u32)destrect.getWidth()),
-				npot2((u32)destrect.getHeight())));
+						npot2((u32)destrect.getHeight())));
 		po2img->fill(video::SColor(0, 0, 0, 0));
 		destimg->copyTo(po2img);
 		destimg->drop();
@@ -139,14 +136,15 @@ video::ITexture *guiScalingResizeCached(video::IVideoDriver *driver,
 /* Convenience wrapper for guiScalingResizeCached that accepts parameters that
  * are available at GUI imagebutton creation time.
  */
-video::ITexture *guiScalingImageButton(video::IVideoDriver *driver,
-		video::ITexture *src, s32 width, s32 height)
+video::ITexture *guiScalingImageButton(
+		video::IVideoDriver *driver, video::ITexture *src, s32 width, s32 height)
 {
 	if (src == NULL)
 		return src;
 	return guiScalingResizeCached(driver, src,
-		core::rect<s32>(0, 0, src->getSize().Width, src->getSize().Height),
-		core::rect<s32>(0, 0, width, height));
+			core::rect<s32>(0, 0, src->getSize().Width,
+					src->getSize().Height),
+			core::rect<s32>(0, 0, width, height));
 }
 
 /* Replacement for driver->draw2DImage() that uses the high-quality pre-scaled
@@ -163,9 +161,10 @@ void draw2DImageFilterScaled(video::IVideoDriver *driver, video::ITexture *txr,
 		return;
 
 	// Correct source rect based on scaled image.
-	const core::rect<s32> mysrcrect = (scaled != txr)
-		? core::rect<s32>(0, 0, destrect.getWidth(), destrect.getHeight())
-		: srcrect;
+	const core::rect<s32> mysrcrect =
+			(scaled != txr) ? core::rect<s32>(0, 0, destrect.getWidth(),
+							  destrect.getHeight())
+					: srcrect;
 
 	driver->draw2DImage(scaled, destrect, mysrcrect, cliprect, colors, usealpha);
 }
@@ -174,11 +173,13 @@ void draw2DImage9Slice(video::IVideoDriver *driver, video::ITexture *texture,
 		const core::rect<s32> &rect, const core::rect<s32> &middle,
 		const core::rect<s32> *cliprect)
 {
-	const video::SColor color(255,255,255,255);
-	const video::SColor colors[] = {color,color,color,color};
+	const video::SColor color(255, 255, 255, 255);
+	const video::SColor colors[] = {color, color, color, color};
 
 	auto originalSize = texture->getOriginalSize();
-	core::vector2di lowerRightOffset = core::vector2di(originalSize.Width, originalSize.Height) - middle.LowerRightCorner;
+	core::vector2di lowerRightOffset =
+			core::vector2di(originalSize.Width, originalSize.Height) -
+			middle.LowerRightCorner;
 
 	for (int y = 0; y < 3; ++y) {
 		for (int x = 0; x < 3; ++x) {
@@ -187,7 +188,8 @@ void draw2DImage9Slice(video::IVideoDriver *driver, video::ITexture *texture,
 
 			switch (x) {
 			case 0:
-				dest.LowerRightCorner.X = rect.UpperLeftCorner.X + middle.UpperLeftCorner.X;
+				dest.LowerRightCorner.X = rect.UpperLeftCorner.X +
+							  middle.UpperLeftCorner.X;
 				src.LowerRightCorner.X = middle.UpperLeftCorner.X;
 				break;
 
@@ -199,14 +201,16 @@ void draw2DImage9Slice(video::IVideoDriver *driver, video::ITexture *texture,
 				break;
 
 			case 2:
-				dest.UpperLeftCorner.X = rect.LowerRightCorner.X - lowerRightOffset.X;
+				dest.UpperLeftCorner.X = rect.LowerRightCorner.X -
+							 lowerRightOffset.X;
 				src.UpperLeftCorner.X = middle.LowerRightCorner.X;
 				break;
 			}
 
 			switch (y) {
 			case 0:
-				dest.LowerRightCorner.Y = rect.UpperLeftCorner.Y + middle.UpperLeftCorner.Y;
+				dest.LowerRightCorner.Y = rect.UpperLeftCorner.Y +
+							  middle.UpperLeftCorner.Y;
 				src.LowerRightCorner.Y = middle.UpperLeftCorner.Y;
 				break;
 
@@ -218,12 +222,14 @@ void draw2DImage9Slice(video::IVideoDriver *driver, video::ITexture *texture,
 				break;
 
 			case 2:
-				dest.UpperLeftCorner.Y = rect.LowerRightCorner.Y - lowerRightOffset.Y;
+				dest.UpperLeftCorner.Y = rect.LowerRightCorner.Y -
+							 lowerRightOffset.Y;
 				src.UpperLeftCorner.Y = middle.LowerRightCorner.Y;
 				break;
 			}
 
-			draw2DImageFilterScaled(driver, texture, dest, src, cliprect, colors, true);
+			draw2DImageFilterScaled(driver, texture, dest, src, cliprect,
+					colors, true);
 		}
 	}
 }

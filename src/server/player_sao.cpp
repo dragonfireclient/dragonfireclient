@@ -26,11 +26,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "serverenvironment.h"
 
 PlayerSAO::PlayerSAO(ServerEnvironment *env_, RemotePlayer *player_, session_t peer_id_,
-		bool is_singleplayer):
-	UnitSAO(env_, v3f(0,0,0)),
-	m_player(player_),
-	m_peer_id(peer_id_),
-	m_is_singleplayer(is_singleplayer)
+		bool is_singleplayer) :
+		UnitSAO(env_, v3f(0, 0, 0)),
+		m_player(player_), m_peer_id(peer_id_), m_is_singleplayer(is_singleplayer)
 {
 	SANITY_CHECK(m_peer_id != PEER_ID_INEXISTENT);
 
@@ -48,7 +46,7 @@ PlayerSAO::PlayerSAO(ServerEnvironment *env_, RemotePlayer *player_, session_t p
 	m_prop.textures.emplace_back("player_back.png");
 	m_prop.colors.clear();
 	m_prop.colors.emplace_back(255, 255, 255, 255);
-	m_prop.spritediv = v2s16(1,1);
+	m_prop.spritediv = v2s16(1, 1);
 	m_prop.eye_height = 1.625f;
 	// End of default appearance
 	m_prop.is_visible = true;
@@ -108,23 +106,24 @@ std::string PlayerSAO::getClientInitializationData(u16 protocol_version)
 	std::ostringstream os(std::ios::binary);
 
 	// Protocol >= 15
-	writeU8(os, 1); // version
+	writeU8(os, 1);				    // version
 	os << serializeString(m_player->getName()); // name
-	writeU8(os, 1); // is_player
-	writeS16(os, getId()); // id
+	writeU8(os, 1);				    // is_player
+	writeS16(os, getId());			    // id
 	writeV3F32(os, m_base_position);
 	writeV3F32(os, m_rotation);
 	writeU16(os, getHP());
 
 	std::ostringstream msg_os(std::ios::binary);
-	msg_os << serializeLongString(getPropertyPacket()); // message 1
+	msg_os << serializeLongString(getPropertyPacket());		   // message 1
 	msg_os << serializeLongString(generateUpdateArmorGroupsCommand()); // 2
-	msg_os << serializeLongString(generateUpdateAnimationCommand()); // 3
+	msg_os << serializeLongString(generateUpdateAnimationCommand());   // 3
 	for (const auto &bone_pos : m_bone_position) {
 		msg_os << serializeLongString(generateUpdateBonePositionCommand(
-			bone_pos.first, bone_pos.second.X, bone_pos.second.Y)); // m_bone_position.size
+				bone_pos.first, bone_pos.second.X,
+				bone_pos.second.Y)); // m_bone_position.size
 	}
-	msg_os << serializeLongString(generateUpdateAttachmentCommand()); // 4
+	msg_os << serializeLongString(generateUpdateAttachmentCommand());      // 4
 	msg_os << serializeLongString(generateUpdatePhysicsOverrideCommand()); // 5
 
 	int message_count = 5 + m_bone_position.size();
@@ -133,7 +132,7 @@ std::string PlayerSAO::getClientInitializationData(u16 protocol_version)
 		if (ServerActiveObject *obj = m_env->getActiveObject(id)) {
 			message_count++;
 			msg_os << serializeLongString(obj->generateUpdateInfantCommand(
-				id, protocol_version));
+					id, protocol_version));
 		}
 	}
 
@@ -145,7 +144,7 @@ std::string PlayerSAO::getClientInitializationData(u16 protocol_version)
 	return os.str();
 }
 
-void PlayerSAO::getStaticData(std::string * result) const
+void PlayerSAO::getStaticData(std::string *result) const
 {
 	FATAL_ERROR("Obsolete function");
 }
@@ -164,7 +163,8 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 
 			// No more breath, damage player
 			if (m_breath == 0) {
-				PlayerHPChangeReason reason(PlayerHPChangeReason::DROWNING);
+				PlayerHPChangeReason reason(
+						PlayerHPChangeReason::DROWNING);
 				setHP(m_hp - c.drowning, reason);
 				m_env->getGameDef()->SendPlayerHPOrDie(this, reason);
 			}
@@ -176,7 +176,8 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 		v3s16 p = floatToInt(getEyePosition(), BS);
 		MapNode n = m_env->getMap().getNode(p);
 		const ContentFeatures &c = m_env->getGameDef()->ndef()->get(n);
-		// If player is alive & not drowning & not in ignore & not immortal, breathe
+		// If player is alive & not drowning & not in ignore & not immortal,
+		// breathe
 		if (m_breath < m_prop.breath_max && c.drowning == 0 &&
 				n.getContent() != CONTENT_IGNORE && m_hp > 0)
 			setBreath(m_breath + 1);
@@ -191,8 +192,9 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 		// Sequence of damage points, starting 0.1 above feet and progressing
 		// upwards in 1 node intervals, stopping below top damage point.
 		for (float dam_height = 0.1f; dam_height < dam_top; dam_height++) {
-			v3s16 p = floatToInt(m_base_position +
-				v3f(0.0f, dam_height * BS, 0.0f), BS);
+			v3s16 p = floatToInt(m_base_position + v3f(0.0f, dam_height * BS,
+									       0.0f),
+					BS);
 			MapNode n = m_env->getMap().getNode(p);
 			const ContentFeatures &c = m_env->getGameDef()->ndef()->get(n);
 			if (c.damage_per_second > damage_per_second) {
@@ -202,8 +204,8 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 		}
 
 		// Top damage point
-		v3s16 ptop = floatToInt(m_base_position +
-			v3f(0.0f, dam_top * BS, 0.0f), BS);
+		v3s16 ptop = floatToInt(
+				m_base_position + v3f(0.0f, dam_top * BS, 0.0f), BS);
 		MapNode ntop = m_env->getMap().getNode(ptop);
 		const ContentFeatures &c = m_env->getGameDef()->ndef()->get(ntop);
 		if (c.damage_per_second > damage_per_second) {
@@ -213,7 +215,8 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 
 		if (damage_per_second != 0 && m_hp > 0) {
 			s32 newhp = (s32)m_hp - (s32)damage_per_second;
-			PlayerHPChangeReason reason(PlayerHPChangeReason::NODE_DAMAGE, nodename);
+			PlayerHPChangeReason reason(
+					PlayerHPChangeReason::NODE_DAMAGE, nodename);
 			setHP(newhp, reason);
 			m_env->getGameDef()->SendPlayerHPOrDie(this, reason);
 		}
@@ -230,19 +233,20 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 	// If attached, check that our parent is still there. If it isn't, detach.
 	if (m_attachment_parent_id && !isAttached()) {
 		// This is handled when objects are removed from the map
-		warningstream << "PlayerSAO::step() id=" << m_id <<
-			" is attached to nonexistent parent. This is a bug." << std::endl;
+		warningstream << "PlayerSAO::step() id=" << m_id
+			      << " is attached to nonexistent parent. This is a bug."
+			      << std::endl;
 		clearParentAttachment();
 		setBasePosition(m_last_good_position);
 		m_env->getGameDef()->SendMovePlayer(m_peer_id);
 	}
 
-	//dstream<<"PlayerSAO::step: dtime: "<<dtime<<std::endl;
+	// dstream<<"PlayerSAO::step: dtime: "<<dtime<<std::endl;
 
 	// Set lag pool maximums based on estimated lag
 	const float LAG_POOL_MIN = 5.0f;
 	float lag_pool_max = m_env->getMaxLagEstimate() * 2.0f;
-	if(lag_pool_max < LAG_POOL_MIN)
+	if (lag_pool_max < LAG_POOL_MIN)
 		lag_pool_max = LAG_POOL_MIN;
 	m_dig_pool.setMax(lag_pool_max);
 	m_move_pool.setMax(lag_pool_max);
@@ -260,7 +264,8 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 	// If the object gets detached this comes into effect automatically from
 	// the last known origin.
 	if (isAttached()) {
-		v3f pos = m_env->getActiveObject(m_attachment_parent_id)->getBasePosition();
+		v3f pos = m_env->getActiveObject(m_attachment_parent_id)
+					  ->getBasePosition();
 		m_last_good_position = pos;
 		setBasePosition(pos);
 	}
@@ -279,15 +284,9 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 		else
 			pos = m_base_position;
 
-		std::string str = generateUpdatePositionCommand(
-			pos,
-			v3f(0.0f, 0.0f, 0.0f),
-			v3f(0.0f, 0.0f, 0.0f),
-			m_rotation,
-			true,
-			false,
-			update_interval
-		);
+		std::string str = generateUpdatePositionCommand(pos,
+				v3f(0.0f, 0.0f, 0.0f), v3f(0.0f, 0.0f, 0.0f), m_rotation,
+				true, false, update_interval);
 		// create message and add to list
 		m_messages_out.emplace(getId(), false, str);
 	}
@@ -295,7 +294,8 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 	if (!m_physics_override_sent) {
 		m_physics_override_sent = true;
 		// create message and add to list
-		m_messages_out.emplace(getId(), true, generateUpdatePhysicsOverrideCommand());
+		m_messages_out.emplace(
+				getId(), true, generateUpdatePhysicsOverrideCommand());
 	}
 
 	sendOutdatedData();
@@ -333,11 +333,12 @@ void PlayerSAO::setBasePosition(const v3f &position)
 
 void PlayerSAO::setPos(const v3f &pos)
 {
-	if(isAttached())
+	if (isAttached())
 		return;
 
 	// Send mapblock of target location
-	v3s16 blockpos = v3s16(pos.X / MAP_BLOCKSIZE, pos.Y / MAP_BLOCKSIZE, pos.Z / MAP_BLOCKSIZE);
+	v3s16 blockpos = v3s16(pos.X / MAP_BLOCKSIZE, pos.Y / MAP_BLOCKSIZE,
+			pos.Z / MAP_BLOCKSIZE);
 	m_env->getGameDef()->SendBlock(m_peer_id, blockpos);
 
 	setBasePosition(pos);
@@ -350,7 +351,7 @@ void PlayerSAO::setPos(const v3f &pos)
 
 void PlayerSAO::moveTo(v3f pos, bool continuous)
 {
-	if(isAttached())
+	if (isAttached())
 		return;
 
 	setBasePosition(pos);
@@ -407,10 +408,8 @@ void PlayerSAO::setLookPitchAndSend(const float pitch)
 	m_env->getGameDef()->SendMovePlayer(m_peer_id);
 }
 
-u16 PlayerSAO::punch(v3f dir,
-	const ToolCapabilities *toolcap,
-	ServerActiveObject *puncher,
-	float time_from_last_punch)
+u16 PlayerSAO::punch(v3f dir, const ToolCapabilities *toolcap,
+		ServerActiveObject *puncher, float time_from_last_punch)
 {
 	if (!toolcap)
 		return 0;
@@ -427,18 +426,17 @@ u16 PlayerSAO::punch(v3f dir,
 	}
 
 	s32 old_hp = getHP();
-	HitParams hitparams = getHitParams(m_armor_groups, toolcap,
-			time_from_last_punch);
+	HitParams hitparams = getHitParams(m_armor_groups, toolcap, time_from_last_punch);
 
 	PlayerSAO *playersao = m_player->getPlayerSAO();
 
-	bool damage_handled = m_env->getScriptIface()->on_punchplayer(playersao,
-				puncher, time_from_last_punch, toolcap, dir,
-				hitparams.hp);
+	bool damage_handled = m_env->getScriptIface()->on_punchplayer(playersao, puncher,
+			time_from_last_punch, toolcap, dir, hitparams.hp);
 
 	if (!damage_handled) {
 		setHP((s32)getHP() - (s32)hitparams.hp,
-				PlayerHPChangeReason(PlayerHPChangeReason::PLAYER_PUNCH, puncher));
+				PlayerHPChangeReason(PlayerHPChangeReason::PLAYER_PUNCH,
+						puncher));
 	} else { // override client prediction
 		if (puncher->getType() == ACTIVEOBJECT_TYPE_PLAYER) {
 			// create message and add to list
@@ -446,11 +444,11 @@ u16 PlayerSAO::punch(v3f dir,
 		}
 	}
 
-	actionstream << puncher->getDescription() << " (id=" << puncher->getId() <<
-		", hp=" << puncher->getHP() << ") punched " <<
-		getDescription() << " (id=" << m_id << ", hp=" << m_hp <<
-		"), damage=" << (old_hp - (s32)getHP()) <<
-		(damage_handled ? " (handled by Lua)" : "") << std::endl;
+	actionstream << puncher->getDescription() << " (id=" << puncher->getId()
+		     << ", hp=" << puncher->getHP() << ") punched " << getDescription()
+		     << " (id=" << m_id << ", hp=" << m_hp
+		     << "), damage=" << (old_hp - (s32)getHP())
+		     << (damage_handled ? " (handled by Lua)" : "") << std::endl;
 
 	return hitparams.wear;
 }
@@ -459,10 +457,11 @@ void PlayerSAO::setHP(s32 hp, const PlayerHPChangeReason &reason)
 {
 	s32 oldhp = m_hp;
 
-	//hp = rangelim(hp, 0, m_prop.hp_max);
+	// hp = rangelim(hp, 0, m_prop.hp_max);
 
 	if (oldhp != hp) {
-		s32 hp_change = m_env->getScriptIface()->on_player_hpchange(this, hp - oldhp, reason);
+		s32 hp_change = m_env->getScriptIface()->on_player_hpchange(
+				this, hp - oldhp, reason);
 		if (hp_change == 0)
 			return;
 
@@ -577,7 +576,8 @@ bool PlayerSAO::checkMovementCheat()
 
 	float override_max_H, override_max_V;
 	if (m_max_speed_override_time > 0.0f) {
-		override_max_H = MYMAX(fabs(m_max_speed_override.X), fabs(m_max_speed_override.Z));
+		override_max_H = MYMAX(fabs(m_max_speed_override.X),
+				fabs(m_max_speed_override.Z));
 		override_max_V = fabs(m_max_speed_override.Y);
 	} else {
 		override_max_H = override_max_V = 0.0f;
@@ -627,8 +627,9 @@ bool PlayerSAO::checkMovementCheat()
 		lag_pool_max = MYMAX(lag_pool_max, LAG_POOL_MIN);
 		if (m_time_from_last_teleport > lag_pool_max) {
 			actionstream << "Server: " << m_player->getName()
-					<< " moved too fast: V=" << d_vert << ", H=" << d_horiz
-					<< "; resetting position." << std::endl;
+				     << " moved too fast: V=" << d_vert
+				     << ", H=" << d_horiz << "; resetting position."
+				     << std::endl;
 			cheated = true;
 		}
 		setBasePosition(m_last_good_position);
@@ -638,7 +639,7 @@ bool PlayerSAO::checkMovementCheat()
 
 bool PlayerSAO::getCollisionBox(aabb3f *toset) const
 {
-	//update collision box
+	// update collision box
 	toset->MinEdge = m_prop.collisionbox.MinEdge * BS;
 	toset->MaxEdge = m_prop.collisionbox.MaxEdge * BS;
 

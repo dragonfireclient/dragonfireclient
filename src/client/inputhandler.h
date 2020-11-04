@@ -218,10 +218,7 @@ public:
 
 	virtual ~InputHandler() = default;
 
-	virtual bool isRandom() const
-	{
-		return false;
-	}
+	virtual bool isRandom() const { return false; }
 
 	virtual bool isKeyDown(GameKeyType k) = 0;
 	virtual void setKeypress(const KeyPress &keyCode) = 0;
@@ -377,7 +374,7 @@ public:
 		m_receiver->clearInput();
 	}
 
-	private:
+private:
 	MyEventReceiver *m_receiver = nullptr;
 	v2s32 m_mousepos;
 };
@@ -387,20 +384,11 @@ class RandomInputHandler : public InputHandler
 public:
 	RandomInputHandler() = default;
 
-	bool isRandom() const
-	{
-		return true;
-	}
+	bool isRandom() const { return true; }
 
 	virtual bool isKeyDown(GameKeyType k) { return keydown[keycache.key[k]]; }
-	virtual void setKeypress(const KeyPress &keyCode)
-	{
-		keydown.set(keyCode);
-	}
-	virtual void unsetKeypress(const KeyPress &keyCode)
-	{
-		keydown.unset(keyCode);
-	}
+	virtual void setKeypress(const KeyPress &keyCode) { keydown.set(keyCode); }
+	virtual void unsetKeypress(const KeyPress &keyCode) { keydown.unset(keyCode); }
 	virtual bool wasKeyDown(GameKeyType k) { return false; }
 	virtual bool cancelPressed() { return false; }
 	virtual v2s32 getMousePos() { return mousepos; }

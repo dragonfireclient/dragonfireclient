@@ -21,9 +21,9 @@ function core.parse_relative_pos(param)
 	return success, pos
 end 
 
-function core.find_item(item)
+function core.find_item(item, mini, maxi)
 	for index, stack in ipairs(core.get_inventory("current_player").main) do
-		if stack:get_name() == item then
+		if (not mini or index >= mini) and (not maxi or index <= maxi) and stack:get_name() == item then
 			return index
 		end
 	end
@@ -32,7 +32,7 @@ end
 function core.switch_to_item(item)
 	local i = core.find_item(item)
 	if i then
-		core.localplayer:set_wield_index(i - 1)
+		core.localplayer:set_wield_index(i)
 		return true
 	else
 		return false
@@ -42,6 +42,11 @@ end
 function core.get_pointed_thing()
 	local pos = core.camera:get_pos()
 	local pos2 = vector.add(pos, vector.multiply(core.camera:get_look_dir(), 5))
-	local ray = core.raycast(pos, pos2, true, core.settings:get_bool("point_liquids") or core.get_item_def(core.localplayer:get_wielded_item():get_name()).liquids_pointable)
-	return ray:next()
+	local player = core.localplayer
+	if not player then return end
+	local item = player:get_wielded_item()
+	if not item then return end
+	local def = core.get_item_def(item:get_name())
+	local ray = core.raycast(pos, pos2, true, core.settings:get_bool("point_liquids") or def and def.liquids_pointable)
+	return ray and ray:next()
 end	

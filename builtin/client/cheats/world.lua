@@ -48,6 +48,23 @@ core.register_globalstep(function(dtime)
 			end
 		end
 	end
+	if core.settings:get_bool("nuke") then
+		local i = 0
+		for x = pos.x - 5, pos.x + 5 do
+			for y = pos.y - 5, pos.y + 5 do
+				for z = pos.z - 5, pos.z + 5 do
+					local p = vector.new(x, y, z)
+					local node = core.get_node_or_nil(p)
+					local def = node and core.get_node_def(node.name)
+					if def and def.diggable then
+						if i > nodes_per_tick then return end
+						core.dig_node(p)
+						i = i + 1
+					end
+				end
+			end
+		end
+	end
 end) 
 
  

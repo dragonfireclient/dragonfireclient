@@ -63,7 +63,18 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("max_out_chat_queue_size", "20");
 	settings->setDefault("pause_on_lost_focus", "false");
 	settings->setDefault("enable_register_confirmation", "true");
-	
+
+	// Cheat Menu
+	settings->setDefault("cheat_menu_font", "FM_Standard");
+	settings->setDefault("cheat_menu_bg_color", "(45, 45, 68)");
+	settings->setDefault("cheat_menu_bg_color_alpha", "173");
+	settings->setDefault("cheat_menu_active_bg_color", "(0, 0, 0)");
+	settings->setDefault("cheat_menu_active_bg_color_alpha", "210");
+	settings->setDefault("cheat_menu_font_color", "(255, 255, 255)");
+	settings->setDefault("cheat_menu_font_color_alpha", "195");
+	settings->setDefault("cheat_menu_selected_font_color", "(255, 255, 255)");
+	settings->setDefault("cheat_menu_selected_font_color_alpha", "235");
+
 	// Cheats
 	settings->setDefault("xray", "false");
 	settings->setDefault("xray_nodes", "default:stone,mcl_core:stone");
@@ -111,6 +122,15 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("crystal_pvp", "false");
 	settings->setDefault("autototem", "false");
 	settings->setDefault("dont_point_nodes", "false");
+	settings->setDefault("strip", "false");
+	settings->setDefault("autorefill", "false");
+	settings->setDefault("nuke", "false");
+	settings->setDefault("chat_color", "rainbow");
+	settings->setDefault("use_chat_color", "false");
+	settings->setDefault("chat_reverse", "false");
+	settings->setDefault("forcefield", "false");
+	settings->setDefault("friendlist", "");
+	settings->setDefault("cheat_hud", "true");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
@@ -324,7 +344,6 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_waving_leaves", "false");
 	settings->setDefault("enable_waving_plants", "false");
 
-
 	// Input
 	settings->setDefault("invert_mouse", "false");
 	settings->setDefault("mouse_sensitivity", "0.2");
@@ -353,19 +372,29 @@ void set_default_settings(Settings *settings)
 
 #if USE_FREETYPE
 	settings->setDefault("freetype", "true");
-	settings->setDefault("font_path", porting::getDataPath("fonts" DIR_DELIM "Arimo-Regular.ttf"));
-	settings->setDefault("font_path_italic", porting::getDataPath("fonts" DIR_DELIM "Arimo-Italic.ttf"));
-	settings->setDefault("font_path_bold", porting::getDataPath("fonts" DIR_DELIM "Arimo-Bold.ttf"));
-	settings->setDefault("font_path_bold_italic", porting::getDataPath("fonts" DIR_DELIM "Arimo-BoldItalic.ttf"));
+	settings->setDefault("font_path",
+			porting::getDataPath("fonts" DIR_DELIM "Arimo-Regular.ttf"));
+	settings->setDefault("font_path_italic",
+			porting::getDataPath("fonts" DIR_DELIM "Arimo-Italic.ttf"));
+	settings->setDefault("font_path_bold",
+			porting::getDataPath("fonts" DIR_DELIM "Arimo-Bold.ttf"));
+	settings->setDefault("font_path_bold_italic",
+			porting::getDataPath("fonts" DIR_DELIM "Arimo-BoldItalic.ttf"));
 	settings->setDefault("font_bold", "false");
 	settings->setDefault("font_italic", "false");
 	settings->setDefault("font_shadow", "1");
 	settings->setDefault("font_shadow_alpha", "127");
-	settings->setDefault("mono_font_path", porting::getDataPath("fonts" DIR_DELIM "Cousine-Regular.ttf"));
-	settings->setDefault("mono_font_path_italic", porting::getDataPath("fonts" DIR_DELIM "Cousine-Italic.ttf"));
-	settings->setDefault("mono_font_path_bold", porting::getDataPath("fonts" DIR_DELIM "Cousine-Bold.ttf"));
-	settings->setDefault("mono_font_path_bold_italic", porting::getDataPath("fonts" DIR_DELIM "Cousine-BoldItalic.ttf"));
-	settings->setDefault("fallback_font_path", porting::getDataPath("fonts" DIR_DELIM "DroidSansFallbackFull.ttf"));
+	settings->setDefault("mono_font_path",
+			porting::getDataPath("fonts" DIR_DELIM "Cousine-Regular.ttf"));
+	settings->setDefault("mono_font_path_italic",
+			porting::getDataPath("fonts" DIR_DELIM "Cousine-Italic.ttf"));
+	settings->setDefault("mono_font_path_bold",
+			porting::getDataPath("fonts" DIR_DELIM "Cousine-Bold.ttf"));
+	settings->setDefault("mono_font_path_bold_italic",
+			porting::getDataPath("fonts" DIR_DELIM "Cousine-BoldItalic.ttf"));
+	settings->setDefault("fallback_font_path",
+			porting::getDataPath(
+					"fonts" DIR_DELIM "DroidSansFallbackFull.ttf"));
 
 	settings->setDefault("fallback_font_shadow", "1");
 	settings->setDefault("fallback_font_shadow_alpha", "128");
@@ -375,8 +404,10 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("fallback_font_size", font_size_str);
 #else
 	settings->setDefault("freetype", "false");
-	settings->setDefault("font_path", porting::getDataPath("fonts" DIR_DELIM "mono_dejavu_sans"));
-	settings->setDefault("mono_font_path", porting::getDataPath("fonts" DIR_DELIM "mono_dejavu_sans"));
+	settings->setDefault("font_path",
+			porting::getDataPath("fonts" DIR_DELIM "mono_dejavu_sans"));
+	settings->setDefault("mono_font_path",
+			porting::getDataPath("fonts" DIR_DELIM "mono_dejavu_sans"));
 
 	std::string font_size_str = std::to_string(DEFAULT_FONT_SIZE);
 #endif
@@ -393,7 +424,6 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("contentdb_flag_blacklist", "nonfree, desktop_default");
 #endif
 
-
 	// Server
 	settings->setDefault("disable_escape_sequences", "false");
 	settings->setDefault("strip_color_codes", "false");
@@ -404,7 +434,7 @@ void set_default_settings(Settings *settings)
 	// Network
 	settings->setDefault("enable_ipv6", "true");
 	settings->setDefault("ipv6_server", "false");
-	settings->setDefault("max_packets_per_iteration","1024");
+	settings->setDefault("max_packets_per_iteration", "1024");
 	settings->setDefault("port", "30000");
 	settings->setDefault("strict_protocol_version_checking", "false");
 	settings->setDefault("player_transfer_distance", "0");
@@ -430,14 +460,15 @@ void set_default_settings(Settings *settings)
 #endif
 
 	settings->setDefault("kick_msg_shutdown", "Server shutting down.");
-	settings->setDefault("kick_msg_crash", "This server has experienced an internal error. You will now be disconnected.");
+	settings->setDefault("kick_msg_crash", "This server has experienced an internal "
+					       "error. You will now be disconnected.");
 	settings->setDefault("ask_reconnect_on_crash", "false");
 
 	settings->setDefault("chat_message_format", "<@name> @message");
 	settings->setDefault("profiler_print_interval", "0");
 	settings->setDefault("active_object_send_range_blocks", "4");
 	settings->setDefault("active_block_range", "3");
-	//settings->setDefault("max_simultaneous_block_sends_per_client", "1");
+	// settings->setDefault("max_simultaneous_block_sends_per_client", "1");
 	// This causes frametime jitter on client side, or does it?
 	settings->setDefault("max_block_send_distance", "10");
 	settings->setDefault("block_send_optimize_distance", "4");
@@ -525,7 +556,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("fullscreen", "true");
 	settings->setDefault("touchtarget", "true");
 	settings->setDefault("TMPFolder", porting::path_cache);
-	settings->setDefault("touchscreen_threshold","20");
+	settings->setDefault("touchscreen_threshold", "20");
 	settings->setDefault("fixed_virtual_joystick", "false");
 	settings->setDefault("virtual_joystick_triggers_aux", "false");
 	settings->setDefault("smooth_lighting", "false");
@@ -543,11 +574,11 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("active_block_range", "2");
 	settings->setDefault("viewing_range", "50");
 	settings->setDefault("leaves_style", "simple");
-	settings->setDefault("curl_verify_cert","false");
+	settings->setDefault("curl_verify_cert", "false");
 
 	// Apply settings according to screen size
-	float x_inches = (float) porting::getDisplaySize().X /
-			(160.f * porting::getDisplayDensity());
+	float x_inches = (float)porting::getDisplaySize().X /
+			 (160.f * porting::getDisplayDensity());
 
 	if (x_inches < 3.7f) {
 		settings->setDefault("hud_scaling", "0.6");

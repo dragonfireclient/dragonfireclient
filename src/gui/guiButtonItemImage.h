@@ -38,8 +38,8 @@ public:
 	//! Do not drop returned handle
 	static GUIButtonItemImage *addButton(gui::IGUIEnvironment *environment,
 			const core::rect<s32> &rectangle, ISimpleTextureSource *tsrc,
-			IGUIElement *parent, s32 id, const wchar_t *text, std::string item,
-			Client *client);
+			IGUIElement *parent, s32 id, const wchar_t *text,
+			std::string item, Client *client);
 
 private:
 	std::string m_item_name;

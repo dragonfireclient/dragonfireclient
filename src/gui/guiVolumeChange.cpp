@@ -36,12 +36,10 @@ const int ID_soundExitButton = 264;
 const int ID_soundSlider = 265;
 const int ID_soundMuteButton = 266;
 
-GUIVolumeChange::GUIVolumeChange(gui::IGUIEnvironment* env,
-		gui::IGUIElement* parent, s32 id,
-		IMenuManager *menumgr, ISimpleTextureSource *tsrc
-):
-	GUIModalMenu(env, parent, id, menumgr),
-	m_tsrc(tsrc)
+GUIVolumeChange::GUIVolumeChange(gui::IGUIEnvironment *env, gui::IGUIElement *parent,
+		s32 id, IMenuManager *menumgr, ISimpleTextureSource *tsrc) :
+		GUIModalMenu(env, parent, id, menumgr),
+		m_tsrc(tsrc)
 {
 }
 
@@ -75,12 +73,9 @@ void GUIVolumeChange::regenerateGui(v2u32 screensize)
 		Calculate new sizes and positions
 	*/
 	const float s = m_gui_scale;
-	DesiredRect = core::rect<s32>(
-		screensize.X / 2 - 380 * s / 2,
-		screensize.Y / 2 - 200 * s / 2,
-		screensize.X / 2 + 380 * s / 2,
-		screensize.Y / 2 + 200 * s / 2
-	);
+	DesiredRect = core::rect<s32>(screensize.X / 2 - 380 * s / 2,
+			screensize.Y / 2 - 200 * s / 2, screensize.X / 2 + 380 * s / 2,
+			screensize.Y / 2 + 200 * s / 2);
 	recalculateAbsolutePosition(false);
 
 	v2s32 size = DesiredRect.getSize();
@@ -95,24 +90,25 @@ void GUIVolumeChange::regenerateGui(v2u32 screensize)
 
 		const wchar_t *text = wgettext("Sound Volume: ");
 		core::stringw volume_text = text;
-		delete [] text;
+		delete[] text;
 
 		volume_text += core::stringw(volume) + core::stringw("%");
-		Environment->addStaticText(volume_text.c_str(), rect, false,
-				true, this, ID_soundText);
+		Environment->addStaticText(volume_text.c_str(), rect, false, true, this,
+				ID_soundText);
 	}
 	{
 		core::rect<s32> rect(0, 0, 80 * s, 30 * s);
 		rect = rect + v2s32(size.X / 2 - 80 * s / 2, size.Y / 2 + 55 * s);
 		const wchar_t *text = wgettext("Exit");
-		GUIButton::addButton(Environment, rect, m_tsrc, this, ID_soundExitButton, text);
+		GUIButton::addButton(Environment, rect, m_tsrc, this, ID_soundExitButton,
+				text);
 		delete[] text;
 	}
 	{
 		core::rect<s32> rect(0, 0, 300 * s, 20 * s);
 		rect = rect + v2s32(size.X / 2 - 150 * s, size.Y / 2);
-		gui::IGUIScrollBar *e = Environment->addScrollBar(true,
-			rect, this, ID_soundSlider);
+		gui::IGUIScrollBar *e = Environment->addScrollBar(
+				true, rect, this, ID_soundSlider);
 		e->setMax(100);
 		e->setPos(volume);
 	}
@@ -128,16 +124,16 @@ void GUIVolumeChange::regenerateGui(v2u32 screensize)
 
 void GUIVolumeChange::drawMenu()
 {
-	gui::IGUISkin* skin = Environment->getSkin();
+	gui::IGUISkin *skin = Environment->getSkin();
 	if (!skin)
 		return;
-	video::IVideoDriver* driver = Environment->getVideoDriver();
+	video::IVideoDriver *driver = Environment->getVideoDriver();
 	video::SColor bgcolor(140, 0, 0, 0);
 	driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
 	gui::IGUIElement::draw();
 }
 
-bool GUIVolumeChange::OnEvent(const SEvent& event)
+bool GUIVolumeChange::OnEvent(const SEvent &event)
 {
 	if (event.EventType == EET_KEY_INPUT_EVENT) {
 		if (event.KeyInput.Key == KEY_ESCAPE && event.KeyInput.PressedDown) {
@@ -153,7 +149,8 @@ bool GUIVolumeChange::OnEvent(const SEvent& event)
 		if (event.GUIEvent.EventType == gui::EGET_CHECKBOX_CHANGED) {
 			gui::IGUIElement *e = getElementFromId(ID_soundMuteButton);
 			if (e != NULL && e->getType() == gui::EGUIET_CHECK_BOX) {
-				g_settings->setBool("mute_sound", ((gui::IGUICheckBox*)e)->isChecked());
+				g_settings->setBool("mute_sound",
+						((gui::IGUICheckBox *)e)->isChecked());
 			}
 
 			Environment->setFocus(this);
@@ -168,31 +165,32 @@ bool GUIVolumeChange::OnEvent(const SEvent& event)
 			Environment->setFocus(this);
 		}
 
-		if (event.GUIEvent.EventType == gui::EGET_ELEMENT_FOCUS_LOST
-				&& isVisible()) {
+		if (event.GUIEvent.EventType == gui::EGET_ELEMENT_FOCUS_LOST &&
+				isVisible()) {
 			if (!canTakeFocus(event.GUIEvent.Element)) {
-				infostream << "GUIVolumeChange: Not allowing focus change."
-				<< std::endl;
+				infostream << "GUIVolumeChange: Not allowing focus "
+					      "change."
+					   << std::endl;
 				// Returning true disables focus change
 				return true;
 			}
 		}
 		if (event.GUIEvent.EventType == gui::EGET_SCROLL_BAR_CHANGED) {
 			if (event.GUIEvent.Caller->getID() == ID_soundSlider) {
-				s32 pos = ((gui::IGUIScrollBar*)event.GUIEvent.Caller)->getPos();
-				g_settings->setFloat("sound_volume", (float) pos / 100);
+				s32 pos = ((gui::IGUIScrollBar *)event.GUIEvent.Caller)
+							  ->getPos();
+				g_settings->setFloat("sound_volume", (float)pos / 100);
 
 				gui::IGUIElement *e = getElementFromId(ID_soundText);
 				const wchar_t *text = wgettext("Sound Volume: ");
 				core::stringw volume_text = text;
-				delete [] text;
+				delete[] text;
 
 				volume_text += core::stringw(pos) + core::stringw("%");
 				e->setText(volume_text.c_str());
 				return true;
 			}
 		}
-
 	}
 
 	return Parent ? Parent->OnEvent(event) : false;

@@ -21,8 +21,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "irrlichttypes_extrabloated.h"
 #include "activeobject.h"
+#include <ISceneNode.h>
+#include <IMeshSceneNode.h>
 #include <unordered_map>
 #include <unordered_set>
+
 
 
 class ClientEnvironment;
@@ -48,16 +51,20 @@ public:
 	virtual bool getSelectionBox(aabb3f *toset) const { return false; }
 	virtual bool collideWithObjects() const { return false; }
 	virtual const v3f getPosition() const { return v3f(0.0f); }
-	virtual scene::ISceneNode *getSceneNode() const
-	{ return NULL; }
+	virtual scene::ISceneNode *getSceneNode() const { return NULL; }
 	virtual scene::IAnimatedMeshSceneNode *getAnimatedMeshSceneNode() const
-	{ return NULL; }
+	{
+		return NULL;
+	}
 	virtual bool isLocalPlayer() const { return false; }
 
 	virtual ClientActiveObject *getParent() const { return nullptr; };
 	virtual const std::unordered_set<int> &getAttachmentChildIds() const
-	{ static std::unordered_set<int> rv; return rv; }
-	virtual void updateAttachments() {};
+	{
+		static std::unordered_set<int> rv;
+		return rv;
+	}
+	virtual void updateAttachments(){};
 
 	virtual bool doShowSelectionBox() { return true; }
 
@@ -77,12 +84,15 @@ public:
 	virtual void initialize(const std::string &data) {}
 
 	// Create a certain type of ClientActiveObject
-	static ClientActiveObject *create(ActiveObjectType type, Client *client,
-		ClientEnvironment *env);
+	static ClientActiveObject *create(
+			ActiveObjectType type, Client *client, ClientEnvironment *env);
 
 	// If returns true, punch will not be sent to the server
 	virtual bool directReportPunch(v3f dir, const ItemStack *punchitem = nullptr,
-		float time_from_last_punch = 1000000) { return false; }
+			float time_from_last_punch = 1000000)
+	{
+		return false;
+	}
 
 protected:
 	// Used for creating objects based on type
@@ -90,6 +100,7 @@ protected:
 	static void registerType(u16 type, Factory f);
 	Client *m_client;
 	ClientEnvironment *m_env;
+
 private:
 	// Used for creating objects based on type
 	static std::unordered_map<u16, Factory> m_types;
@@ -106,7 +117,7 @@ public:
 		d = a_d;
 	}
 
-	bool operator < (const DistanceSortedActiveObject &other) const
+	bool operator<(const DistanceSortedActiveObject &other) const
 	{
 		return d < other.d;
 	}

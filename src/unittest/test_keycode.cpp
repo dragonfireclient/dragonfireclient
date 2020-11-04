@@ -23,7 +23,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "exceptions.h"
 #include "client/keycode.h"
 
-class TestKeycode : public TestBase {
+class TestKeycode : public TestBase
+{
 public:
 	TestKeycode() { TestManager::registerTestModule(this); }
 	const char *getName() { return "TestKeycode"; }
@@ -114,7 +115,8 @@ void TestKeycode::testCompare()
 	UASSERT(!(KeyPress("5") == KeyPress("KEY_NUMPAD_5")));
 
 	// Matching char suffices
-	// note: This is a real-world example, Irrlicht maps XK_equal to irr::KEY_PLUS on Linux
+	// note: This is a real-world example, Irrlicht maps XK_equal to irr::KEY_PLUS on
+	// Linux
 	irr::SEvent::SKeyInput in;
 	in.Key = irr::KEY_PLUS;
 	in.Char = L'=';

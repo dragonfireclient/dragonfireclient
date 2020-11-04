@@ -87,6 +87,14 @@ int ClientObjectRef::l_is_player(lua_State *L)
 	return 1;
 }
 
+int ClientObjectRef::l_is_local_player(lua_State *L)
+{
+	ClientObjectRef *ref = checkobject(L, 1);
+	GenericCAO *gcao = get_generic_cao(ref, L);
+	lua_pushboolean(L, gcao->isLocalPlayer());
+	return 1;
+}
+
 int ClientObjectRef::l_get_name(lua_State *L)
 {
 	ClientObjectRef *ref = checkobject(L, 1);
@@ -138,7 +146,7 @@ int ClientObjectRef::l_punch(lua_State *L)
 {
 	ClientObjectRef *ref = checkobject(L, 1);
 	GenericCAO *gcao = get_generic_cao(ref, L);
-	PointedThing pointed(gcao->getId(), v3f(0,0,0), v3s16(0,0,0), 0);
+	PointedThing pointed(gcao->getId(), v3f(0, 0, 0), v3s16(0, 0, 0), 0);
 	getClient(L)->interact(INTERACT_START_DIGGING, pointed);
 	return 0;
 }
@@ -147,7 +155,7 @@ int ClientObjectRef::l_rightclick(lua_State *L)
 {
 	ClientObjectRef *ref = checkobject(L, 1);
 	GenericCAO *gcao = get_generic_cao(ref, L);
-	PointedThing pointed(gcao->getId(), v3f(0,0,0), v3s16(0,0,0), 0);
+	PointedThing pointed(gcao->getId(), v3f(0, 0, 0), v3s16(0, 0, 0), 0);
 	getClient(L)->interact(INTERACT_PLACE, pointed);
 	return 0;
 }
@@ -210,10 +218,10 @@ luaL_Reg ClientObjectRef::methods[] = {luamethod(ClientObjectRef, get_pos),
 		luamethod(ClientObjectRef, get_acceleration),
 		luamethod(ClientObjectRef, get_rotation),
 		luamethod(ClientObjectRef, is_player),
+		luamethod(ClientObjectRef, is_local_player),
 		luamethod(ClientObjectRef, get_name),
 		luamethod(ClientObjectRef, get_attach),
 		luamethod(ClientObjectRef, get_nametag),
 		luamethod(ClientObjectRef, get_item_textures),
-		luamethod(ClientObjectRef, get_max_hp),
-		luamethod(ClientObjectRef, punch),
+		luamethod(ClientObjectRef, get_max_hp), luamethod(ClientObjectRef, punch),
 		luamethod(ClientObjectRef, rightclick), {0, 0}};

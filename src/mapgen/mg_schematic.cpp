@@ -35,13 +35,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-
 SchematicManager::SchematicManager(Server *server) :
-	ObjDefManager(server, OBJDEF_SCHEMATIC),
-	m_server(server)
+		ObjDefManager(server, OBJDEF_SCHEMATIC), m_server(server)
 {
 }
-
 
 SchematicManager *SchematicManager::clone() const
 {
@@ -50,7 +47,6 @@ SchematicManager *SchematicManager::clone() const
 	ObjDefManager::cloneTo(mgr);
 	return mgr;
 }
-
 
 void SchematicManager::clear()
 {
@@ -72,18 +68,14 @@ void SchematicManager::clear()
 	ObjDefManager::clear();
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 
-
-Schematic::Schematic()
-= default;
-
+Schematic::Schematic() = default;
 
 Schematic::~Schematic()
 {
-	delete []schemdata;
-	delete []slice_probs;
+	delete[] schemdata;
+	delete[] slice_probs;
 }
 
 ObjDef *Schematic::clone() const
@@ -105,7 +97,6 @@ ObjDef *Schematic::clone() const
 	return def;
 }
 
-
 void Schematic::resolveNodeNames()
 {
 	getIdsFromNrBacklog(&c_nodes, true, CONTENT_AIR);
@@ -117,7 +108,6 @@ void Schematic::resolveNodeNames()
 		schemdata[i].setContent(c_new);
 	}
 }
-
 
 void Schematic::blitToVManip(MMVManip *vm, v3s16 p, Rotation rot, bool force_place)
 {
@@ -134,33 +124,33 @@ void Schematic::blitToVManip(MMVManip *vm, v3s16 p, Rotation rot, bool force_pla
 
 	int i_start, i_step_x, i_step_z;
 	switch (rot) {
-		case ROTATE_90:
-			i_start  = sx - 1;
-			i_step_x = zstride;
-			i_step_z = -xstride;
-			SWAP(s16, sx, sz);
-			break;
-		case ROTATE_180:
-			i_start  = zstride * (sz - 1) + sx - 1;
-			i_step_x = -xstride;
-			i_step_z = -zstride;
-			break;
-		case ROTATE_270:
-			i_start  = zstride * (sz - 1);
-			i_step_x = -zstride;
-			i_step_z = xstride;
-			SWAP(s16, sx, sz);
-			break;
-		default:
-			i_start  = 0;
-			i_step_x = xstride;
-			i_step_z = zstride;
+	case ROTATE_90:
+		i_start = sx - 1;
+		i_step_x = zstride;
+		i_step_z = -xstride;
+		SWAP(s16, sx, sz);
+		break;
+	case ROTATE_180:
+		i_start = zstride * (sz - 1) + sx - 1;
+		i_step_x = -xstride;
+		i_step_z = -zstride;
+		break;
+	case ROTATE_270:
+		i_start = zstride * (sz - 1);
+		i_step_x = -zstride;
+		i_step_z = xstride;
+		SWAP(s16, sx, sz);
+		break;
+	default:
+		i_start = 0;
+		i_step_x = xstride;
+		i_step_z = zstride;
 	}
 
 	s16 y_map = p.Y;
 	for (s16 y = 0; y != sy; y++) {
 		if ((slice_probs[y] != MTSCHEM_PROB_ALWAYS) &&
-			(slice_probs[y] <= myrand_range(1, MTSCHEM_PROB_ALWAYS)))
+				(slice_probs[y] <= myrand_range(1, MTSCHEM_PROB_ALWAYS)))
 			continue;
 
 		for (s16 z = 0; z != sz; z++) {
@@ -173,8 +163,10 @@ void Schematic::blitToVManip(MMVManip *vm, v3s16 p, Rotation rot, bool force_pla
 				if (schemdata[i].getContent() == CONTENT_IGNORE)
 					continue;
 
-				u8 placement_prob     = schemdata[i].param1 & MTSCHEM_PROB_MASK;
-				bool force_place_node = schemdata[i].param1 & MTSCHEM_FORCE_PLACE;
+				u8 placement_prob =
+						schemdata[i].param1 & MTSCHEM_PROB_MASK;
+				bool force_place_node =
+						schemdata[i].param1 & MTSCHEM_FORCE_PLACE;
 
 				if (placement_prob == MTSCHEM_PROB_NEVER)
 					continue;
@@ -187,7 +179,8 @@ void Schematic::blitToVManip(MMVManip *vm, v3s16 p, Rotation rot, bool force_pla
 				}
 
 				if ((placement_prob != MTSCHEM_PROB_ALWAYS) &&
-					(placement_prob <= myrand_range(1, MTSCHEM_PROB_ALWAYS)))
+						(placement_prob <=
+								myrand_range(1, MTSCHEM_PROB_ALWAYS)))
 					continue;
 
 				vm->m_data[vi] = schemdata[i];
@@ -201,9 +194,8 @@ void Schematic::blitToVManip(MMVManip *vm, v3s16 p, Rotation rot, bool force_pla
 	}
 }
 
-
-bool Schematic::placeOnVManip(MMVManip *vm, v3s16 p, u32 flags,
-	Rotation rot, bool force_place)
+bool Schematic::placeOnVManip(
+		MMVManip *vm, v3s16 p, u32 flags, Rotation rot, bool force_place)
 {
 	assert(vm != NULL);
 	assert(schemdata && slice_probs);
@@ -213,8 +205,8 @@ bool Schematic::placeOnVManip(MMVManip *vm, v3s16 p, u32 flags,
 	if (rot == ROTATE_RAND)
 		rot = (Rotation)myrand_range(ROTATE_0, ROTATE_270);
 
-	v3s16 s = (rot == ROTATE_90 || rot == ROTATE_270) ?
-		v3s16(size.Z, size.Y, size.X) : size;
+	v3s16 s = (rot == ROTATE_90 || rot == ROTATE_270) ? v3s16(size.Z, size.Y, size.X)
+							  : size;
 
 	//// Adjust placement position if necessary
 	if (flags & DECO_PLACE_CENTER_X)
@@ -229,8 +221,8 @@ bool Schematic::placeOnVManip(MMVManip *vm, v3s16 p, u32 flags,
 	return vm->m_area.contains(VoxelArea(p, p + s - v3s16(1, 1, 1)));
 }
 
-void Schematic::placeOnMap(ServerMap *map, v3s16 p, u32 flags,
-	Rotation rot, bool force_place)
+void Schematic::placeOnMap(
+		ServerMap *map, v3s16 p, u32 flags, Rotation rot, bool force_place)
 {
 	std::map<v3s16, MapBlock *> lighting_modified_blocks;
 	std::map<v3s16, MapBlock *> modified_blocks;
@@ -244,8 +236,8 @@ void Schematic::placeOnMap(ServerMap *map, v3s16 p, u32 flags,
 	if (rot == ROTATE_RAND)
 		rot = (Rotation)myrand_range(ROTATE_0, ROTATE_270);
 
-	v3s16 s = (rot == ROTATE_90 || rot == ROTATE_270) ?
-			v3s16(size.Z, size.Y, size.X) : size;
+	v3s16 s = (rot == ROTATE_90 || rot == ROTATE_270) ? v3s16(size.Z, size.Y, size.X)
+							  : size;
 
 	//// Adjust placement position if necessary
 	if (flags & DECO_PLACE_CENTER_X)
@@ -278,9 +270,7 @@ void Schematic::placeOnMap(ServerMap *map, v3s16 p, u32 flags,
 	map->dispatchEvent(event);
 }
 
-
-bool Schematic::deserializeFromMts(std::istream *is,
-	std::vector<std::string> *names)
+bool Schematic::deserializeFromMts(std::istream *is, std::vector<std::string> *names)
 {
 	std::istream &ss = *is;
 	content_t cignore = CONTENT_IGNORE;
@@ -289,16 +279,20 @@ bool Schematic::deserializeFromMts(std::istream *is,
 	//// Read signature
 	u32 signature = readU32(ss);
 	if (signature != MTSCHEM_FILE_SIGNATURE) {
-		errorstream << __FUNCTION__ << ": invalid schematic "
-			"file" << std::endl;
+		errorstream << __FUNCTION__
+			    << ": invalid schematic "
+			       "file"
+			    << std::endl;
 		return false;
 	}
 
 	//// Read version
 	u16 version = readU16(ss);
 	if (version > MTSCHEM_FILE_VER_HIGHEST_READ) {
-		errorstream << __FUNCTION__ << ": unsupported schematic "
-			"file version" << std::endl;
+		errorstream << __FUNCTION__
+			    << ": unsupported schematic "
+			       "file version"
+			    << std::endl;
 		return false;
 	}
 
@@ -306,7 +300,7 @@ bool Schematic::deserializeFromMts(std::istream *is,
 	size = readV3S16(ss);
 
 	//// Read Y-slice probability values
-	delete []slice_probs;
+	delete[] slice_probs;
 	slice_probs = new u8[size.Y];
 	for (int y = 0; y != size.Y; y++)
 		slice_probs[y] = (version >= 3) ? readU8(ss) : MTSCHEM_PROB_ALWAYS_OLD;
@@ -330,11 +324,11 @@ bool Schematic::deserializeFromMts(std::istream *is,
 	//// Read node data
 	size_t nodecount = size.X * size.Y * size.Z;
 
-	delete []schemdata;
+	delete[] schemdata;
 	schemdata = new MapNode[nodecount];
 
-	MapNode::deSerializeBulk(ss, SER_FMT_VER_HIGHEST_READ, schemdata,
-		nodecount, 2, 2, true);
+	MapNode::deSerializeBulk(
+			ss, SER_FMT_VER_HIGHEST_READ, schemdata, nodecount, 2, 2, true);
 
 	// Fix probability values for nodes that were ignore; removed in v2
 	if (version < 2) {
@@ -357,17 +351,16 @@ bool Schematic::deserializeFromMts(std::istream *is,
 	return true;
 }
 
-
-bool Schematic::serializeToMts(std::ostream *os,
-	const std::vector<std::string> &names) const
+bool Schematic::serializeToMts(
+		std::ostream *os, const std::vector<std::string> &names) const
 {
 	std::ostream &ss = *os;
 
-	writeU32(ss, MTSCHEM_FILE_SIGNATURE);         // signature
+	writeU32(ss, MTSCHEM_FILE_SIGNATURE);	      // signature
 	writeU16(ss, MTSCHEM_FILE_VER_HIGHEST_WRITE); // version
-	writeV3S16(ss, size);                         // schematic size
+	writeV3S16(ss, size);			      // schematic size
 
-	for (int y = 0; y != size.Y; y++)             // Y slice probabilities
+	for (int y = 0; y != size.Y; y++) // Y slice probabilities
 		writeU8(ss, slice_probs[y]);
 
 	writeU16(ss, names.size()); // name count
@@ -375,16 +368,14 @@ bool Schematic::serializeToMts(std::ostream *os,
 		ss << serializeString(names[i]); // node names
 
 	// compressed bulk node data
-	MapNode::serializeBulk(ss, SER_FMT_VER_HIGHEST_WRITE,
-		schemdata, size.X * size.Y * size.Z, 2, 2, true);
+	MapNode::serializeBulk(ss, SER_FMT_VER_HIGHEST_WRITE, schemdata,
+			size.X * size.Y * size.Z, 2, 2, true);
 
 	return true;
 }
 
-
-bool Schematic::serializeToLua(std::ostream *os,
-	const std::vector<std::string> &names, bool use_comments,
-	u32 indent_spaces) const
+bool Schematic::serializeToLua(std::ostream *os, const std::vector<std::string> &names,
+		bool use_comments, u32 indent_spaces) const
 {
 	std::ostream &ss = *os;
 
@@ -396,10 +387,8 @@ bool Schematic::serializeToLua(std::ostream *os,
 	{
 		ss << "schematic = {" << std::endl;
 		ss << indent << "size = "
-			<< "{x=" << size.X
-			<< ", y=" << size.Y
-			<< ", z=" << size.Z
-			<< "}," << std::endl;
+		   << "{x=" << size.X << ", y=" << size.Y << ", z=" << size.Z << "},"
+		   << std::endl;
 	}
 
 	//// Write y-slice probabilities
@@ -410,9 +399,8 @@ bool Schematic::serializeToLua(std::ostream *os,
 			u8 probability = slice_probs[y] & MTSCHEM_PROB_MASK;
 
 			ss << indent << indent << "{"
-				<< "ypos=" << y
-				<< ", prob=" << (u16)probability * 2
-				<< "}," << std::endl;
+			   << "ypos=" << y << ", prob=" << (u16)probability * 2 << "},"
+			   << std::endl;
 		}
 
 		ss << indent << "}," << std::endl;
@@ -424,29 +412,31 @@ bool Schematic::serializeToLua(std::ostream *os,
 
 		u32 i = 0;
 		for (u16 z = 0; z != size.Z; z++)
-		for (u16 y = 0; y != size.Y; y++) {
-			if (use_comments) {
-				ss << std::endl
-					<< indent << indent
-					<< "-- z=" << z
-					<< ", y=" << y << std::endl;
+			for (u16 y = 0; y != size.Y; y++) {
+				if (use_comments) {
+					ss << std::endl
+					   << indent << indent << "-- z=" << z
+					   << ", y=" << y << std::endl;
+				}
+
+				for (u16 x = 0; x != size.X; x++, i++) {
+					u8 probability = schemdata[i].param1 &
+							 MTSCHEM_PROB_MASK;
+					bool force_place = schemdata[i].param1 &
+							   MTSCHEM_FORCE_PLACE;
+
+					ss << indent << indent << "{"
+					   << "name=\""
+					   << names[schemdata[i].getContent()]
+					   << "\", prob=" << (u16)probability * 2
+					   << ", param2=" << (u16)schemdata[i].param2;
+
+					if (force_place)
+						ss << ", force_place=true";
+
+					ss << "}," << std::endl;
+				}
 			}
-
-			for (u16 x = 0; x != size.X; x++, i++) {
-				u8 probability   = schemdata[i].param1 & MTSCHEM_PROB_MASK;
-				bool force_place = schemdata[i].param1 & MTSCHEM_FORCE_PLACE;
-
-				ss << indent << indent << "{"
-					<< "name=\"" << names[schemdata[i].getContent()]
-					<< "\", prob=" << (u16)probability * 2
-					<< ", param2=" << (u16)schemdata[i].param2;
-
-				if (force_place)
-					ss << ", force_place=true";
-
-				ss << "}," << std::endl;
-			}
-		}
 
 		ss << indent << "}," << std::endl;
 	}
@@ -456,14 +446,13 @@ bool Schematic::serializeToLua(std::ostream *os,
 	return true;
 }
 
-
 bool Schematic::loadSchematicFromFile(const std::string &filename,
-	const NodeDefManager *ndef, StringMap *replace_names)
+		const NodeDefManager *ndef, StringMap *replace_names)
 {
 	std::ifstream is(filename.c_str(), std::ios_base::binary);
 	if (!is.good()) {
-		errorstream << __FUNCTION__ << ": unable to open file '"
-			<< filename << "'" << std::endl;
+		errorstream << __FUNCTION__ << ": unable to open file '" << filename
+			    << "'" << std::endl;
 		return false;
 	}
 
@@ -490,9 +479,8 @@ bool Schematic::loadSchematicFromFile(const std::string &filename,
 	return true;
 }
 
-
-bool Schematic::saveSchematicToFile(const std::string &filename,
-	const NodeDefManager *ndef)
+bool Schematic::saveSchematicToFile(
+		const std::string &filename, const NodeDefManager *ndef)
 {
 	MapNode *orig_schemdata = schemdata;
 	std::vector<std::string> ndef_nodenames;
@@ -518,7 +506,7 @@ bool Schematic::saveSchematicToFile(const std::string &filename,
 	bool status = serializeToMts(&os, *names);
 
 	if (ndef) {
-		delete []schemdata;
+		delete[] schemdata;
 		schemdata = orig_schemdata;
 	}
 
@@ -527,7 +515,6 @@ bool Schematic::saveSchematicToFile(const std::string &filename,
 
 	return fs::safeWriteToFile(filename, os.str());
 }
-
 
 bool Schematic::getSchematicFromMap(Map *map, v3s16 p1, v3s16 p2)
 {
@@ -547,22 +534,20 @@ bool Schematic::getSchematicFromMap(Map *map, v3s16 p1, v3s16 p2)
 
 	u32 i = 0;
 	for (s16 z = p1.Z; z <= p2.Z; z++)
-	for (s16 y = p1.Y; y <= p2.Y; y++) {
-		u32 vi = vm->m_area.index(p1.X, y, z);
-		for (s16 x = p1.X; x <= p2.X; x++, i++, vi++) {
-			schemdata[i] = vm->m_data[vi];
-			schemdata[i].param1 = MTSCHEM_PROB_ALWAYS;
+		for (s16 y = p1.Y; y <= p2.Y; y++) {
+			u32 vi = vm->m_area.index(p1.X, y, z);
+			for (s16 x = p1.X; x <= p2.X; x++, i++, vi++) {
+				schemdata[i] = vm->m_data[vi];
+				schemdata[i].param1 = MTSCHEM_PROB_ALWAYS;
+			}
 		}
-	}
 
 	delete vm;
 	return true;
 }
 
-
-void Schematic::applyProbabilities(v3s16 p0,
-	std::vector<std::pair<v3s16, u8> > *plist,
-	std::vector<std::pair<s16, u8> > *splist)
+void Schematic::applyProbabilities(v3s16 p0, std::vector<std::pair<v3s16, u8>> *plist,
+		std::vector<std::pair<s16, u8>> *splist)
 {
 	for (size_t i = 0; i != plist->size(); i++) {
 		v3s16 p = (*plist)[i].first - p0;
@@ -583,9 +568,8 @@ void Schematic::applyProbabilities(v3s16 p0,
 	}
 }
 
-
 void generate_nodelist_and_update_ids(MapNode *nodes, size_t nodecount,
-	std::vector<std::string> *usednodes, const NodeDefManager *ndef)
+		std::vector<std::string> *usednodes, const NodeDefManager *ndef)
 {
 	std::unordered_map<content_t, content_t> nodeidmap;
 	content_t numids = 0;
@@ -594,7 +578,8 @@ void generate_nodelist_and_update_ids(MapNode *nodes, size_t nodecount,
 		content_t id;
 		content_t c = nodes[i].getContent();
 
-		std::unordered_map<content_t, content_t>::const_iterator it = nodeidmap.find(c);
+		std::unordered_map<content_t, content_t>::const_iterator it =
+				nodeidmap.find(c);
 		if (it == nodeidmap.end()) {
 			id = numids;
 			numids++;

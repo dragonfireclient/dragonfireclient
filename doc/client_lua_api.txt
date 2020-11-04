@@ -1184,9 +1184,9 @@ Methods:
 * `get_name()`
     * returns player name
 * `get_wield_index()`
-    * returns the index of the wielded item
+    * returns the index of the wielded item (starts at 1)
 * `set_wield_index()`
-    * sets the index
+    * sets the index (starts at 1)
 * `get_wielded_item()`
     * returns the itemstack the player is holding
 * `is_attached()`
@@ -1296,6 +1296,8 @@ Methods:
     * change a value of a previously added HUD element
     * element `stat` values: `position`, `name`, `scale`, `text`, `number`, `item`, `dir`
     * Returns `true` on success, otherwise returns `nil`
+* `get_object()`
+    * Returns the ClientObjectRef for the player
 
 ### Settings
 An interface to read config files in the format of `minetest.conf`.
@@ -1336,6 +1338,7 @@ This is basically a reference to a C++ `GenericCAO`.
 * `get_acceleration()`: returns the acceleration, a vector
 * `get_rotation()`: returns the rotation, a vector (radians)
 * `is_player()`: returns true if the object is a player
+* `is_local_player()`: returns true if the object is the local player
 * `get_attach()`: returns parent or nil if it isn't attached.
 * `get_nametag()`: returns the nametag (string)
 * `get_item_textures()`: returns the textures
@@ -1717,6 +1720,7 @@ A reference to a C++ InventoryAction. You can move, drop and craft items in all 
 * `InventoryAction(type)`:
     * creates a new InventoryAction
     * type is on of "move", "drop", or "craft", else returns nil
+    * indexing starts at 1
 * `apply()`:
     * applies the InventoryAction (InventoryActions can be applied multible times)
 * `from(inventorylocation, listname, stack)`
@@ -1736,13 +1740,13 @@ A reference to a C++ InventoryAction. You can move, drop and craft items in all 
     
 #### example
     `local move_act = InventoryAction("move")
-    move_act:from("current_player", "main", 0)
-    move_act:to("current_player", "craft", 0)
+    move_act:from("current_player", "main", 1)
+    move_act:to("current_player", "craft", 1)
     move_act:set_count(1)
     local craft_act = InventoryAction("craft")
     craft_act:craft("current_player")
     local drop_act = InventoryAction("drop")
-    drop_act:from("current_player", "craft", 0)
+    drop_act:from("current_player", "craft_result",10)
     move_act:apply()
     craft_act:apply()
     drop_act:apply()
