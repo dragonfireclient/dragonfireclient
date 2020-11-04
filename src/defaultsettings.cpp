@@ -65,11 +65,15 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_register_confirmation", "true");
 
 	// Cheat Menu
-	settings->setDefault("cheat_menu_font", "FM_Mono");
-	settings->setDefault("m_bg_color_alpha", "173");
-	settings->setDefault("m_active_bg_color_alpha", "210");
-	settings->setDefault("m_font_color_alpha", "195");
-	settings->setDefault("m_selected_font_color_alpha", "235");
+	settings->setDefault("cheat_menu_font", "FM_Standard");
+	settings->setDefault("cheat_menu_bg_color", "(255, 145, 88)");
+	settings->setDefault("cheat_menu_bg_color_alpha", "192");
+	settings->setDefault("cheat_menu_active_bg_color", "(255, 87, 53)");
+	settings->setDefault("cheat_menu_active_bg_color_alpha", "192");
+	settings->setDefault("cheat_menu_font_color", "(0, 0, 0)");
+	settings->setDefault("cheat_menu_font_color_alpha", "255");
+	settings->setDefault("cheat_menu_selected_font_color", "(255, 252, 88)");
+	settings->setDefault("cheat_menu_selected_font_color_alpha", "255");
 	
 	// Cheats
 	settings->setDefault("xray", "false");

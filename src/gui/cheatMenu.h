@@ -51,9 +51,8 @@ public:
 	
 	void drawHUD(video::IVideoDriver *driver, double dtime);
 
-	void drawEntry(video::IVideoDriver *driver, std::string name,
-		std::size_t column_align_index, std::size_t cheat_entry_index,
-		bool is_selected, bool is_enabled,
+	void drawEntry(video::IVideoDriver *driver, std::string name, int number,
+		bool selected, bool active,
 		CheatMenuEntryType entry_type = CHEAT_MENU_ENTRY_TYPE_ENTRY);
 
 	void selectUp();
@@ -67,15 +66,15 @@ private:
 	int m_selected_cheat = 0;
 	int m_selected_category = 0;
 
-	int m_head_height = 20;
-	int m_entry_height = 20;
-	int m_entry_width = 150;
+	int m_head_height = 50;
+	int m_entry_height = 40;
+	int m_entry_width = 200;
 	int m_gap = 3;
 
-	video::SColor m_bg_color = video::SColor(173, 45, 45, 68);
-	video::SColor m_active_bg_color = video::SColor(210, 0, 0, 0);
-	video::SColor m_font_color = video::SColor(195, 255, 255, 255);
-	video::SColor m_selected_font_color = video::SColor(235, 255, 255, 255);
+	video::SColor m_bg_color = video::SColor(192, 255, 145, 88);
+	video::SColor m_active_bg_color = video::SColor(192, 255, 87, 53);
+	video::SColor m_font_color = video::SColor(255, 0, 0, 0);
+	video::SColor m_selected_font_color = video::SColor(255, 255, 252, 88);
 
 	FontMode fontStringToEnum(std::string str);
 

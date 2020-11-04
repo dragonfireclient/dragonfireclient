@@ -45,32 +45,29 @@ FontMode CheatMenu::fontStringToEnum(std::string str) {
 CheatMenu::CheatMenu(Client *client) : m_client(client)
 {
 	FontMode fontMode = fontStringToEnum(g_settings->get("cheat_menu_font"));
-	irr::core::vector3df bg_color;
-	irr::core::vector3df active_bg_color;
-	irr::core::vector3df font_color;
-	irr::core::vector3df selected_font_color;
+	v3f bg_color, active_bg_color, font_color, selected_font_color;
 
-	g_settings->getV3FNoEx("m_bg_color", bg_color);
-	g_settings->getV3FNoEx("m_active_bg_color", active_bg_color);
-	g_settings->getV3FNoEx("m_font_color", font_color);
-	g_settings->getV3FNoEx("m_selected_font_color", selected_font_color);
+	bg_color = g_settings->getV3F("cheat_menu_bg_color");
+	active_bg_color = g_settings->getV3F("cheat_menu_active_bg_color");
+	font_color = g_settings->getV3F("cheat_menu_font_color");
+	selected_font_color = g_settings->getV3F("cheat_menu_selected_font_color");
 
-	m_bg_color = video::SColor(g_settings->getU32("m_bg_color_alpha"), 
+	m_bg_color = video::SColor(g_settings->getU32("cheat_menu_bg_color_alpha"), 
 							   bg_color.X, bg_color.Y, bg_color.Z);
 	
-	m_active_bg_color = video::SColor(g_settings->getU32("m_active_bg_color_alpha"), 
+	m_active_bg_color = video::SColor(g_settings->getU32("cheat_menu_active_bg_color_alpha"), 
 							          active_bg_color.X, active_bg_color.Y, active_bg_color.Z);
 
-	m_font_color = video::SColor(g_settings->getU32("m_font_color_alpha"),
+	m_font_color = video::SColor(g_settings->getU32("cheat_menu_font_color_alpha"),
 								 font_color.X, font_color.Y, font_color.Z);
 
-	m_selected_font_color = video::SColor(g_settings->getU32("m_selected_font_color_alpha"),
+	m_selected_font_color = video::SColor(g_settings->getU32("cheat_menu_selected_font_color_alpha"),
 										  selected_font_color.X, selected_font_color.Y, selected_font_color.Z);
 	
 	m_font = g_fontengine->getFont(FONT_SIZE_UNSPECIFIED, fontMode);
 
 	if (!m_font) {
-		errorstream << "CheatMenu: Unable to load fallback font" << std::endl;
+		errorstream << "CheatMenu: Unable to load font" << std::endl;
 	} else {
 		core::dimension2d<u32> dim = m_font->getDimension(L"M");
 		m_fontsize = v2u32(dim.Width, dim.Height);
@@ -80,41 +77,29 @@ CheatMenu::CheatMenu(Client *client) : m_client(client)
 	m_fontsize.Y = MYMAX(m_fontsize.Y, 1);
 }
 
-void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name,
-	std::size_t column_align_index, std::size_t cheat_entry_index,
-	bool is_selected, bool is_enabled, CheatMenuEntryType entry_type)
+void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name, int number,
+		bool selected, bool active, CheatMenuEntryType entry_type)
 {
 	int x = m_gap, y = m_gap, width = m_entry_width, height = m_entry_height;
 	video::SColor *bgcolor = &m_bg_color, *fontcolor = &m_font_color;
-
-	// Align with correct column.
-	x += m_gap + column_align_index * (m_entry_width + m_gap);
-
-	if (is_selected)
-		fontcolor = &m_selected_font_color;
-	if (is_enabled)
+	if (entry_type == CHEAT_MENU_ENTRY_TYPE_HEAD) {
 		bgcolor = &m_active_bg_color;
-
-	switch (entry_type)
-	{
-	case CHEAT_MENU_ENTRY_TYPE_HEAD:
 		height = m_head_height;
-		break;
-	case CHEAT_MENU_ENTRY_TYPE_CATEGORY:
-		y += m_head_height + m_gap;
-		break;
-	case CHEAT_MENU_ENTRY_TYPE_ENTRY:
-		y += m_head_height + (cheat_entry_index + 1) * (m_entry_height + m_gap);
-		break;
-	default:
-		// TODO log an error or something.
-		break;
+	} else {
+		bool is_category = entry_type == CHEAT_MENU_ENTRY_TYPE_CATEGORY;
+		y += m_gap + m_head_height +
+		     (number + (is_category ? 0 : m_selected_category)) *
+				     (m_entry_height + m_gap);
+		x += (is_category ? 0 : m_gap + m_entry_width);
+		if (active)
+			bgcolor = &m_active_bg_color;
+		if (selected)
+			fontcolor = &m_selected_font_color;
 	}
-
 	driver->draw2DRectangle(*bgcolor, core::rect<s32>(x, y, x + width, y + height));
-	if (is_selected)
+	if (selected)
 		driver->draw2DRectangleOutline(
-				core::rect<s32>(x - 2, y - 2, x + width + 1, y + height + 1),
+				core::rect<s32>(x - 1, y - 1, x + width, y + height),
 				*fontcolor);
 	int fx = x + 5, fy = y + (height - m_fontsize.Y) / 2;
 	core::rect<s32> fontbounds(
@@ -124,26 +109,24 @@ void CheatMenu::drawEntry(video::IVideoDriver *driver, std::string name,
 
 void CheatMenu::draw(video::IVideoDriver *driver, bool show_debug)
 {
-	ClientScripting *script{ getScript() };
-	if (!script || !script->m_cheats_loaded)
-        return;
+	CHEAT_MENU_GET_SCRIPTPTR
 
-	// Draw menu header if debug info is not being drawn.
 	if (!show_debug)
-		drawEntry(driver, "Dragonfireclient", 0, 0, false, false,
-			CHEAT_MENU_ENTRY_TYPE_HEAD);
-
+		drawEntry(driver, "Dragonfireclient", 0, false, false,
+				CHEAT_MENU_ENTRY_TYPE_HEAD);
 	int category_count = 0;
-	for (const auto &menu_item : script->m_cheat_categories) {
+	for (auto category = script->m_cheat_categories.begin();
+			category != script->m_cheat_categories.end(); category++) {
 		bool is_selected = category_count == m_selected_category;
-		drawEntry(driver, menu_item->m_name, category_count, 0, is_selected,
-			false, CHEAT_MENU_ENTRY_TYPE_CATEGORY);
+		drawEntry(driver, (*category)->m_name, category_count, is_selected, false,
+				CHEAT_MENU_ENTRY_TYPE_CATEGORY);
 		if (is_selected && m_cheat_layer) {
 			int cheat_count = 0;
-			for (const auto &sub_menu_item : menu_item->m_cheats) {
-				drawEntry(driver, sub_menu_item->m_name, category_count,
-					cheat_count, cheat_count == m_selected_cheat,
-					sub_menu_item->is_enabled());
+			for (auto cheat = (*category)->m_cheats.begin();
+					cheat != (*category)->m_cheats.end(); cheat++) {
+				drawEntry(driver, (*cheat)->m_name, cheat_count,
+						cheat_count == m_selected_cheat,
+						(*cheat)->is_enabled());
 				cheat_count++;
 			}
 		}
@@ -217,57 +200,47 @@ void CheatMenu::drawHUD(video::IVideoDriver *driver, double dtime)
 	}
 }
 
-void CheatMenu::selectLeft()
+void CheatMenu::selectUp()
 {
 	CHEAT_MENU_GET_SCRIPTPTR
 
-	int max = script->m_cheat_categories.size() - 1;
-	int *selected = &m_selected_category;
+	int max = (m_cheat_layer ? script->m_cheat_categories[m_selected_category]
+								  ->m_cheats.size()
+				 : script->m_cheat_categories.size()) -
+		  1;
+	int *selected = m_cheat_layer ? &m_selected_cheat : &m_selected_category;
 	--*selected;
 	if (*selected < 0)
 		*selected = max;
-}
-
-void CheatMenu::selectRight()
-{
-	CHEAT_MENU_GET_SCRIPTPTR
-
-	int max = script->m_cheat_categories.size() - 1;
-	int *selected = &m_selected_category;
-	++*selected;
-	if (*selected > max)
-		*selected = 0;
 }
 
 void CheatMenu::selectDown()
 {
 	CHEAT_MENU_GET_SCRIPTPTR
 
-	m_cheat_layer = true;
-
-	int max = script->m_cheat_categories[m_selected_category]->m_cheats.size();
-	int *selected = &m_selected_cheat;
+	int max = (m_cheat_layer ? script->m_cheat_categories[m_selected_category]
+								  ->m_cheats.size()
+				 : script->m_cheat_categories.size()) -
+		  1;
+	int *selected = m_cheat_layer ? &m_selected_cheat : &m_selected_category;
 	++*selected;
-	if (*selected > max) {
-		*selected = 1;
-	}
+	if (*selected > max)
+		*selected = 0;
 }
 
-void CheatMenu::selectUp()
+void CheatMenu::selectRight()
 {
-	if (!m_cheat_layer) {
+	if (m_cheat_layer)
 		return;
-	}
+	m_cheat_layer = true;
+	m_selected_cheat = 0;
+}
 
-	CHEAT_MENU_GET_SCRIPTPTR
-
-	int *selected = &m_selected_cheat;
-	--*selected;
-
-	if (*selected < 0) {
-		m_cheat_layer = false;
-		*selected = 1;
-	}
+void CheatMenu::selectLeft()
+{
+	if (!m_cheat_layer)
+		return;
+	m_cheat_layer = false;
 }
 
 void CheatMenu::selectConfirm()
