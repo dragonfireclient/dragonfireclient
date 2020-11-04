@@ -22,8 +22,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "irrlichttypes_extrabloated.h"
 #include "activeobject.h"
 #include <ISceneNode.h>
+#include <IMeshSceneNode.h>
 #include <unordered_map>
 #include <unordered_set>
+
+
 
 class ClientEnvironment;
 class ITextureSource;
