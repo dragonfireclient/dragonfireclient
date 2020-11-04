@@ -63,6 +63,13 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("max_out_chat_queue_size", "20");
 	settings->setDefault("pause_on_lost_focus", "false");
 	settings->setDefault("enable_register_confirmation", "true");
+
+	// Cheat Menu
+	settings->setDefault("cheat_menu_font", "FM_Mono");
+	settings->setDefault("m_bg_color_alpha", "173");
+	settings->setDefault("m_active_bg_color_alpha", "210");
+	settings->setDefault("m_font_color_alpha", "195");
+	settings->setDefault("m_selected_font_color_alpha", "235");
 	
 	// Cheats
 	settings->setDefault("xray", "false");
