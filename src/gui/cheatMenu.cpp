@@ -23,8 +23,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "cheatMenu.h"
 #include <cstddef>
 
-FontMode CheatMenu::fontStringToEnum(std::string str) {
-	if (str == "FM_Standard") 
+FontMode CheatMenu::fontStringToEnum(std::string str)
+{
+	if (str == "FM_Standard")
 		return FM_Standard;
 	else if (str == "FM_Mono")
 		return FM_Mono;
@@ -52,18 +53,21 @@ CheatMenu::CheatMenu(Client *client) : m_client(client)
 	font_color = g_settings->getV3F("cheat_menu_font_color");
 	selected_font_color = g_settings->getV3F("cheat_menu_selected_font_color");
 
-	m_bg_color = video::SColor(g_settings->getU32("cheat_menu_bg_color_alpha"), 
-							   bg_color.X, bg_color.Y, bg_color.Z);
-	
-	m_active_bg_color = video::SColor(g_settings->getU32("cheat_menu_active_bg_color_alpha"), 
-							          active_bg_color.X, active_bg_color.Y, active_bg_color.Z);
+	m_bg_color = video::SColor(g_settings->getU32("cheat_menu_bg_color_alpha"),
+			bg_color.X, bg_color.Y, bg_color.Z);
+
+	m_active_bg_color = video::SColor(
+			g_settings->getU32("cheat_menu_active_bg_color_alpha"),
+			active_bg_color.X, active_bg_color.Y, active_bg_color.Z);
 
 	m_font_color = video::SColor(g_settings->getU32("cheat_menu_font_color_alpha"),
-								 font_color.X, font_color.Y, font_color.Z);
+			font_color.X, font_color.Y, font_color.Z);
 
-	m_selected_font_color = video::SColor(g_settings->getU32("cheat_menu_selected_font_color_alpha"),
-										  selected_font_color.X, selected_font_color.Y, selected_font_color.Z);
-	
+	m_selected_font_color = video::SColor(
+			g_settings->getU32("cheat_menu_selected_font_color_alpha"),
+			selected_font_color.X, selected_font_color.Y,
+			selected_font_color.Z);
+
 	m_font = g_fontengine->getFont(FONT_SIZE_UNSPECIFIED, fontMode);
 
 	if (!m_font) {
@@ -137,64 +141,73 @@ void CheatMenu::draw(video::IVideoDriver *driver, bool show_debug)
 void CheatMenu::drawHUD(video::IVideoDriver *driver, double dtime)
 {
 	CHEAT_MENU_GET_SCRIPTPTR
-	
+
 	m_rainbow_offset += dtime;
 
 	m_rainbow_offset = fmod(m_rainbow_offset, 6.0f);
-	
+
 	std::vector<std::string> enabled_cheats;
-	
+
 	int cheat_count = 0;
-	
-	for (auto category = script->m_cheat_categories.begin(); category != script->m_cheat_categories.end(); category++) {
-		for (auto cheat = (*category)->m_cheats.begin(); cheat != (*category)->m_cheats.end(); cheat++) {
+
+	for (auto category = script->m_cheat_categories.begin();
+			category != script->m_cheat_categories.end(); category++) {
+		for (auto cheat = (*category)->m_cheats.begin();
+				cheat != (*category)->m_cheats.end(); cheat++) {
 			if ((*cheat)->is_enabled()) {
 				enabled_cheats.push_back((*cheat)->m_name);
 				cheat_count++;
 			}
 		}
 	}
-	
+
 	if (enabled_cheats.empty())
 		return;
-	
+
 	std::vector<video::SColor> colors;
-	
+
 	for (int i = 0; i < cheat_count; i++) {
 		video::SColor color;
 		f32 h = (f32)i * 2.0f / (f32)cheat_count - m_rainbow_offset;
 		if (h < 0)
 			h = 6.0f + h;
 		f32 x = (1 - fabs(fmod(h, 2.0f) - 1.0f)) * 255.0f;
-		switch((int)h) {
+		switch ((int)h) {
 		case 0:
-			color = video::SColor(255, 255, x, 0); break;
+			color = video::SColor(255, 255, x, 0);
+			break;
 		case 1:
-			color = video::SColor(255, x, 255, 0); break;
+			color = video::SColor(255, x, 255, 0);
+			break;
 		case 2:
-			color = video::SColor(255, 0, 255, x); break;
+			color = video::SColor(255, 0, 255, x);
+			break;
 		case 3:
-			color = video::SColor(255, 0, x, 255); break;
+			color = video::SColor(255, 0, x, 255);
+			break;
 		case 4:
-			color = video::SColor(255, x, 0, 255); break;
+			color = video::SColor(255, x, 0, 255);
+			break;
 		case 5:
-			color = video::SColor(255, 255, 0, x); break;
+			color = video::SColor(255, 255, 0, x);
+			break;
 		}
 		colors.push_back(color);
 	}
-	
+
 	core::dimension2d<u32> screensize = driver->getScreenSize();
-	
+
 	u32 y = 5;
-	
+
 	int i = 0;
 	for (std::string cheat : enabled_cheats) {
-		core::dimension2d<u32> dim = m_font->getDimension(utf8_to_wide(cheat).c_str());
+		core::dimension2d<u32> dim =
+				m_font->getDimension(utf8_to_wide(cheat).c_str());
 		u32 x = screensize.Width - 5 - dim.Width;
-		
+
 		core::rect<s32> fontbounds(x, y, x + dim.Width, y + dim.Height);
 		m_font->draw(cheat.c_str(), fontbounds, colors[i], false, false);
-		
+
 		y += dim.Height;
 		i++;
 	}

@@ -28,7 +28,7 @@ function perform_lint() {
 					printf ":\n%s\n" "$d"
 				fi
 				
-				${CLANG_FORMAT} "-i $f"
+				${CLANG_FORMAT} -i "$f"
 
 				fail=1
 			fi

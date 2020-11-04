@@ -60,7 +60,7 @@ private:
 
 	// is_player(self)
 	static int l_is_player(lua_State *L);
-	
+
 	// is_local_player(self)
 	static int l_is_local_player(lua_State *L);
 
