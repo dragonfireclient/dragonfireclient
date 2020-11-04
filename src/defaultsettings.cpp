@@ -66,14 +66,14 @@ void set_default_settings(Settings *settings)
 
 	// Cheat Menu
 	settings->setDefault("cheat_menu_font", "FM_Standard");
-	settings->setDefault("cheat_menu_bg_color", "(255, 145, 88)");
-	settings->setDefault("cheat_menu_bg_color_alpha", "192");
-	settings->setDefault("cheat_menu_active_bg_color", "(255, 87, 53)");
-	settings->setDefault("cheat_menu_active_bg_color_alpha", "192");
-	settings->setDefault("cheat_menu_font_color", "(0, 0, 0)");
-	settings->setDefault("cheat_menu_font_color_alpha", "255");
-	settings->setDefault("cheat_menu_selected_font_color", "(255, 252, 88)");
-	settings->setDefault("cheat_menu_selected_font_color_alpha", "255");
+	settings->setDefault("cheat_menu_bg_color", "(45, 45, 68)");
+	settings->setDefault("cheat_menu_bg_color_alpha", "173");
+	settings->setDefault("cheat_menu_active_bg_color", "(0, 0, 0)");
+	settings->setDefault("cheat_menu_active_bg_color_alpha", "210");
+	settings->setDefault("cheat_menu_font_color", "(255, 255, 255)");
+	settings->setDefault("cheat_menu_font_color_alpha", "195");
+	settings->setDefault("cheat_menu_selected_font_color", "(255, 255, 255)");
+	settings->setDefault("cheat_menu_selected_font_color_alpha", "235");
 	
 	// Cheats
 	settings->setDefault("xray", "false");
