@@ -23,10 +23,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "activeobject.h"
 #include <ISceneNode.h>
 #include <IMeshSceneNode.h>
+#include <IAnimatedMeshSceneNode.h>
+#include <IDummyTransformationSceneNode.h>
+#include <IBillboardSceneNode.h>
 #include <unordered_map>
 #include <unordered_set>
-
-
 
 class ClientEnvironment;
 class ITextureSource;
