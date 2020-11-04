@@ -39,8 +39,8 @@ const int ID_message = 266;
 
 GUIConfirmRegistration::GUIConfirmRegistration(gui::IGUIEnvironment *env,
 		gui::IGUIElement *parent, s32 id, IMenuManager *menumgr, Client *client,
-		const std::string &playername, const std::string &password, bool *aborted,
-		ISimpleTextureSource *tsrc) :
+		const std::string &playername, const std::string &password,
+		bool *aborted, ISimpleTextureSource *tsrc) :
 		GUIModalMenu(env, parent, id, menumgr),
 		m_client(client), m_playername(playername), m_password(password),
 		m_aborted(aborted), m_tsrc(tsrc)
@@ -74,9 +74,12 @@ void GUIConfirmRegistration::regenerateGui(v2u32 screensize)
 		Calculate new sizes and positions
 	*/
 	const float s = m_gui_scale;
-	DesiredRect = core::rect<s32>(screensize.X / 2 - 600 * s / 2,
-			screensize.Y / 2 - 360 * s / 2, screensize.X / 2 + 600 * s / 2,
-			screensize.Y / 2 + 360 * s / 2);
+	DesiredRect = core::rect<s32>(
+		screensize.X / 2 - 600 * s / 2,
+		screensize.Y / 2 - 360 * s / 2,
+		screensize.X / 2 + 600 * s / 2,
+		screensize.Y / 2 + 360 * s / 2
+	);
 	recalculateAbsolutePosition(false);
 
 	v2s32 size = DesiredRect.getSize();
@@ -92,14 +95,11 @@ void GUIConfirmRegistration::regenerateGui(v2u32 screensize)
 		core::rect<s32> rect2(0, 0, 540 * s, 180 * s);
 		rect2 += topleft_client + v2s32(30 * s, ypos);
 		static const std::string info_text_template = strgettext(
-				"You are about to join this server with the name \"%s\" "
-				"for the "
+				"You are about to join this server with the name \"%s\" for the "
 				"first time.\n"
-				"If you proceed, a new account using your credentials "
-				"will be "
+				"If you proceed, a new account using your credentials will be "
 				"created on this server.\n"
-				"Please retype your password and click 'Register and "
-				"Join' to "
+				"Please retype your password and click 'Register and Join' to "
 				"confirm account creation, or click 'Cancel' to abort.");
 		char info_text_buf[1024];
 		porting::mt_snprintf(info_text_buf, sizeof(info_text_buf),
@@ -223,7 +223,7 @@ bool GUIConfirmRegistration::OnEvent(const SEvent &event)
 	if (event.GUIEvent.EventType == gui::EGET_ELEMENT_FOCUS_LOST && isVisible()) {
 		if (!canTakeFocus(event.GUIEvent.Element)) {
 			infostream << "GUIConfirmRegistration: Not allowing focus change."
-				   << std::endl;
+				<< std::endl;
 			// Returning true disables focus change
 			return true;
 		}

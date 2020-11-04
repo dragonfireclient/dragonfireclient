@@ -77,8 +77,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 // in memory; conversion just won't work in this direction.
 #define SER_FMT_VER_LOWEST_WRITE 24
 
-inline bool ser_ver_supported(s32 v)
-{
+inline bool ser_ver_supported(s32 v) {
 	return v >= SER_FMT_VER_LOWEST_READ && v <= SER_FMT_VER_HIGHEST_READ;
 }
 
@@ -92,5 +91,5 @@ void decompressZlib(std::istream &is, std::ostream &os, size_t limit = 0);
 
 // These choose between zlib and a self-made one according to version
 void compress(const SharedBuffer<u8> &data, std::ostream &os, u8 version);
-// void compress(const std::string &data, std::ostream &os, u8 version);
+//void compress(const std::string &data, std::ostream &os, u8 version);
 void decompress(std::istream &is, std::ostream &os, u8 version);

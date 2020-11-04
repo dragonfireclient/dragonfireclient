@@ -27,8 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "network/networkpacket.h"
 #include "network/socket.h"
 
-class TestConnection : public TestBase
-{
+class TestConnection : public TestBase {
 public:
 	TestConnection()
 	{
@@ -60,20 +59,16 @@ struct Handler : public con::PeerHandler
 
 	void peerAdded(con::Peer *peer)
 	{
-		infostream << "Handler(" << name
-			   << ")::peerAdded(): "
-			      "id="
-			   << peer->id << std::endl;
+		infostream << "Handler(" << name << ")::peerAdded(): "
+			"id=" << peer->id << std::endl;
 		last_id = peer->id;
 		count++;
 	}
 
 	void deletingPeer(con::Peer *peer, bool timeout)
 	{
-		infostream << "Handler(" << name
-			   << ")::deletingPeer(): "
-			      "id="
-			   << peer->id << ", timeout=" << timeout << std::endl;
+		infostream << "Handler(" << name << ")::deletingPeer(): "
+			"id=" << peer->id << ", timeout=" << timeout << std::endl;
 		last_id = peer->id;
 		count--;
 	}
@@ -91,10 +86,11 @@ void TestConnection::testHelpers()
 	u8 channel = 2;
 	SharedBuffer<u8> data1(1);
 	data1[0] = 100;
-	Address a(127, 0, 0, 1, 10);
+	Address a(127,0,0,1, 10);
 	const u16 seqnum = 34352;
 
-	con::BufferedPacket p1 = con::makePacket(a, data1, proto_id, peer_id, channel);
+	con::BufferedPacket p1 = con::makePacket(a, data1,
+			proto_id, peer_id, channel);
 	/*
 		We should now have a packet with this data:
 		Header:
@@ -109,7 +105,7 @@ void TestConnection::testHelpers()
 	UASSERT(readU8(&p1.data[6]) == channel);
 	UASSERT(readU8(&p1.data[7]) == data1[0]);
 
-	// infostream<<"initial data1[0]="<<((u32)data1[0]&0xff)<<std::endl;
+	//infostream<<"initial data1[0]="<<((u32)data1[0]&0xff)<<std::endl;
 
 	SharedBuffer<u8> p2 = con::makeReliablePacket(data1, seqnum);
 
@@ -124,6 +120,7 @@ void TestConnection::testHelpers()
 	UASSERT(readU16(&p2[1]) == seqnum);
 	UASSERT(readU8(&p2[3]) == data1[0]);
 }
+
 
 void TestConnection::testConnectSendReceive()
 {
@@ -184,7 +181,7 @@ void TestConnection::testConnectSendReceive()
 		infostream << "** running client.Receive()" << std::endl;
 		client.Receive(&pkt);
 		infostream << "** Client received: peer_id=" << pkt.getPeerId()
-			   << ", size=" << pkt.getSize() << std::endl;
+			<< ", size=" << pkt.getSize() << std::endl;
 	} catch (con::NoIncomingDataException &e) {
 	}
 
@@ -201,7 +198,8 @@ void TestConnection::testConnectSendReceive()
 		infostream << "** running server.Receive()" << std::endl;
 		server.Receive(&pkt);
 		infostream << "** Server received: peer_id=" << pkt.getPeerId()
-			   << ", size=" << pkt.getSize() << std::endl;
+				<< ", size=" << pkt.getSize()
+				<< std::endl;
 	} catch (con::NoIncomingDataException &e) {
 		// No actual data received, but the client has
 		// probably been connected
@@ -214,7 +212,7 @@ void TestConnection::testConnectSendReceive()
 	UASSERT(hand_server.count == 1);
 	UASSERT(hand_server.last_id == 2);
 
-	// sleep_ms(50);
+	//sleep_ms(50);
 
 	while (client.Connected() == false) {
 		try {
@@ -222,7 +220,7 @@ void TestConnection::testConnectSendReceive()
 			infostream << "** running client.Receive()" << std::endl;
 			client.Receive(&pkt);
 			infostream << "** Client received: peer_id=" << pkt.getPeerId()
-				   << ", size=" << pkt.getSize() << std::endl;
+				<< ", size=" << pkt.getSize() << std::endl;
 		} catch (con::NoIncomingDataException &e) {
 		}
 		sleep_ms(50);
@@ -235,7 +233,8 @@ void TestConnection::testConnectSendReceive()
 		infostream << "** running server.Receive()" << std::endl;
 		server.Receive(&pkt);
 		infostream << "** Server received: peer_id=" << pkt.getPeerId()
-			   << ", size=" << pkt.getSize() << std::endl;
+				<< ", size=" << pkt.getSize()
+				<< std::endl;
 	} catch (con::NoIncomingDataException &e) {
 	}
 
@@ -244,11 +243,11 @@ void TestConnection::testConnectSendReceive()
 	*/
 	{
 		NetworkPacket pkt;
-		pkt.putRawPacket((u8 *)"Hello World !", 14, 0);
+		pkt.putRawPacket((u8*) "Hello World !", 14, 0);
 
 		SharedBuffer<u8> sentdata = pkt.oldForgePacket();
 
-		infostream << "** running client.Send()" << std::endl;
+		infostream<<"** running client.Send()"<<std::endl;
 		client.Send(PEER_ID_SERVER, 0, &pkt, true);
 
 		sleep_ms(50);
@@ -257,8 +256,9 @@ void TestConnection::testConnectSendReceive()
 		infostream << "** running server.Receive()" << std::endl;
 		server.Receive(&recvpacket);
 		infostream << "** Server received: peer_id=" << pkt.getPeerId()
-			   << ", size=" << pkt.getSize()
-			   << ", data=" << (const char *)pkt.getU8Ptr(0) << std::endl;
+				<< ", size=" << pkt.getSize()
+				<< ", data=" << (const char*)pkt.getU8Ptr(0)
+				<< std::endl;
 
 		SharedBuffer<u8> recvdata = pkt.oldForgePacket();
 
@@ -272,8 +272,8 @@ void TestConnection::testConnectSendReceive()
 	{
 		const int datasize = 30000;
 		NetworkPacket pkt(0, datasize);
-		for (u16 i = 0; i < datasize; i++) {
-			pkt << (u8)i / 4;
+		for (u16 i=0; i<datasize; i++) {
+			pkt << (u8) i/4;
 		}
 
 		infostream << "Sending data (size=" << datasize << "):";
@@ -282,8 +282,8 @@ void TestConnection::testConnectSendReceive()
 				infostream << " ";
 			char buf[10];
 			porting::mt_snprintf(buf, sizeof(buf), "%.2X",
-					((int)((const char *)pkt.getU8Ptr(0))[i]) & 0xff);
-			infostream << buf;
+				((int)((const char *)pkt.getU8Ptr(0))[i]) & 0xff);
+			infostream<<buf;
 		}
 		if (datasize > 20)
 			infostream << "...";
@@ -293,7 +293,7 @@ void TestConnection::testConnectSendReceive()
 
 		server.Send(peer_id_client, 0, &pkt, true);
 
-		// sleep_ms(3000);
+		//sleep_ms(3000);
 
 		SharedBuffer<u8> recvdata;
 		infostream << "** running client.Receive()" << std::endl;
@@ -317,15 +317,14 @@ void TestConnection::testConnectSendReceive()
 		}
 		UASSERT(received);
 		infostream << "** Client received: peer_id=" << peer_id
-			   << ", size=" << size << std::endl;
+			<< ", size=" << size << std::endl;
 
 		infostream << "Received data (size=" << size << "): ";
 		for (int i = 0; i < size && i < 20; i++) {
 			if (i % 2 == 0)
 				infostream << " ";
 			char buf[10];
-			porting::mt_snprintf(buf, sizeof(buf), "%.2X",
-					((int)(recvdata[i])) & 0xff);
+			porting::mt_snprintf(buf, sizeof(buf), "%.2X", ((int)(recvdata[i])) & 0xff);
 			infostream << buf;
 		}
 		if (size > 20)

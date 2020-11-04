@@ -138,7 +138,10 @@ public:
 	}
 
 	//! Gets the state that this style is intended for
-	State getState() const { return state_map; }
+	State getState() const
+	{
+		return state_map;
+	}
 
 	//! Set the given state on this style
 	void addState(State state)
@@ -150,8 +153,7 @@ public:
 
 	//! Using a list of styles mapped to state values, calculate the final
 	//  combined style for a state by propagating values in its component states
-	static StyleSpec getStyleFromStatePropagation(
-			const std::array<StyleSpec, NUM_STATES> &styles, State state)
+	static StyleSpec getStyleFromStatePropagation(const std::array<StyleSpec, NUM_STATES> &styles, State state)
 	{
 		StyleSpec temp = styles[StyleSpec::STATE_DEFAULT];
 		temp.state_map = state;
@@ -208,8 +210,7 @@ public:
 		return rect;
 	}
 
-	irr::core::vector2d<s32> getVector2i(
-			Property prop, irr::core::vector2d<s32> def) const
+	irr::core::vector2d<s32> getVector2i(Property prop, irr::core::vector2d<s32> def) const
 	{
 		const auto &val = properties[prop];
 		if (val.empty())
@@ -259,13 +260,10 @@ public:
 			int calc_size = 1;
 
 			if (size[0] == '*') {
-				std::string new_size = size.substr(
-						1); // Remove '*' (invalid for stof)
-				calc_size = stof(new_size) *
-					    g_fontengine->getFontSize(spec.mode);
+				std::string new_size = size.substr(1); // Remove '*' (invalid for stof)
+				calc_size = stof(new_size) * g_fontengine->getFontSize(spec.mode);
 			} else if (size[0] == '+' || size[0] == '-') {
-				calc_size = stoi(size) +
-					    g_fontengine->getFontSize(spec.mode);
+				calc_size = stoi(size) + g_fontengine->getFontSize(spec.mode);
 			} else {
 				calc_size = stoi(size);
 			}
@@ -347,7 +345,7 @@ private:
 			rect.LowerRightCorner = irr::core::vector2di(-x, -x);
 		} else if (v_rect.size() == 2) {
 			s32 x = stoi(v_rect[0]);
-			s32 y = stoi(v_rect[1]);
+			s32 y =	stoi(v_rect[1]);
 			rect.UpperLeftCorner = irr::core::vector2di(x, y);
 			rect.LowerRightCorner = irr::core::vector2di(-x, -y);
 			// `-x` is interpreted as `w - x`
@@ -358,7 +356,7 @@ private:
 					stoi(v_rect[2]), stoi(v_rect[3]));
 		} else {
 			warningstream << "Invalid rectangle string format: \"" << value
-				      << "\"" << std::endl;
+					<< "\"" << std::endl;
 			return false;
 		}
 
@@ -367,8 +365,7 @@ private:
 		return true;
 	}
 
-	bool parseVector2i(const std::string &value,
-			irr::core::vector2d<s32> *parsed_vec) const
+	bool parseVector2i(const std::string &value, irr::core::vector2d<s32> *parsed_vec) const
 	{
 		irr::core::vector2d<s32> vec;
 		std::vector<std::string> v_vector = split(value, ',');
@@ -379,12 +376,12 @@ private:
 			vec.Y = x;
 		} else if (v_vector.size() == 2) {
 			s32 x = stoi(v_vector[0]);
-			s32 y = stoi(v_vector[1]);
+			s32 y =	stoi(v_vector[1]);
 			vec.X = x;
 			vec.Y = y;
 		} else {
 			warningstream << "Invalid vector2d string format: \"" << value
-				      << "\"" << std::endl;
+					<< "\"" << std::endl;
 			return false;
 		}
 

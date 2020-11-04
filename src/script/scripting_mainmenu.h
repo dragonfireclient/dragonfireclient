@@ -27,10 +27,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 /* Scripting <-> Main Menu Interface                                         */
 /*****************************************************************************/
 
-class MainMenuScripting : virtual public ScriptApiBase, public ScriptApiMainMenu
+class MainMenuScripting
+		: virtual public ScriptApiBase,
+		  public ScriptApiMainMenu
 {
 public:
-	MainMenuScripting(GUIEngine *guiengine);
+	MainMenuScripting(GUIEngine* guiengine);
 
 	// Global step handler to pass back async events
 	void step();
@@ -38,7 +40,6 @@ public:
 	// Pass async events from engine to async threads
 	unsigned int queueAsync(const std::string &serialized_func,
 			const std::string &serialized_params);
-
 private:
 	void initializeModApi(lua_State *L, int top);
 	static void registerLuaClasses(lua_State *L, int top);

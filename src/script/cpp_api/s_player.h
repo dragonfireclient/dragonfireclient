@@ -51,33 +51,38 @@ public:
 			const PlayerHPChangeReason &reason);
 	void on_playerReceiveFields(ServerActiveObject *player,
 			const std::string &formname, const StringMap &fields);
-	void on_authplayer(
-			const std::string &name, const std::string &ip, bool is_success);
+	void on_authplayer(const std::string &name, const std::string &ip, bool is_success);
 
 	// Player inventory callbacks
 	// Return number of accepted items to be moved
 	int player_inventory_AllowMove(
-			const MoveAction &ma, int count, ServerActiveObject *player);
+		const MoveAction &ma, int count,
+		ServerActiveObject *player);
 	// Return number of accepted items to be put
-	int player_inventory_AllowPut(const MoveAction &ma, const ItemStack &stack,
-			ServerActiveObject *player);
+	int player_inventory_AllowPut(
+		const MoveAction &ma, const ItemStack &stack,
+		ServerActiveObject *player);
 	// Return number of accepted items to be taken
-	int player_inventory_AllowTake(const MoveAction &ma, const ItemStack &stack,
-			ServerActiveObject *player);
+	int player_inventory_AllowTake(
+		const MoveAction &ma, const ItemStack &stack,
+		ServerActiveObject *player);
 	// Report moved items
 	void player_inventory_OnMove(
-			const MoveAction &ma, int count, ServerActiveObject *player);
+		const MoveAction &ma, int count,
+		ServerActiveObject *player);
 	// Report put items
-	void player_inventory_OnPut(const MoveAction &ma, const ItemStack &stack,
-			ServerActiveObject *player);
+	void player_inventory_OnPut(
+		const MoveAction &ma, const ItemStack &stack,
+		ServerActiveObject *player);
 	// Report taken items
-	void player_inventory_OnTake(const MoveAction &ma, const ItemStack &stack,
-			ServerActiveObject *player);
-
+	void player_inventory_OnTake(
+		const MoveAction &ma, const ItemStack &stack,
+		ServerActiveObject *player);
 private:
-	void pushPutTakeArguments(const char *method, const InventoryLocation &loc,
-			const std::string &listname, int index, const ItemStack &stack,
-			ServerActiveObject *player);
-	void pushMoveArguments(
-			const MoveAction &ma, int count, ServerActiveObject *player);
+	void pushPutTakeArguments(
+		const char *method, const InventoryLocation &loc,
+		const std::string &listname, int index, const ItemStack &stack,
+		ServerActiveObject *player);
+	void pushMoveArguments(const MoveAction &ma,
+		int count, ServerActiveObject *player);
 };

@@ -33,18 +33,21 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 Queue with unique values with fast checking of value existence
 */
 
-template <typename Value> class UniqueQueue
+template<typename Value>
+class UniqueQueue
 {
 public:
+
 	/*
 	Does nothing if value is already queued.
 	Return value:
 	true: value added
 	false: value already exists
 	*/
-	bool push_back(const Value &value)
+	bool push_back(const Value& value)
 	{
-		if (m_set.insert(value).second) {
+		if (m_set.insert(value).second)
+		{
 			m_queue.push(value);
 			return true;
 		}
@@ -57,16 +60,23 @@ public:
 		m_queue.pop();
 	}
 
-	const Value &front() const { return m_queue.front(); }
+	const Value& front() const
+	{
+		return m_queue.front();
+	}
 
-	u32 size() const { return m_queue.size(); }
+	u32 size() const
+	{
+		return m_queue.size();
+	}
 
 private:
 	std::set<Value> m_set;
 	std::queue<Value> m_queue;
 };
 
-template <typename Key, typename Value> class MutexedMap
+template<typename Key, typename Value>
+class MutexedMap
 {
 public:
 	MutexedMap() = default;
@@ -80,7 +90,8 @@ public:
 	bool get(const Key &name, Value *result) const
 	{
 		MutexAutoLock lock(m_mutex);
-		typename std::map<Key, Value>::const_iterator n = m_values.find(name);
+		typename std::map<Key, Value>::const_iterator n =
+			m_values.find(name);
 		if (n == m_values.end())
 			return false;
 		if (result)
@@ -92,8 +103,9 @@ public:
 	{
 		MutexAutoLock lock(m_mutex);
 		std::vector<Value> result;
-		for (typename std::map<Key, Value>::const_iterator it = m_values.begin();
-				it != m_values.end(); ++it) {
+		for (typename std::map<Key, Value>::const_iterator
+				it = m_values.begin();
+				it != m_values.end(); ++it){
 			result.push_back(it->second);
 		}
 		return result;
@@ -106,12 +118,14 @@ private:
 	mutable std::mutex m_mutex;
 };
 
+
 // Thread-safe Double-ended queue
 
-template <typename T> class MutexedQueue
+template<typename T>
+class MutexedQueue
 {
 public:
-	template <typename Key, typename U, typename Caller, typename CallerData>
+	template<typename Key, typename U, typename Caller, typename CallerData>
 	friend class RequestQueue;
 
 	MutexedQueue() = default;
@@ -130,8 +144,8 @@ public:
 	}
 
 	/* this version of pop_front returns a empty element of T on timeout.
-	 * Make sure default constructor of T creates a recognizable "empty" element
-	 */
+	* Make sure default constructor of T creates a recognizable "empty" element
+	*/
 	T pop_frontNoEx(u32 wait_time_max_ms)
 	{
 		if (m_signal.wait(wait_time_max_ms)) {
@@ -169,7 +183,7 @@ public:
 		return t;
 	}
 
-	T pop_back(u32 wait_time_max_ms = 0)
+	T pop_back(u32 wait_time_max_ms=0)
 	{
 		if (m_signal.wait(wait_time_max_ms)) {
 			MutexAutoLock lock(m_mutex);
@@ -183,8 +197,8 @@ public:
 	}
 
 	/* this version of pop_back returns a empty element of T on timeout.
-	 * Make sure default constructor of T creates a recognizable "empty" element
-	 */
+	* Make sure default constructor of T creates a recognizable "empty" element
+	*/
 	T pop_backNoEx(u32 wait_time_max_ms)
 	{
 		if (m_signal.wait(wait_time_max_ms)) {
@@ -219,7 +233,8 @@ protected:
 	Semaphore m_signal;
 };
 
-template <typename K, typename V> class LRUCache
+template<typename K, typename V>
+class LRUCache
 {
 public:
 	LRUCache(size_t limit, void (*cache_miss)(void *data, const K &key, V *dest),
@@ -259,7 +274,8 @@ public:
 			entry.first = m_queue.begin();
 		} else {
 			// cache miss -- enter into cache
-			cache_entry_t &entry = m_map[key];
+			cache_entry_t &entry =
+				m_map[key];
 			ret = &entry.second;
 			m_cache_miss(m_cache_miss_data, key, &entry.second);
 
@@ -275,13 +291,11 @@ public:
 		}
 		return ret;
 	}
-
 private:
 	void (*m_cache_miss)(void *data, const K &key, V *dest);
 	void *m_cache_miss_data;
 	size_t m_limit;
-	typedef typename std::template pair<typename std::template list<K>::iterator, V>
-			cache_entry_t;
+	typedef typename std::template pair<typename std::template list<K>::iterator, V> cache_entry_t;
 	typedef std::template map<K, cache_entry_t> cache_type;
 	cache_type m_map;
 	// we can't use std::deque here, because its iterators get invalidated

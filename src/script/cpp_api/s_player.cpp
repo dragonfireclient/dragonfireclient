@@ -39,8 +39,7 @@ void ScriptApiPlayer::on_newplayer(ServerActiveObject *player)
 	runCallbacks(1, RUN_CALLBACKS_MODE_FIRST);
 }
 
-void ScriptApiPlayer::on_dieplayer(
-		ServerActiveObject *player, const PlayerHPChangeReason &reason)
+void ScriptApiPlayer::on_dieplayer(ServerActiveObject *player, const PlayerHPChangeReason &reason)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -57,8 +56,11 @@ void ScriptApiPlayer::on_dieplayer(
 }
 
 bool ScriptApiPlayer::on_punchplayer(ServerActiveObject *player,
-		ServerActiveObject *hitter, float time_from_last_punch,
-		const ToolCapabilities *toolcap, v3f dir, s16 damage)
+		ServerActiveObject *hitter,
+		float time_from_last_punch,
+		const ToolCapabilities *toolcap,
+		v3f dir,
+		s16 damage)
 {
 	SCRIPTAPI_PRECHECKHEADER
 	// Get core.registered_on_punchplayers
@@ -75,8 +77,8 @@ bool ScriptApiPlayer::on_punchplayer(ServerActiveObject *player,
 	return readParam<bool>(L, -1);
 }
 
-s32 ScriptApiPlayer::on_player_hpchange(ServerActiveObject *player, s32 hp_change,
-		const PlayerHPChangeReason &reason)
+s32 ScriptApiPlayer::on_player_hpchange(ServerActiveObject *player,
+	s32 hp_change, const PlayerHPChangeReason &reason)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -113,7 +115,9 @@ bool ScriptApiPlayer::on_respawnplayer(ServerActiveObject *player)
 }
 
 bool ScriptApiPlayer::on_prejoinplayer(
-		const std::string &name, const std::string &ip, std::string *reason)
+	const std::string &name,
+	const std::string &ip,
+	std::string *reason)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -159,7 +163,8 @@ void ScriptApiPlayer::on_joinplayer(ServerActiveObject *player, s64 last_login)
 	runCallbacks(2, RUN_CALLBACKS_MODE_FIRST);
 }
 
-void ScriptApiPlayer::on_leaveplayer(ServerActiveObject *player, bool timeout)
+void ScriptApiPlayer::on_leaveplayer(ServerActiveObject *player,
+		bool timeout)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -172,7 +177,8 @@ void ScriptApiPlayer::on_leaveplayer(ServerActiveObject *player, bool timeout)
 	runCallbacks(2, RUN_CALLBACKS_MODE_FIRST);
 }
 
-void ScriptApiPlayer::on_cheat(ServerActiveObject *player, const std::string &cheat_type)
+void ScriptApiPlayer::on_cheat(ServerActiveObject *player,
+		const std::string &cheat_type)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -188,7 +194,8 @@ void ScriptApiPlayer::on_cheat(ServerActiveObject *player, const std::string &ch
 }
 
 void ScriptApiPlayer::on_playerReceiveFields(ServerActiveObject *player,
-		const std::string &formname, const StringMap &fields)
+		const std::string &formname,
+		const StringMap &fields)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -213,8 +220,7 @@ void ScriptApiPlayer::on_playerReceiveFields(ServerActiveObject *player,
 	runCallbacks(3, RUN_CALLBACKS_MODE_OR_SC);
 }
 
-void ScriptApiPlayer::on_authplayer(
-		const std::string &name, const std::string &ip, bool is_success)
+void ScriptApiPlayer::on_authplayer(const std::string &name, const std::string &ip, bool is_success)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -230,12 +236,13 @@ void ScriptApiPlayer::on_authplayer(
 }
 
 void ScriptApiPlayer::pushMoveArguments(
-		const MoveAction &ma, int count, ServerActiveObject *player)
+		const MoveAction &ma, int count,
+		ServerActiveObject *player)
 {
 	lua_State *L = getStack();
 	objectrefGetOrCreate(L, player); // player
-	lua_pushstring(L, "move");	 // action
-	InvRef::create(L, ma.from_inv);	 // inventory
+	lua_pushstring(L, "move");       // action
+	InvRef::create(L, ma.from_inv);  // inventory
 	lua_newtable(L);
 	{
 		// Table containing the action information
@@ -254,14 +261,15 @@ void ScriptApiPlayer::pushMoveArguments(
 	}
 }
 
-void ScriptApiPlayer::pushPutTakeArguments(const char *method,
-		const InventoryLocation &loc, const std::string &listname, int index,
-		const ItemStack &stack, ServerActiveObject *player)
+void ScriptApiPlayer::pushPutTakeArguments(
+		const char *method, const InventoryLocation &loc,
+		const std::string &listname, int index, const ItemStack &stack,
+		ServerActiveObject *player)
 {
 	lua_State *L = getStack();
 	objectrefGetOrCreate(L, player); // player
-	lua_pushstring(L, method);	 // action
-	InvRef::create(L, loc);		 // inventory
+	lua_pushstring(L, method);       // action
+	InvRef::create(L, loc);          // inventory
 	lua_newtable(L);
 	{
 		// Table containing the action information
@@ -278,7 +286,8 @@ void ScriptApiPlayer::pushPutTakeArguments(const char *method,
 
 // Return number of accepted items to be moved
 int ScriptApiPlayer::player_inventory_AllowMove(
-		const MoveAction &ma, int count, ServerActiveObject *player)
+		const MoveAction &ma, int count,
+		ServerActiveObject *player)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -292,7 +301,8 @@ int ScriptApiPlayer::player_inventory_AllowMove(
 
 // Return number of accepted items to be put
 int ScriptApiPlayer::player_inventory_AllowPut(
-		const MoveAction &ma, const ItemStack &stack, ServerActiveObject *player)
+		const MoveAction &ma, const ItemStack &stack,
+		ServerActiveObject *player)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -306,7 +316,8 @@ int ScriptApiPlayer::player_inventory_AllowPut(
 
 // Return number of accepted items to be taken
 int ScriptApiPlayer::player_inventory_AllowTake(
-		const MoveAction &ma, const ItemStack &stack, ServerActiveObject *player)
+		const MoveAction &ma, const ItemStack &stack,
+		ServerActiveObject *player)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -320,7 +331,8 @@ int ScriptApiPlayer::player_inventory_AllowTake(
 
 // Report moved items
 void ScriptApiPlayer::player_inventory_OnMove(
-		const MoveAction &ma, int count, ServerActiveObject *player)
+		const MoveAction &ma, int count,
+		ServerActiveObject *player)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -332,7 +344,8 @@ void ScriptApiPlayer::player_inventory_OnMove(
 
 // Report put items
 void ScriptApiPlayer::player_inventory_OnPut(
-		const MoveAction &ma, const ItemStack &stack, ServerActiveObject *player)
+		const MoveAction &ma, const ItemStack &stack,
+		ServerActiveObject *player)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -344,7 +357,8 @@ void ScriptApiPlayer::player_inventory_OnPut(
 
 // Report taken items
 void ScriptApiPlayer::player_inventory_OnTake(
-		const MoveAction &ma, const ItemStack &stack, ServerActiveObject *player)
+		const MoveAction &ma, const ItemStack &stack,
+		ServerActiveObject *player)
 {
 	SCRIPTAPI_PRECHECKHEADER
 

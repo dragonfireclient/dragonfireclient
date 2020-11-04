@@ -40,14 +40,17 @@ public:
 	NodeMetadata(IItemDefManager *item_def_mgr);
 	~NodeMetadata();
 
-	void serialize(std::ostream &os, u8 version, bool disk = true) const;
+	void serialize(std::ostream &os, u8 version, bool disk=true) const;
 	void deSerialize(std::istream &is, u8 version);
 
 	void clear();
 	bool empty() const;
 
 	// The inventory
-	Inventory *getInventory() { return m_inventory; }
+	Inventory *getInventory()
+	{
+		return m_inventory;
+	}
 
 	inline bool isPrivate(const std::string &name) const
 	{
@@ -62,6 +65,7 @@ private:
 	std::unordered_set<std::string> m_privatevars;
 };
 
+
 /*
 	List of metadata of all the nodes of a block
 */
@@ -72,16 +76,15 @@ class NodeMetadataList
 {
 public:
 	NodeMetadataList(bool is_metadata_owner = true) :
-			m_is_metadata_owner(is_metadata_owner)
-	{
-	}
+		m_is_metadata_owner(is_metadata_owner)
+	{}
 
 	~NodeMetadataList();
 
 	void serialize(std::ostream &os, u8 blockver, bool disk = true,
-			bool absolute_pos = false) const;
+		bool absolute_pos = false) const;
 	void deSerialize(std::istream &is, IItemDefManager *item_def_mgr,
-			bool absolute_pos = false);
+		bool absolute_pos = false);
 
 	// Add all keys in this list to the vector keys
 	std::vector<v3s16> getAllKeys();
@@ -96,9 +99,15 @@ public:
 
 	size_t size() const { return m_data.size(); }
 
-	NodeMetadataMap::const_iterator begin() { return m_data.begin(); }
+	NodeMetadataMap::const_iterator begin()
+	{
+		return m_data.begin();
+	}
 
-	NodeMetadataMap::const_iterator end() { return m_data.end(); }
+	NodeMetadataMap::const_iterator end()
+	{
+		return m_data.end();
+	}
 
 private:
 	int countNonEmpty() const;

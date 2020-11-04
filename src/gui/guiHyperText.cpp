@@ -71,8 +71,8 @@ void ParsedText::Element::setStyle(StyleList &style)
 	if (style["fontstyle"] == "mono")
 		font_mode = FM_Mono;
 
-	FontSpec spec(font_size, font_mode, is_yes(style["bold"]),
-			is_yes(style["italic"]));
+	FontSpec spec(font_size, font_mode,
+		is_yes(style["bold"]), is_yes(style["italic"]));
 
 	// TODO: find a way to check font validity
 	// Build a new fontengine ?
@@ -247,9 +247,8 @@ void ParsedText::endParagraph(EndReason reason)
 
 	EndReason previous = m_end_paragraph_reason;
 	m_end_paragraph_reason = reason;
-	if (m_empty_paragraph &&
-			(reason == ER_TAG ||
-					(reason == ER_NEWLINE && previous == ER_TAG))) {
+	if (m_empty_paragraph && (reason == ER_TAG ||
+			(reason == ER_NEWLINE && previous == ER_TAG))) {
 		// Ignore last empty paragraph
 		m_paragraph = nullptr;
 		m_paragraphs.pop_back();
@@ -540,13 +539,10 @@ u32 ParsedText::parseTag(const wchar_t *text, u32 cursor)
 				std::string str = attrs["rotate"];
 				std::vector<std::string> parts = split(str, ',');
 				if (parts.size() == 3) {
-					m_element->rotation = v3s16(
-							rangelim(stoi(parts[0]), -1000,
-									1000),
-							rangelim(stoi(parts[1]), -1000,
-									1000),
-							rangelim(stoi(parts[2]), -1000,
-									1000));
+					m_element->rotation = v3s16 (
+							rangelim(stoi(parts[0]), -1000, 1000),
+							rangelim(stoi(parts[1]), -1000, 1000),
+							rangelim(stoi(parts[2]), -1000, 1000));
 				}
 			}
 		}
@@ -618,14 +614,12 @@ TextDrawer::TextDrawer(const wchar_t *text, Client *client,
 			case ParsedText::ELEMENT_SEPARATOR:
 			case ParsedText::ELEMENT_TEXT:
 				if (e.font) {
-					e.dim.Width = e.font->getDimension(e.text.c_str())
-								      .Width;
+					e.dim.Width = e.font->getDimension(e.text.c_str()).Width;
 					e.dim.Height = e.font->getDimension(L"Yy").Height;
 #if USE_FREETYPE
 					if (e.font->getType() == irr::gui::EGFT_CUSTOM) {
 						e.baseline = e.dim.Height - 1 -
-							     ((irr::gui::CGUITTFont *)e.font)->getAscender() /
-									     64;
+							((irr::gui::CGUITTFont *)e.font)->getAscender() / 64;
 					}
 #endif
 				} else {
@@ -644,8 +638,8 @@ TextDrawer::TextDrawer(const wchar_t *text, Client *client,
 
 				if (e.type == ParsedText::ELEMENT_IMAGE) {
 					video::ITexture *texture =
-							m_client->getTextureSource()->getTexture(
-									stringw_to_utf8(e.text));
+						m_client->getTextureSource()->
+							getTexture(stringw_to_utf8(e.text));
 					if (texture)
 						dim = texture->getOriginalSize();
 				}
@@ -655,10 +649,10 @@ TextDrawer::TextDrawer(const wchar_t *text, Client *client,
 						e.dim = dim;
 					else
 						e.dim.Height = dim.Height * e.dim.Width /
-							       dim.Width;
+								dim.Width;
 				else
 					e.dim.Width = dim.Width * e.dim.Height /
-						      dim.Height;
+							dim.Height;
 				break;
 			}
 		}
@@ -712,7 +706,7 @@ void TextDrawer::place(const core::rect<s32> &dest_rect)
 					e->pos.X = m_text.margin;
 				if (e->floating == ParsedText::FLOAT_RIGHT)
 					e->pos.X = dest_rect.getWidth() - e->dim.Width -
-						   m_text.margin;
+							m_text.margin;
 
 				RectWithMargin floating;
 				floating.rect = core::rect<s32>(e->pos, e->dim);
@@ -745,54 +739,38 @@ void TextDrawer::place(const core::rect<s32> &dest_rect)
 				for (const auto &f : m_floating) {
 					// Does floating rect intersect paragraph y line?
 					if (f.rect.UpperLeftCorner.Y - f.margin <= y &&
-							f.rect.LowerRightCorner.Y + f.margin >=
-									y) {
+							f.rect.LowerRightCorner.Y + f.margin >= y) {
 
 						// Next Y to try if no room left
-						if (!nexty || f.rect.LowerRightCorner.Y + std::max(f.margin,
-													  p.margin) <
-										nexty) {
-							nexty = f.rect.LowerRightCorner
-										.Y +
-								std::max(f.margin,
-										p.margin) +
-								1;
+						if (!nexty || f.rect.LowerRightCorner.Y +
+								std::max(f.margin, p.margin) < nexty) {
+							nexty = f.rect.LowerRightCorner.Y +
+									std::max(f.margin, p.margin) + 1;
 						}
 
-						if (f.rect.UpperLeftCorner.X - f.margin <=
-										left &&
-								f.rect.LowerRightCorner.X + f.margin <
-										right) {
+						if (f.rect.UpperLeftCorner.X - f.margin <= left &&
+								f.rect.LowerRightCorner.X + f.margin < right) {
 							// float on left
-							if (f.rect.LowerRightCorner.X + std::max(f.margin,
-													p.margin) >
-									left) {
-								left = f.rect.LowerRightCorner
-										       .X +
-								       std::max(f.margin,
-										       p.margin);
+							if (f.rect.LowerRightCorner.X +
+									std::max(f.margin, p.margin) > left) {
+								left = f.rect.LowerRightCorner.X +
+										std::max(f.margin, p.margin);
 							}
-						} else if (f.rect.LowerRightCorner.X + f.margin >=
-										right &&
-								f.rect.UpperLeftCorner.X - f.margin >
-										left) {
+						} else if (f.rect.LowerRightCorner.X + f.margin >= right &&
+								f.rect.UpperLeftCorner.X - f.margin > left) {
 							// float on right
-							if (f.rect.UpperLeftCorner.X - std::max(f.margin,
-												       p.margin) <
-									right)
-								right = f.rect.UpperLeftCorner
-											.X -
-									std::max(f.margin,
-											p.margin);
+							if (f.rect.UpperLeftCorner.X -
+									std::max(f.margin, p.margin) < right)
+								right = f.rect.UpperLeftCorner.X -
+										std::max(f.margin, p.margin);
 
-						} else if (f.rect.UpperLeftCorner.X - f.margin <=
-										left &&
-								f.rect.LowerRightCorner.X + f.margin >=
-										right) {
+						} else if (f.rect.UpperLeftCorner.X - f.margin <= left &&
+							 	f.rect.LowerRightCorner.X + f.margin >= right) {
 							// float taking all space
 							left = right;
-						} else { // float in the middle -- should
-							 // not occure yet, see that later
+						}
+						else
+						{ // float in the middle -- should not occure yet, see that later
 						}
 					}
 				}
@@ -818,14 +796,12 @@ void TextDrawer::place(const core::rect<s32> &dest_rect)
 			}
 
 			std::vector<ParsedText::Element>::iterator linestart = el;
-			std::vector<ParsedText::Element>::iterator lineend =
-					p.elements.end();
+			std::vector<ParsedText::Element>::iterator lineend = p.elements.end();
 
 			// First pass, find elements fitting into line
 			// (or at least one element)
-			while (el != p.elements.end() &&
-					(charswidth == 0 || charswidth + el->dim.Width <=
-									    linewidth)) {
+			while (el != p.elements.end() && (charswidth == 0 ||
+					charswidth + el->dim.Width <= linewidth)) {
 				if (el->floating == ParsedText::FLOAT_NONE) {
 					if (el->type != ParsedText::ELEMENT_SEPARATOR) {
 						lineend = el;
@@ -868,14 +844,9 @@ void TextDrawer::place(const core::rect<s32> &dest_rect)
 				x += (linewidth - charswidth) / 2.f;
 				break;
 			case ParsedText::HALIGN_JUSTIFY:
-				if (wordcount > 1 && // Justification only if at least two
-						     // words
-						!(lineend == p.elements.end())) // Don't
-										// justify
-										// last
-										// line
-					extraspace = ((float)(linewidth - charswidth)) /
-						     (wordcount - 1);
+				if (wordcount > 1 && // Justification only if at least two words
+					!(lineend == p.elements.end())) // Don't justify last line
+					extraspace = ((float)(linewidth - charswidth)) / (wordcount - 1);
 				break;
 			case ParsedText::HALIGN_RIGHT:
 				x += linewidth - charswidth;
@@ -918,7 +889,7 @@ void TextDrawer::place(const core::rect<s32> &dest_rect)
 			}
 			y += charsheight;
 		} // Elements (actually lines)
-	}	  // Paragraph
+	} // Paragraph
 
 	// Check if float goes under paragraph
 	for (const auto &f : m_floating) {
@@ -978,18 +949,16 @@ void TextDrawer::draw(const core::rect<s32> &clip_rect,
 					el.font->draw(el.text, rect, color, false, true,
 							&clip_rect);
 
-				if (el.underline && el.drawwidth) {
+				if (el.underline &&  el.drawwidth) {
 					s32 linepos = el.pos.Y + offset.Y +
-						      el.dim.Height - (el.baseline >> 1);
+							el.dim.Height - (el.baseline >> 1);
 
 					core::rect<s32> linerect(el.pos.X + offset.X,
 							linepos - (el.baseline >> 3) - 1,
-							el.pos.X + offset.X +
-									el.drawwidth,
+							el.pos.X + offset.X + el.drawwidth,
 							linepos + (el.baseline >> 3));
 
-					driver->draw2DRectangle(
-							color, linerect, &clip_rect);
+					driver->draw2DRectangle(color, linerect, &clip_rect);
 				}
 			} break;
 
@@ -1001,10 +970,7 @@ void TextDrawer::draw(const core::rect<s32> &clip_rect,
 					m_environment->getVideoDriver()->draw2DImage(
 							texture, rect,
 							irr::core::rect<s32>(
-									core::position2d<
-											s32>(
-											0,
-											0),
+									core::position2d<s32>(0, 0),
 									texture->getOriginalSize()),
 							&clip_rect, 0, true);
 			} break;
@@ -1014,10 +980,11 @@ void TextDrawer::draw(const core::rect<s32> &clip_rect,
 				ItemStack item;
 				item.deSerialize(stringw_to_utf8(el.text), idef);
 
-				drawItemStack(m_environment->getVideoDriver(),
-						g_fontengine->getFont(), item, rect,
-						&clip_rect, m_client, IT_ROT_OTHER,
-						el.angle, el.rotation);
+				drawItemStack(
+						m_environment->getVideoDriver(),
+						g_fontengine->getFont(), item, rect, &clip_rect,
+						m_client, IT_ROT_OTHER, el.angle, el.rotation
+				);
 			} break;
 			}
 		}
@@ -1122,10 +1089,8 @@ bool GUIHyperText::OnEvent(const SEvent &event)
 			checkHover(event.MouseInput.X, event.MouseInput.Y);
 
 		if (event.MouseInput.Event == EMIE_MOUSE_WHEEL) {
-			m_vscrollbar->setPos(
-					m_vscrollbar->getPos() -
-					event.MouseInput.Wheel *
-							m_vscrollbar->getSmallStep());
+			m_vscrollbar->setPos(m_vscrollbar->getPos() -
+					event.MouseInput.Wheel * m_vscrollbar->getSmallStep());
 			m_text_scrollpos.Y = -m_vscrollbar->getPos();
 			m_drawer.draw(m_display_text_rect, m_text_scrollpos);
 			checkHover(event.MouseInput.X, event.MouseInput.Y);
@@ -1139,16 +1104,13 @@ bool GUIHyperText::OnEvent(const SEvent &event)
 				for (auto &tag : element->tags) {
 					if (tag->name == "action") {
 						Text = core::stringw(L"action:") +
-						       utf8_to_stringw(tag->attrs["nam"
-										  "e"]);
+						       utf8_to_stringw(tag->attrs["name"]);
 						if (Parent) {
 							SEvent newEvent;
-							newEvent.EventType =
-									EET_GUI_EVENT;
+							newEvent.EventType = EET_GUI_EVENT;
 							newEvent.GUIEvent.Caller = this;
 							newEvent.GUIEvent.Element = 0;
-							newEvent.GUIEvent.EventType =
-									EGET_BUTTON_CLICKED;
+							newEvent.GUIEvent.EventType = EGET_BUTTON_CLICKED;
 							Parent->OnEvent(newEvent);
 						}
 						break;
@@ -1175,8 +1137,7 @@ void GUIHyperText::draw()
 	if (m_drawer.getHeight() > m_display_text_rect.getHeight()) {
 		m_vscrollbar->setSmallStep(m_display_text_rect.getHeight() * 0.1f);
 		m_vscrollbar->setLargeStep(m_display_text_rect.getHeight() * 0.5f);
-		m_vscrollbar->setMax(
-				m_drawer.getHeight() - m_display_text_rect.getHeight());
+		m_vscrollbar->setMax(m_drawer.getHeight() - m_display_text_rect.getHeight());
 
 		m_vscrollbar->setVisible(true);
 

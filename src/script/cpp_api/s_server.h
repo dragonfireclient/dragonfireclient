@@ -22,7 +22,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "cpp_api/s_base.h"
 #include <set>
 
-class ScriptApiServer : virtual public ScriptApiBase
+class ScriptApiServer
+		: virtual public ScriptApiBase
 {
 public:
 	// Calls on_chat_message handlers
@@ -36,15 +37,18 @@ public:
 	void on_shutdown();
 
 	// Calls core.format_chat_message
-	std::string formatChatMessage(
-			const std::string &name, const std::string &message);
+	std::string formatChatMessage(const std::string &name,
+		const std::string &message);
 
 	/* auth */
-	bool getAuth(const std::string &playername, std::string *dst_password,
-			std::set<std::string> *dst_privs, s64 *dst_last_login = nullptr);
-	void createAuth(const std::string &playername, const std::string &password);
-	bool setPassword(const std::string &playername, const std::string &password);
-
+	bool getAuth(const std::string &playername,
+		std::string *dst_password,
+		std::set<std::string> *dst_privs,
+		s64 *dst_last_login = nullptr);
+	void createAuth(const std::string &playername,
+		const std::string &password);
+	bool setPassword(const std::string &playername,
+		const std::string &password);
 private:
 	void getAuthHandler();
 	void readPrivileges(int index, std::set<std::string> &result);

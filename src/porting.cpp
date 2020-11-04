@@ -25,35 +25,35 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "porting.h"
 
-#if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
-#include <sys/types.h>
-#include <sys/sysctl.h>
-extern char **environ;
+#if defined(__FreeBSD__)  || defined(__NetBSD__) || defined(__DragonFly__)
+	#include <sys/types.h>
+	#include <sys/sysctl.h>
+	extern char **environ;
 #elif defined(_WIN32)
-#include <windows.h>
-#include <wincrypt.h>
-#include <algorithm>
-#include <shlwapi.h>
-#include <shellapi.h>
+	#include <windows.h>
+	#include <wincrypt.h>
+	#include <algorithm>
+	#include <shlwapi.h>
+	#include <shellapi.h>
 #endif
 #if !defined(_WIN32)
-#include <unistd.h>
-#include <sys/utsname.h>
-#if !defined(__ANDROID__)
-#include <spawn.h>
-#endif
+	#include <unistd.h>
+	#include <sys/utsname.h>
+	#if !defined(__ANDROID__)
+		#include <spawn.h>
+	#endif
 #endif
 #if defined(__hpux)
-#define _PSTAT64
-#include <sys/pstat.h>
+	#define _PSTAT64
+	#include <sys/pstat.h>
 #endif
 #if defined(__ANDROID__)
-#include "porting_android.h"
+	#include "porting_android.h"
 #endif
 #if defined(__APPLE__)
-// For _NSGetEnviron()
-// Related: https://gitlab.haskell.org/ghc/ghc/issues/2458
-#include <crt_externs.h>
+	// For _NSGetEnviron()
+	// Related: https://gitlab.haskell.org/ghc/ghc/issues/2458
+	#include <crt_externs.h>
 #endif
 
 #include "config.h"
@@ -80,7 +80,7 @@ bool *signal_handler_killstatus()
 }
 
 #if !defined(_WIN32) // POSIX
-#include <signal.h>
+	#include <signal.h>
 
 void signal_handler(int sig)
 {
@@ -111,7 +111,7 @@ void signal_handler_init(void)
 }
 
 #else // _WIN32
-#include <signal.h>
+	#include <signal.h>
 
 BOOL WINAPI event_handler(DWORD sig)
 {
@@ -123,8 +123,7 @@ BOOL WINAPI event_handler(DWORD sig)
 		if (!g_killed) {
 			dstream << "INFO: event_handler(): "
 				<< "Ctrl+C, Close Event, Logoff Event or Shutdown Event,"
-				   " shutting down."
-				<< std::endl;
+				" shutting down." << std::endl;
 			g_killed = true;
 		} else {
 			(void)signal(SIGINT, SIG_DFL);
@@ -144,6 +143,7 @@ void signal_handler_init(void)
 
 #endif
 
+
 /*
 	Path mangler
 */
@@ -154,6 +154,7 @@ std::string path_user = "..";
 std::string path_locale = path_share + DIR_DELIM + "locale";
 std::string path_cache = path_user + DIR_DELIM + "cache";
 
+
 std::string getDataPath(const char *subpath)
 {
 	return path_share + DIR_DELIM + subpath;
@@ -163,8 +164,9 @@ void pathRemoveFile(char *path, char delim)
 {
 	// Remove filename and path delimiter
 	int i;
-	for (i = strlen(path) - 1; i >= 0; i--) {
-		if (path[i] == delim)
+	for(i = strlen(path)-1; i>=0; i--)
+	{
+		if(path[i] == delim)
 			break;
 	}
 	path[i] = 0;
@@ -172,8 +174,14 @@ void pathRemoveFile(char *path, char delim)
 
 bool detectMSVCBuildDir(const std::string &path)
 {
-	const char *ends[] = {"bin\\Release", "bin\\MinSizeRel", "bin\\RelWithDebInfo",
-			"bin\\Debug", "bin\\Build", NULL};
+	const char *ends[] = {
+		"bin\\Release",
+		"bin\\MinSizeRel",
+		"bin\\RelWithDebInfo",
+		"bin\\Debug",
+		"bin\\Build",
+		NULL
+	};
 	return (!removeStringEnd(path, ends).empty());
 }
 
@@ -195,19 +203,20 @@ std::string get_sysinfo()
 	GetFileVersionInfoA(filePath, 0, dwVersionSize, lpVersionInfo);
 	VerQueryValueA(lpVersionInfo, "\\", (LPVOID *)&fixedFileInfo, &blockSize);
 
-	oss << "Windows/" << HIWORD(fixedFileInfo->dwProductVersionMS) << '.' // Major
-	    << LOWORD(fixedFileInfo->dwProductVersionMS) << '.'		      // Minor
-	    << HIWORD(fixedFileInfo->dwProductVersionLS) << ' ';	      // Build
+	oss << "Windows/"
+		<< HIWORD(fixedFileInfo->dwProductVersionMS) << '.' // Major
+		<< LOWORD(fixedFileInfo->dwProductVersionMS) << '.' // Minor
+		<< HIWORD(fixedFileInfo->dwProductVersionLS) << ' '; // Build
 
-#ifdef _WIN64
+	#ifdef _WIN64
 	oss << "x86_64";
-#else
+	#else
 	BOOL is64 = FALSE;
 	if (IsWow64Process(GetCurrentProcess(), &is64) && is64)
 		oss << "x86_64"; // 32-bit app on 64-bit OS
 	else
 		oss << "x86";
-#endif
+	#endif
 
 	delete[] lpVersionInfo;
 	delete[] filePath;
@@ -216,9 +225,11 @@ std::string get_sysinfo()
 #else
 	struct utsname osinfo;
 	uname(&osinfo);
-	return std::string(osinfo.sysname) + "/" + osinfo.release + " " + osinfo.machine;
+	return std::string(osinfo.sysname) + "/"
+		+ osinfo.release + " " + osinfo.machine;
 #endif
 }
+
 
 bool getCurrentWorkingDir(char *buf, size_t len)
 {
@@ -230,15 +241,16 @@ bool getCurrentWorkingDir(char *buf, size_t len)
 #endif
 }
 
+
 bool getExecPathFromProcfs(char *buf, size_t buflen)
 {
 #ifndef _WIN32
 	buflen--;
 
 	ssize_t len;
-	if ((len = readlink("/proc/self/exe", buf, buflen)) == -1 &&
-			(len = readlink("/proc/curproc/file", buf, buflen)) == -1 &&
-			(len = readlink("/proc/curproc/exe", buf, buflen)) == -1)
+	if ((len = readlink("/proc/self/exe",     buf, buflen)) == -1 &&
+		(len = readlink("/proc/curproc/file", buf, buflen)) == -1 &&
+		(len = readlink("/proc/curproc/exe",  buf, buflen)) == -1)
 		return false;
 
 	buf[len] = '\0';
@@ -260,6 +272,7 @@ bool getCurrentExecPath(char *buf, size_t len)
 	return true;
 }
 
+
 //// Linux
 #elif defined(__linux__)
 
@@ -270,6 +283,7 @@ bool getCurrentExecPath(char *buf, size_t len)
 
 	return true;
 }
+
 
 //// Mac OS X, Darwin
 #elif defined(__APPLE__)
@@ -282,6 +296,7 @@ bool getCurrentExecPath(char *buf, size_t len)
 
 	return true;
 }
+
 
 //// FreeBSD, NetBSD, DragonFlyBSD
 #elif defined(__FreeBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
@@ -306,6 +321,7 @@ bool getCurrentExecPath(char *buf, size_t len)
 	return true;
 }
 
+
 //// Solaris
 #elif defined(__sun) || defined(sun)
 
@@ -320,6 +336,7 @@ bool getCurrentExecPath(char *buf, size_t len)
 
 	return true;
 }
+
 
 // HP-UX
 #elif defined(__hpux)
@@ -337,6 +354,7 @@ bool getCurrentExecPath(char *buf, size_t len)
 	return true;
 }
 
+
 #else
 
 bool getCurrentExecPath(char *buf, size_t len)
@@ -346,6 +364,7 @@ bool getCurrentExecPath(char *buf, size_t len)
 
 #endif
 
+
 //// Non-Windows
 #if !defined(_WIN32)
 
@@ -353,11 +372,13 @@ const char *getHomeOrFail()
 {
 	const char *home = getenv("HOME");
 	// In rare cases the HOME environment variable may be unset
-	FATAL_ERROR_IF(!home, "Required environment variable HOME is not set");
+	FATAL_ERROR_IF(!home,
+		"Required environment variable HOME is not set");
 	return home;
 }
 
 #endif
+
 
 //// Windows
 #if defined(_WIN32)
@@ -368,7 +389,7 @@ bool setSystemPaths()
 
 	// Find path of executable and set path_share relative to it
 	FATAL_ERROR_IF(!getCurrentExecPath(buf, sizeof(buf)),
-			"Failed to get current executable path");
+		"Failed to get current executable path");
 	pathRemoveFile(buf, '\\');
 
 	std::string exepath(buf);
@@ -376,8 +397,8 @@ bool setSystemPaths()
 	// Use ".\bin\.."
 	path_share = exepath + "\\..";
 	if (detectMSVCBuildDir(exepath)) {
-		// The msvc build dir schould normaly not be present if properly
-		// installed, but its usefull for debugging.
+		// The msvc build dir schould normaly not be present if properly installed,
+		// but its usefull for debugging.
 		path_share += DIR_DELIM "..";
 	}
 
@@ -389,9 +410,9 @@ bool setSystemPaths()
 	return true;
 }
 
+
 //// Linux
-#elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) ||               \
-		defined(__DragonFly__)
+#elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
 
 bool setSystemPaths()
 {
@@ -399,7 +420,7 @@ bool setSystemPaths()
 
 	if (!getCurrentExecPath(buf, sizeof(buf))) {
 #ifdef __ANDROID__
-		errorstream << "Unable to read bindir " << std::endl;
+		errorstream << "Unable to read bindir "<< std::endl;
 #else
 		FATAL_ERROR("Unable to read bindir");
 #endif
@@ -416,28 +437,28 @@ bool setSystemPaths()
 	if (!static_sharedir.empty() && static_sharedir != ".")
 		trylist.push_back(static_sharedir);
 
-	trylist.push_back(bindir + DIR_DELIM ".." DIR_DELIM "share" DIR_DELIM +
-			  PROJECT_NAME);
+	trylist.push_back(bindir + DIR_DELIM ".." DIR_DELIM "share"
+		DIR_DELIM + PROJECT_NAME);
 	trylist.push_back(bindir + DIR_DELIM "..");
 
 #ifdef __ANDROID__
 	trylist.push_back(path_user);
 #endif
 
-	for (std::list<std::string>::const_iterator i = trylist.begin();
-			i != trylist.end(); ++i) {
+	for (std::list<std::string>::const_iterator
+			i = trylist.begin(); i != trylist.end(); ++i) {
 		const std::string &trypath = *i;
 		if (!fs::PathExists(trypath) ||
-				!fs::PathExists(trypath + DIR_DELIM + "builtin")) {
-			warningstream << "system-wide share not found at \"" << trypath
-				      << "\"" << std::endl;
+			!fs::PathExists(trypath + DIR_DELIM + "builtin")) {
+			warningstream << "system-wide share not found at \""
+					<< trypath << "\""<< std::endl;
 			continue;
 		}
 
 		// Warn if was not the first alternative
 		if (i != trylist.begin()) {
-			warningstream << "system-wide share found at \"" << trypath
-				      << "\"" << std::endl;
+			warningstream << "system-wide share found at \""
+					<< trypath << "\"" << std::endl;
 		}
 
 		path_share = trypath;
@@ -445,11 +466,13 @@ bool setSystemPaths()
 	}
 
 #ifndef __ANDROID__
-	path_user = std::string(getHomeOrFail()) + DIR_DELIM "." + PROJECT_NAME;
+	path_user = std::string(getHomeOrFail()) + DIR_DELIM "."
+		+ PROJECT_NAME;
 #endif
 
 	return true;
 }
+
 
 //// Mac OS X
 #elif defined(__APPLE__)
@@ -459,28 +482,31 @@ bool setSystemPaths()
 	CFBundleRef main_bundle = CFBundleGetMainBundle();
 	CFURLRef resources_url = CFBundleCopyResourcesDirectoryURL(main_bundle);
 	char path[PATH_MAX];
-	if (CFURLGetFileSystemRepresentation(
-			    resources_url, TRUE, (UInt8 *)path, PATH_MAX)) {
+	if (CFURLGetFileSystemRepresentation(resources_url,
+			TRUE, (UInt8 *)path, PATH_MAX)) {
 		path_share = std::string(path);
 	} else {
 		warningstream << "Could not determine bundle resource path" << std::endl;
 	}
 	CFRelease(resources_url);
 
-	path_user = std::string(getHomeOrFail()) + "/Library/Application Support/" +
-		    PROJECT_NAME;
+	path_user = std::string(getHomeOrFail())
+		+ "/Library/Application Support/"
+		+ PROJECT_NAME;
 	return true;
 }
+
 
 #else
 
 bool setSystemPaths()
 {
 	path_share = STATIC_SHAREDIR;
-	path_user = std::string(getHomeOrFail()) + DIR_DELIM "." +
-		    lowercase(PROJECT_NAME);
+	path_user  = std::string(getHomeOrFail()) + DIR_DELIM "."
+		+ lowercase(PROJECT_NAME);
 	return true;
 }
+
 
 #endif
 
@@ -494,14 +520,13 @@ void migrateCachePath()
 		fs::RecursiveDelete(local_cache_path + DIR_DELIM + "tmp");
 
 	// Bail if migration impossible
-	if (path_cache == local_cache_path || !fs::PathExists(local_cache_path) ||
-			fs::PathExists(path_cache)) {
+	if (path_cache == local_cache_path || !fs::PathExists(local_cache_path)
+			|| fs::PathExists(path_cache)) {
 		return;
 	}
 	if (!fs::Rename(local_cache_path, path_cache)) {
 		errorstream << "Failed to migrate local cache path "
-			       "to system path!"
-			    << std::endl;
+			"to system path!" << std::endl;
 	}
 }
 
@@ -512,24 +537,24 @@ void initializePaths()
 
 	infostream << "Using relative paths (RUN_IN_PLACE)" << std::endl;
 
-	bool success = getCurrentExecPath(buf, sizeof(buf)) ||
-		       getExecPathFromProcfs(buf, sizeof(buf));
+	bool success =
+		getCurrentExecPath(buf, sizeof(buf)) ||
+		getExecPathFromProcfs(buf, sizeof(buf));
 
 	if (success) {
 		pathRemoveFile(buf, DIR_DELIM_CHAR);
 		std::string execpath(buf);
 
 		path_share = execpath + DIR_DELIM "..";
-		path_user = execpath + DIR_DELIM "..";
+		path_user  = execpath + DIR_DELIM "..";
 
 		if (detectMSVCBuildDir(execpath)) {
 			path_share += DIR_DELIM "..";
-			path_user += DIR_DELIM "..";
+			path_user  += DIR_DELIM "..";
 		}
 	} else {
 		errorstream << "Failed to get paths by executable location, "
-			       "trying cwd"
-			    << std::endl;
+			"trying cwd" << std::endl;
 
 		if (!getCurrentWorkingDir(buf, sizeof(buf)))
 			FATAL_ERROR("Ran out of methods to get paths");
@@ -546,7 +571,7 @@ void initializePaths()
 		std::string execpath(buf);
 
 		path_share = execpath;
-		path_user = execpath;
+		path_user  = execpath;
 	}
 	path_cache = path_user + DIR_DELIM + "cache";
 #else
@@ -555,9 +580,10 @@ void initializePaths()
 	if (!setSystemPaths())
 		errorstream << "Failed to get one or more system-wide path" << std::endl;
 
-#ifdef _WIN32
+
+#  ifdef _WIN32
 	path_cache = path_user + DIR_DELIM + "cache";
-#else
+#  else
 	// Initialize path_cache
 	// First try $XDG_CACHE_HOME/PROJECT_NAME
 	const char *cache_dir = getenv("XDG_CACHE_HOME");
@@ -566,15 +592,15 @@ void initializePaths()
 		path_cache = std::string(cache_dir) + DIR_DELIM + PROJECT_NAME;
 	} else if (home_dir) {
 		// Then try $HOME/.cache/PROJECT_NAME
-		path_cache = std::string(home_dir) + DIR_DELIM + ".cache" + DIR_DELIM +
-			     PROJECT_NAME;
+		path_cache = std::string(home_dir) + DIR_DELIM + ".cache"
+			+ DIR_DELIM + PROJECT_NAME;
 	} else {
 		// If neither works, use $PATH_USER/cache
 		path_cache = path_user + DIR_DELIM + "cache";
 	}
 	// Migrate cache folder to new location if possible
 	migrateCachePath();
-#endif // _WIN32
+#  endif // _WIN32
 #endif // RUN_IN_PLACE
 
 	infostream << "Detected share path: " << path_share << std::endl;
@@ -583,30 +609,30 @@ void initializePaths()
 
 #if USE_GETTEXT
 	bool found_localedir = false;
-#ifdef STATIC_LOCALEDIR
+#  ifdef STATIC_LOCALEDIR
 	/* STATIC_LOCALEDIR may be a generalized path such as /usr/share/locale that
 	 * doesn't necessarily contain our locale files, so check data path first. */
 	path_locale = getDataPath("locale");
 	if (fs::PathExists(path_locale)) {
 		found_localedir = true;
 		infostream << "Using in-place locale directory " << path_locale
-			   << " even though a static one was provided." << std::endl;
+			<< " even though a static one was provided." << std::endl;
 	} else if (STATIC_LOCALEDIR[0] && fs::PathExists(STATIC_LOCALEDIR)) {
 		found_localedir = true;
 		path_locale = STATIC_LOCALEDIR;
 		infostream << "Using static locale directory " << STATIC_LOCALEDIR
-			   << std::endl;
+			<< std::endl;
 	}
-#else
+#  else
 	path_locale = getDataPath("locale");
 	if (fs::PathExists(path_locale)) {
 		found_localedir = true;
 	}
-#endif
+#  endif
 	if (!found_localedir) {
 		warningstream << "Couldn't find a locale directory!" << std::endl;
 	}
-#endif // USE_GETTEXT
+#endif  // USE_GETTEXT
 }
 
 ////
@@ -652,11 +678,8 @@ void attachOrCreateConsole()
 {
 #ifdef _WIN32
 	static bool consoleAllocated = false;
-	const bool redirected = (_fileno(stdout) == -2 ||
-				 _fileno(stdout) == -1); // If output is redirected to e.g
-							 // a file
-	if (!consoleAllocated && redirected &&
-			(AttachConsole(ATTACH_PARENT_PROCESS) || AllocConsole())) {
+	const bool redirected = (_fileno(stdout) == -2 || _fileno(stdout) == -1); // If output is redirected to e.g a file
+	if (!consoleAllocated && redirected && (AttachConsole(ATTACH_PARENT_PROCESS) || AllocConsole())) {
 		freopen("CONOUT$", "w", stdout);
 		freopen("CONOUT$", "w", stderr);
 		consoleAllocated = true;
@@ -695,18 +718,17 @@ bool openURL(const std::string &url)
 	}
 
 #if defined(_WIN32)
-	return (intptr_t)ShellExecuteA(
-			       NULL, NULL, url.c_str(), NULL, NULL, SW_SHOWNORMAL) > 32;
+	return (intptr_t)ShellExecuteA(NULL, NULL, url.c_str(), NULL, NULL, SW_SHOWNORMAL) > 32;
 #elif defined(__ANDROID__)
 	openURLAndroid(url);
 	return true;
 #elif defined(__APPLE__)
 	const char *argv[] = {"open", url.c_str(), NULL};
-	return posix_spawnp(NULL, "open", NULL, NULL, (char **)argv,
-			       (*_NSGetEnviron())) == 0;
+	return posix_spawnp(NULL, "open", NULL, NULL, (char**)argv,
+		(*_NSGetEnviron())) == 0;
 #else
 	const char *argv[] = {"xdg-open", url.c_str(), NULL};
-	return posix_spawnp(NULL, "xdg-open", NULL, NULL, (char **)argv, environ) == 0;
+	return posix_spawnp(NULL, "xdg-open", NULL, NULL, (char**)argv, environ) == 0;
 #endif
 }
 
@@ -724,4 +746,4 @@ double perf_freq = get_perf_freq();
 
 #endif
 
-} // namespace porting
+} //namespace porting

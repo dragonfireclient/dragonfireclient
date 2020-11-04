@@ -37,72 +37,80 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "settings.h"
 #include "log.h"
 
-struct EnumString ModApiMapgen::es_BiomeTerrainType[] = {
-		{BIOMETYPE_NORMAL, "normal"},
-		{0, NULL},
+struct EnumString ModApiMapgen::es_BiomeTerrainType[] =
+{
+	{BIOMETYPE_NORMAL, "normal"},
+	{0, NULL},
 };
 
-struct EnumString ModApiMapgen::es_DecorationType[] = {
-		{DECO_SIMPLE, "simple"},
-		{DECO_SCHEMATIC, "schematic"},
-		{DECO_LSYSTEM, "lsystem"},
-		{0, NULL},
+struct EnumString ModApiMapgen::es_DecorationType[] =
+{
+	{DECO_SIMPLE,    "simple"},
+	{DECO_SCHEMATIC, "schematic"},
+	{DECO_LSYSTEM,   "lsystem"},
+	{0, NULL},
 };
 
-struct EnumString ModApiMapgen::es_MapgenObject[] = {
-		{MGOBJ_VMANIP, "voxelmanip"},
-		{MGOBJ_HEIGHTMAP, "heightmap"},
-		{MGOBJ_BIOMEMAP, "biomemap"},
-		{MGOBJ_HEATMAP, "heatmap"},
-		{MGOBJ_HUMIDMAP, "humiditymap"},
-		{MGOBJ_GENNOTIFY, "gennotify"},
-		{0, NULL},
+struct EnumString ModApiMapgen::es_MapgenObject[] =
+{
+	{MGOBJ_VMANIP,    "voxelmanip"},
+	{MGOBJ_HEIGHTMAP, "heightmap"},
+	{MGOBJ_BIOMEMAP,  "biomemap"},
+	{MGOBJ_HEATMAP,   "heatmap"},
+	{MGOBJ_HUMIDMAP,  "humiditymap"},
+	{MGOBJ_GENNOTIFY, "gennotify"},
+	{0, NULL},
 };
 
-struct EnumString ModApiMapgen::es_OreType[] = {
-		{ORE_SCATTER, "scatter"},
-		{ORE_SHEET, "sheet"},
-		{ORE_PUFF, "puff"},
-		{ORE_BLOB, "blob"},
-		{ORE_VEIN, "vein"},
-		{ORE_STRATUM, "stratum"},
-		{0, NULL},
+struct EnumString ModApiMapgen::es_OreType[] =
+{
+	{ORE_SCATTER, "scatter"},
+	{ORE_SHEET,   "sheet"},
+	{ORE_PUFF,    "puff"},
+	{ORE_BLOB,    "blob"},
+	{ORE_VEIN,    "vein"},
+	{ORE_STRATUM, "stratum"},
+	{0, NULL},
 };
 
-struct EnumString ModApiMapgen::es_Rotation[] = {
-		{ROTATE_0, "0"},
-		{ROTATE_90, "90"},
-		{ROTATE_180, "180"},
-		{ROTATE_270, "270"},
-		{ROTATE_RAND, "random"},
-		{0, NULL},
+struct EnumString ModApiMapgen::es_Rotation[] =
+{
+	{ROTATE_0,    "0"},
+	{ROTATE_90,   "90"},
+	{ROTATE_180,  "180"},
+	{ROTATE_270,  "270"},
+	{ROTATE_RAND, "random"},
+	{0, NULL},
 };
 
-struct EnumString ModApiMapgen::es_SchematicFormatType[] = {
-		{SCHEM_FMT_HANDLE, "handle"},
-		{SCHEM_FMT_MTS, "mts"},
-		{SCHEM_FMT_LUA, "lua"},
-		{0, NULL},
+struct EnumString ModApiMapgen::es_SchematicFormatType[] =
+{
+	{SCHEM_FMT_HANDLE, "handle"},
+	{SCHEM_FMT_MTS,    "mts"},
+	{SCHEM_FMT_LUA,    "lua"},
+	{0, NULL},
 };
 
 ObjDef *get_objdef(lua_State *L, int index, const ObjDefManager *objmgr);
 
-Biome *get_or_load_biome(lua_State *L, int index, BiomeManager *biomemgr);
+Biome *get_or_load_biome(lua_State *L, int index,
+	BiomeManager *biomemgr);
 Biome *read_biome_def(lua_State *L, int index, const NodeDefManager *ndef);
-size_t get_biome_list(lua_State *L, int index, BiomeManager *biomemgr,
-		std::unordered_set<biome_t> *biome_id_list);
+size_t get_biome_list(lua_State *L, int index,
+	BiomeManager *biomemgr, std::unordered_set<biome_t> *biome_id_list);
 
-Schematic *get_or_load_schematic(lua_State *L, int index, SchematicManager *schemmgr,
-		StringMap *replace_names);
+Schematic *get_or_load_schematic(lua_State *L, int index,
+	SchematicManager *schemmgr, StringMap *replace_names);
 Schematic *load_schematic(lua_State *L, int index, const NodeDefManager *ndef,
-		StringMap *replace_names);
-Schematic *load_schematic_from_def(lua_State *L, int index, const NodeDefManager *ndef,
-		StringMap *replace_names);
-bool read_schematic_def(lua_State *L, int index, Schematic *schem,
-		std::vector<std::string> *names);
+	StringMap *replace_names);
+Schematic *load_schematic_from_def(lua_State *L, int index,
+	const NodeDefManager *ndef, StringMap *replace_names);
+bool read_schematic_def(lua_State *L, int index,
+	Schematic *schem, std::vector<std::string> *names);
 
 bool read_deco_simple(lua_State *L, DecoSimple *deco);
 bool read_deco_schematic(lua_State *L, SchematicManager *schemmgr, DecoSchematic *deco);
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -124,8 +132,8 @@ ObjDef *get_objdef(lua_State *L, int index, const ObjDefManager *objmgr)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-Schematic *get_or_load_schematic(lua_State *L, int index, SchematicManager *schemmgr,
-		StringMap *replace_names)
+Schematic *get_or_load_schematic(lua_State *L, int index,
+	SchematicManager *schemmgr, StringMap *replace_names)
 {
 	if (index < 0)
 		index = lua_gettop(L) + 1 + index;
@@ -134,7 +142,8 @@ Schematic *get_or_load_schematic(lua_State *L, int index, SchematicManager *sche
 	if (schem)
 		return schem;
 
-	schem = load_schematic(L, index, schemmgr->getNodeDef(), replace_names);
+	schem = load_schematic(L, index, schemmgr->getNodeDef(),
+		replace_names);
 	if (!schem)
 		return NULL;
 
@@ -146,8 +155,9 @@ Schematic *get_or_load_schematic(lua_State *L, int index, SchematicManager *sche
 	return schem;
 }
 
+
 Schematic *load_schematic(lua_State *L, int index, const NodeDefManager *ndef,
-		StringMap *replace_names)
+	StringMap *replace_names)
 {
 	if (index < 0)
 		index = lua_gettop(L) + 1 + index;
@@ -155,7 +165,8 @@ Schematic *load_schematic(lua_State *L, int index, const NodeDefManager *ndef,
 	Schematic *schem = NULL;
 
 	if (lua_istable(L, index)) {
-		schem = load_schematic_from_def(L, index, ndef, replace_names);
+		schem = load_schematic_from_def(L, index, ndef,
+			replace_names);
 		if (!schem) {
 			delete schem;
 			return NULL;
@@ -167,10 +178,10 @@ Schematic *load_schematic(lua_State *L, int index, const NodeDefManager *ndef,
 
 		std::string filepath = lua_tostring(L, index);
 		if (!fs::IsPathAbsolute(filepath))
-			filepath = ModApiBase::getCurrentModPath(L) + DIR_DELIM +
-				   filepath;
+			filepath = ModApiBase::getCurrentModPath(L) + DIR_DELIM + filepath;
 
-		if (!schem->loadSchematicFromFile(filepath, ndef, replace_names)) {
+		if (!schem->loadSchematicFromFile(filepath, ndef,
+				replace_names)) {
 			delete schem;
 			return NULL;
 		}
@@ -179,8 +190,9 @@ Schematic *load_schematic(lua_State *L, int index, const NodeDefManager *ndef,
 	return schem;
 }
 
-Schematic *load_schematic_from_def(lua_State *L, int index, const NodeDefManager *ndef,
-		StringMap *replace_names)
+
+Schematic *load_schematic_from_def(lua_State *L, int index,
+	const NodeDefManager *ndef, StringMap *replace_names)
 {
 	Schematic *schem = SchematicManager::create(SCHEMATIC_NORMAL);
 
@@ -195,8 +207,7 @@ Schematic *load_schematic_from_def(lua_State *L, int index, const NodeDefManager
 
 	if (replace_names) {
 		for (size_t i = 0; i != num_nodes; i++) {
-			StringMap::iterator it =
-					replace_names->find(schem->m_nodenames[i]);
+			StringMap::iterator it = replace_names->find(schem->m_nodenames[i]);
 			if (it != replace_names->end())
 				schem->m_nodenames[i] = it->second;
 		}
@@ -208,8 +219,9 @@ Schematic *load_schematic_from_def(lua_State *L, int index, const NodeDefManager
 	return schem;
 }
 
-bool read_schematic_def(lua_State *L, int index, Schematic *schem,
-		std::vector<std::string> *names)
+
+bool read_schematic_def(lua_State *L, int index,
+	Schematic *schem, std::vector<std::string> *names)
 {
 	if (!lua_istable(L, index))
 		return false;
@@ -239,21 +251,19 @@ bool read_schematic_def(lua_State *L, int index, Schematic *schem,
 		//// Read name
 		std::string name;
 		if (!getstringfield(L, -1, "name", name))
-			throw LuaError("Schematic data definition with missing name "
-				       "field");
+			throw LuaError("Schematic data definition with missing name field");
 
 		//// Read param1/prob
 		u8 param1;
 		if (!getintfield(L, -1, "param1", param1) &&
-				!getintfield(L, -1, "prob", param1))
+			!getintfield(L, -1, "prob", param1))
 			param1 = MTSCHEM_PROB_ALWAYS_OLD;
 
 		//// Read param2
 		u8 param2 = getintfield_default(L, -1, "param2", 0);
 
 		//// Find or add new nodename-to-ID mapping
-		std::unordered_map<std::string, content_t>::iterator it =
-				name_id_map.find(name);
+		std::unordered_map<std::string, content_t>::iterator it = name_id_map.find(name);
 		content_t name_index;
 		if (it != name_id_map.end()) {
 			name_index = it->second;
@@ -274,14 +284,14 @@ bool read_schematic_def(lua_State *L, int index, Schematic *schem,
 
 	if (i != numnodes) {
 		errorstream << "read_schematic_def: incorrect number of "
-			       "nodes provided in raw schematic data (got "
-			    << i << ", expected " << numnodes << ")." << std::endl;
+			"nodes provided in raw schematic data (got " << i <<
+			", expected " << numnodes << ")." << std::endl;
 		return false;
 	}
 
 	//// Get Y-slice probability values (if present)
 	schem->slice_probs = new u8[size.Y];
-	for (i = 0; i != (u32)size.Y; i++)
+	for (i = 0; i != (u32) size.Y; i++)
 		schem->slice_probs[i] = MTSCHEM_PROB_ALWAYS;
 
 	lua_getfield(L, index, "yslice_prob");
@@ -289,8 +299,7 @@ bool read_schematic_def(lua_State *L, int index, Schematic *schem,
 		for (lua_pushnil(L); lua_next(L, -2); lua_pop(L, 1)) {
 			u16 ypos;
 			if (!getintfield(L, -1, "ypos", ypos) || (ypos >= size.Y) ||
-					!getintfield(L, -1, "prob",
-							schem->slice_probs[ypos]))
+				!getintfield(L, -1, "prob", schem->slice_probs[ypos]))
 				continue;
 
 			schem->slice_probs[ypos] >>= 1;
@@ -299,6 +308,7 @@ bool read_schematic_def(lua_State *L, int index, Schematic *schem,
 
 	return true;
 }
+
 
 void read_schematic_replacements(lua_State *L, int index, StringMap *replace_names)
 {
@@ -313,25 +323,21 @@ void read_schematic_replacements(lua_State *L, int index, StringMap *replace_nam
 		if (lua_istable(L, -1)) { // Old {{"x", "y"}, ...} format
 			lua_rawgeti(L, -1, 1);
 			if (!lua_isstring(L, -1))
-				throw LuaError("schematics: replace_from field is not a "
-					       "string");
+				throw LuaError("schematics: replace_from field is not a string");
 			replace_from = lua_tostring(L, -1);
 			lua_pop(L, 1);
 
 			lua_rawgeti(L, -1, 2);
 			if (!lua_isstring(L, -1))
-				throw LuaError("schematics: replace_to field is not a "
-					       "string");
+				throw LuaError("schematics: replace_to field is not a string");
 			replace_to = lua_tostring(L, -1);
 			lua_pop(L, 1);
 		} else { // New {x = "y", ...} format
 			if (!lua_isstring(L, -2))
-				throw LuaError("schematics: replace_from field is not a "
-					       "string");
+				throw LuaError("schematics: replace_from field is not a string");
 			replace_from = lua_tostring(L, -2);
 			if (!lua_isstring(L, -1))
-				throw LuaError("schematics: replace_to field is not a "
-					       "string");
+				throw LuaError("schematics: replace_to field is not a string");
 			replace_to = lua_tostring(L, -1);
 		}
 
@@ -363,41 +369,42 @@ Biome *get_or_load_biome(lua_State *L, int index, BiomeManager *biomemgr)
 	return biome;
 }
 
+
 Biome *read_biome_def(lua_State *L, int index, const NodeDefManager *ndef)
 {
 	if (!lua_istable(L, index))
 		return NULL;
 
 	BiomeType biometype = (BiomeType)getenumfield(L, index, "type",
-			ModApiMapgen::es_BiomeTerrainType, BIOMETYPE_NORMAL);
+		ModApiMapgen::es_BiomeTerrainType, BIOMETYPE_NORMAL);
 	Biome *b = BiomeManager::create(biometype);
 
-	b->name = getstringfield_default(L, index, "name", "");
-	b->depth_top = getintfield_default(L, index, "depth_top", 0);
-	b->depth_filler = getintfield_default(L, index, "depth_filler", -31000);
-	b->depth_water_top = getintfield_default(L, index, "depth_water_top", 0);
-	b->depth_riverbed = getintfield_default(L, index, "depth_riverbed", 0);
-	b->heat_point = getfloatfield_default(L, index, "heat_point", 0.f);
-	b->humidity_point = getfloatfield_default(L, index, "humidity_point", 0.f);
-	b->vertical_blend = getintfield_default(L, index, "vertical_blend", 0);
-	b->flags = 0; // reserved
+	b->name            = getstringfield_default(L, index, "name", "");
+	b->depth_top       = getintfield_default(L,    index, "depth_top",       0);
+	b->depth_filler    = getintfield_default(L,    index, "depth_filler",    -31000);
+	b->depth_water_top = getintfield_default(L,    index, "depth_water_top", 0);
+	b->depth_riverbed  = getintfield_default(L,    index, "depth_riverbed",  0);
+	b->heat_point      = getfloatfield_default(L,  index, "heat_point",      0.f);
+	b->humidity_point  = getfloatfield_default(L,  index, "humidity_point",  0.f);
+	b->vertical_blend  = getintfield_default(L,    index, "vertical_blend",  0);
+	b->flags           = 0; // reserved
 
 	b->min_pos = getv3s16field_default(
-			L, index, "min_pos", v3s16(-31000, -31000, -31000));
+		L, index, "min_pos", v3s16(-31000, -31000, -31000));
 	getintfield(L, index, "y_min", b->min_pos.Y);
 	b->max_pos = getv3s16field_default(
-			L, index, "max_pos", v3s16(31000, 31000, 31000));
+		L, index, "max_pos", v3s16(31000, 31000, 31000));
 	getintfield(L, index, "y_max", b->max_pos.Y);
 
 	std::vector<std::string> &nn = b->m_nodenames;
-	nn.push_back(getstringfield_default(L, index, "node_top", ""));
-	nn.push_back(getstringfield_default(L, index, "node_filler", ""));
-	nn.push_back(getstringfield_default(L, index, "node_stone", ""));
-	nn.push_back(getstringfield_default(L, index, "node_water_top", ""));
-	nn.push_back(getstringfield_default(L, index, "node_water", ""));
-	nn.push_back(getstringfield_default(L, index, "node_river_water", ""));
-	nn.push_back(getstringfield_default(L, index, "node_riverbed", ""));
-	nn.push_back(getstringfield_default(L, index, "node_dust", ""));
+	nn.push_back(getstringfield_default(L, index, "node_top",           ""));
+	nn.push_back(getstringfield_default(L, index, "node_filler",        ""));
+	nn.push_back(getstringfield_default(L, index, "node_stone",         ""));
+	nn.push_back(getstringfield_default(L, index, "node_water_top",     ""));
+	nn.push_back(getstringfield_default(L, index, "node_water",         ""));
+	nn.push_back(getstringfield_default(L, index, "node_river_water",   ""));
+	nn.push_back(getstringfield_default(L, index, "node_riverbed",      ""));
+	nn.push_back(getstringfield_default(L, index, "node_dust",          ""));
 
 	size_t nnames = getstringlistfield(L, index, "node_cave_liquid", &nn);
 	// If no cave liquids defined, set list to "ignore" to trigger old hardcoded
@@ -408,16 +415,17 @@ Biome *read_biome_def(lua_State *L, int index, const NodeDefManager *ndef)
 	}
 	b->m_nnlistsizes.push_back(nnames);
 
-	nn.push_back(getstringfield_default(L, index, "node_dungeon", ""));
-	nn.push_back(getstringfield_default(L, index, "node_dungeon_alt", ""));
+	nn.push_back(getstringfield_default(L, index, "node_dungeon",       ""));
+	nn.push_back(getstringfield_default(L, index, "node_dungeon_alt",   ""));
 	nn.push_back(getstringfield_default(L, index, "node_dungeon_stair", ""));
 	ndef->pendNodeResolve(b);
 
 	return b;
 }
 
-size_t get_biome_list(lua_State *L, int index, BiomeManager *biomemgr,
-		std::unordered_set<biome_t> *biome_id_list)
+
+size_t get_biome_list(lua_State *L, int index,
+	BiomeManager *biomemgr, std::unordered_set<biome_t> *biome_id_list)
 {
 	if (index < 0)
 		index = lua_gettop(L) + 1 + index;
@@ -436,9 +444,8 @@ size_t get_biome_list(lua_State *L, int index, BiomeManager *biomemgr,
 		Biome *biome = get_or_load_biome(L, index, biomemgr);
 		if (!biome) {
 			infostream << "get_biome_list: failed to get biome '"
-				   << (lua_isstring(L, index) ? lua_tostring(L, index)
-							      : "")
-				   << "'." << std::endl;
+				<< (lua_isstring(L, index) ? lua_tostring(L, index) : "")
+				<< "'." << std::endl;
 			return 1;
 		}
 
@@ -456,8 +463,8 @@ size_t get_biome_list(lua_State *L, int index, BiomeManager *biomemgr,
 		if (!biome) {
 			fail_count++;
 			infostream << "get_biome_list: failed to get biome '"
-				   << (lua_isstring(L, -1) ? lua_tostring(L, -1) : "")
-				   << "'" << std::endl;
+				<< (lua_isstring(L, -1) ? lua_tostring(L, -1) : "")
+				<< "'" << std::endl;
 			continue;
 		}
 
@@ -492,6 +499,7 @@ int ModApiMapgen::l_get_biome_id(lua_State *L)
 	return 1;
 }
 
+
 // get_biome_name(biome_id)
 // returns the biome name string
 int ModApiMapgen::l_get_biome_name(lua_State *L)
@@ -510,6 +518,7 @@ int ModApiMapgen::l_get_biome_name(lua_State *L)
 	return 1;
 }
 
+
 // get_heat(pos)
 // returns the heat at the position
 int ModApiMapgen::l_get_heat(lua_State *L)
@@ -522,11 +531,12 @@ int ModApiMapgen::l_get_heat(lua_State *L)
 	NoiseParams np_heat_blend;
 
 	MapSettingsManager *settingsmgr =
-			getServer(L)->getEmergeManager()->map_settings_mgr;
+		getServer(L)->getEmergeManager()->map_settings_mgr;
 
-	if (!settingsmgr->getMapSettingNoiseParams("mg_biome_np_heat", &np_heat) ||
-			!settingsmgr->getMapSettingNoiseParams(
-					"mg_biome_np_heat_blend", &np_heat_blend))
+	if (!settingsmgr->getMapSettingNoiseParams("mg_biome_np_heat",
+			&np_heat) ||
+			!settingsmgr->getMapSettingNoiseParams("mg_biome_np_heat_blend",
+			&np_heat_blend))
 		return 0;
 
 	std::string value;
@@ -547,6 +557,7 @@ int ModApiMapgen::l_get_heat(lua_State *L)
 	return 1;
 }
 
+
 // get_humidity(pos)
 // returns the humidity at the position
 int ModApiMapgen::l_get_humidity(lua_State *L)
@@ -559,12 +570,12 @@ int ModApiMapgen::l_get_humidity(lua_State *L)
 	NoiseParams np_humidity_blend;
 
 	MapSettingsManager *settingsmgr =
-			getServer(L)->getEmergeManager()->map_settings_mgr;
+		getServer(L)->getEmergeManager()->map_settings_mgr;
 
-	if (!settingsmgr->getMapSettingNoiseParams(
-			    "mg_biome_np_humidity", &np_humidity) ||
-			!settingsmgr->getMapSettingNoiseParams(
-					"mg_biome_np_humidity_blend", &np_humidity_blend))
+	if (!settingsmgr->getMapSettingNoiseParams("mg_biome_np_humidity",
+			&np_humidity) ||
+			!settingsmgr->getMapSettingNoiseParams("mg_biome_np_humidity_blend",
+			&np_humidity_blend))
 		return 0;
 
 	std::string value;
@@ -578,13 +589,14 @@ int ModApiMapgen::l_get_humidity(lua_State *L)
 	if (!bmgr)
 		return 0;
 
-	float humidity = bmgr->getHumidityAtPosOriginal(
-			pos, np_humidity, np_humidity_blend, seed);
+	float humidity = bmgr->getHumidityAtPosOriginal(pos, np_humidity,
+		np_humidity_blend, seed);
 
 	lua_pushnumber(L, humidity);
 
 	return 1;
 }
+
 
 // get_biome_data(pos)
 // returns a table containing the biome id, heat and humidity at the position
@@ -600,15 +612,16 @@ int ModApiMapgen::l_get_biome_data(lua_State *L)
 	NoiseParams np_humidity_blend;
 
 	MapSettingsManager *settingsmgr =
-			getServer(L)->getEmergeManager()->map_settings_mgr;
+		getServer(L)->getEmergeManager()->map_settings_mgr;
 
-	if (!settingsmgr->getMapSettingNoiseParams("mg_biome_np_heat", &np_heat) ||
-			!settingsmgr->getMapSettingNoiseParams(
-					"mg_biome_np_heat_blend", &np_heat_blend) ||
-			!settingsmgr->getMapSettingNoiseParams(
-					"mg_biome_np_humidity", &np_humidity) ||
-			!settingsmgr->getMapSettingNoiseParams(
-					"mg_biome_np_humidity_blend", &np_humidity_blend))
+	if (!settingsmgr->getMapSettingNoiseParams("mg_biome_np_heat",
+			&np_heat) ||
+			!settingsmgr->getMapSettingNoiseParams("mg_biome_np_heat_blend",
+			&np_heat_blend) ||
+			!settingsmgr->getMapSettingNoiseParams("mg_biome_np_humidity",
+			&np_humidity) ||
+			!settingsmgr->getMapSettingNoiseParams("mg_biome_np_humidity_blend",
+			&np_humidity_blend))
 		return 0;
 
 	std::string value;
@@ -626,8 +639,8 @@ int ModApiMapgen::l_get_biome_data(lua_State *L)
 	if (!heat)
 		return 0;
 
-	float humidity = bmgr->getHumidityAtPosOriginal(
-			pos, np_humidity, np_humidity_blend, seed);
+	float humidity = bmgr->getHumidityAtPosOriginal(pos, np_humidity,
+		np_humidity_blend, seed);
 	if (!humidity)
 		return 0;
 
@@ -648,6 +661,7 @@ int ModApiMapgen::l_get_biome_data(lua_State *L)
 
 	return 1;
 }
+
 
 // get_mapgen_object(objectname)
 // returns the requested object used during map generation
@@ -742,7 +756,7 @@ int ModApiMapgen::l_get_mapgen_object(lua_State *L)
 		return 1;
 	}
 	case MGOBJ_GENNOTIFY: {
-		std::map<std::string, std::vector<v3s16>> event_map;
+		std::map<std::string, std::vector<v3s16> >event_map;
 
 		mg->gennotify.getEvents(event_map);
 
@@ -765,6 +779,7 @@ int ModApiMapgen::l_get_mapgen_object(lua_State *L)
 	return 0;
 }
 
+
 // get_spawn_level(x = num, z = num)
 int ModApiMapgen::l_get_spawn_level(lua_State *L)
 {
@@ -785,17 +800,18 @@ int ModApiMapgen::l_get_spawn_level(lua_State *L)
 	return 1;
 }
 
+
 int ModApiMapgen::l_get_mapgen_params(lua_State *L)
 {
 	NO_MAP_LOCK_REQUIRED;
 
 	log_deprecated(L, "get_mapgen_params is deprecated; "
-			  "use get_mapgen_setting instead");
+		"use get_mapgen_setting instead");
 
 	std::string value;
 
 	MapSettingsManager *settingsmgr =
-			getServer(L)->getEmergeManager()->map_settings_mgr;
+		getServer(L)->getEmergeManager()->map_settings_mgr;
 
 	lua_newtable(L);
 
@@ -825,6 +841,7 @@ int ModApiMapgen::l_get_mapgen_params(lua_State *L)
 	return 1;
 }
 
+
 // set_mapgen_params(params)
 // set mapgen parameters
 int ModApiMapgen::l_set_mapgen_params(lua_State *L)
@@ -832,18 +849,17 @@ int ModApiMapgen::l_set_mapgen_params(lua_State *L)
 	NO_MAP_LOCK_REQUIRED;
 
 	log_deprecated(L, "set_mapgen_params is deprecated; "
-			  "use set_mapgen_setting instead");
+		"use set_mapgen_setting instead");
 
 	if (!lua_istable(L, 1))
 		return 0;
 
 	MapSettingsManager *settingsmgr =
-			getServer(L)->getEmergeManager()->map_settings_mgr;
+		getServer(L)->getEmergeManager()->map_settings_mgr;
 
 	lua_getfield(L, 1, "mgname");
 	if (lua_isstring(L, -1))
-		settingsmgr->setMapSetting(
-				"mg_name", readParam<std::string>(L, -1), true);
+		settingsmgr->setMapSetting("mg_name", readParam<std::string>(L, -1), true);
 
 	lua_getfield(L, 1, "seed");
 	if (lua_isnumber(L, -1))
@@ -851,21 +867,18 @@ int ModApiMapgen::l_set_mapgen_params(lua_State *L)
 
 	lua_getfield(L, 1, "water_level");
 	if (lua_isnumber(L, -1))
-		settingsmgr->setMapSetting(
-				"water_level", readParam<std::string>(L, -1), true);
+		settingsmgr->setMapSetting("water_level", readParam<std::string>(L, -1), true);
 
 	lua_getfield(L, 1, "chunksize");
 	if (lua_isnumber(L, -1))
-		settingsmgr->setMapSetting(
-				"chunksize", readParam<std::string>(L, -1), true);
+		settingsmgr->setMapSetting("chunksize", readParam<std::string>(L, -1), true);
 
 	warn_if_field_exists(L, 1, "flagmask",
-			"Obsolete: flags field now includes unset flags.");
+		"Obsolete: flags field now includes unset flags.");
 
 	lua_getfield(L, 1, "flags");
 	if (lua_isstring(L, -1))
-		settingsmgr->setMapSetting(
-				"mg_flags", readParam<std::string>(L, -1), true);
+		settingsmgr->setMapSetting("mg_flags", readParam<std::string>(L, -1), true);
 
 	return 0;
 }
@@ -877,7 +890,7 @@ int ModApiMapgen::l_get_mapgen_setting(lua_State *L)
 
 	std::string value;
 	MapSettingsManager *settingsmgr =
-			getServer(L)->getEmergeManager()->map_settings_mgr;
+		getServer(L)->getEmergeManager()->map_settings_mgr;
 
 	const char *name = luaL_checkstring(L, 1);
 	if (!settingsmgr->getMapSetting(name, &value))
@@ -894,7 +907,7 @@ int ModApiMapgen::l_get_mapgen_setting_noiseparams(lua_State *L)
 
 	NoiseParams np;
 	MapSettingsManager *settingsmgr =
-			getServer(L)->getEmergeManager()->map_settings_mgr;
+		getServer(L)->getEmergeManager()->map_settings_mgr;
 
 	const char *name = luaL_checkstring(L, 1);
 	if (!settingsmgr->getMapSettingNoiseParams(name, &np))
@@ -911,19 +924,20 @@ int ModApiMapgen::l_set_mapgen_setting(lua_State *L)
 	NO_MAP_LOCK_REQUIRED;
 
 	MapSettingsManager *settingsmgr =
-			getServer(L)->getEmergeManager()->map_settings_mgr;
+		getServer(L)->getEmergeManager()->map_settings_mgr;
 
-	const char *name = luaL_checkstring(L, 1);
-	const char *value = luaL_checkstring(L, 2);
+	const char *name   = luaL_checkstring(L, 1);
+	const char *value  = luaL_checkstring(L, 2);
 	bool override_meta = readParam<bool>(L, 3, false);
 
 	if (!settingsmgr->setMapSetting(name, value, override_meta)) {
-		errorstream << "set_mapgen_setting: cannot set '" << name
-			    << "' after initialization" << std::endl;
+		errorstream << "set_mapgen_setting: cannot set '"
+			<< name << "' after initialization" << std::endl;
 	}
 
 	return 0;
 }
+
 
 // set_mapgen_setting_noiseparams(name, noiseparams, set_default)
 // set mapgen config values for noise parameters
@@ -932,26 +946,27 @@ int ModApiMapgen::l_set_mapgen_setting_noiseparams(lua_State *L)
 	NO_MAP_LOCK_REQUIRED;
 
 	MapSettingsManager *settingsmgr =
-			getServer(L)->getEmergeManager()->map_settings_mgr;
+		getServer(L)->getEmergeManager()->map_settings_mgr;
 
 	const char *name = luaL_checkstring(L, 1);
 
 	NoiseParams np;
 	if (!read_noiseparams(L, 2, &np)) {
 		errorstream << "set_mapgen_setting_noiseparams: cannot set '" << name
-			    << "'; invalid noiseparams table" << std::endl;
+			<< "'; invalid noiseparams table" << std::endl;
 		return 0;
 	}
 
 	bool override_meta = readParam<bool>(L, 3, false);
 
 	if (!settingsmgr->setMapSettingNoiseParams(name, &np, override_meta)) {
-		errorstream << "set_mapgen_setting_noiseparams: cannot set '" << name
-			    << "' after initialization" << std::endl;
+		errorstream << "set_mapgen_setting_noiseparams: cannot set '"
+			<< name << "' after initialization" << std::endl;
 	}
 
 	return 0;
 }
+
 
 // set_noiseparams(name, noiseparams, set_default)
 // set global config values for noise parameters
@@ -964,7 +979,7 @@ int ModApiMapgen::l_set_noiseparams(lua_State *L)
 	NoiseParams np;
 	if (!read_noiseparams(L, 2, &np)) {
 		errorstream << "set_noiseparams: cannot set '" << name
-			    << "'; invalid noiseparams table" << std::endl;
+			<< "'; invalid noiseparams table" << std::endl;
 		return 0;
 	}
 
@@ -974,6 +989,7 @@ int ModApiMapgen::l_set_noiseparams(lua_State *L)
 
 	return 0;
 }
+
 
 // get_noiseparams(name)
 int ModApiMapgen::l_get_noiseparams(lua_State *L)
@@ -989,6 +1005,7 @@ int ModApiMapgen::l_get_noiseparams(lua_State *L)
 	push_noiseparams(L, &np);
 	return 1;
 }
+
 
 // set_gen_notify(flags, {deco_id_table})
 int ModApiMapgen::l_set_gen_notify(lua_State *L)
@@ -1007,14 +1024,14 @@ int ModApiMapgen::l_set_gen_notify(lua_State *L)
 		lua_pushnil(L);
 		while (lua_next(L, 2)) {
 			if (lua_isnumber(L, -1))
-				emerge->gen_notify_on_deco_ids.insert(
-						(u32)lua_tonumber(L, -1));
+				emerge->gen_notify_on_deco_ids.insert((u32)lua_tonumber(L, -1));
 			lua_pop(L, 1);
 		}
 	}
 
 	return 0;
 }
+
 
 // get_gen_notify()
 int ModApiMapgen::l_get_gen_notify(lua_State *L)
@@ -1023,7 +1040,7 @@ int ModApiMapgen::l_get_gen_notify(lua_State *L)
 
 	EmergeManager *emerge = getServer(L)->getEmergeManager();
 	push_flags_string(L, flagdesc_gennotify, emerge->gen_notify_on,
-			emerge->gen_notify_on);
+		emerge->gen_notify_on);
 
 	lua_newtable(L);
 	int i = 1;
@@ -1033,6 +1050,7 @@ int ModApiMapgen::l_get_gen_notify(lua_State *L)
 	}
 	return 2;
 }
+
 
 // get_decoration_id(decoration_name)
 // returns the decoration ID as used in gennotify
@@ -1045,7 +1063,7 @@ int ModApiMapgen::l_get_decoration_id(lua_State *L)
 		return 0;
 
 	const DecorationManager *dmgr =
-			getServer(L)->getEmergeManager()->getDecorationManager();
+		getServer(L)->getEmergeManager()->getDecorationManager();
 
 	if (!dmgr)
 		return 0;
@@ -1059,6 +1077,7 @@ int ModApiMapgen::l_get_decoration_id(lua_State *L)
 
 	return 1;
 }
+
 
 // register_biome({lots of stuff})
 int ModApiMapgen::l_register_biome(lua_State *L)
@@ -1085,6 +1104,7 @@ int ModApiMapgen::l_register_biome(lua_State *L)
 	return 1;
 }
 
+
 // register_decoration({lots of stuff})
 int ModApiMapgen::l_register_decoration(lua_State *L)
 {
@@ -1093,33 +1113,32 @@ int ModApiMapgen::l_register_decoration(lua_State *L)
 	int index = 1;
 	luaL_checktype(L, index, LUA_TTABLE);
 
-	const NodeDefManager *ndef = getServer(L)->getNodeDefManager();
+	const NodeDefManager *ndef      = getServer(L)->getNodeDefManager();
 	EmergeManager *emerge = getServer(L)->getEmergeManager();
 	DecorationManager *decomgr = emerge->getWritableDecorationManager();
-	BiomeManager *biomemgr = emerge->getWritableBiomeManager();
+	BiomeManager *biomemgr     = emerge->getWritableBiomeManager();
 	SchematicManager *schemmgr = emerge->getWritableSchematicManager();
 
-	enum DecorationType decotype = (DecorationType)getenumfield(
-			L, index, "deco_type", es_DecorationType, -1);
+	enum DecorationType decotype = (DecorationType)getenumfield(L, index,
+				"deco_type", es_DecorationType, -1);
 
 	Decoration *deco = decomgr->create(decotype);
 	if (!deco) {
 		errorstream << "register_decoration: decoration placement type "
-			    << decotype << " not implemented" << std::endl;
+			<< decotype << " not implemented" << std::endl;
 		return 0;
 	}
 
-	deco->name = getstringfield_default(L, index, "name", "");
-	deco->fill_ratio = getfloatfield_default(L, index, "fill_ratio", 0.02);
-	deco->y_min = getintfield_default(L, index, "y_min", -31000);
-	deco->y_max = getintfield_default(L, index, "y_max", 31000);
-	deco->nspawnby = getintfield_default(L, index, "num_spawn_by", -1);
+	deco->name           = getstringfield_default(L, index, "name", "");
+	deco->fill_ratio     = getfloatfield_default(L, index, "fill_ratio", 0.02);
+	deco->y_min          = getintfield_default(L, index, "y_min", -31000);
+	deco->y_max          = getintfield_default(L, index, "y_max", 31000);
+	deco->nspawnby       = getintfield_default(L, index, "num_spawn_by", -1);
 	deco->place_offset_y = getintfield_default(L, index, "place_offset_y", 0);
-	deco->sidelen = getintfield_default(L, index, "sidelen", 8);
+	deco->sidelen        = getintfield_default(L, index, "sidelen", 8);
 	if (deco->sidelen <= 0) {
 		errorstream << "register_decoration: sidelen must be "
-			       "greater than 0"
-			    << std::endl;
+			"greater than 0" << std::endl;
 		delete deco;
 		return 0;
 	}
@@ -1140,8 +1159,7 @@ int ModApiMapgen::l_register_decoration(lua_State *L)
 	//// Get biomes associated with this decoration (if any)
 	lua_getfield(L, index, "biomes");
 	if (get_biome_list(L, -1, biomemgr, &deco->biomes))
-		infostream << "register_decoration: couldn't get all biomes "
-			   << std::endl;
+		infostream << "register_decoration: couldn't get all biomes " << std::endl;
 	lua_pop(L, 1);
 
 	//// Get node name(s) to 'spawn by'
@@ -1149,8 +1167,7 @@ int ModApiMapgen::l_register_decoration(lua_State *L)
 	deco->m_nnlistsizes.push_back(nnames);
 	if (nnames == 0 && deco->nspawnby != -1) {
 		errorstream << "register_decoration: no spawn_by nodes defined,"
-			       " but num_spawn_by specified"
-			    << std::endl;
+			" but num_spawn_by specified" << std::endl;
 	}
 
 	//// Handle decoration type-specific parameters
@@ -1183,19 +1200,19 @@ int ModApiMapgen::l_register_decoration(lua_State *L)
 	return 1;
 }
 
+
 bool read_deco_simple(lua_State *L, DecoSimple *deco)
 {
 	int index = 1;
 	int param2;
 	int param2_max;
 
-	deco->deco_height = getintfield_default(L, index, "height", 1);
+	deco->deco_height     = getintfield_default(L, index, "height", 1);
 	deco->deco_height_max = getintfield_default(L, index, "height_max", 0);
 
 	if (deco->deco_height <= 0) {
 		errorstream << "register_decoration: simple decoration height"
-			       " must be greater than 0"
-			    << std::endl;
+			" must be greater than 0" << std::endl;
 		return false;
 	}
 
@@ -1204,8 +1221,7 @@ bool read_deco_simple(lua_State *L, DecoSimple *deco)
 
 	if (nnames == 0) {
 		errorstream << "register_decoration: no decoration nodes "
-			       "defined"
-			    << std::endl;
+			"defined" << std::endl;
 		return false;
 	}
 
@@ -1213,9 +1229,8 @@ bool read_deco_simple(lua_State *L, DecoSimple *deco)
 	param2_max = getintfield_default(L, index, "param2_max", 0);
 
 	if (param2 < 0 || param2 > 255 || param2_max < 0 || param2_max > 255) {
-		errorstream << "register_decoration: param2 or param2_max out of bounds "
-			       "(0-255)"
-			    << std::endl;
+		errorstream << "register_decoration: param2 or param2_max out of bounds (0-255)"
+			<< std::endl;
 		return false;
 	}
 
@@ -1225,12 +1240,13 @@ bool read_deco_simple(lua_State *L, DecoSimple *deco)
 	return true;
 }
 
+
 bool read_deco_schematic(lua_State *L, SchematicManager *schemmgr, DecoSchematic *deco)
 {
 	int index = 1;
 
-	deco->rotation = (Rotation)getenumfield(
-			L, index, "rotation", ModApiMapgen::es_Rotation, ROTATE_0);
+	deco->rotation = (Rotation)getenumfield(L, index, "rotation",
+		ModApiMapgen::es_Rotation, ROTATE_0);
 
 	StringMap replace_names;
 	lua_getfield(L, index, "replacements");
@@ -1246,6 +1262,7 @@ bool read_deco_schematic(lua_State *L, SchematicManager *schemmgr, DecoSchematic
 	return schem != NULL;
 }
 
+
 // register_ore({lots of stuff})
 int ModApiMapgen::l_register_ore(lua_State *L)
 {
@@ -1256,29 +1273,28 @@ int ModApiMapgen::l_register_ore(lua_State *L)
 
 	const NodeDefManager *ndef = getServer(L)->getNodeDefManager();
 	EmergeManager *emerge = getServer(L)->getEmergeManager();
-	BiomeManager *bmgr = emerge->getWritableBiomeManager();
-	OreManager *oremgr = emerge->getWritableOreManager();
+	BiomeManager *bmgr    = emerge->getWritableBiomeManager();
+	OreManager *oremgr    = emerge->getWritableOreManager();
 
-	enum OreType oretype = (OreType)getenumfield(
-			L, index, "ore_type", es_OreType, ORE_SCATTER);
+	enum OreType oretype = (OreType)getenumfield(L, index,
+				"ore_type", es_OreType, ORE_SCATTER);
 	Ore *ore = oremgr->create(oretype);
 	if (!ore) {
-		errorstream << "register_ore: ore_type " << oretype
-			    << " not implemented\n";
+		errorstream << "register_ore: ore_type " << oretype << " not implemented\n";
 		return 0;
 	}
 
-	ore->name = getstringfield_default(L, index, "name", "");
-	ore->ore_param2 = (u8)getintfield_default(L, index, "ore_param2", 0);
+	ore->name           = getstringfield_default(L, index, "name", "");
+	ore->ore_param2     = (u8)getintfield_default(L, index, "ore_param2", 0);
 	ore->clust_scarcity = getintfield_default(L, index, "clust_scarcity", 1);
 	ore->clust_num_ores = getintfield_default(L, index, "clust_num_ores", 1);
-	ore->clust_size = getintfield_default(L, index, "clust_size", 0);
-	ore->noise = NULL;
-	ore->flags = 0;
+	ore->clust_size     = getintfield_default(L, index, "clust_size", 0);
+	ore->noise          = NULL;
+	ore->flags          = 0;
 
 	//// Get noise_threshold
 	warn_if_field_exists(L, index, "noise_threshhold",
-			"Deprecated: new name is \"noise_threshold\".");
+		"Deprecated: new name is \"noise_threshold\".");
 
 	float nthresh;
 	if (!getfloatfield(L, index, "noise_threshold", nthresh) &&
@@ -1287,25 +1303,24 @@ int ModApiMapgen::l_register_ore(lua_State *L)
 	ore->nthresh = nthresh;
 
 	//// Get y_min/y_max
-	warn_if_field_exists(
-			L, index, "height_min", "Deprecated: new name is \"y_min\".");
-	warn_if_field_exists(
-			L, index, "height_max", "Deprecated: new name is \"y_max\".");
+	warn_if_field_exists(L, index, "height_min",
+		"Deprecated: new name is \"y_min\".");
+	warn_if_field_exists(L, index, "height_max",
+		"Deprecated: new name is \"y_max\".");
 
 	int ymin, ymax;
 	if (!getintfield(L, index, "y_min", ymin) &&
-			!getintfield(L, index, "height_min", ymin))
+		!getintfield(L, index, "height_min", ymin))
 		ymin = -31000;
 	if (!getintfield(L, index, "y_max", ymax) &&
-			!getintfield(L, index, "height_max", ymax))
+		!getintfield(L, index, "height_max", ymax))
 		ymax = 31000;
 	ore->y_min = ymin;
 	ore->y_max = ymax;
 
 	if (ore->clust_scarcity <= 0 || ore->clust_num_ores <= 0) {
 		errorstream << "register_ore: clust_scarcity and clust_num_ores"
-			       "must be greater than 0"
-			    << std::endl;
+			"must be greater than 0" << std::endl;
 		delete ore;
 		return 0;
 	}
@@ -1325,8 +1340,7 @@ int ModApiMapgen::l_register_ore(lua_State *L)
 		ore->flags |= OREFLAG_USE_NOISE;
 	} else if (ore->NEEDS_NOISE) {
 		errorstream << "register_ore: specified ore type requires valid "
-			       "'noise_params' parameter"
-			    << std::endl;
+			"'noise_params' parameter" << std::endl;
 		delete ore;
 		return 0;
 	}
@@ -1334,54 +1348,54 @@ int ModApiMapgen::l_register_ore(lua_State *L)
 
 	//// Get type-specific parameters
 	switch (oretype) {
-	case ORE_SHEET: {
-		OreSheet *oresheet = (OreSheet *)ore;
+		case ORE_SHEET: {
+			OreSheet *oresheet = (OreSheet *)ore;
 
-		oresheet->column_height_min =
-				getintfield_default(L, index, "column_height_min", 1);
-		oresheet->column_height_max = getintfield_default(
-				L, index, "column_height_max", ore->clust_size);
-		oresheet->column_midpoint_factor = getfloatfield_default(
-				L, index, "column_midpoint_factor", 0.5f);
+			oresheet->column_height_min = getintfield_default(L, index,
+				"column_height_min", 1);
+			oresheet->column_height_max = getintfield_default(L, index,
+				"column_height_max", ore->clust_size);
+			oresheet->column_midpoint_factor = getfloatfield_default(L, index,
+				"column_midpoint_factor", 0.5f);
 
-		break;
-	}
-	case ORE_PUFF: {
-		OrePuff *orepuff = (OrePuff *)ore;
+			break;
+		}
+		case ORE_PUFF: {
+			OrePuff *orepuff = (OrePuff *)ore;
 
-		lua_getfield(L, index, "np_puff_top");
-		read_noiseparams(L, -1, &orepuff->np_puff_top);
-		lua_pop(L, 1);
+			lua_getfield(L, index, "np_puff_top");
+			read_noiseparams(L, -1, &orepuff->np_puff_top);
+			lua_pop(L, 1);
 
-		lua_getfield(L, index, "np_puff_bottom");
-		read_noiseparams(L, -1, &orepuff->np_puff_bottom);
-		lua_pop(L, 1);
+			lua_getfield(L, index, "np_puff_bottom");
+			read_noiseparams(L, -1, &orepuff->np_puff_bottom);
+			lua_pop(L, 1);
 
-		break;
-	}
-	case ORE_VEIN: {
-		OreVein *orevein = (OreVein *)ore;
+			break;
+		}
+		case ORE_VEIN: {
+			OreVein *orevein = (OreVein *)ore;
 
-		orevein->random_factor =
-				getfloatfield_default(L, index, "random_factor", 1.f);
+			orevein->random_factor = getfloatfield_default(L, index,
+				"random_factor", 1.f);
 
-		break;
-	}
-	case ORE_STRATUM: {
-		OreStratum *orestratum = (OreStratum *)ore;
+			break;
+		}
+		case ORE_STRATUM: {
+			OreStratum *orestratum = (OreStratum *)ore;
 
-		lua_getfield(L, index, "np_stratum_thickness");
-		if (read_noiseparams(L, -1, &orestratum->np_stratum_thickness))
-			ore->flags |= OREFLAG_USE_NOISE2;
-		lua_pop(L, 1);
+			lua_getfield(L, index, "np_stratum_thickness");
+			if (read_noiseparams(L, -1, &orestratum->np_stratum_thickness))
+				ore->flags |= OREFLAG_USE_NOISE2;
+			lua_pop(L, 1);
 
-		orestratum->stratum_thickness =
-				getintfield_default(L, index, "stratum_thickness", 8);
+			orestratum->stratum_thickness = getintfield_default(L, index,
+				"stratum_thickness", 8);
 
-		break;
-	}
-	default:
-		break;
+			break;
+		}
+		default:
+			break;
 	}
 
 	ObjDefHandle handle = oremgr->add(ore);
@@ -1401,19 +1415,21 @@ int ModApiMapgen::l_register_ore(lua_State *L)
 	return 1;
 }
 
+
 // register_schematic({schematic}, replacements={})
 int ModApiMapgen::l_register_schematic(lua_State *L)
 {
 	NO_MAP_LOCK_REQUIRED;
 
 	SchematicManager *schemmgr =
-			getServer(L)->getEmergeManager()->getWritableSchematicManager();
+		getServer(L)->getEmergeManager()->getWritableSchematicManager();
 
 	StringMap replace_names;
 	if (lua_istable(L, 2))
 		read_schematic_replacements(L, 2, &replace_names);
 
-	Schematic *schem = load_schematic(L, 1, schemmgr->getNodeDef(), &replace_names);
+	Schematic *schem = load_schematic(L, 1, schemmgr->getNodeDef(),
+		&replace_names);
 	if (!schem)
 		return 0;
 
@@ -1427,15 +1443,18 @@ int ModApiMapgen::l_register_schematic(lua_State *L)
 	return 1;
 }
 
+
 // clear_registered_biomes()
 int ModApiMapgen::l_clear_registered_biomes(lua_State *L)
 {
 	NO_MAP_LOCK_REQUIRED;
 
-	BiomeManager *bmgr = getServer(L)->getEmergeManager()->getWritableBiomeManager();
+	BiomeManager *bmgr =
+		getServer(L)->getEmergeManager()->getWritableBiomeManager();
 	bmgr->clear();
 	return 0;
 }
+
 
 // clear_registered_decorations()
 int ModApiMapgen::l_clear_registered_decorations(lua_State *L)
@@ -1443,20 +1462,23 @@ int ModApiMapgen::l_clear_registered_decorations(lua_State *L)
 	NO_MAP_LOCK_REQUIRED;
 
 	DecorationManager *dmgr =
-			getServer(L)->getEmergeManager()->getWritableDecorationManager();
+		getServer(L)->getEmergeManager()->getWritableDecorationManager();
 	dmgr->clear();
 	return 0;
 }
+
 
 // clear_registered_ores()
 int ModApiMapgen::l_clear_registered_ores(lua_State *L)
 {
 	NO_MAP_LOCK_REQUIRED;
 
-	OreManager *omgr = getServer(L)->getEmergeManager()->getWritableOreManager();
+	OreManager *omgr =
+		getServer(L)->getEmergeManager()->getWritableOreManager();
 	omgr->clear();
 	return 0;
 }
+
 
 // clear_registered_schematics()
 int ModApiMapgen::l_clear_registered_schematics(lua_State *L)
@@ -1464,10 +1486,11 @@ int ModApiMapgen::l_clear_registered_schematics(lua_State *L)
 	NO_MAP_LOCK_REQUIRED;
 
 	SchematicManager *smgr =
-			getServer(L)->getEmergeManager()->getWritableSchematicManager();
+		getServer(L)->getEmergeManager()->getWritableSchematicManager();
 	smgr->clear();
 	return 0;
 }
+
 
 // generate_ores(vm, p1, p2, [ore_id])
 int ModApiMapgen::l_generate_ores(lua_State *L)
@@ -1478,15 +1501,13 @@ int ModApiMapgen::l_generate_ores(lua_State *L)
 
 	Mapgen mg;
 	mg.seed = emerge->mgparams->seed;
-	mg.vm = LuaVoxelManip::checkobject(L, 1)->vm;
+	mg.vm   = LuaVoxelManip::checkobject(L, 1)->vm;
 	mg.ndef = getServer(L)->getNodeDefManager();
 
-	v3s16 pmin = lua_istable(L, 2) ? check_v3s16(L, 2)
-				       : mg.vm->m_area.MinEdge +
-							 v3s16(1, 1, 1) * MAP_BLOCKSIZE;
-	v3s16 pmax = lua_istable(L, 3) ? check_v3s16(L, 3)
-				       : mg.vm->m_area.MaxEdge -
-							 v3s16(1, 1, 1) * MAP_BLOCKSIZE;
+	v3s16 pmin = lua_istable(L, 2) ? check_v3s16(L, 2) :
+			mg.vm->m_area.MinEdge + v3s16(1,1,1) * MAP_BLOCKSIZE;
+	v3s16 pmax = lua_istable(L, 3) ? check_v3s16(L, 3) :
+			mg.vm->m_area.MaxEdge - v3s16(1,1,1) * MAP_BLOCKSIZE;
 	sortBoxVerticies(pmin, pmax);
 
 	u32 blockseed = Mapgen::getBlockSeed(pmin, mg.seed);
@@ -1495,6 +1516,7 @@ int ModApiMapgen::l_generate_ores(lua_State *L)
 
 	return 0;
 }
+
 
 // generate_decorations(vm, p1, p2, [deco_id])
 int ModApiMapgen::l_generate_decorations(lua_State *L)
@@ -1505,15 +1527,13 @@ int ModApiMapgen::l_generate_decorations(lua_State *L)
 
 	Mapgen mg;
 	mg.seed = emerge->mgparams->seed;
-	mg.vm = LuaVoxelManip::checkobject(L, 1)->vm;
+	mg.vm   = LuaVoxelManip::checkobject(L, 1)->vm;
 	mg.ndef = getServer(L)->getNodeDefManager();
 
-	v3s16 pmin = lua_istable(L, 2) ? check_v3s16(L, 2)
-				       : mg.vm->m_area.MinEdge +
-							 v3s16(1, 1, 1) * MAP_BLOCKSIZE;
-	v3s16 pmax = lua_istable(L, 3) ? check_v3s16(L, 3)
-				       : mg.vm->m_area.MaxEdge -
-							 v3s16(1, 1, 1) * MAP_BLOCKSIZE;
+	v3s16 pmin = lua_istable(L, 2) ? check_v3s16(L, 2) :
+			mg.vm->m_area.MinEdge + v3s16(1,1,1) * MAP_BLOCKSIZE;
+	v3s16 pmax = lua_istable(L, 3) ? check_v3s16(L, 3) :
+			mg.vm->m_area.MaxEdge - v3s16(1,1,1) * MAP_BLOCKSIZE;
 	sortBoxVerticies(pmin, pmax);
 
 	u32 blockseed = Mapgen::getBlockSeed(pmin, mg.seed);
@@ -1522,6 +1542,7 @@ int ModApiMapgen::l_generate_decorations(lua_State *L)
 
 	return 0;
 }
+
 
 // create_schematic(p1, p2, probability_list, filename, y_slice_prob_list)
 int ModApiMapgen::l_create_schematic(lua_State *L)
@@ -1540,7 +1561,7 @@ int ModApiMapgen::l_create_schematic(lua_State *L)
 	v3s16 p2 = check_v3s16(L, 2);
 	sortBoxVerticies(p1, p2);
 
-	std::vector<std::pair<v3s16, u8>> prob_list;
+	std::vector<std::pair<v3s16, u8> > prob_list;
 	if (lua_istable(L, 3)) {
 		lua_pushnil(L);
 		while (lua_next(L, 3)) {
@@ -1549,8 +1570,7 @@ int ModApiMapgen::l_create_schematic(lua_State *L)
 				v3s16 pos = check_v3s16(L, -1);
 				lua_pop(L, 1);
 
-				u8 prob = getintfield_default(
-						L, -1, "prob", MTSCHEM_PROB_ALWAYS);
+				u8 prob = getintfield_default(L, -1, "prob", MTSCHEM_PROB_ALWAYS);
 				prob_list.emplace_back(pos, prob);
 			}
 
@@ -1558,14 +1578,13 @@ int ModApiMapgen::l_create_schematic(lua_State *L)
 		}
 	}
 
-	std::vector<std::pair<s16, u8>> slice_prob_list;
+	std::vector<std::pair<s16, u8> > slice_prob_list;
 	if (lua_istable(L, 5)) {
 		lua_pushnil(L);
 		while (lua_next(L, 5)) {
 			if (lua_istable(L, -1)) {
 				s16 ypos = getintfield_default(L, -1, "ypos", 0);
-				u8 prob = getintfield_default(
-						L, -1, "prob", MTSCHEM_PROB_ALWAYS);
+				u8 prob  = getintfield_default(L, -1, "prob", MTSCHEM_PROB_ALWAYS);
 				slice_prob_list.emplace_back(ypos, prob);
 			}
 
@@ -1575,20 +1594,20 @@ int ModApiMapgen::l_create_schematic(lua_State *L)
 
 	if (!schem.getSchematicFromMap(map, p1, p2)) {
 		errorstream << "create_schematic: failed to get schematic "
-			       "from map"
-			    << std::endl;
+			"from map" << std::endl;
 		return 0;
 	}
 
 	schem.applyProbabilities(p1, &prob_list, &slice_prob_list);
 
 	schem.saveSchematicToFile(filename, ndef);
-	actionstream << "create_schematic: saved schematic file '" << filename << "'."
-		     << std::endl;
+	actionstream << "create_schematic: saved schematic file '"
+		<< filename << "'." << std::endl;
 
 	lua_pushboolean(L, true);
 	return 1;
 }
+
 
 // place_schematic(p, schematic, rotation,
 //     replacements, force_placement, flagstring)
@@ -1637,6 +1656,7 @@ int ModApiMapgen::l_place_schematic(lua_State *L)
 	return 1;
 }
 
+
 // place_schematic_on_vmanip(vm, p, schematic, rotation,
 //     replacements, force_placement, flagstring)
 int ModApiMapgen::l_place_schematic_on_vmanip(lua_State *L)
@@ -1679,19 +1699,19 @@ int ModApiMapgen::l_place_schematic_on_vmanip(lua_State *L)
 	read_flags(L, 7, flagdesc_deco, &flags, NULL);
 
 	bool schematic_did_fit = schem->placeOnVManip(
-			vm, p, flags, (Rotation)rot, force_placement);
+		vm, p, flags, (Rotation)rot, force_placement);
 
 	lua_pushboolean(L, schematic_did_fit);
 	return 1;
 }
+
 
 // serialize_schematic(schematic, format, options={...})
 int ModApiMapgen::l_serialize_schematic(lua_State *L)
 {
 	NO_MAP_LOCK_REQUIRED;
 
-	const SchematicManager *schemmgr =
-			getServer(L)->getEmergeManager()->getSchematicManager();
+	const SchematicManager *schemmgr = getServer(L)->getEmergeManager()->getSchematicManager();
 
 	//// Read options
 	bool use_comments = getboolfield_default(L, 3, "lua_use_comments", false);
@@ -1705,8 +1725,7 @@ int ModApiMapgen::l_serialize_schematic(lua_State *L)
 		was_loaded = true;
 	}
 	if (!schem) {
-		errorstream << "serialize_schematic: failed to get schematic"
-			    << std::endl;
+		errorstream << "serialize_schematic: failed to get schematic" << std::endl;
 		return 0;
 	}
 
@@ -1723,8 +1742,8 @@ int ModApiMapgen::l_serialize_schematic(lua_State *L)
 		schem->serializeToMts(&os, schem->m_nodenames);
 		break;
 	case SCHEM_FMT_LUA:
-		schem->serializeToLua(
-				&os, schem->m_nodenames, use_comments, indent_spaces);
+		schem->serializeToLua(&os, schem->m_nodenames,
+			use_comments, indent_spaces);
 		break;
 	default:
 		return 0;
@@ -1744,11 +1763,10 @@ int ModApiMapgen::l_read_schematic(lua_State *L)
 	NO_MAP_LOCK_REQUIRED;
 
 	const SchematicManager *schemmgr =
-			getServer(L)->getEmergeManager()->getSchematicManager();
+		getServer(L)->getEmergeManager()->getSchematicManager();
 
 	//// Read options
-	std::string write_yslice =
-			getstringfield_default(L, 2, "write_yslice_prob", "all");
+	std::string write_yslice = getstringfield_default(L, 2, "write_yslice_prob", "all");
 
 	//// Get schematic
 	bool was_loaded = false;
@@ -1794,7 +1812,7 @@ int ModApiMapgen::l_read_schematic(lua_State *L)
 	lua_createtable(L, numnodes, 0); // data table
 	for (u32 i = 0; i < numnodes; ++i) {
 		MapNode node = schem->schemdata[i];
-		u8 probability = node.param1 & MTSCHEM_PROB_MASK;
+		u8 probability   = node.param1 & MTSCHEM_PROB_MASK;
 		bool force_place = node.param1 & MTSCHEM_FORCE_PLACE;
 		lua_createtable(L, 0, force_place ? 4 : 3);
 		lua_pushstring(L, names[schem->schemdata[i].getContent()].c_str());
@@ -1816,6 +1834,7 @@ int ModApiMapgen::l_read_schematic(lua_State *L)
 
 	return 1;
 }
+
 
 void ModApiMapgen::Initialize(lua_State *L, int top)
 {

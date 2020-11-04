@@ -118,8 +118,7 @@ public:
 	}
 
 	inline static void draw_scene(video::SColor skycolor, bool show_hud,
-			bool show_minimap, bool draw_wield_tool, bool draw_crosshair,
-			bool draw_tracers, bool draw_esp)
+			bool show_minimap, bool draw_wield_tool, bool draw_crosshair, bool draw_tracers, bool draw_esp)
 	{
 		s_singleton->_draw_scene(skycolor, show_hud, show_minimap,
 				draw_wield_tool, draw_crosshair, draw_tracers, draw_esp);
@@ -150,8 +149,7 @@ private:
 			bool clouds = true);
 
 	void _draw_scene(video::SColor skycolor, bool show_hud, bool show_minimap,
-			bool draw_wield_tool, bool draw_crosshair, bool draw_tracers,
-			bool draw_esp);
+			bool draw_wield_tool, bool draw_crosshair, bool draw_tracers, bool draw_esp);
 
 	void _initialize(Client *client, Hud *hud);
 

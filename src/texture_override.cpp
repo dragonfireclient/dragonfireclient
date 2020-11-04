@@ -42,9 +42,9 @@ TextureOverrideSource::TextureOverrideSource(std::string filepath)
 		std::vector<std::string> splitted = str_split(line, ' ');
 		if (splitted.size() != 3) {
 			warningstream << filepath << ":" << line_index
-				      << " Syntax error in texture override \"" << line
-				      << "\": Expected 3 arguments, got "
-				      << splitted.size() << std::endl;
+					<< " Syntax error in texture override \"" << line
+					<< "\": Expected 3 arguments, got " << splitted.size()
+					<< std::endl;
 			continue;
 		}
 
@@ -56,41 +56,31 @@ TextureOverrideSource::TextureOverrideSource(std::string filepath)
 		std::vector<std::string> targets = str_split(splitted[1], ',');
 		for (const std::string &target : targets) {
 			if (target == "top")
-				texture_override.target |=
-						static_cast<u8>(OverrideTarget::TOP);
+				texture_override.target |= static_cast<u8>(OverrideTarget::TOP);
 			else if (target == "bottom")
-				texture_override.target |=
-						static_cast<u8>(OverrideTarget::BOTTOM);
+				texture_override.target |= static_cast<u8>(OverrideTarget::BOTTOM);
 			else if (target == "left")
-				texture_override.target |=
-						static_cast<u8>(OverrideTarget::LEFT);
+				texture_override.target |= static_cast<u8>(OverrideTarget::LEFT);
 			else if (target == "right")
-				texture_override.target |=
-						static_cast<u8>(OverrideTarget::RIGHT);
+				texture_override.target |= static_cast<u8>(OverrideTarget::RIGHT);
 			else if (target == "front")
-				texture_override.target |=
-						static_cast<u8>(OverrideTarget::FRONT);
+				texture_override.target |= static_cast<u8>(OverrideTarget::FRONT);
 			else if (target == "back")
-				texture_override.target |=
-						static_cast<u8>(OverrideTarget::BACK);
+				texture_override.target |= static_cast<u8>(OverrideTarget::BACK);
 			else if (target == "inventory")
-				texture_override.target |= static_cast<u8>(
-						OverrideTarget::INVENTORY);
+				texture_override.target |= static_cast<u8>(OverrideTarget::INVENTORY);
 			else if (target == "wield")
-				texture_override.target |=
-						static_cast<u8>(OverrideTarget::WIELD);
+				texture_override.target |= static_cast<u8>(OverrideTarget::WIELD);
 			else if (target == "sides")
-				texture_override.target |=
-						static_cast<u8>(OverrideTarget::SIDES);
+				texture_override.target |= static_cast<u8>(OverrideTarget::SIDES);
 			else if (target == "all" || target == "*")
-				texture_override.target |= static_cast<u8>(
-						OverrideTarget::ALL_FACES);
+				texture_override.target |= static_cast<u8>(OverrideTarget::ALL_FACES);
 			else {
 				// Report invalid target
 				warningstream << filepath << ":" << line_index
-					      << " Syntax error in texture override \""
-					      << line << "\": Unknown target \"" << target
-					      << "\"" << std::endl;
+						<< " Syntax error in texture override \"" << line
+						<< "\": Unknown target \"" << target << "\""
+						<< std::endl;
 			}
 		}
 

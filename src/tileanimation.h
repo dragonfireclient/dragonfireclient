@@ -44,8 +44,8 @@ struct TileAnimationParams
 		} vertical_frames;
 		struct
 		{
-			int frames_w;	    // number of frames left-to-right
-			int frames_h;	    // number of frames top-to-bottom
+			int frames_w;       // number of frames left-to-right
+			int frames_h;       // number of frames top-to-bottom
 			float frame_length; // seconds
 		} sheet_2d;
 	};

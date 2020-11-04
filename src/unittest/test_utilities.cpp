@@ -24,8 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "util/numeric.h"
 #include "util/string.h"
 
-class TestUtilities : public TestBase
-{
+class TestUtilities : public TestBase {
 public:
 	TestUtilities() { TestManager::registerTestModule(this); }
 	const char *getName() { return "TestUtilities"; }
@@ -102,6 +101,7 @@ inline float ref_WrapDegrees180(float f)
 	return value - 180;
 }
 
+
 inline float ref_WrapDegrees_0_360(float f)
 {
 	// This is a slower alternative to the wrapDegrees_0_360() function;
@@ -112,65 +112,66 @@ inline float ref_WrapDegrees_0_360(float f)
 	return value < 0 ? value + 360 : value;
 }
 
-void TestUtilities::testAngleWrapAround()
-{
-	UASSERT(fabs(modulo360f(100.0) - 100.0) < 0.001);
-	UASSERT(fabs(modulo360f(720.5) - 0.5) < 0.001);
-	UASSERT(fabs(modulo360f(-0.5) - (-0.5)) < 0.001);
-	UASSERT(fabs(modulo360f(-365.5) - (-5.5)) < 0.001);
 
-	for (float f = -720; f <= -360; f += 0.25) {
-		UASSERT(std::fabs(modulo360f(f) - modulo360f(f + 360)) < 0.001);
-	}
+void TestUtilities::testAngleWrapAround() {
+    UASSERT(fabs(modulo360f(100.0) - 100.0) < 0.001);
+    UASSERT(fabs(modulo360f(720.5) - 0.5) < 0.001);
+    UASSERT(fabs(modulo360f(-0.5) - (-0.5)) < 0.001);
+    UASSERT(fabs(modulo360f(-365.5) - (-5.5)) < 0.001);
 
-	for (float f = -1440; f <= 1440; f += 0.25) {
-		UASSERT(std::fabs(modulo360f(f) - fmodf(f, 360)) < 0.001);
-		UASSERT(std::fabs(wrapDegrees_180(f) - ref_WrapDegrees180(f)) < 0.001);
-		UASSERT(std::fabs(wrapDegrees_0_360(f) - ref_WrapDegrees_0_360(f)) <
-				0.001);
-		UASSERT(wrapDegrees_0_360(std::fabs(wrapDegrees_180(f) -
-						    wrapDegrees_0_360(f))) < 0.001);
-	}
+    for (float f = -720; f <= -360; f += 0.25) {
+        UASSERT(std::fabs(modulo360f(f) - modulo360f(f + 360)) < 0.001);
+    }
+
+    for (float f = -1440; f <= 1440; f += 0.25) {
+        UASSERT(std::fabs(modulo360f(f) - fmodf(f, 360)) < 0.001);
+        UASSERT(std::fabs(wrapDegrees_180(f) - ref_WrapDegrees180(f)) < 0.001);
+        UASSERT(std::fabs(wrapDegrees_0_360(f) - ref_WrapDegrees_0_360(f)) < 0.001);
+        UASSERT(wrapDegrees_0_360(
+                std::fabs(wrapDegrees_180(f) - wrapDegrees_0_360(f))) < 0.001);
+    }
+
 }
 
 void TestUtilities::testWrapDegrees_0_360_v3f()
 {
-	// only x test with little step
+    // only x test with little step
 	for (float x = -720.f; x <= 720; x += 0.05) {
-		v3f r = wrapDegrees_0_360_v3f(v3f(x, 0, 0));
-		UASSERT(r.X >= 0.0f && r.X < 360.0f)
-		UASSERT(r.Y == 0.0f)
-		UASSERT(r.Z == 0.0f)
+        v3f r = wrapDegrees_0_360_v3f(v3f(x, 0, 0));
+        UASSERT(r.X >= 0.0f && r.X < 360.0f)
+        UASSERT(r.Y == 0.0f)
+        UASSERT(r.Z == 0.0f)
+    }
+
+    // only y test with little step
+    for (float y = -720.f; y <= 720; y += 0.05) {
+        v3f r = wrapDegrees_0_360_v3f(v3f(0, y, 0));
+        UASSERT(r.X == 0.0f)
+        UASSERT(r.Y >= 0.0f && r.Y < 360.0f)
+        UASSERT(r.Z == 0.0f)
+    }
+
+    // only z test with little step
+    for (float z = -720.f; z <= 720; z += 0.05) {
+        v3f r = wrapDegrees_0_360_v3f(v3f(0, 0, z));
+        UASSERT(r.X == 0.0f)
+        UASSERT(r.Y == 0.0f)
+        UASSERT(r.Z >= 0.0f && r.Z < 360.0f)
 	}
 
-	// only y test with little step
-	for (float y = -720.f; y <= 720; y += 0.05) {
-		v3f r = wrapDegrees_0_360_v3f(v3f(0, y, 0));
-		UASSERT(r.X == 0.0f)
-		UASSERT(r.Y >= 0.0f && r.Y < 360.0f)
-		UASSERT(r.Z == 0.0f)
-	}
-
-	// only z test with little step
-	for (float z = -720.f; z <= 720; z += 0.05) {
-		v3f r = wrapDegrees_0_360_v3f(v3f(0, 0, z));
-		UASSERT(r.X == 0.0f)
-		UASSERT(r.Y == 0.0f)
-		UASSERT(r.Z >= 0.0f && r.Z < 360.0f)
-	}
-
-	// test the whole coordinate translation
-	for (float x = -720.f; x <= 720; x += 2.5) {
-		for (float y = -720.f; y <= 720; y += 2.5) {
-			for (float z = -720.f; z <= 720; z += 2.5) {
-				v3f r = wrapDegrees_0_360_v3f(v3f(x, y, z));
-				UASSERT(r.X >= 0.0f && r.X < 360.0f)
-				UASSERT(r.Y >= 0.0f && r.Y < 360.0f)
-				UASSERT(r.Z >= 0.0f && r.Z < 360.0f)
-			}
-		}
-	}
+    // test the whole coordinate translation
+    for (float x = -720.f; x <= 720; x += 2.5) {
+        for (float y = -720.f; y <= 720; y += 2.5) {
+            for (float z = -720.f; z <= 720; z += 2.5) {
+                v3f r = wrapDegrees_0_360_v3f(v3f(x, y, z));
+                UASSERT(r.X >= 0.0f && r.X < 360.0f)
+                UASSERT(r.Y >= 0.0f && r.Y < 360.0f)
+                UASSERT(r.Z >= 0.0f && r.Z < 360.0f)
+            }
+        }
+    }
 }
+
 
 void TestUtilities::testLowercase()
 {
@@ -179,6 +180,7 @@ void TestUtilities::testLowercase()
 	UASSERT(lowercase("MINETEST-powa") == "minetest-powa");
 }
 
+
 void TestUtilities::testTrim()
 {
 	UASSERT(trim("") == "");
@@ -186,6 +188,7 @@ void TestUtilities::testTrim()
 	UASSERT(trim("\n \t\r  Foo bAR  \r\n\t\t  ") == "Foo bAR");
 	UASSERT(trim("\n \t\r    \r\n\t\t  ") == "");
 }
+
 
 void TestUtilities::testIsYes()
 {
@@ -198,6 +201,7 @@ void TestUtilities::testIsYes()
 	UASSERT(is_yes("2") == true);
 }
 
+
 void TestUtilities::testRemoveStringEnd()
 {
 	const char *ends[] = {"abc", "c", "bc", "", NULL};
@@ -207,17 +211,20 @@ void TestUtilities::testRemoveStringEnd()
 	UASSERT(removeStringEnd("foo", ends) == "");
 }
 
+
 void TestUtilities::testUrlEncode()
 {
-	UASSERT(urlencode("\"Aardvarks lurk, OK?\"") ==
-			"%22Aardvarks%20lurk%2C%20OK%3F%22");
+	UASSERT(urlencode("\"Aardvarks lurk, OK?\"")
+			== "%22Aardvarks%20lurk%2C%20OK%3F%22");
 }
+
 
 void TestUtilities::testUrlDecode()
 {
-	UASSERT(urldecode("%22Aardvarks%20lurk%2C%20OK%3F%22") ==
-			"\"Aardvarks lurk, OK?\"");
+	UASSERT(urldecode("%22Aardvarks%20lurk%2C%20OK%3F%22")
+			== "\"Aardvarks lurk, OK?\"");
 }
+
 
 void TestUtilities::testPadString()
 {
@@ -227,13 +234,14 @@ void TestUtilities::testPadString()
 void TestUtilities::testStartsWith()
 {
 	UASSERT(str_starts_with(std::string(), std::string()) == true);
-	UASSERT(str_starts_with(std::string("the sharp pickaxe"), std::string()) == true);
-	UASSERT(str_starts_with(std::string("the sharp pickaxe"), std::string("the")) ==
-			true);
-	UASSERT(str_starts_with(std::string("the sharp pickaxe"), std::string("The")) ==
-			false);
-	UASSERT(str_starts_with(std::string("the sharp pickaxe"), std::string("The"),
-				true) == true);
+	UASSERT(str_starts_with(std::string("the sharp pickaxe"),
+		std::string()) == true);
+	UASSERT(str_starts_with(std::string("the sharp pickaxe"),
+		std::string("the")) == true);
+	UASSERT(str_starts_with(std::string("the sharp pickaxe"),
+		std::string("The")) == false);
+	UASSERT(str_starts_with(std::string("the sharp pickaxe"),
+		std::string("The"), true) == true);
 	UASSERT(str_starts_with(std::string("T"), std::string("The")) == false);
 }
 
@@ -243,6 +251,7 @@ void TestUtilities::testStrEqual()
 	UASSERT(str_equal(narrow_to_wide("ABC"), narrow_to_wide("abc"), true));
 }
 
+
 void TestUtilities::testStringTrim()
 {
 	UASSERT(trim("  a") == "a");
@@ -251,11 +260,13 @@ void TestUtilities::testStringTrim()
 	UASSERT(trim("") == "");
 }
 
+
 void TestUtilities::testStrToIntConversion()
 {
 	UASSERT(mystoi("123", 0, 1000) == 123);
 	UASSERT(mystoi("123", 0, 10) == 10);
 }
+
 
 void TestUtilities::testStringReplace()
 {
@@ -267,6 +278,7 @@ void TestUtilities::testStringReplace()
 	str_replace(test_str, 'A', ' ');
 	UASSERT(test_str == "This is a test");
 }
+
 
 void TestUtilities::testStringAllowed()
 {
@@ -291,43 +303,45 @@ void TestUtilities::testAsciiPrintableHelper()
 void TestUtilities::testUTF8()
 {
 	UASSERT(wide_to_utf8(utf8_to_wide("")) == "");
-	UASSERT(wide_to_utf8(utf8_to_wide("the shovel dug a crumbly node!")) ==
-			"the shovel dug a crumbly node!");
+	UASSERT(wide_to_utf8(utf8_to_wide("the shovel dug a crumbly node!"))
+		== "the shovel dug a crumbly node!");
 }
 
 void TestUtilities::testRemoveEscapes()
 {
-	UASSERT(unescape_enriched<wchar_t>(L"abc\x1bXdef") == L"abcdef");
-	UASSERT(unescape_enriched<wchar_t>(L"abc\x1b(escaped)def") == L"abcdef");
-	UASSERT(unescape_enriched<wchar_t>(L"abc\x1b((escaped with parenthesis\\))def") ==
-			L"abcdef");
-	UASSERT(unescape_enriched<wchar_t>(L"abc\x1b(incomplete") == L"abc");
-	UASSERT(unescape_enriched<wchar_t>(L"escape at the end\x1b") ==
-			L"escape at the end");
+	UASSERT(unescape_enriched<wchar_t>(
+		L"abc\x1bXdef") == L"abcdef");
+	UASSERT(unescape_enriched<wchar_t>(
+		L"abc\x1b(escaped)def") == L"abcdef");
+	UASSERT(unescape_enriched<wchar_t>(
+		L"abc\x1b((escaped with parenthesis\\))def") == L"abcdef");
+	UASSERT(unescape_enriched<wchar_t>(
+		L"abc\x1b(incomplete") == L"abc");
+	UASSERT(unescape_enriched<wchar_t>(
+		L"escape at the end\x1b") == L"escape at the end");
 	// Nested escapes not supported
 	UASSERT(unescape_enriched<wchar_t>(
-				L"abc\x1b(outer \x1b(inner escape)escape)def") ==
-			L"abcescape)def");
+		L"abc\x1b(outer \x1b(inner escape)escape)def") == L"abcescape)def");
 }
 
 void TestUtilities::testWrapRows()
 {
-	UASSERT(wrap_rows("12345678", 4) == "1234\n5678");
+	UASSERT(wrap_rows("12345678",4) == "1234\n5678");
 	// test that wrap_rows doesn't wrap inside multibyte sequences
 	{
-		const unsigned char s[] = {0x2f, 0x68, 0x6f, 0x6d, 0x65, 0x2f, 0x72, 0x61,
-				0x70, 0x74, 0x6f, 0x72, 0x2f, 0xd1, 0x82, 0xd0, 0xb5,
-				0xd1, 0x81, 0xd1, 0x82, 0x2f, 0x6d, 0x69, 0x6e, 0x65,
-				0x74, 0x65, 0x73, 0x74, 0x2f, 0x62, 0x69, 0x6e, 0x2f,
-				0x2e, 0x2e, 0};
+		const unsigned char s[] = {
+			0x2f, 0x68, 0x6f, 0x6d, 0x65, 0x2f, 0x72, 0x61, 0x70, 0x74, 0x6f,
+			0x72, 0x2f, 0xd1, 0x82, 0xd0, 0xb5, 0xd1, 0x81, 0xd1, 0x82, 0x2f,
+			0x6d, 0x69, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x74, 0x2f, 0x62, 0x69,
+			0x6e, 0x2f, 0x2e, 0x2e, 0};
 		std::string str((char *)s);
 		UASSERT(utf8_to_wide(wrap_rows(str, 20)) != L"<invalid UTF-8 string>");
 	};
 	{
-		const unsigned char s[] = {0x74, 0x65, 0x73, 0x74, 0x20, 0xd1, 0x82, 0xd0,
-				0xb5, 0xd1, 0x81, 0xd1, 0x82, 0x20, 0xd1, 0x82, 0xd0,
-				0xb5, 0xd1, 0x81, 0xd1, 0x82, 0x20, 0xd1, 0x82, 0xd0,
-				0xb5, 0xd1, 0x81, 0xd1, 0x82, 0};
+		const unsigned char s[] = {
+			0x74, 0x65, 0x73, 0x74, 0x20, 0xd1, 0x82, 0xd0, 0xb5, 0xd1, 0x81,
+			0xd1, 0x82, 0x20, 0xd1, 0x82, 0xd0, 0xb5, 0xd1, 0x81, 0xd1, 0x82,
+			0x20, 0xd1, 0x82, 0xd0, 0xb5, 0xd1, 0x81, 0xd1, 0x82, 0};
 		std::string str((char *)s);
 		UASSERT(utf8_to_wide(wrap_rows(str, 8)) != L"<invalid UTF-8 string>");
 	}
@@ -346,7 +360,7 @@ void TestUtilities::testEnrichedString()
 	// Green background, then white and yellow text
 	str = L"\x1b(b@#0F0)Regular \x1b(c@#FF0)yellow";
 	UASSERT(str.getColors()[2] == 0xFFFFFFFF);
-	str.setDefaultColor(color);		    // Blue foreground
+	str.setDefaultColor(color); // Blue foreground
 	UASSERT(str.getColors()[13] == 0xFFFFFF00); // Still yellow text
 	UASSERT(str.getBackground() == 0xFF00FF00); // Green background
 }
@@ -357,6 +371,7 @@ void TestUtilities::testIsNumber()
 	UASSERT(is_number("") == false);
 	UASSERT(is_number("123a") == false);
 }
+
 
 void TestUtilities::testIsPowerOfTwo()
 {
@@ -401,6 +416,7 @@ void TestUtilities::testStringJoin()
 	UASSERT(str_join(input, " and ") == "one and two and three");
 }
 
+
 static bool within(const f32 value1, const f32 value2, const f32 precision)
 {
 	return std::fabs(value1 - value2) <= precision;
@@ -408,16 +424,17 @@ static bool within(const f32 value1, const f32 value2, const f32 precision)
 
 static bool within(const v3f &v1, const v3f &v2, const f32 precision)
 {
-	return within(v1.X, v2.X, precision) && within(v1.Y, v2.Y, precision) &&
-	       within(v1.Z, v2.Z, precision);
+	return within(v1.X, v2.X, precision) && within(v1.Y, v2.Y, precision)
+		&& within(v1.Z, v2.Z, precision);
 }
 
-static bool within(const core::matrix4 &m1, const core::matrix4 &m2, const f32 precision)
+static bool within(const core::matrix4 &m1, const core::matrix4 &m2,
+		const f32 precision)
 {
 	const f32 *M1 = m1.pointer();
 	const f32 *M2 = m2.pointer();
 	for (int i = 0; i < 16; i++)
-		if (!within(M1[i], M2[i], precision))
+		if (! within(M1[i], M2[i], precision))
 			return false;
 	return true;
 }
@@ -446,7 +463,7 @@ void TestUtilities::testEulerConversion()
 	// Check that the radians version and the degrees version
 	// produce the same results. Check also that the conversion
 	// works both ways for these values.
-	v1 = v3f(M_PI / 3.0, M_PI / 5.0, M_PI / 4.0);
+	v1 = v3f(M_PI/3.0, M_PI/5.0, M_PI/4.0);
 	v2 = v3f(60.0f, 36.0f, 45.0f);
 	setPitchYawRollRad(m1, v1);
 	setPitchYawRoll(m2, v2);
@@ -506,7 +523,7 @@ void TestUtilities::testEulerConversion()
 	v1 = v3f(90.00001f, 1.f, 1.f);
 	setPitchYawRoll(m1, v1);
 	v2 = getPitchYawRoll(m1);
-	// UASSERT(within(v1, v2, tolL)); // this is typically false
+	//UASSERT(within(v1, v2, tolL)); // this is typically false
 	// ... however the rotation matrix is the same for both
 	setPitchYawRoll(m2, v2);
 	UASSERT(within(m1, m2, tolL));

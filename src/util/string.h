@@ -37,26 +37,29 @@ class Translations;
 #define TOSTRING(x) STRINGIFY(x)
 
 // Checks whether a value is an ASCII printable character
-#define IS_ASCII_PRINTABLE_CHAR(x)                                                       \
-	(((unsigned int)(x) >= 0x20) && ((unsigned int)(x) <= 0x7e))
+#define IS_ASCII_PRINTABLE_CHAR(x)   \
+	(((unsigned int)(x) >= 0x20) &&  \
+	( (unsigned int)(x) <= 0x7e))
 
 // Checks whether a byte is an inner byte for an utf-8 multibyte sequence
-#define IS_UTF8_MULTB_INNER(x)                                                           \
-	(((unsigned char)(x) >= 0x80) && ((unsigned char)(x) <= 0xbf))
+#define IS_UTF8_MULTB_INNER(x)       \
+	(((unsigned char)(x) >= 0x80) && \
+	( (unsigned char)(x) <= 0xbf))
 
 // Checks whether a byte is a start byte for an utf-8 multibyte sequence
-#define IS_UTF8_MULTB_START(x)                                                           \
-	(((unsigned char)(x) >= 0xc2) && ((unsigned char)(x) <= 0xf4))
+#define IS_UTF8_MULTB_START(x)       \
+	(((unsigned char)(x) >= 0xc2) && \
+	( (unsigned char)(x) <= 0xf4))
 
 // Given a start byte x for an utf-8 multibyte sequence
 // it gives the length of the whole sequence in bytes.
-#define UTF8_MULTB_START_LEN(x)                                                          \
-	(((unsigned char)(x) < 0xe0) ? 2 : (((unsigned char)(x) < 0xf0) ? 3 : 4))
+#define UTF8_MULTB_START_LEN(x)            \
+	(((unsigned char)(x) < 0xe0) ? 2 :     \
+	(((unsigned char)(x) < 0xf0) ? 3 : 4))
 
 typedef std::unordered_map<std::string, std::string> StringMap;
 
-struct FlagDesc
-{
+struct FlagDesc {
 	const char *name;
 	u32 flag;
 };
@@ -88,6 +91,7 @@ u64 read_seed(const char *str);
 bool parseColorString(const std::string &value, video::SColor &color, bool quiet,
 		unsigned char default_alpha = 0xff);
 
+
 /**
  * Returns a copy of \p str with spaces inserted at the right hand side to ensure
  * that the string is \p len characters in length. If \p str is <= \p len then the
@@ -112,7 +116,8 @@ inline std::string padStringRight(std::string str, size_t len)
  *
  * @return If no end could be removed then "" is returned.
  */
-inline std::string removeStringEnd(const std::string &str, const char *ends[])
+inline std::string removeStringEnd(const std::string &str,
+		const char *ends[])
 {
 	const char **p = ends;
 
@@ -127,6 +132,7 @@ inline std::string removeStringEnd(const std::string &str, const char *ends[])
 	return "";
 }
 
+
 /**
  * Check two strings for equivalence.  If \p case_insensitive is true
  * then the case of the strings is ignored (default is false).
@@ -137,7 +143,8 @@ inline std::string removeStringEnd(const std::string &str, const char *ends[])
  * @return true if the strings match
  */
 template <typename T>
-inline bool str_equal(const std::basic_string<T> &s1, const std::basic_string<T> &s2,
+inline bool str_equal(const std::basic_string<T> &s1,
+		const std::basic_string<T> &s2,
 		bool case_insensitive = false)
 {
 	if (!case_insensitive)
@@ -147,11 +154,12 @@ inline bool str_equal(const std::basic_string<T> &s1, const std::basic_string<T>
 		return false;
 
 	for (size_t i = 0; i < s1.size(); ++i)
-		if (tolower(s1[i]) != tolower(s2[i]))
+		if(tolower(s1[i]) != tolower(s2[i]))
 			return false;
 
 	return true;
 }
+
 
 /**
  * Check whether \p str begins with the string prefix. If \p case_insensitive
@@ -165,7 +173,8 @@ inline bool str_equal(const std::basic_string<T> &s1, const std::basic_string<T>
  */
 template <typename T>
 inline bool str_starts_with(const std::basic_string<T> &str,
-		const std::basic_string<T> &prefix, bool case_insensitive = false)
+		const std::basic_string<T> &prefix,
+		bool case_insensitive = false)
 {
 	if (str.size() < prefix.size())
 		return false;
@@ -190,11 +199,14 @@ inline bool str_starts_with(const std::basic_string<T> &str,
  * @return true if the str begins with prefix
  */
 template <typename T>
-inline bool str_starts_with(const std::basic_string<T> &str, const T *prefix,
+inline bool str_starts_with(const std::basic_string<T> &str,
+		const T *prefix,
 		bool case_insensitive = false)
 {
-	return str_starts_with(str, std::basic_string<T>(prefix), case_insensitive);
+	return str_starts_with(str, std::basic_string<T>(prefix),
+			case_insensitive);
 }
+
 
 /**
  * Check whether \p str ends with the string suffix. If \p case_insensitive
@@ -208,7 +220,8 @@ inline bool str_starts_with(const std::basic_string<T> &str, const T *prefix,
  */
 template <typename T>
 inline bool str_ends_with(const std::basic_string<T> &str,
-		const std::basic_string<T> &suffix, bool case_insensitive = false)
+		const std::basic_string<T> &suffix,
+		bool case_insensitive = false)
 {
 	if (str.size() < suffix.size())
 		return false;
@@ -223,6 +236,7 @@ inline bool str_ends_with(const std::basic_string<T> &str,
 	return true;
 }
 
+
 /**
  * Check whether \p str ends with the string suffix. If \p case_insensitive
  * is true then the check is case insensitve (default is false; i.e. case is
@@ -234,11 +248,14 @@ inline bool str_ends_with(const std::basic_string<T> &str,
  * @return true if the str begins with suffix
  */
 template <typename T>
-inline bool str_ends_with(const std::basic_string<T> &str, const T *suffix,
+inline bool str_ends_with(const std::basic_string<T> &str,
+		const T *suffix,
 		bool case_insensitive = false)
 {
-	return str_ends_with(str, std::basic_string<T>(suffix), case_insensitive);
+	return str_ends_with(str, std::basic_string<T>(suffix),
+			case_insensitive);
 }
+
 
 /**
  * Splits a string into its component parts separated by the character
@@ -247,10 +264,11 @@ inline bool str_ends_with(const std::basic_string<T> &str, const T *suffix,
  * @return An std::vector<std::basic_string<T> > of the component parts
  */
 template <typename T>
-inline std::vector<std::basic_string<T>> str_split(
-		const std::basic_string<T> &str, T delimiter)
+inline std::vector<std::basic_string<T> > str_split(
+		const std::basic_string<T> &str,
+		T delimiter)
 {
-	std::vector<std::basic_string<T>> parts;
+	std::vector<std::basic_string<T> > parts;
 	std::basic_stringstream<T> sstr(str);
 	std::basic_string<T> part;
 
@@ -259,6 +277,7 @@ inline std::vector<std::basic_string<T>> str_split(
 
 	return parts;
 }
+
 
 /**
  * @param str
@@ -275,6 +294,7 @@ inline std::string lowercase(const std::string &str)
 
 	return s2;
 }
+
 
 /**
  * @param str
@@ -294,6 +314,7 @@ inline std::string trim(const std::string &str)
 	return str.substr(front, back - front);
 }
 
+
 /**
  * Returns whether \p str should be regarded as (bool) true.  Case and leading
  * and trailing whitespace are ignored.  Values that will return
@@ -306,6 +327,7 @@ inline bool is_yes(const std::string &str)
 
 	return s2 == "y" || s2 == "yes" || s2 == "true" || atoi(s2.c_str()) != 0;
 }
+
 
 /**
  * Converts the string \p str to a signed 32-bit integer. The converted value
@@ -331,8 +353,10 @@ inline s32 mystoi(const std::string &str, s32 min, s32 max)
 	return i;
 }
 
+
 // MSVC2010 includes it's own versions of these
 //#if !defined(_MSC_VER) || _MSC_VER < 1600
+
 
 /**
  * Returns a 32-bit value reprensented by the string \p str (decimal).
@@ -343,6 +367,7 @@ inline s32 mystoi(const std::string &str)
 	return atoi(str.c_str());
 }
 
+
 /**
  * Returns s 32-bit value represented by the wide string \p str (decimal).
  * @see atoi(3) for further limitations
@@ -351,6 +376,7 @@ inline s32 mystoi(const std::wstring &str)
 {
 	return mystoi(wide_to_narrow(str));
 }
+
 
 /**
  * Returns a float reprensented by the string \p str (decimal).
@@ -367,7 +393,8 @@ inline float mystof(const std::string &str)
 #define stof mystof
 
 /// Returns a value represented by the string \p val.
-template <typename T> inline T from_string(const std::string &str)
+template <typename T>
+inline T from_string(const std::string &str)
 {
 	std::stringstream tmp(str);
 	T t;
@@ -376,28 +403,28 @@ template <typename T> inline T from_string(const std::string &str)
 }
 
 /// Returns a 64-bit signed value represented by the string \p str (decimal).
-inline s64 stoi64(const std::string &str)
-{
-	return from_string<s64>(str);
-}
+inline s64 stoi64(const std::string &str) { return from_string<s64>(str); }
 
 #if __cplusplus < 201103L
-namespace std
-{
+namespace std {
 
 /// Returns a string representing the value \p val.
-template <typename T> inline string to_string(T val)
+template <typename T>
+inline string to_string(T val)
 {
 	ostringstream oss;
 	oss << val;
 	return oss.str();
 }
-#define DEFINE_STD_TOSTRING_FLOATINGPOINT(T)                                             \
-	template <> inline string to_string<T>(T val)                                    \
-	{                                                                                \
-		ostringstream oss;                                                       \
-		oss << std::fixed << std::setprecision(6) << val;                        \
-		return oss.str();                                                        \
+#define DEFINE_STD_TOSTRING_FLOATINGPOINT(T)		\
+	template <>					\
+	inline string to_string<T>(T val)		\
+	{						\
+		ostringstream oss;			\
+		oss << std::fixed			\
+			<< std::setprecision(6)		\
+			<< val;				\
+		return oss.str();			\
 	}
 DEFINE_STD_TOSTRING_FLOATINGPOINT(float)
 DEFINE_STD_TOSTRING_FLOATINGPOINT(double)
@@ -406,23 +433,18 @@ DEFINE_STD_TOSTRING_FLOATINGPOINT(long double)
 #undef DEFINE_STD_TOSTRING_FLOATINGPOINT
 
 /// Returns a wide string representing the value \p val
-template <typename T> inline wstring to_wstring(T val)
+template <typename T>
+inline wstring to_wstring(T val)
 {
-	return utf8_to_wide(to_string(val));
+      return utf8_to_wide(to_string(val));
 }
 }
 #endif
 
 /// Returns a string representing the decimal value of the 32-bit value \p i.
-inline std::string itos(s32 i)
-{
-	return std::to_string(i);
-}
+inline std::string itos(s32 i) { return std::to_string(i); }
 /// Returns a string representing the decimal value of the 64-bit value \p i.
-inline std::string i64tos(s64 i)
-{
-	return std::to_string(i);
-}
+inline std::string i64tos(s64 i) { return std::to_string(i); }
 
 // std::to_string uses the '%.6f' conversion, which is inconsistent with
 // std::ostream::operator<<() and impractical too.  ftos() uses the
@@ -434,6 +456,7 @@ inline std::string ftos(float f)
 	oss << f;
 	return oss.str();
 }
+
 
 /**
  * Replace all occurrences of \p pattern in \p str with \p replacement.
@@ -473,6 +496,7 @@ inline void str_formspec_escape(std::string &str)
  */
 void str_replace(std::string &str, char from, char to);
 
+
 /**
  * Check that a string only contains whitelisted characters. This is the
  * opposite of string_allowed_blacklist().
@@ -488,6 +512,7 @@ inline bool string_allowed(const std::string &str, const std::string &allowed_ch
 	return str.find_first_not_of(allowed_chars) == str.npos;
 }
 
+
 /**
  * Check that a string contains no blacklisted characters. This is the
  * opposite of string_allowed().
@@ -498,11 +523,12 @@ inline bool string_allowed(const std::string &str, const std::string &allowed_ch
 
  * @see string_allowed()
  */
-inline bool string_allowed_blacklist(
-		const std::string &str, const std::string &blacklisted_chars)
+inline bool string_allowed_blacklist(const std::string &str,
+		const std::string &blacklisted_chars)
 {
 	return str.find_first_of(blacklisted_chars) == str.npos;
 }
+
 
 /**
  * Create a string based on \p from where a newline is forcefully inserted
@@ -519,7 +545,8 @@ inline bool string_allowed_blacklist(
  * @param row_len The row length (in characters).
  * @return A new string with the wrapping applied.
  */
-inline std::string wrap_rows(const std::string &from, unsigned row_len)
+inline std::string wrap_rows(const std::string &from,
+		unsigned row_len)
 {
 	std::string to;
 
@@ -536,6 +563,7 @@ inline std::string wrap_rows(const std::string &from, unsigned row_len)
 
 	return to;
 }
+
 
 /**
  * Removes backslashes from an escaped string (FormSpec strings)
@@ -571,8 +599,7 @@ std::basic_string<T> unescape_enriched(const std::basic_string<T> &s)
 	while (i < s.length()) {
 		if (s[i] == '\x1b') {
 			++i;
-			if (i == s.length())
-				continue;
+			if (i == s.length()) continue;
 			if (s[i] == '(') {
 				++i;
 				while (i < s.length() && s[i] != ')') {
@@ -594,9 +621,9 @@ std::basic_string<T> unescape_enriched(const std::basic_string<T> &s)
 }
 
 template <typename T>
-std::vector<std::basic_string<T>> split(const std::basic_string<T> &s, T delim)
+std::vector<std::basic_string<T> > split(const std::basic_string<T> &s, T delim)
 {
-	std::vector<std::basic_string<T>> tokens;
+	std::vector<std::basic_string<T> > tokens;
 
 	std::basic_string<T> current;
 	bool last_was_escape = false;
@@ -619,7 +646,7 @@ std::vector<std::basic_string<T>> split(const std::basic_string<T> &s, T delim)
 			}
 		}
 	}
-	// push last element
+	//push last element
 	tokens.push_back(current);
 
 	return tokens;
@@ -629,8 +656,7 @@ std::wstring translate_string(const std::wstring &s, Translations *translations)
 
 std::wstring translate_string(const std::wstring &s);
 
-inline std::wstring unescape_translate(const std::wstring &s)
-{
+inline std::wstring unescape_translate(const std::wstring &s) {
 	return unescape_enriched(translate_string(s));
 }
 
@@ -649,6 +675,7 @@ inline bool is_number(const std::string &to_check)
 
 	return !to_check.empty();
 }
+
 
 /**
  * Returns a C-string, either "true" or "false", corresponding to \p val.
@@ -688,8 +715,8 @@ inline const std::string duration_to_string(int sec)
  *
  * @return A std::string
  */
-inline std::string str_join(
-		const std::vector<std::string> &list, const std::string &delimiter)
+inline std::string str_join(const std::vector<std::string> &list,
+		const std::string &delimiter)
 {
 	std::ostringstream oss;
 	bool first = true;
@@ -711,9 +738,9 @@ inline std::string stringw_to_utf8(const irr::core::stringw &input)
 	return wide_to_utf8(str);
 }
 
-/**
- * Create a irr::core:stringw from a UTF8 std::string.
- */
+ /**
+  * Create a irr::core:stringw from a UTF8 std::string.
+  */
 inline irr::core::stringw utf8_to_stringw(const std::string &input)
 {
 	std::wstring str = utf8_to_wide(input);

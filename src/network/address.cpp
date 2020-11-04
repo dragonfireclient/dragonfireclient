@@ -283,7 +283,7 @@ bool Address::isLocalhost() const
 		auto addr = m_address.ipv6.sin6_addr.s6_addr;
 
 		return memcmp(addr, localhost_bytes, 16) == 0 ||
-		       memcmp(addr, mapped_ipv4_localhost, 13) == 0;
+			memcmp(addr, mapped_ipv4_localhost, 13) == 0;
 	}
 
 	return (m_address.ipv4.sin_addr.s_addr & 0xFF) == 0x7f;

@@ -25,8 +25,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	ClientActiveObject
 */
 
-ClientActiveObject::ClientActiveObject(u16 id, Client *client, ClientEnvironment *env) :
-		ActiveObject(id), m_client(client), m_env(env)
+ClientActiveObject::ClientActiveObject(u16 id, Client *client,
+		ClientEnvironment *env):
+	ActiveObject(id),
+	m_client(client),
+	m_env(env)
 {
 }
 
@@ -35,15 +38,15 @@ ClientActiveObject::~ClientActiveObject()
 	removeFromScene(true);
 }
 
-ClientActiveObject *ClientActiveObject::create(
-		ActiveObjectType type, Client *client, ClientEnvironment *env)
+ClientActiveObject* ClientActiveObject::create(ActiveObjectType type,
+		Client *client, ClientEnvironment *env)
 {
 	// Find factory function
 	auto n = m_types.find(type);
 	if (n == m_types.end()) {
 		// If factory is not found, just return.
-		warningstream << "ClientActiveObject: No factory for type=" << (int)type
-			      << std::endl;
+		warningstream << "ClientActiveObject: No factory for type="
+				<< (int)type << std::endl;
 		return NULL;
 	}
 
@@ -59,3 +62,5 @@ void ClientActiveObject::registerType(u16 type, Factory f)
 		return;
 	m_types[type] = f;
 }
+
+

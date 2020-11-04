@@ -30,41 +30,44 @@ DEALINGS IN THE SOFTWARE.
 
 // for setName
 #if defined(__linux__)
-#include <sys/prctl.h>
+	#include <sys/prctl.h>
 #elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__DragonFly__)
-#include <pthread_np.h>
+	#include <pthread_np.h>
 #elif defined(_MSC_VER)
-struct THREADNAME_INFO
-{
-	DWORD dwType;	  // Must be 0x1000
-	LPCSTR szName;	  // Pointer to name (in user addr space)
-	DWORD dwThreadID; // Thread ID (-1=caller thread)
-	DWORD dwFlags;	  // Reserved for future use, must be zero
-};
+	struct THREADNAME_INFO {
+		DWORD dwType;     // Must be 0x1000
+		LPCSTR szName;    // Pointer to name (in user addr space)
+		DWORD dwThreadID; // Thread ID (-1=caller thread)
+		DWORD dwFlags;    // Reserved for future use, must be zero
+	};
 #endif
 
 // for bindToProcessor
 #if __FreeBSD_version >= 702106
-typedef cpuset_t cpu_set_t;
+	typedef cpuset_t cpu_set_t;
 #elif defined(__sun) || defined(sun)
-#include <sys/types.h>
-#include <sys/processor.h>
-#include <sys/procset.h>
+	#include <sys/types.h>
+	#include <sys/processor.h>
+	#include <sys/procset.h>
 #elif defined(_AIX)
-#include <sys/processor.h>
-#include <sys/thread.h>
+	#include <sys/processor.h>
+	#include <sys/thread.h>
 #elif defined(__APPLE__)
-#include <mach/mach_init.h>
-#include <mach/thread_act.h>
+	#include <mach/mach_init.h>
+	#include <mach/thread_act.h>
 #endif
 
+
 Thread::Thread(const std::string &name) :
-		m_name(name), m_request_stop(false), m_running(false)
+	m_name(name),
+	m_request_stop(false),
+	m_running(false)
 {
 #ifdef _AIX
 	m_kernel_thread_id = -1;
 #endif
 }
+
 
 Thread::~Thread()
 {
@@ -73,7 +76,9 @@ Thread::~Thread()
 	// Make sure start finished mutex is unlocked before it's destroyed
 	if (m_start_finished_mutex.try_lock())
 		m_start_finished_mutex.unlock();
+
 }
+
 
 bool Thread::start()
 {
@@ -104,11 +109,13 @@ bool Thread::start()
 	return true;
 }
 
+
 bool Thread::stop()
 {
 	m_request_stop = true;
 	return true;
 }
+
 
 bool Thread::wait()
 {
@@ -116,6 +123,7 @@ bool Thread::wait()
 
 	if (!m_joinable)
 		return false;
+
 
 	m_thread_obj->join();
 
@@ -127,6 +135,7 @@ bool Thread::wait()
 	return true;
 }
 
+
 bool Thread::kill()
 {
 	if (!m_running) {
@@ -137,27 +146,27 @@ bool Thread::kill()
 	m_running = false;
 
 #if defined(_WIN32)
-	// See
-	// https://msdn.microsoft.com/en-us/library/hh920601.aspx#thread__native_handle_method
-	TerminateThread((HANDLE)m_thread_obj->native_handle(), 0);
-	CloseHandle((HANDLE)m_thread_obj->native_handle());
+	// See https://msdn.microsoft.com/en-us/library/hh920601.aspx#thread__native_handle_method
+	TerminateThread((HANDLE) m_thread_obj->native_handle(), 0);
+	CloseHandle((HANDLE) m_thread_obj->native_handle());
 #else
 	// We need to pthread_kill instead on Android since NDKv5's pthread
 	// implementation is incomplete.
-#ifdef __ANDROID__
+# ifdef __ANDROID__
 	pthread_kill(getThreadHandle(), SIGKILL);
-#else
+# else
 	pthread_cancel(getThreadHandle());
-#endif
+# endif
 	wait();
 #endif
 
-	m_retval = nullptr;
-	m_joinable = false;
+	m_retval       = nullptr;
+	m_joinable     = false;
 	m_request_stop = false;
 
 	return true;
 }
+
 
 bool Thread::getReturnValue(void **ret)
 {
@@ -167,6 +176,7 @@ bool Thread::getReturnValue(void **ret)
 	*ret = m_retval;
 	return true;
 }
+
 
 void Thread::threadProc(Thread *thr)
 {
@@ -192,6 +202,7 @@ void Thread::threadProc(Thread *thr)
 	thr->m_start_finished_mutex.unlock();
 	g_logger.deregisterThread();
 }
+
 
 void Thread::setName(const std::string &name)
 {
@@ -226,8 +237,8 @@ void Thread::setName(const std::string &name)
 	info.dwFlags = 0;
 
 	__try {
-		RaiseException(0x406D1388, 0, sizeof(info) / sizeof(DWORD),
-				(ULONG_PTR *)&info);
+		RaiseException(0x406D1388, 0,
+			sizeof(info) / sizeof(DWORD), (ULONG_PTR *)&info);
 	} __except (EXCEPTION_CONTINUE_EXECUTION) {
 	}
 
@@ -237,14 +248,16 @@ void Thread::setName(const std::string &name)
 	// Silently ignore the request.
 
 #else
-#warning "Unrecognized platform, thread names will not be available."
+	#warning "Unrecognized platform, thread names will not be available."
 #endif
 }
+
 
 unsigned int Thread::getNumberOfProcessors()
 {
 	return std::thread::hardware_concurrency();
 }
+
 
 bool Thread::bindToProcessor(unsigned int proc_number)
 {
@@ -258,8 +271,7 @@ bool Thread::bindToProcessor(unsigned int proc_number)
 
 #elif __MINGW32__
 
-	return SetThreadAffinityMask(
-			pthread_gethandle(getThreadHandle()), 1 << proc_number);
+	return SetThreadAffinityMask(pthread_gethandle(getThreadHandle()), 1 << proc_number);
 
 #elif __FreeBSD_version >= 702106 || defined(__linux__) || defined(__DragonFly__)
 
@@ -282,8 +294,8 @@ bool Thread::bindToProcessor(unsigned int proc_number)
 
 	pthread_spu_t answer;
 
-	return pthread_processor_bind_np(PTHREAD_BIND_ADVISORY_NP, &answer, proc_number,
-			       getThreadHandle()) == 0;
+	return pthread_processor_bind_np(PTHREAD_BIND_ADVISORY_NP,
+			&answer, proc_number, getThreadHandle()) == 0;
 
 #elif defined(__APPLE__)
 
@@ -292,8 +304,8 @@ bool Thread::bindToProcessor(unsigned int proc_number)
 	thread_port_t threadport = pthread_mach_thread_np(getThreadHandle());
 	tapol.affinity_tag = proc_number + 1;
 	return thread_policy_set(threadport, THREAD_AFFINITY_POLICY,
-			       (thread_policy_t)&tapol,
-			       THREAD_AFFINITY_POLICY_COUNT) == KERN_SUCCESS;
+			(thread_policy_t)&tapol,
+			THREAD_AFFINITY_POLICY_COUNT) == KERN_SUCCESS;
 
 #else
 
@@ -301,6 +313,7 @@ bool Thread::bindToProcessor(unsigned int proc_number)
 
 #endif
 }
+
 
 bool Thread::setPriority(int prio)
 {
@@ -328,3 +341,4 @@ bool Thread::setPriority(int prio)
 
 #endif
 }
+

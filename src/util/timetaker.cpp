@@ -39,14 +39,15 @@ u64 TimeTaker::stop(bool quiet)
 			(*m_result) += dtime;
 		} else {
 			if (!quiet) {
-				static const char *const units[] = {
-						"s" /* PRECISION_SECONDS */,
-						"ms" /* PRECISION_MILLI */,
-						"us" /* PRECISION_MICRO */,
-						"ns" /* PRECISION_NANO */,
+				static const char* const units[] = {
+					"s"  /* PRECISION_SECONDS */,
+					"ms" /* PRECISION_MILLI */,
+					"us" /* PRECISION_MICRO */,
+					"ns" /* PRECISION_NANO */,
 				};
-				infostream << m_name << " took " << dtime
-					   << units[m_precision] << std::endl;
+				infostream << m_name << " took "
+				           << dtime << units[m_precision]
+					   << std::endl;
 			}
 		}
 		m_running = false;
@@ -59,3 +60,4 @@ u64 TimeTaker::getTimerTime()
 {
 	return porting::getTime(m_precision) - m_time1;
 }
+

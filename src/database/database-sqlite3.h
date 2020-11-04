@@ -37,7 +37,6 @@ public:
 	void endSave();
 
 	bool initialized() const { return m_initialized; }
-
 protected:
 	Database_SQLite3(const std::string &savedir, const std::string &dbname);
 
@@ -62,7 +61,7 @@ protected:
 
 	inline void int64_to_sqlite(sqlite3_stmt *s, int iCol, s64 val) const
 	{
-		sqlite3_vrfy(sqlite3_bind_int64(s, iCol, (sqlite3_int64)val));
+		sqlite3_vrfy(sqlite3_bind_int64(s, iCol, (sqlite3_int64) val));
 	}
 
 	inline void double_to_sqlite(sqlite3_stmt *s, int iCol, double val) const
@@ -72,8 +71,7 @@ protected:
 
 	inline std::string sqlite_to_string(sqlite3_stmt *s, int iCol)
 	{
-		const char *text = reinterpret_cast<const char *>(
-				sqlite3_column_text(s, iCol));
+		const char* text = reinterpret_cast<const char*>(sqlite3_column_text(s, iCol));
 		return std::string(text ? text : "");
 	}
 
@@ -84,22 +82,22 @@ protected:
 
 	inline u32 sqlite_to_uint(sqlite3_stmt *s, int iCol)
 	{
-		return (u32)sqlite3_column_int(s, iCol);
+		return (u32) sqlite3_column_int(s, iCol);
 	}
 
 	inline s64 sqlite_to_int64(sqlite3_stmt *s, int iCol)
 	{
-		return (s64)sqlite3_column_int64(s, iCol);
+		return (s64) sqlite3_column_int64(s, iCol);
 	}
 
 	inline u64 sqlite_to_uint64(sqlite3_stmt *s, int iCol)
 	{
-		return (u64)sqlite3_column_int64(s, iCol);
+		return (u64) sqlite3_column_int64(s, iCol);
 	}
 
 	inline float sqlite_to_float(sqlite3_stmt *s, int iCol)
 	{
-		return (float)sqlite3_column_double(s, iCol);
+		return (float) sqlite3_column_double(s, iCol);
 	}
 
 	inline const v3f sqlite_to_v3f(sqlite3_stmt *s, int iCol)
@@ -109,15 +107,13 @@ protected:
 	}
 
 	// Query verifiers helpers
-	inline void sqlite3_vrfy(
-			int s, const std::string &m = "", int r = SQLITE_OK) const
+	inline void sqlite3_vrfy(int s, const std::string &m = "", int r = SQLITE_OK) const
 	{
 		if (s != r)
 			throw DatabaseException(m + ": " + sqlite3_errmsg(m_database));
 	}
 
-	inline void sqlite3_vrfy(
-			const int s, const int r, const std::string &m = "") const
+	inline void sqlite3_vrfy(const int s, const int r, const std::string &m = "") const
 	{
 		sqlite3_vrfy(s, m, r);
 	}
@@ -127,7 +123,6 @@ protected:
 	virtual void initStatements() = 0;
 
 	sqlite3 *m_database = nullptr;
-
 private:
 	// Open the database
 	void openDatabase();
@@ -158,7 +153,6 @@ public:
 
 	void beginSave() { Database_SQLite3::beginSave(); }
 	void endSave() { Database_SQLite3::endSave(); }
-
 protected:
 	virtual void createDatabase();
 	virtual void initStatements();
