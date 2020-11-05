@@ -46,7 +46,6 @@ struct MeshMakeData
 	Client *m_client;
 	bool m_use_shaders;
 	bool m_use_tangent_vertices;
-	std::set<v3s16> m_esp_nodes;
 
 	MeshMakeData(Client *client, bool use_shaders,
 			bool use_tangent_vertices = false);

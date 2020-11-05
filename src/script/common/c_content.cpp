@@ -1837,9 +1837,10 @@ void push_pointed_thing(lua_State *L, const PointedThing &pointed, bool csm,
 	} else if (pointed.type == POINTEDTHING_OBJECT) {
 		lua_pushstring(L, "object");
 		lua_setfield(L, -2, "type");
-
 		if (csm) {
+#ifndef SERVER
 			ClientObjectRef::create(L, pointed.object_id);
+#endif
 		} else {
 			push_objectRef(L, pointed.object_id);
 		}

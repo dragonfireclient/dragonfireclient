@@ -529,7 +529,7 @@ void Minimap::drawMinimap()
 	driver->setViewPort(oldViewPort);
 
 	// Draw player markers
-	v2s32 s_pos(screensize.X - size - 10, 10);
+	v2s32 s_pos(screensize.X - size * 2 - 10, 10);
 	core::dimension2di imgsize(data->object_marker_red->getOriginalSize());
 	core::rect<s32> img_rect(0, 0, imgsize.Width, imgsize.Height);
 	static const video::SColor col(255, 255, 255, 255);
