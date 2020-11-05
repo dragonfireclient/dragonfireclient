@@ -44,6 +44,12 @@ private:
 	// set_yaw(self, yaw)
 	static int l_set_yaw(lua_State *L);
 
+        // get_pitch(self)
+        static int l_get_pitch(lua_State *L);
+
+        // set_pitch(self,pitch)
+        static int l_set_pitch(lua_State *L);
+
 	// get_hp(self)
 	static int l_get_hp(lua_State *L);
 

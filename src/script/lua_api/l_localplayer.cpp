@@ -95,6 +95,30 @@ int LuaLocalPlayer::l_set_yaw(lua_State *L)
 	return 0;
 }
 
+int LuaLocalPlayer::l_get_pitch(lua_State *L)
+{
+	LocalPlayer *player = getobject(L, 1);
+
+	lua_pushinteger(L, player->getPitch());
+	return 1;
+}
+
+
+int LuaLocalPlayer::l_set_pitch(lua_State *L)
+{
+	LocalPlayer *player = getobject(L, 1);
+
+	if (lua_isnumber(L, 2)) {
+		int pitch = lua_tonumber(L, 2);
+		player->setPitch(pitch);
+		g_game->cam_view.camera_pitch = pitch;
+		g_game->cam_view_target.camera_pitch = pitch;
+	}
+	
+	return 0;
+}
+
+
 int LuaLocalPlayer::l_get_hp(lua_State *L)
 {
 	LocalPlayer *player = getobject(L, 1);
@@ -527,6 +551,8 @@ const luaL_Reg LuaLocalPlayer::methods[] = {
 		luamethod(LuaLocalPlayer, set_velocity),
 		luamethod(LuaLocalPlayer, get_yaw),
 		luamethod(LuaLocalPlayer, set_yaw),
+		luamethod(LuaLocalPlayer, get_pitch),
+		luamethod(LuaLocalPlayer, set_pitch),
 		luamethod(LuaLocalPlayer, get_hp),
 		luamethod(LuaLocalPlayer, get_name),
 		luamethod(LuaLocalPlayer, get_wield_index),

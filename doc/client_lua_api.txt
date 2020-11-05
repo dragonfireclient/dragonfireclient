@@ -1083,6 +1083,8 @@ Passed to `HTTPApiTable.fetch` callback. Returned by
     * returns the exact position on the surface of a pointed node
 * `minetest.global_exists(name)`
     * Checks if a global variable has been set, without triggering a warning.
+* `minetest.make_screenshot()`
+    * Triggers the MT makeScreenshot functionality
 
 ### UI
 * `minetest.ui.minimap`
@@ -1175,6 +1177,10 @@ Methods:
     * returns the yaw (degrees)
 * `set_yaw(yaw)`
     * sets the yaw (degrees)
+* `get_pitch()`
+    * returns the pitch (degrees)
+* `set_pitch(pitch)`
+    * sets the pitch (degrees)
 * `get_velocity()`
     * returns player speed vector
 * `set_velocity(vel)`
