@@ -6,7 +6,6 @@ set(common_SCRIPT_LUA_API_SRCS
 	${CMAKE_CURRENT_SOURCE_DIR}/l_env.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/l_http.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/l_inventory.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/l_inventoryaction.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/l_item.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/l_itemstackmeta.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/l_mapgen.cpp
@@ -30,6 +29,7 @@ set(client_SCRIPT_LUA_API_SRCS
 	${CMAKE_CURRENT_SOURCE_DIR}/l_camera.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/l_client.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/l_clientobject.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/l_inventoryaction.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/l_localplayer.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/l_mainmenu.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/l_minimap.cpp

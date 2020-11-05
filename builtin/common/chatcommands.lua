@@ -68,7 +68,7 @@ if INIT == "client" then
 					end
 				end
 			end
-			return false, "Invalid usage. (See /help " .. command .. ")"
+			return false, "Invalid usage. (See .help " .. command .. ")"
 		end
 		core.register_chatcommand(command, def)
 	end
