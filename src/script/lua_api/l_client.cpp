@@ -566,6 +566,6 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(set_keypress);
 	API_FCT(drop_selected_item);
 	API_FCT(get_objects_inside_radius);
-	API_FCT(take_screenshot);
+	API_FCT(make_screenshot);
 
 }
