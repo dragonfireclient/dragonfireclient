@@ -2345,3 +2345,9 @@ forcefield (Forcefield) bool false
 friendlist (Killaura / Forcefield Friendlist) string
 
 cheat_hud (CheatHUD) bool true
+
+enable_node_esp (NodeESP) bool false
+
+enable_node_tracers (NodeTracers) bool false
+
+node_esp_nodes (NodeESP Nodes) string

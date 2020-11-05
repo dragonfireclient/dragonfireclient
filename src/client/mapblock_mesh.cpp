@@ -818,9 +818,10 @@ static void getTileInfo(
 		u16 *lights,
 		u8 &waving,
 		TileSpec &tile,
+		// lol more Input
 		bool xray,
-		std::set<content_t> xraySet
-	)
+		std::set<content_t> xraySet,
+		std::set<content_t> nodeESPSet)
 {
 	VoxelManipulator &vmanip = data->m_vmanip;
 	const NodeDefManager *ndef = data->m_client->ndef();
@@ -831,7 +832,8 @@ static void getTileInfo(
 	content_t c0 = n0.getContent();
 	if (xray && xraySet.find(c0) != xraySet.end())
 		c0 = CONTENT_AIR;
-
+	if (nodeESPSet.find(c0) != nodeESPSet.end())
+		data->m_esp_nodes.insert(blockpos_nodes + p);
 	// Don't even try to get n1 if n0 is already CONTENT_IGNORE
 	if (c0 == CONTENT_IGNORE) {
 		makes_face = false;
@@ -909,7 +911,8 @@ static void updateFastFaceRow(
 		const v3s16 &&face_dir,
 		std::vector<FastFace> &dest,
 		bool xray,
-		std::set<content_t> xraySet)
+		std::set<content_t> xraySet,
+		std::set<content_t> nodeESPSet)
 {
 	static thread_local const bool waving_liquids =
 		g_settings->getBool("enable_shaders") &&
@@ -929,7 +932,7 @@ static void updateFastFaceRow(
 	// Get info of first tile
 	getTileInfo(data, p, face_dir,
 			makes_face, p_corrected, face_dir_corrected,
-			lights, waving, tile, xray, xraySet);
+			lights, waving, tile, xray, xraySet, nodeESPSet);
 
 	// Unroll this variable which has a significant build cost
 	TileSpec next_tile;
@@ -946,15 +949,16 @@ static void updateFastFaceRow(
 		// the face must be drawn anyway
 		if (j != MAP_BLOCKSIZE - 1) {
 			p += translate_dir;
-
+			
 			getTileInfo(data, p, face_dir,
 					next_makes_face, next_p_corrected,
 					next_face_dir_corrected, next_lights,
 					waving,
 					next_tile,
 					xray,
-					xraySet);
-
+					xraySet,
+					nodeESPSet);
+			
 			if (next_makes_face == makes_face
 					&& next_p_corrected == p_corrected + translate_dir
 					&& next_face_dir_corrected == face_dir_corrected
@@ -1003,7 +1007,7 @@ static void updateFastFaceRow(
 }
 
 static void updateAllFastFaceRows(MeshMakeData *data,
-		std::vector<FastFace> &dest, bool xray, std::set<content_t> xraySet)
+		std::vector<FastFace> &dest, bool xray, std::set<content_t> xraySet, std::set<content_t> nodeESPSet)
 {
 	/*
 		Go through every y,z and get top(y+) faces in rows of x+
@@ -1017,7 +1021,8 @@ static void updateAllFastFaceRows(MeshMakeData *data,
 				v3s16(0, 1, 0), //face dir
 				dest,
 				xray,
-				xraySet);
+				xraySet,
+				nodeESPSet);
 
 	/*
 		Go through every x,y and get right(x+) faces in rows of z+
@@ -1031,7 +1036,8 @@ static void updateAllFastFaceRows(MeshMakeData *data,
 				v3s16(1, 0, 0), //face dir
 				dest,
 				xray,
-				xraySet);
+				xraySet,
+				nodeESPSet);
 
 	/*
 		Go through every y,z and get back(z+) faces in rows of x+
@@ -1045,7 +1051,8 @@ static void updateAllFastFaceRows(MeshMakeData *data,
 				v3s16(0, 0, 1), //face dir
 				dest,
 				xray,
-				xraySet);
+				xraySet,
+				nodeESPSet);
 }
 
 static void applyTileColor(PreMeshBuffer &pmb)
@@ -1096,9 +1103,11 @@ MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
 		X-Ray
 	*/
 	bool xray = g_settings->getBool("xray");
-	std::set<content_t> xraySet;
+	std::set<content_t> xraySet, nodeESPSet;
 	if (xray)
 		xraySet = splitToContentT(g_settings->get("xray_nodes"), data->m_client->ndef());
+	
+	nodeESPSet = splitToContentT(g_settings->get("node_esp_nodes"), data->m_client->ndef());
 	
 	/*
 		We are including the faces of the trailing edges of the block.
@@ -1110,7 +1119,7 @@ MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
 	{
 		// 4-23ms for MAP_BLOCKSIZE=16  (NOTE: probably outdated)
 		//TimeTaker timer2("updateAllFastFaceRows()");
-		updateAllFastFaceRows(data, fastfaces_new, xray, xraySet);
+		updateAllFastFaceRows(data, fastfaces_new, xray, xraySet, nodeESPSet);
 	}
 	// End of slow part
 
@@ -1296,6 +1305,8 @@ MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
 		!m_crack_materials.empty() ||
 		!m_daynight_diffs.empty() ||
 		!m_animation_tiles.empty();
+	
+	esp_nodes = data->m_esp_nodes;
 }
 
 MapBlockMesh::~MapBlockMesh()
