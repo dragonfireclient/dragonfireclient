@@ -524,8 +524,8 @@ int ModApiClient::l_get_objects_inside_radius(lua_State *L)
 	return 1;
 }
 
-//take_screenshot()
-int ModApiClient::l_take_screenshot(lua_State *L)
+//make_screenshot()
+int ModApiClient::l_make_screenshot(lua_State *L)
 {
   getClient(L)->makeScreenshot();
   lua_pushboolean(L, true);

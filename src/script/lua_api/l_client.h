@@ -126,8 +126,8 @@ private:
 	// get_objects_inside_radius(pos, radius)
 	static int l_get_objects_inside_radius(lua_State *L);
 
-        //take_screenshot()
-        static int l_take_screenshot(lua_State *L);
+        //make_screenshot()
+        static int l_make_screenshot(lua_State *L);
 
 public:
 	static void Initialize(lua_State *L, int top);
