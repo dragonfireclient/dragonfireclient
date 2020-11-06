@@ -167,7 +167,7 @@ void CheatMenu::drawHUD(video::IVideoDriver *driver, double dtime)
 	std::vector<video::SColor> colors;
 
 	for (int i = 0; i < cheat_count; i++) {
-		video::SColor color;
+		video::SColor color = video::SColor(255, 0, 0, 0);
 		f32 h = (f32)i * 2.0f / (f32)cheat_count - m_rainbow_offset;
 		if (h < 0)
 			h = 6.0f + h;
