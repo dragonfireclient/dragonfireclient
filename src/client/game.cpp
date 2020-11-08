@@ -1066,6 +1066,18 @@ void Game::processUserInput(f32 dtime)
 
 void Game::processKeyInput()
 {
+	if (wasKeyDown(KeyType::SELECT_UP)) {
+		m_cheat_menu->selectUp();
+	} else if (wasKeyDown(KeyType::SELECT_DOWN)) {
+		m_cheat_menu->selectDown();
+	} else if (wasKeyDown(KeyType::SELECT_LEFT)) {
+		m_cheat_menu->selectLeft();
+	} else if (wasKeyDown(KeyType::SELECT_RIGHT)) {
+		m_cheat_menu->selectRight();
+	} else if (wasKeyDown(KeyType::SELECT_CONFIRM)) {
+		m_cheat_menu->selectConfirm();
+	}
+	
 	if (wasKeyDown(KeyType::DROP)) {
 		dropSelectedItem(isKeyDown(KeyType::SNEAK));
 	} else if (wasKeyDown(KeyType::AUTOFORWARD)) {
@@ -1113,16 +1125,6 @@ void Game::processKeyInput()
 		toggleScaffold();
 	} else if (wasKeyDown(KeyType::NEXT_ITEM)) {
 		toggleNextItem();
-	} else if (wasKeyDown(KeyType::SELECT_UP)) {
-		m_cheat_menu->selectUp();
-	} else if (wasKeyDown(KeyType::SELECT_DOWN)) {
-		m_cheat_menu->selectDown();
-	} else if (wasKeyDown(KeyType::SELECT_LEFT)) {
-		m_cheat_menu->selectLeft();
-	} else if (wasKeyDown(KeyType::SELECT_RIGHT)) {
-		m_cheat_menu->selectRight();
-	} else if (wasKeyDown(KeyType::SELECT_CONFIRM)) {
-		m_cheat_menu->selectConfirm();
 #if USE_SOUND
 	} else if (wasKeyDown(KeyType::MUTE)) {
 		if (g_settings->getBool("enable_sound")) {
