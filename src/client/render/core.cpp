@@ -80,6 +80,8 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 
 void RenderingCore::drawTracersAndESP()
 {
+	bool only_trace_players = g_settings->getBool("only_trace_players");
+	
 	ClientEnvironment &env = client->getEnv();
 	Camera *camera = client->getCamera();
 	
@@ -104,6 +106,8 @@ void RenderingCore::drawTracersAndESP()
 				continue;
 			GenericCAO *obj = dynamic_cast<GenericCAO *>(cao);
 			if (! obj)
+				continue;
+			if (only_trace_players && ! obj->isPlayer())
 				continue;
 			aabb3f box;
 			if (! obj->getSelectionBox(&box))

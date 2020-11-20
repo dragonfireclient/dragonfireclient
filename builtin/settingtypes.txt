@@ -2351,3 +2351,5 @@ enable_node_esp (NodeESP) bool false
 enable_node_tracers (NodeTracers) bool false
 
 node_esp_nodes (NodeESP Nodes) string
+
+only_trace_players (OnlyTracePlayers) bool false
