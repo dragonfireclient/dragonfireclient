@@ -138,6 +138,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("autopunch", "false");
 	settings->setDefault("lessgravity", "false");
 	settings->setDefault("jetpack", "false");
+	settings->setDefault("less_fall_damage", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
