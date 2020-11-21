@@ -8,6 +8,7 @@ core.cheats = {
 		["CrystalPvP"] = "crystal_pvp",
 		["AutoTotem"] = "autototem",
 		["ThroughWalls"] = "dont_point_nodes",
+		["AutoPunch"] = "autopunch",
 	},
 	["Movement"] = {
 		["Freecam"] = "freecam",
