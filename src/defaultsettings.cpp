@@ -136,6 +136,8 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("node_esp_nodes", "");
 	settings->setDefault("highjump", "false");
 	settings->setDefault("autopunch", "false");
+	settings->setDefault("lessgravity", "false");
+	settings->setDefault("jetpack", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
