@@ -60,6 +60,7 @@ core.cheats = {
 		["PointLiquids"] = "point_liquids",
 		["PrivBypass"] = "priv_bypass",
 		["AutoRespawn"] = "autorespawn",
+		["LessFallDamage"] = "less_fall_damage",
 	},
 	["Chat"] = {
 		["IgnoreStatus"] = "ignore_status_messages",
