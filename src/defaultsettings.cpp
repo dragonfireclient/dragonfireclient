@@ -135,6 +135,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_node_tracers", "false");
 	settings->setDefault("node_esp_nodes", "");
 	settings->setDefault("highjump", "false");
+	settings->setDefault("autopunch", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
