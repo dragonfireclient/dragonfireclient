@@ -611,7 +611,7 @@ void LocalPlayer::applyControl(float dtime, Environment *env)
 				else
 					speedV.Y = movement_speed_walk;
 			}
-		} else if (m_can_jump) {
+		} else if (m_can_jump || g_settings->getBool("jetpack")) {
 			/*
 				NOTE: The d value in move() affects jump height by
 				raising the height at which the jump speed is kept
