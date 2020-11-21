@@ -17,6 +17,7 @@ core.cheats = {
 		["Jesus"] = "jesus",
 		["NoSlow"] = "no_slow",
 		["AutoSneak"] = "autosneak",
+		["HighJump"] = "highjump",
 	},
 	["Render"] = {
 		["Xray"] = "xray",
