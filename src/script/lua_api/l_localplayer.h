@@ -116,8 +116,12 @@ private:
 	static int l_hud_change(lua_State *L);
 	// hud_get(self, id)
 	static int l_hud_get(lua_State *L);
+    
+        static int l_set_speeds_from_local_settings(lua_State *L);
 
-	// get_object(self)
+        static int l_set_speeds_from_server_settings(lua_State *L);
+	
+        // get_object(self)
 	static int l_get_object(lua_State *L);
 
 	LocalPlayer *m_localplayer = nullptr;

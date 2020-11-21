@@ -515,28 +515,68 @@ void Client::handleCommand_ActiveObjectMessages(NetworkPacket* pkt)
 	}
 }
 
-void Client::handleCommand_Movement(NetworkPacket* pkt)
+void Client::set_speeds_from_local_settings()
 {
 	LocalPlayer *player = m_env.getLocalPlayer();
-	assert(player != NULL);
+	player->movement_acceleration_default   = g_settings->getFloat("movement_acceleration_default") * BS;
+	player->movement_acceleration_air       = g_settings->getFloat("movement_acceleration_air") * BS;
+	player->movement_acceleration_fast      = g_settings->getFloat("movement_acceleration_fast") * BS;
+	player->movement_speed_crouch           = g_settings->getFloat("movement_speed_crouch") * BS;
+	player->movement_speed_fast             = g_settings->getFloat("movement_speed_fast") * BS;
+	player->movement_speed_climb            = g_settings->getFloat("movement_speed_climb") * BS;
+	player->movement_speed_jump             = g_settings->getFloat("movement_speed_jump") * BS;
+	player->movement_liquid_fluidity        = g_settings->getFloat("movement_liquid_fluidity_smooth") * BS;
+	player->movement_liquid_fluidity_smooth = g_settings->getFloat("movement_liquid_fluidity_smooth") * BS;
+	player->movement_liquid_sink            = g_settings->getFloat("movement_liquid_sink") * BS;
+	player->movement_gravity                = g_settings->getFloat("movement_gravity") * BS;
+	player->movement_speed_walk		= g_settings->getFloat("movement_speed_walk") * BS;
+}
+void Client::set_speeds_from_server_settings()
+{
+	LocalPlayer *player = m_env.getLocalPlayer();
+	player->movement_acceleration_default   = g_settings->getFloat("movement_server_acceleration_default") * BS;
+	player->movement_acceleration_air       = g_settings->getFloat("movement_server_acceleration_air") * BS;
+	player->movement_acceleration_fast      = g_settings->getFloat("movement_server_acceleration_fast") * BS;
+	player->movement_speed_crouch           = g_settings->getFloat("movement_server_speed_crouch") * BS;
+	player->movement_speed_fast             = g_settings->getFloat("movement_server_speed_fast") * BS;
+	player->movement_speed_climb            = g_settings->getFloat("movement_server_speed_climb") * BS;
+	player->movement_speed_jump             = g_settings->getFloat("movement_server_speed_jump") * BS;
+	player->movement_liquid_fluidity        = g_settings->getFloat("movement_server_liquid_fluidity_smooth") * BS;
+	player->movement_liquid_fluidity_smooth = g_settings->getFloat("movement_server_liquid_fluidity_smooth") * BS;
+	player->movement_liquid_sink            = g_settings->getFloat("movement_server_liquid_sink") * BS;
+	player->movement_gravity                = g_settings->getFloat("movement_server_gravity") * BS;
+	player->movement_speed_walk		= g_settings->getFloat("movement_server_speed_walk") * BS;
+}
 
+void Client::handleCommand_Movement(NetworkPacket* pkt)
+{
 	float mad, maa, maf, msw, mscr, msf, mscl, msj, lf, lfs, ls, g;
 
 	*pkt >> mad >> maa >> maf >> msw >> mscr >> msf >> mscl >> msj
 		>> lf >> lfs >> ls >> g;
 
-	player->movement_acceleration_default   = mad * BS;
-	player->movement_acceleration_air       = maa * BS;
-	player->movement_acceleration_fast      = maf * BS;
-	player->movement_speed_walk             = msw * BS;
-	player->movement_speed_crouch           = mscr * BS;
-	player->movement_speed_fast             = msf * BS;
-	player->movement_speed_climb            = mscl * BS;
-	player->movement_speed_jump             = msj * BS;
-	player->movement_liquid_fluidity        = lf * BS;
-	player->movement_liquid_fluidity_smooth = lfs * BS;
-	player->movement_liquid_sink            = ls * BS;
-	player->movement_gravity                = g * BS;
+	g_settings->setFloat("movement_server_acceleration_default", mad);
+	g_settings->setFloat("movement_server_acceleration_air", maa);
+	g_settings->setFloat("movement_server_acceleration_fast", maf);
+	g_settings->setFloat("movement_server_speed_walk", msw);
+	g_settings->setFloat("movement_server_speed_crouch", mscr);
+	g_settings->setFloat("movement_server_speed_fast", msf);
+	g_settings->setFloat("movement_server_speed_climb", mscl);
+	g_settings->setFloat("movement_server_speed_jump", msj);
+	g_settings->setFloat("movement_server_liquid_fluidity", lf);
+	g_settings->setFloat("movement_server_liquid_fluidity_smooth", lfs);
+	g_settings->setFloat("movement_server_liquid_sink", ls);
+	g_settings->setFloat("movement_server_gravity", g);
+
+    if(g_settings->getBool("movement_ignore_server_speed") )
+    {
+		this->set_speeds_from_local_settings();
+    }
+    else
+    {
+		this->set_speeds_from_server_settings();
+    }
+
 }
 
 void Client::handleCommand_Fov(NetworkPacket *pkt)

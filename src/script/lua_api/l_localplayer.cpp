@@ -406,6 +406,21 @@ int LuaLocalPlayer::l_get_armor_groups(lua_State *L)
 	return 1;
 }
 
+// set_speeds_from_local_settings()
+int LuaLocalPlayer::l_set_speeds_from_local_settings(lua_State *L)
+{
+        g_settings->setBool("movement_ignore_server_speed",true);
+            getClient(L)->set_speeds_from_local_settings();
+                return 0;
+}
+// set_speeds_from_server_settings()
+int LuaLocalPlayer::l_set_speeds_from_server_settings(lua_State *L)
+{
+        g_settings->setBool("movement_ignore_server_speed",false);
+            getClient(L)->set_speeds_from_server_settings();
+                return 0;
+}
+
 // hud_add(self, form)
 int LuaLocalPlayer::l_hud_add(lua_State *L)
 {
@@ -575,6 +590,8 @@ const luaL_Reg LuaLocalPlayer::methods[] = {
 		luamethod(LuaLocalPlayer, get_movement_speed),
 		luamethod(LuaLocalPlayer, get_movement),
 		luamethod(LuaLocalPlayer, get_armor_groups),
+                luamethod(LuaLocalPlayer, set_speeds_from_server_settings),
+                luamethod(LuaLocalPlayer, set_speeds_from_local_settings),
 		luamethod(LuaLocalPlayer, hud_add),
 		luamethod(LuaLocalPlayer, hud_remove),
 		luamethod(LuaLocalPlayer, hud_change),

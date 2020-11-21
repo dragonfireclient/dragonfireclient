@@ -159,6 +159,9 @@ public:
 	*/
 	void step(float dtime);
 
+        void set_speeds_from_local_settings();
+        void set_speeds_from_server_settings();
+
 	/*
 	 * Command Handlers
 	 */

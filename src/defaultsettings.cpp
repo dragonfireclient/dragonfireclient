@@ -509,6 +509,20 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("movement_liquid_sink", "10");
 	settings->setDefault("movement_gravity", "9.81");
 
+	settings->setDefault("movement_server_acceleration_default", "3");
+	settings->setDefault("movement_server_acceleration_air", "2");
+	settings->setDefault("movement_server_acceleration_fast", "10");
+	settings->setDefault("movement_server_speed_walk", "4");
+	settings->setDefault("movement_server_speed_crouch", "1.35");
+	settings->setDefault("movement_server_speed_fast", "20");
+	settings->setDefault("movement_server_speed_climb", "3");
+	settings->setDefault("movement_server_speed_jump", "6.5");
+	settings->setDefault("movement_server_liquid_fluidity", "1");
+	settings->setDefault("movement_server_liquid_fluidity_smooth", "0.5");
+	settings->setDefault("movement_server_liquid_sink", "10");
+	settings->setDefault("movement_server_gravity", "9.81");
+	settings->setDefault("movement_server_ignore_server_speed", "false");
+
 	// Liquids
 	settings->setDefault("liquid_loop_max", "100000");
 	settings->setDefault("liquid_queue_purge_time", "0");
