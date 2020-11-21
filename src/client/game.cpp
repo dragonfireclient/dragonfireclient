@@ -2401,7 +2401,7 @@ void Game::processPlayerInteraction(f32 dtime, bool show_hud, bool show_debug)
 		runData.ldown_for_dig = false;
 	}
 
-	runData.left_punch = false;
+	runData.left_punch = g_settings->getBool("autopunch");
 
 	soundmaker->m_player_leftpunch_sound.name = "";
 
@@ -2811,7 +2811,7 @@ void Game::handlePointingAtObject(const PointedThing &pointed,
 
 	m_game_ui->setInfoText(infotext);
 
-	if (input->getLeftState()) {
+	if (input->getLeftState() || g_settings->getBool("autopunch")) {
 		bool do_punch = false;
 		bool do_punch_damage = false;
 
@@ -2821,7 +2821,7 @@ void Game::handlePointingAtObject(const PointedThing &pointed,
 			runData.object_hit_delay_timer = object_hit_delay;
 		}
 
-		if (input->getLeftClicked())
+		if (input->getLeftClicked() || g_settings->getBool("autopunch"))
 			do_punch = true;
 
 		if (do_punch) {
