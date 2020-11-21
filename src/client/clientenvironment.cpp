@@ -37,6 +37,14 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <algorithm>
 #include "client/renderingengine.h"
 
+/* 
+	A Cheat function (LessGravity)
+*/
+
+float getGravityHack()
+{ return g_settings->getBool("lessgravity") ? 0.5 : 1.0; }
+
+
 /*
 	CAOShaderConstantSetter
 */
@@ -225,7 +233,7 @@ void ClientEnvironment::step(float dtime)
 				v3f speed = lplayer->getSpeed();
 				if (!lplayer->in_liquid)
 					speed.Y -= lplayer->movement_gravity *
-						lplayer->physics_override_gravity * dtime_part * 2.0f;
+						lplayer->physics_override_gravity * dtime_part * 2.0f * getGravityHack();
 
 				// Liquid floating / sinking
 				if (lplayer->in_liquid && !lplayer->swimming_vertical &&
