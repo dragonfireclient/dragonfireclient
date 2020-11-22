@@ -676,7 +676,10 @@ void LocalPlayer::applyControl(float dtime, Environment *env)
 	}
 
 	// Accelerate to target speed with maximum increment
-	accelerate((speedH + speedV) * physics_override_speed,
+	
+	float speedhack_extra_speed = g_settings->getBool("speedhack") ? 2.0 : 1.0;
+	
+	accelerate((speedH + speedV) * physics_override_speed * speedhack_extra_speed,
 		incH * physics_override_speed * slip_factor, incV * physics_override_speed,
 		pitch_move);
 }
