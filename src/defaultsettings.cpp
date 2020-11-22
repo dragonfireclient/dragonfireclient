@@ -139,6 +139,9 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("lessgravity", "false");
 	settings->setDefault("jetpack", "false");
 	settings->setDefault("less_fall_damage", "false");
+	settings->setDefault("autosprint", "false");
+	settings->setDefault("speedhack", "false");
+	settings->setDefault("antislip", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
