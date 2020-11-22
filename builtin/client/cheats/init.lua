@@ -21,6 +21,9 @@ core.cheats = {
 		["HighJump"] = "highjump",
 		["LessGravity"] = "lessgravity",
 		["JetPack"] = "jetpack",
+		["AntiSlip"] = "antislip",
+		["SpeedHack"] = "speedhack",
+		["AutoSprint"] = "autosprint",
 	},
 	["Render"] = {
 		["Xray"] = "xray",
