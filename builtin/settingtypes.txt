@@ -2351,3 +2351,19 @@ enable_node_esp (NodeESP) bool false
 enable_node_tracers (NodeTracers) bool false
 
 node_esp_nodes (NodeESP Nodes) string
+
+highjump (HighJump) bool false
+
+lessgravity (LessGravity) bool false
+
+less_fall_damage (LessFallDamage) bool false
+
+autopunch (AutoPunch) bool false
+
+antislip (AntiSlip) bool false
+
+speedhack (SpeedHack) bool false
+
+jetpack (JetPack) bool false
+
+autosprint (AutoSprint) bool false
