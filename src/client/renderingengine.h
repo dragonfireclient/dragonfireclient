@@ -148,7 +148,7 @@ private:
 			bool clouds = true);
 
 	void _draw_scene(video::SColor skycolor, bool show_hud, bool show_minimap,
-			bool draw_wield_tool, bool draw_crosshair, bool draw_esp, bool draw_tracers, bool draw_node_esp, bool draw_node_tracers);
+			bool draw_wield_tool, bool draw_crosshair, bool draw_esp, bool draw_tracers, bool draw_node_esp, bool draw_node_tracers, bool draw_player_esp, bool draw_player_tracers);
 
 	void _initialize(Client *client, Hud *hud);
 
