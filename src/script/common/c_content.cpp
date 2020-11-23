@@ -2096,3 +2096,26 @@ void push_collision_move_result(lua_State *L, const collisionMoveResult &res)
 	lua_setfield(L, -2, "collisions");
 	/**/
 }
+
+void push_physics_override(lua_State *L, float speed, float jump, float gravity, bool sneak, bool sneak_glitch, bool new_move)
+{
+	lua_createtable(L, 0, 6);
+	
+	lua_pushnumber(L, speed);
+	lua_setfield(L, -2, "speed");
+
+	lua_pushnumber(L, jump);
+	lua_setfield(L, -2, "jump");
+
+	lua_pushnumber(L, gravity);
+	lua_setfield(L, -2, "gravity");
+
+	lua_pushboolean(L, sneak);
+	lua_setfield(L, -2, "sneak");
+
+	lua_pushboolean(L, sneak_glitch);
+	lua_setfield(L, -2, "sneak_glitch");
+
+	lua_pushboolean(L, new_move);
+	lua_setfield(L, -2, "new_move");
+}

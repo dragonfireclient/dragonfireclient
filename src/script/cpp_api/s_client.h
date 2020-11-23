@@ -57,6 +57,7 @@ public:
 	bool on_punchnode(v3s16 p, MapNode node);
 	bool on_placenode(const PointedThing &pointed, const ItemDefinition &item);
 	bool on_item_use(const ItemStack &item, const PointedThing &pointed);
+	bool on_recieve_physics_override(float override_speed, float override_jump, float override_gravity, bool sneak, bool sneak_glitch, bool new_move);
 
 	bool on_inventory_open(Inventory *inventory);
 	void open_enderchest();

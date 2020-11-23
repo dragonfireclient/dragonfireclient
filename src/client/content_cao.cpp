@@ -47,6 +47,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <algorithm>
 #include <cmath>
 #include "client/shader.h"
+#include "script/scripting_client.h"
 
 class Settings;
 struct ToolCapabilities;
@@ -1673,6 +1674,11 @@ void GenericCAO::processMessage(const std::string &data)
 
 		if(m_is_local_player)
 		{
+			Client *client = m_env->getGameDef();
+			
+			if (client->modsLoaded() && client->getScript()->on_recieve_physics_override(override_speed, override_jump, override_gravity, sneak, sneak_glitch, new_move))
+				return;
+			
 			LocalPlayer *player = m_env->getLocalPlayer();
 			player->physics_override_speed = override_speed;
 			player->physics_override_jump = override_jump;

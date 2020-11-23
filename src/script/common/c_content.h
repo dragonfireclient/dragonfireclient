@@ -202,3 +202,5 @@ void               push_hud_element          (lua_State *L, HudElement *elem);
 HudElementStat     read_hud_change           (lua_State *L, HudElement *elem, void **value);
 
 void               push_collision_move_result(lua_State *L, const collisionMoveResult &res);
+
+void			   push_physics_override	 (lua_State *L, float speed, float jump, float gravity, bool sneak, bool sneak_glitch, bool new_move);

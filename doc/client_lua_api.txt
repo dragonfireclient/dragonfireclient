@@ -746,6 +746,10 @@ Call these functions only at load time!
     * Called when the local player open inventory
     * Newest functions are called first
     * If any function returns true, inventory doesn't open
+* `minetest.register_on_recieve_physics_override(function(override))`
+    * Called when recieving physics_override from server
+    * Newest functions are called first
+    * If any function returns true, the physics override does not change
 
 ### Setting-related
 * `minetest.settings`: Settings object containing all of the settings from the
@@ -1223,6 +1227,17 @@ Methods:
     }
 ```
 
+* `set_physics_override(override_table)`
+    * `override_table` is a table with the following fields:
+        * `speed`: multiplier to default walking speed value (default: `1`)
+        * `jump`: multiplier to default jump value (default: `1`)
+        * `gravity`: multiplier to default gravity value (default: `1`)
+        * `sneak`: whether player can sneak (default: `true`)
+        * `sneak_glitch`: whether player can use the new move code replications
+          of the old sneak side-effects: sneak ladders and 2 node sneak jump
+          (default: `false`)
+        * `new_move`: use new move/sneak code. When `false` the exact old code
+          is used for the specific old sneak behaviour (default: `true`)
 * `get_override_pos()`
     * returns override position
 * `get_last_pos()`

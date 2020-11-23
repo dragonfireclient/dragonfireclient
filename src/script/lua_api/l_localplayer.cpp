@@ -225,26 +225,30 @@ int LuaLocalPlayer::l_get_physics_override(lua_State *L)
 {
 	LocalPlayer *player = getobject(L, 1);
 
-	lua_newtable(L);
-	lua_pushnumber(L, player->physics_override_speed);
-	lua_setfield(L, -2, "speed");
-
-	lua_pushnumber(L, player->physics_override_jump);
-	lua_setfield(L, -2, "jump");
-
-	lua_pushnumber(L, player->physics_override_gravity);
-	lua_setfield(L, -2, "gravity");
-
-	lua_pushboolean(L, player->physics_override_sneak);
-	lua_setfield(L, -2, "sneak");
-
-	lua_pushboolean(L, player->physics_override_sneak_glitch);
-	lua_setfield(L, -2, "sneak_glitch");
-
-	lua_pushboolean(L, player->physics_override_new_move);
-	lua_setfield(L, -2, "new_move");
-
+	push_physics_override(L, player->physics_override_speed, player->physics_override_jump, player->physics_override_gravity, player->physics_override_sneak, player->physics_override_sneak_glitch, player->physics_override_new_move);
+	
 	return 1;
+}
+
+// set_physics_override(self, override)
+int LuaLocalPlayer::l_set_physics_override(lua_State *L)
+{
+	LocalPlayer *player = getobject(L, 1);
+	
+	player->physics_override_speed = getfloatfield_default(
+			L, 2, "speed", player->physics_override_speed);
+	player->physics_override_jump = getfloatfield_default(
+			L, 2, "jump", player->physics_override_jump);
+	player->physics_override_gravity = getfloatfield_default(
+			L, 2, "gravity", player->physics_override_gravity);
+	player->physics_override_sneak = getboolfield_default(
+			L, 2, "sneak", player->physics_override_sneak);
+	player->physics_override_sneak_glitch = getboolfield_default(
+			L, 2, "sneak_glitch", player->physics_override_sneak_glitch);
+	player->physics_override_new_move = getboolfield_default(
+			L, 2, "new_move", player->physics_override_new_move);
+
+	return 0;
 }
 
 int LuaLocalPlayer::l_get_last_pos(lua_State *L)
@@ -561,6 +565,7 @@ const luaL_Reg LuaLocalPlayer::methods[] = {
 		luamethod(LuaLocalPlayer, is_climbing),
 		luamethod(LuaLocalPlayer, swimming_vertical),
 		luamethod(LuaLocalPlayer, get_physics_override),
+		luamethod(LuaLocalPlayer, set_physics_override),
 		// TODO: figure our if these are useful in any way
 		luamethod(LuaLocalPlayer, get_last_pos),
 		luamethod(LuaLocalPlayer, get_last_velocity),
