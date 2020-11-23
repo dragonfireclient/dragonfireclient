@@ -39,6 +39,7 @@ core.cheats = {
 		["NodeESP"] = "enable_node_esp",
 		["CheatHUD"] = "cheat_hud",
 		["PlayerESP"] = "enable_player_esp",
+		["PlayerTracers"] = "enable_player_tracers",
 	},
 	["World"] = {
 		["FastDig"] = "fastdig",
