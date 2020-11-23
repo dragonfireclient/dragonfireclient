@@ -57,7 +57,7 @@ void RenderingCore::updateScreenSize()
 }
 
 void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_minimap,
-		bool _draw_wield_tool, bool _draw_crosshair, bool _draw_esp, bool _draw_tracers, bool _draw_node_esp, bool _draw_node_tracers, bool _draw_player_esp)
+		bool _draw_wield_tool, bool _draw_crosshair, bool _draw_esp, bool _draw_tracers, bool _draw_node_esp, bool _draw_node_tracers, bool _draw_player_esp, bool _draw_player_tracers)
 {
 	v2u32 ss = driver->getScreenSize();
 	if (screensize != ss) {
