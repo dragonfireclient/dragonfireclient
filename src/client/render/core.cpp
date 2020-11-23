@@ -150,7 +150,7 @@ void RenderingCore::drawTracersAndESP()
 
 	}
 	
- 	if (draw_player_esp) {
+ 	if (draw_player_esp || draw_player_tracers) {
 		auto allObjects = env.getAllActiveObjects();
 
 		for (auto &it : allObjects) {
@@ -169,7 +169,10 @@ void RenderingCore::drawTracersAndESP()
 			v3f pos = obj->getPosition() - camera_offset;
 			box.MinEdge += pos;
 			box.MaxEdge += pos;
-			driver->draw3DBox(box, video::SColor(0xFF9900));
+			if (draw_player_esp)
+				driver->draw3DBox(box, video::SColor(0xFF9900));
+			if (draw_player_tracers)
+				driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xCC00CC));
 		}
 	}
 	
