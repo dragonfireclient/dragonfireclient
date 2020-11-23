@@ -142,6 +142,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("autosprint", "false");
 	settings->setDefault("speedhack", "false");
 	settings->setDefault("noslip", "false");
+	settings->setDefault("alwaysjump", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
