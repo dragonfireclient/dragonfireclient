@@ -598,7 +598,7 @@ void LocalPlayer::applyControl(float dtime, Environment *env)
 			m_autojump = false;
 	}
 
-	if (control.jump) {
+	if (control.jump || g_settings->getBool("alwaysjump")) {
 		if (free_move) {
 			if (player_settings.aux1_descends || always_fly_fast) {
 				if (fast_move)
