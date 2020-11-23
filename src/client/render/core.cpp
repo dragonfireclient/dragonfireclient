@@ -57,7 +57,7 @@ void RenderingCore::updateScreenSize()
 }
 
 void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_minimap,
-		bool _draw_wield_tool, bool _draw_crosshair, bool _draw_esp, bool _draw_tracers, bool _draw_node_esp, bool _draw_node_tracers)
+		bool _draw_wield_tool, bool _draw_crosshair, bool _draw_esp, bool _draw_tracers, bool _draw_node_esp, bool _draw_node_tracers, bool _draw_player_esp)
 {
 	v2u32 ss = driver->getScreenSize();
 	if (screensize != ss) {
@@ -73,6 +73,7 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 	draw_tracers = _draw_tracers;
 	draw_node_esp = _draw_node_esp;
 	draw_node_tracers = _draw_node_tracers;
+	draw_player_esp = _draw_player_esp;
 		
 	beforeDraw();
 	drawAll();
@@ -147,6 +148,29 @@ void RenderingCore::drawTracersAndESP()
 			}
 		}
 
+	}
+	
+ 	if (draw_player_esp) {
+		auto allObjects = env.getAllActiveObjects();
+
+		for (auto &it : allObjects) {
+			ClientActiveObject *cao = it.second;
+			if (cao->isLocalPlayer() || cao->getParent())
+				continue;
+			GenericCAO *obj = dynamic_cast<GenericCAO *>(cao);
+			if (! obj)
+				continue;
+			aabb3f box;
+			if (! obj->getSelectionBox(&box))
+				continue;
+			if (! obj->isPlayer())
+				continue
+			
+			v3f pos = obj->getPosition() - camera_offset;
+			box.MinEdge += pos;
+			box.MaxEdge += pos;
+			driver->draw3DBox(box, video::SColor(0xFF9900));
+		}
 	}
 	
 	driver->setMaterial(oldmaterial);
