@@ -24,6 +24,7 @@ core.cheats = {
 		["NoSlip"] = "noslip",
 		["SpeedHack"] = "speedhack",
 		["AutoSprint"] = "autosprint",
+		["AlwaysJump"] = "alwaysjump",
 	},
 	["Render"] = {
 		["Xray"] = "xray",
