@@ -113,9 +113,9 @@ void RenderingCore::drawTracersAndESP()
 			box.MinEdge += pos;
 			box.MaxEdge += pos;
 			if (draw_esp)
-				driver->draw3DBox(box, video::SColor(255, 255, 255, 255));
+				driver->draw3DBox(box, video::SColor(0x00FF00));
 			if (draw_tracers)
-				driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(255, 255, 255, 255));
+				driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFF0000));
 		}
 	}
 	if (draw_node_esp || draw_node_tracers) {
