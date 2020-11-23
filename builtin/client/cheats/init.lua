@@ -18,6 +18,7 @@ core.cheats = {
 		["Jesus"] = "jesus",
 		["NoSlow"] = "no_slow",
 		["AutoSneak"] = "autosneak",
+		["AutoSprint"] = "autosprint",
 	},
 	["Render"] = {
 		["Xray"] = "xray",

@@ -135,6 +135,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_node_tracers", "false");
 	settings->setDefault("node_esp_nodes", "");
 	settings->setDefault("only_trace_players", "false");
+	settings->setDefault("autosprint", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");

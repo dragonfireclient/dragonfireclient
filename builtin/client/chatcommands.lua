@@ -134,21 +134,6 @@ core.register_chatcommand("set", {
 	end,
 })
 
-core.register_chatcommand("findnodes", {
-	description = "Scan for one or multible nodes in a radius around you",
-	param = "<radius> <node1>[,<node2>...]",
-	func = function(param)
-		local radius = tonumber(param:split(" ")[1])
-		local nodes = param:split(" ")[2]:split(",")
-		local pos = core.localplayer:get_pos()
-		local fpos = core.find_node_near(pos, radius, nodes, true)
-		if fpos then
-			return true, "Found " .. table.concat(nodes, " or ") .. " at " .. core.pos_to_string(fpos)
-		end
-		return false, "None of " .. table.concat(nodes, " or ") .. " found in a radius of " .. tostring(radius)
-	end,
-}) 
-
 core.register_chatcommand("place", {
 	params = "<X>,<Y>,<Z>",
 	description = "Place wielded item",
@@ -173,4 +158,32 @@ core.register_chatcommand("dig", {
 		end
 		return false, pos
 	end,
+})
+
+core.register_chatcommand("setyaw", {
+	params = "<yaw>",
+	description = "Set your yaw",
+	func = function(param)
+		local yaw = tonumber(param)
+		if yaw then
+			core.localplayer:set_yaw(yaw)
+			return true
+		else
+			return false, "Invalid usage (See /help setyaw)"
+		end
+	end
+})
+
+core.register_chatcommand("setpitch", {
+	params = "<pitch>",
+	description = "Set your pitch",
+	func = function(param)
+		local pitch = tonumber(param)
+		if pitch then
+			core.localplayer:set_pitch(pitch)
+			return true
+		else
+			return false, "Invalid usage (See /help setpitch)"
+		end
+	end
 })
