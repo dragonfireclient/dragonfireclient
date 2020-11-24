@@ -17,7 +17,11 @@ core.register_globalstep(function(dtime)
 	local nodes_per_tick = tonumber(minetest.settings:get("nodes_per_tick")) or 8
 	if item and item:get_count() > 0 and def and def.node_placement_prediction ~= "" then
 		if core.settings:get_bool("scaffold") then
-			core.place_node(vector.add(pos, {x = 0, y = -0.6, z = 0}))
+			local p = vector.round(vector.add(pos, {x = 0, y = -0.6, z = 0}))
+			local node = minetest.get_node_or_nil(p)
+			if not node or minetest.get_node_def(node.name).buildable_to then
+				core.place_node(p)
+			end
 		elseif core.settings:get_bool("scaffold_plus") then
 			local z = pos.z
 			local positions = {
