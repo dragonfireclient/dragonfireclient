@@ -145,6 +145,8 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("jetpack", "false");
 	settings->setDefault("autohit", "false");
 	settings->setDefault("antislip", "false");
+	settings->setDefault("enable_entity_esp", "false");
+	settings->setDefault("enable_entity_tracers", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
