@@ -117,8 +117,8 @@ void RenderingCore::drawTracersAndESP()
 			box.MinEdge += pos;
 			box.MaxEdge += pos;
 			
-			auto esp_color = g_settings->get("esp_color");
-			auto tracers_color = g_settings->get("tracers_color");
+			auto m_esp_color = g_settings->get("esp_color");
+			auto m_tracers_color = g_settings->get("tracers_color");
 			
 			if (draw_esp)
 				if (m_esp_color == "red")
@@ -221,8 +221,8 @@ void RenderingCore::drawTracersAndESP()
 			box.MinEdge += pos;
 			box.MaxEdge += pos;
 			
-			auto esp_color = g_settings->get("entity_esp_color");
-			auto tracers_color = g_settings->get("entity_tracers_color");
+			auto m_esp_color = g_settings->get("entity_esp_color");
+			auto m_tracers_color = g_settings->get("entity_tracers_color");
 			
 			if (draw_esp)
 				if (m_esp_color == "red")
