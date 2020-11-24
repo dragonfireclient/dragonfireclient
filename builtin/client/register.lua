@@ -95,3 +95,4 @@ core.registered_on_modchannel_message, core.register_on_modchannel_message = mak
 core.registered_on_modchannel_signal, core.register_on_modchannel_signal = make_registration()
 core.registered_on_inventory_open, core.register_on_inventory_open = make_registration()
 core.registered_on_recieve_physics_override, core.register_on_recieve_physics_override = make_registration()
+core.registered_on_play_sound, core.register_on_play_sound = make_registration()

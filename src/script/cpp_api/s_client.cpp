@@ -237,6 +237,22 @@ bool ScriptApiClient::on_recieve_physics_override(float speed, float jump, float
 	return readParam<bool>(L, -1);
 }
 
+bool ScriptApiClient::on_play_sound(SimpleSoundSpec spec)
+{
+	SCRIPTAPI_PRECHECKHEADER
+
+	// Get core.registered_on_play_sound
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "registered_on_play_sound");
+
+	// Push data
+	push_soundspec(L, spec);
+
+	// Call functions
+	runCallbacks(1, RUN_CALLBACKS_MODE_OR);
+	return readParam<bool>(L, -1);
+}
+
 bool ScriptApiClient::on_inventory_open(Inventory *inventory)
 {
 	SCRIPTAPI_PRECHECKHEADER

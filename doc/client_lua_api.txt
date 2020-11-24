@@ -750,6 +750,10 @@ Call these functions only at load time!
     * Called when recieving physics_override from server
     * Newest functions are called first
     * If any function returns true, the physics override does not change
+* `minetest.register_on_sound_play(function(SimpleSoundSpec))`
+    * Called when recieving a play sound command from server
+    * Newest functions are called first
+    * If any function returns true, the sound does not play
 
 ### Setting-related
 * `minetest.settings`: Settings object containing all of the settings from the

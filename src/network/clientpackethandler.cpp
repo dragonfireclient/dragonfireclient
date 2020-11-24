@@ -833,7 +833,12 @@ void Client::handleCommand_PlaySound(NetworkPacket* pkt)
 		*pkt >> pitch;
 		*pkt >> ephemeral;
 	} catch (PacketError &e) {};
-
+	
+	SimpleSoundSpec sound_spec(name, gain, fade, pitch);
+	
+	if (m_mods_loaded && m_script->on_play_sound(sound_spec))
+		return;
+	
 	// Start playing
 	int client_id = -1;
 	switch(type) {
