@@ -172,9 +172,9 @@ void RenderingCore::drawTracersAndESP()
 			v3f pos = obj->getPosition() - camera_offset;
 			box.MinEdge += pos;
 			box.MaxEdge += pos;
-			if (draw_player_esp)
+			if (draw_entity_esp)
 				driver->draw3DBox(box, video::SColor(0x008000));
-			if (draw_player_tracers)
+			if (draw_entity_tracers)
 				driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFF0000));
 		}
 	}
