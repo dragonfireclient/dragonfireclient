@@ -37,6 +37,8 @@ core.cheats = {
 		["ESP"] = "enable_esp",
 		["NodeTracers"] = "enable_node_tracers",
 		["NodeESP"] = "enable_node_esp",
+		["EntityESP"] = "entity_esp",
+		["EntityTracers"] = "entity_tracers",
 		["CheatHUD"] = "cheat_hud",
 	},
 	["World"] = {
