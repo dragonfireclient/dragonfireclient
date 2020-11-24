@@ -2360,7 +2360,7 @@ less_fall_damage (LessFallDamage) bool false
 
 autopunch (AutoPunch) bool false
 
-antislip (AntiSlip) bool false
+noslip (NoSlip) bool false
 
 speedhack (SpeedHack) bool false
 
