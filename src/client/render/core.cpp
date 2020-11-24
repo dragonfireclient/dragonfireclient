@@ -74,6 +74,7 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 	draw_node_esp = _draw_node_esp;
 	draw_node_tracers = _draw_node_tracers;
 	draw_player_esp = _draw_player_esp;
+	draw_player_tracers = _draw_player_tracers;
 		
 	beforeDraw();
 	drawAll();
