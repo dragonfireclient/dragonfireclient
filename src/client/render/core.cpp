@@ -224,7 +224,7 @@ void RenderingCore::drawTracersAndESP()
 			auto m_esp_color = g_settings->get("entity_esp_color");
 			auto m_tracers_color = g_settings->get("entity_tracers_color");
 			
-			if (draw_esp)
+			if (draw_entity_esp)
 				if (m_esp_color == "red")
 					driver->draw3DBox(box, video::SColor(0xFF0000));
 				else if (m_esp_color == "lime")
@@ -249,7 +249,7 @@ void RenderingCore::drawTracersAndESP()
 					driver->draw3DBox(box, video::SColor(0xFFA500));
 				else
 					driver->draw3DBox(box, video::SColor(0xFFFFFF));
-			if (draw_tracers)
+			if (draw_entity_tracers)
 				if (m_tracers_color == "red")
 					driver->draw3DBox(box, video::SColor(0xFF0000));
 				else if (m_tracers_color == "lime")
