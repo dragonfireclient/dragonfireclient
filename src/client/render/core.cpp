@@ -147,27 +147,27 @@ void RenderingCore::drawTracersAndESP()
 					driver->draw3DBox(box, video::SColor(0xFFFFFF));
 			if (draw_tracers)
 				if (m_tracers_color == "red")
-					driver->draw3DBox(box, video::SColor(0xFF0000));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFF0000));
 				else if (m_tracers_color == "lime")
-					driver->draw3DBox(box, video::SColor(0x00FF00));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0x00FF00));
 				else if (m_tracers_color == "purple")
-					driver->draw3DBox(box, video::SColor(0x800080));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0x800080));
 				else if (m_tracers_color == "pink")
-					driver->draw3DBox(box, video::SColor(0xFFC0CB));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFFC0CB));
 				else if (m_tracers_color == "green")
-					driver->draw3DBox(box, video::SColor(0x008000));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0x008000));
 				else if (m_tracers_color == "blue")
-					driver->draw3DBox(box, video::SColor(0x0000FF));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0x0000FF));
 				else if (m_tracers_color == "yellow")
-					driver->draw3DBox(box, video::SColor(0xFFFF00));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFFFF00));
 				else if (m_tracers_color == "white")
-					driver->draw3DBox(box, video::SColor(0xFFFFFF));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFFFFFF));
 				else if (m_tracers_color == "black")
-					driver->draw3DBox(box, video::SColor(0x000000));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0x000000));
 				else if (m_tracers_color == "brown")
-					driver->draw3DBox(box, video::SColor(0xA52A2A));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xA52A2A));
 				else if (m_tracers_color == "orange")
-					driver->draw3DBox(box, video::SColor(0xFFA500));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFFA500));
 		}
 	}
 	if (draw_node_esp || draw_node_tracers) {
@@ -251,27 +251,27 @@ void RenderingCore::drawTracersAndESP()
 					driver->draw3DBox(box, video::SColor(0xFFFFFF));
 			if (draw_entity_tracers)
 				if (m_tracers_color == "red")
-					driver->draw3DBox(box, video::SColor(0xFF0000));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFF0000));
 				else if (m_tracers_color == "lime")
-					driver->draw3DBox(box, video::SColor(0x00FF00));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0x00FF00));
 				else if (m_tracers_color == "purple")
-					driver->draw3DBox(box, video::SColor(0x800080));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0x800080));
 				else if (m_tracers_color == "pink")
-					driver->draw3DBox(box, video::SColor(0xFFC0CB));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFFC0CB));
 				else if (m_tracers_color == "green")
-					driver->draw3DBox(box, video::SColor(0x008000));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0x008000));
 				else if (m_tracers_color == "blue")
-					driver->draw3DBox(box, video::SColor(0x0000FF));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0x0000FF));
 				else if (m_tracers_color == "yellow")
-					driver->draw3DBox(box, video::SColor(0xFFFF00));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFFFF00));
 				else if (m_tracers_color == "white")
-					driver->draw3DBox(box, video::SColor(0xFFFFFF));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFFFFFF));
 				else if (m_tracers_color == "black")
-					driver->draw3DBox(box, video::SColor(0x000000));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0x000000));
 				else if (m_tracers_color == "brown")
-					driver->draw3DBox(box, video::SColor(0xA52A2A));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xA52A2A));
 				else if (m_tracers_color == "orange")
-					driver->draw3DBox(box, video::SColor(0xFFA500));
+					driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFFA500));
 		}
 	}
 	
