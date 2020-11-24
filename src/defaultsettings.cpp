@@ -144,6 +144,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("override_gravity_factor", "0.9");
 	settings->setDefault("jetpack", "false");
 	settings->setDefault("autohit", "false");
+	settings->setDefault("antislip", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");

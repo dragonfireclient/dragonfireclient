@@ -1102,7 +1102,7 @@ float LocalPlayer::getSlipFactor(Environment *env, const v3f &speedH)
 	Map *map = &env->getMap();
 	const ContentFeatures &f = nodemgr->get(map->getNode(getStandingNodePos()));
 	int slippery = 0;
-	if (f.walkable)
+	if (f.walkable && ! g_settings->getBool("antislip"))
 		slippery = itemgroup_get(f.groups, "slippery");
 
 	if (slippery >= 1) {

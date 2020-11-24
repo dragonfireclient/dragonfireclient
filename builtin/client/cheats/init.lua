@@ -24,6 +24,7 @@ core.cheats = {
 		["JumpOverride"] = "override_jump",
 		["GravityOverride"] = "override_gravity",
 		["JetPack"] = "jetpack",
+		["AntiSlip"] = "antislip",
 	},
 	["Render"] = {
 		["Xray"] = "xray",

@@ -2371,3 +2371,5 @@ override_gravity_factor (GravityOverride) float 0.8
 jetpack (JetPack) bool false
 
 autohit (AutoHit) bool false
+
+antislip (AntiSlip) bool false
