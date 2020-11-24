@@ -143,8 +143,8 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("speedhack", "false");
 	settings->setDefault("noslip", "false");
 	settings->setDefault("alwaysjump", "false");
-	settings->setDefault("enable_player_esp", "false");
-	settings->setDefault("enable_player_tracers", "false");
+	settings->setDefault("enable_entity_esp", "false");
+	settings->setDefault("enable_entity_tracers", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
