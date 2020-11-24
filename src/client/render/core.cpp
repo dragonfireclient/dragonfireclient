@@ -109,6 +109,8 @@ void RenderingCore::drawTracersAndESP()
 			aabb3f box;
 			if (! obj->getSelectionBox(&box))
 				continue;
+			if (obj->isPlayer())
+				continue;
 			v3f pos = obj->getPosition() - camera_offset;
 			box.MinEdge += pos;
 			box.MaxEdge += pos;
