@@ -2355,3 +2355,15 @@ node_esp_nodes (NodeESP Nodes) string
 only_trace_players (OnlyTracePlayers) bool false
 
 autosprint (AutoSprint) bool false
+
+override_speed (SpeedOverride) bool false
+
+override_jump (JumpOverride) bool false
+
+override_gravity (GravityOverride) bool false
+
+override_speed_factor (SpeedOverride Factor) float 1.2
+
+override_jump_factor (JumpOverride Factor) float 2.0
+
+override_gravity_factor (GravityOverride) float 0.8

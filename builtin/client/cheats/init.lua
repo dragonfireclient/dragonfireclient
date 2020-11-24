@@ -19,6 +19,9 @@ core.cheats = {
 		["NoSlow"] = "no_slow",
 		["AutoSneak"] = "autosneak",
 		["AutoSprint"] = "autosprint",
+		["SpeedOverride"] = "override_speed",
+		["JumpOverride"] = "override_jump",
+		["GravityOverride"] = "override_gravity",
 	},
 	["Render"] = {
 		["Xray"] = "xray",

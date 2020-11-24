@@ -136,6 +136,12 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("node_esp_nodes", "");
 	settings->setDefault("only_trace_players", "false");
 	settings->setDefault("autosprint", "false");
+	settings->setDefault("override_speed", "false");
+	settings->setDefault("override_jump", "false");
+	settings->setDefault("override_gravity", "false");
+	settings->setDefault("override_speed_factor", "1.2");
+	settings->setDefault("override_jump_factor", "2.0");
+	settings->setDefault("override_gravity_factor", "0.9");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
