@@ -22,6 +22,7 @@ local dragonfire_team = {
 	"emilia [Core Developer]",
 	"oneplustwo [Developer]",
 	"joshia_wi [Developer]",
+	"Code-Sploit [Developer]",
 	"DerZombiiie [User Support]",
 }
 
