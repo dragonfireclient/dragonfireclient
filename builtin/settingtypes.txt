@@ -2367,3 +2367,7 @@ override_speed_factor (SpeedOverride Factor) float 1.2
 override_jump_factor (JumpOverride Factor) float 2.0
 
 override_gravity_factor (GravityOverride) float 0.8
+
+jetpack (JetPack) bool false
+
+autohit (AutoHit) bool false

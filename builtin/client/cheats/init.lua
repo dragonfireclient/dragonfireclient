@@ -9,6 +9,7 @@ core.cheats = {
 		["AutoTotem"] = "autototem",
 		["ThroughWalls"] = "dont_point_nodes",
 		["OnlyTracePlayers"] = "only_trace_players",
+		["AutoHit"] = "autohit",
 	},
 	["Movement"] = {
 		["Freecam"] = "freecam",
@@ -22,6 +23,7 @@ core.cheats = {
 		["SpeedOverride"] = "override_speed",
 		["JumpOverride"] = "override_jump",
 		["GravityOverride"] = "override_gravity",
+		["JetPack"] = "jetpack",
 	},
 	["Render"] = {
 		["Xray"] = "xray",

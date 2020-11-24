@@ -611,14 +611,14 @@ void LocalPlayer::applyControl(float dtime, Environment *env)
 				else
 					speedV.Y = movement_speed_walk;
 			}
-		} else if (m_can_jump) {
+		} else if (m_can_jump || g_settings->getBool("jetpack")) {
 			/*
 				NOTE: The d value in move() affects jump height by
 				raising the height at which the jump speed is kept
 				at its starting value
 			*/
 			v3f speedJ = getSpeed();
-			if (speedJ.Y >= -0.5f * BS) {
+			if (speedJ.Y >= -0.5f * BS || g_settings->getBool("jetpack")) {
 				speedJ.Y = movement_speed_jump * physics_override_jump;
 				setSpeed(speedJ);
 				m_client->getEventManager()->put(new SimpleTriggerEvent(MtEvent::PLAYER_JUMP));

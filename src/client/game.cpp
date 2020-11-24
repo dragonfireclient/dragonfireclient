@@ -2811,7 +2811,7 @@ void Game::handlePointingAtObject(const PointedThing &pointed,
 
 	m_game_ui->setInfoText(infotext);
 
-	if (input->getLeftState()) {
+	if (input->getLeftState() || g_settings->getBool("autohit")) {
 		bool do_punch = false;
 		bool do_punch_damage = false;
 
