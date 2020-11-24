@@ -57,7 +57,7 @@ void RenderingCore::updateScreenSize()
 }
 
 void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_minimap,
-		bool _draw_wield_tool, bool _draw_crosshair, bool _draw_esp, bool _draw_tracers, bool _draw_node_esp, bool _draw_node_tracers, bool _draw_player_esp, bool _draw_player_tracers)
+		bool _draw_wield_tool, bool _draw_crosshair, bool _draw_esp, bool _draw_tracers, bool _draw_node_esp, bool _draw_node_tracers, bool _draw_entity_esp, bool _draw_entity_tracers)
 {
 	v2u32 ss = driver->getScreenSize();
 	if (screensize != ss) {
@@ -73,8 +73,8 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 	draw_tracers = _draw_tracers;
 	draw_node_esp = _draw_node_esp;
 	draw_node_tracers = _draw_node_tracers;
-	draw_player_esp = _draw_player_esp;
-	draw_player_tracers = _draw_player_tracers;
+	draw_entity_esp = _draw_entity_esp;
+	draw_entity_tracers = _draw_entity_tracers;
 		
 	beforeDraw();
 	drawAll();
@@ -110,7 +110,7 @@ void RenderingCore::drawTracersAndESP()
 			aabb3f box;
 			if (! obj->getSelectionBox(&box))
 				continue;
-			if (obj->isPlayer())
+			if (! obj->isPlayer())
 				continue;
 			v3f pos = obj->getPosition() - camera_offset;
 			box.MinEdge += pos;
@@ -153,7 +153,7 @@ void RenderingCore::drawTracersAndESP()
 
 	}
 	
- 	if (draw_player_esp || draw_player_tracers) {
+ 	if (draw_entity_esp || draw_entity_tracers) {
 		auto allObjects = env.getAllActiveObjects();
 
 		for (auto &it : allObjects) {
@@ -166,16 +166,16 @@ void RenderingCore::drawTracersAndESP()
 			aabb3f box;
 			if (! obj->getSelectionBox(&box))
 				continue;
-			if (! obj->isPlayer())
+			if (obj->isPlayer())
 				continue;
 			
 			v3f pos = obj->getPosition() - camera_offset;
 			box.MinEdge += pos;
 			box.MaxEdge += pos;
 			if (draw_player_esp)
-				driver->draw3DBox(box, video::SColor(0xFF9900));
+				driver->draw3DBox(box, video::SColor(0x008000));
 			if (draw_player_tracers)
-				driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xCC00CC));
+				driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(0xFF0000));
 		}
 	}
 	
