@@ -147,6 +147,10 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("antislip", "false");
 	settings->setDefault("enable_entity_esp", "false");
 	settings->setDefault("enable_entity_tracers", "false");
+	settings->setDefault("tracers_color", "white");
+	settings->setDefault("esp_color", "white");
+	settings->setDefault("entity_esp_color", "red");
+	settings->setDefault("entity_tracers_color", "lime");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
