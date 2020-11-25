@@ -86,7 +86,7 @@ core.cheats = {
 
 function core.register_cheat(cheatname, category, func)
 	core.cheats[category] = core.cheats[category] or {}
-	core.cheats[category][cheatname] = func
+	core.cheats[category][cheatname] = func 
 end
 
 local cheatpath = core.get_builtin_path() .. "client" .. DIR_DELIM .. "cheats" .. DIR_DELIM
