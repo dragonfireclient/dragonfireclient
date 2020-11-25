@@ -8,7 +8,6 @@ core.cheats = {
 		["CrystalPvP"] = "crystal_pvp",
 		["AutoTotem"] = "autototem",
 		["ThroughWalls"] = "dont_point_nodes",
-		["OnlyTracePlayers"] = "only_trace_players",
 		["AutoHit"] = "autohit",
 	},
 	["Movement"] = {
@@ -24,7 +23,7 @@ core.cheats = {
 		["JumpOverride"] = "override_jump",
 		["GravityOverride"] = "override_gravity",
 		["JetPack"] = "jetpack",
-		["AntiSlip"] = "antislip",
+		["NoSlip"] = "noslip",
 	},
 	["Render"] = {
 		["Xray"] = "xray",
