@@ -151,6 +151,8 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("esp_color", "white");
 	settings->setDefault("entity_esp_color", "red");
 	settings->setDefault("entity_tracers_color", "lime");
+	setitngs->setDefault("custom_fall_damage", "false");
+	settings->setDefault("fall_damage", "1");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
