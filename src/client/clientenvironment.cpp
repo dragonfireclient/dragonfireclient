@@ -287,7 +287,16 @@ void ClientEnvironment::step(float dtime)
 		if (speed > tolerance && !player_immortal) {
 			f32 damage_f = (speed - tolerance) / BS * post_factor;
 			u16 damage = (u16)MYMIN(damage_f + 0.5, U16_MAX);
-			if (damage != 0) {
+			
+			auto custom_fall_damage_amount = g_settings->getU16("fall_damage");
+			
+			if (g_settings->getBool("custom_fall_damage")) {
+				damageLocalPlayer(custom_fall_damage_amount, true);
+				m_client->getEventManager()->put(
+					new SimpleTriggerEvent(MtEvent::PLAYER_FALLING_DAMAGE));
+			}
+			
+			else {
 				damageLocalPlayer(damage, true);
 				m_client->getEventManager()->put(
 					new SimpleTriggerEvent(MtEvent::PLAYER_FALLING_DAMAGE));
