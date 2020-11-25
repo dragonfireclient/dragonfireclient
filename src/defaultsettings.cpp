@@ -144,7 +144,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("override_gravity_factor", "0.9");
 	settings->setDefault("jetpack", "false");
 	settings->setDefault("autohit", "false");
-	settings->setDefault("antislip", "false");
+	settings->setDefault("noslip", "false");
 	settings->setDefault("enable_entity_esp", "false");
 	settings->setDefault("enable_entity_tracers", "false");
 	settings->setDefault("tracers_color", "white");
