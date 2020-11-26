@@ -9,6 +9,7 @@ core.cheats = {
 		["AutoTotem"] = "autototem",
 		["ThroughWalls"] = "dont_point_nodes",
 		["AutoHit"] = "autohit",
+		["AutoAttack"] = "autoattack",
 	},
 	["Movement"] = {
 		["Freecam"] = "freecam",
