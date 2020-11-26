@@ -153,6 +153,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("entity_tracers_color", "lime");
 	setitngs->setDefault("custom_fall_damage", "false");
 	settings->setDefault("fall_damage", "1");
+	setttigs->setDefault("autoattack", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
