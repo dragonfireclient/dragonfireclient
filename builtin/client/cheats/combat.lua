@@ -74,4 +74,10 @@ core.register_globalstep(function(dtime)
 			end
 		end
 	end
+	
+	if core.settings:get_bool("autoattack") then
+		if pointed and pointed.type == "object" then
+			pointed.ref:punch()
+		end
+	end
 end)
