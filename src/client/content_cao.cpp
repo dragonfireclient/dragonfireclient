@@ -811,9 +811,6 @@ void GenericCAO::updateLight(u32 day_night_ratio)
 
 	u8 light_at_pos = 0;
 	bool pos_ok = false;
-
-	if (g_settings->getBool("fullbright"))
-		light_at_pos = 255;
 		
 	v3s16 pos[3];
 	u16 npos = getLightPosition(pos);
@@ -830,6 +827,8 @@ void GenericCAO::updateLight(u32 day_night_ratio)
 		light_at_pos = blend_light(day_night_ratio, LIGHT_SUN, 0);
 
 	u8 light = decode_light(light_at_pos + m_glow);
+	if (g_settings->getBool("fullbright"))
+		light = 255;
 	if (light != m_last_light) {
 		m_last_light = light;
 		setNodeLight(light);
