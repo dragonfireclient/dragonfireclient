@@ -178,6 +178,11 @@ public:
 	{
 		return m_velocity;
 	}
+	
+	inline const u16 getHp() const
+	{
+		return m_hp;
+	}
 
 	const bool isImmortal();
 

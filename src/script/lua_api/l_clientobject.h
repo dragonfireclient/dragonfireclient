@@ -77,6 +77,9 @@ private:
 	static int l_get_item_textures(lua_State *L);
 
 	// get_hp(self)
+	static int l_get_hp(lua_State *L);
+
+	// get_max_hp(self)
 	static int l_get_max_hp(lua_State *L);
 
 	// punch(self)
