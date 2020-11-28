@@ -2235,7 +2235,8 @@ void Game::updatePlayerCAOVisibility()
 	if (!playercao)
 		return;
 	playercao->updateMeshCulling();
-	playercao->setChildrenVisible(camera->getCameraMode() > CAMERA_MODE_FIRST || g_settings->getBool("freecam"));	
+	bool is_visible = camera->getCameraMode() > CAMERA_MODE_FIRST || g_settings->getBool("freecam");
+	playercao->setChildrenVisible(is_visible);	
 }
 
 void Game::updateSound(f32 dtime)
@@ -2998,7 +2999,7 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 	float direct_brightness;
 	bool sunlight_seen;
 
-	if (m_cache_enable_noclip && m_cache_enable_free_move) {
+	if ((m_cache_enable_noclip && m_cache_enable_free_move) || g_settings->getBool("freecam")) {
 		direct_brightness = time_brightness;
 		sunlight_seen = true;
 	} else {

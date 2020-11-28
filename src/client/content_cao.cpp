@@ -495,7 +495,7 @@ void GenericCAO::setAttachment(int parent_id, const std::string &bone,
 	} else if (!m_is_local_player) {
 		// Objects attached to the local player should be hidden in first person
 		m_is_visible = !m_attached_to_local ||
-			m_client->getCamera()->getCameraMode() != CAMERA_MODE_FIRST;
+			m_client->getCamera()->getCameraMode() != CAMERA_MODE_FIRST || g_settings->getBool("freecam");
 		m_force_visible = false;
 	} else {
 		// Local players need to have this set,
@@ -937,8 +937,8 @@ void GenericCAO::updateMarker()
 
 void GenericCAO::updateNametag()
 {
-	if (m_is_local_player && ! g_settings->getBool("freecam")) // No nametag for local player
-		return;
+	//if (m_is_local_player && ! g_settings->getBool("freecam")) // No nametag for local player
+		//return;
 
 	if (m_prop.nametag.empty()) {
 		// Delete nametag
@@ -1016,12 +1016,12 @@ void GenericCAO::step(float dtime, ClientEnvironment *env)
 			bool allow_update = false;
 
 			// increase speed if using fast or flying fast
-			if((g_settings->getBool("fast_move") &&
+			if(((g_settings->getBool("fast_move") &&
 					m_client->checkLocalPrivilege("fast")) &&
 					(controls.aux1 ||
 					(!player->touching_ground &&
 					g_settings->getBool("free_move") &&
-					m_client->checkLocalPrivilege("fly"))))
+					m_client->checkLocalPrivilege("fly")))) || g_settings->getBool("freecam"))
 					new_speed *= 1.5;
 			// slowdown speed if sneeking
 			if (controls.sneak && walking && ! g_settings->getBool("no_slow"))
@@ -1932,7 +1932,7 @@ void GenericCAO::updateMeshCulling()
 	if (!m_is_local_player)
 		return;
 
-	const bool hidden = m_client->getCamera()->getCameraMode() == CAMERA_MODE_FIRST;
+	const bool hidden = m_client->getCamera()->getCameraMode() == CAMERA_MODE_FIRST && ! g_settings->getBool("freecam");
 
 	if (m_meshnode && m_prop.visual == "upright_sprite") {
 		u32 buffers = m_meshnode->getMesh()->getMeshBufferCount();

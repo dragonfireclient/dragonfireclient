@@ -147,8 +147,8 @@ void ClientEnvironment::step(float dtime)
 	stepTimeOfDay(dtime);
 
 	// Get some settings
-	bool fly_allowed = m_client->checkLocalPrivilege("fly");
-	bool free_move = fly_allowed && g_settings->getBool("free_move");
+	bool fly_allowed = m_client->checkLocalPrivilege("fly") || g_settings->getBool("freecam");
+	bool free_move = (fly_allowed && g_settings->getBool("free_move")) || g_settings->getBool("freecam");
 
 	// Get local player
 	LocalPlayer *lplayer = getLocalPlayer();

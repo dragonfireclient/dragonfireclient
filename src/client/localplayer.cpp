@@ -198,9 +198,9 @@ void LocalPlayer::move(f32 dtime, Environment *env, f32 pos_max_d,
 	PlayerSettings &player_settings = getPlayerSettings();
 
 	// Skip collision detection if noclip mode is used
-	bool fly_allowed = m_client->checkLocalPrivilege("fly");
-	bool noclip = m_client->checkLocalPrivilege("noclip") && player_settings.noclip;
-	bool free_move = player_settings.free_move && fly_allowed;
+	bool fly_allowed = m_client->checkLocalPrivilege("fly") || g_settings->getBool("freecam");
+	bool noclip = (m_client->checkLocalPrivilege("noclip") && player_settings.noclip) || g_settings->getBool("freecam");
+	bool free_move = (player_settings.free_move && fly_allowed) || g_settings->getBool("freecam");
 
 	if (noclip && free_move) {
 		position += m_speed * dtime;
@@ -500,8 +500,8 @@ void LocalPlayer::applyControl(float dtime, Environment *env)
 	bool fly_allowed = m_client->checkLocalPrivilege("fly");
 	bool fast_allowed = m_client->checkLocalPrivilege("fast");
 
-	bool free_move = fly_allowed && player_settings.free_move;
-	bool fast_move = fast_allowed && player_settings.fast_move;
+	bool free_move = (fly_allowed && player_settings.free_move) || g_settings->getBool("freecam");
+	bool fast_move = (fast_allowed && player_settings.fast_move) || g_settings->getBool("freecam");
 	bool pitch_move = (free_move || in_liquid) && player_settings.pitch_move;
 	// When aux1_descends is enabled the fast key is used to go down, so fast isn't possible
 	bool fast_climb = fast_move && control.aux1 && !player_settings.aux1_descends;
@@ -802,9 +802,9 @@ void LocalPlayer::old_move(f32 dtime, Environment *env, f32 pos_max_d,
 	PlayerSettings &player_settings = getPlayerSettings();
 
 	// Skip collision detection if noclip mode is used
-	bool fly_allowed = m_client->checkLocalPrivilege("fly");
-	bool noclip = m_client->checkLocalPrivilege("noclip") && player_settings.noclip;
-	bool free_move = noclip && fly_allowed && player_settings.free_move;
+	bool fly_allowed = m_client->checkLocalPrivilege("fly") || g_settings->getBool("freecam");
+	bool noclip = (m_client->checkLocalPrivilege("noclip") && player_settings.noclip) || g_settings->getBool("freecam");
+	bool free_move = (noclip && fly_allowed && player_settings.free_move) || g_settings->getBool("freecam");
 	if (free_move) {
 		position += m_speed * dtime;
 		setPosition(position);
