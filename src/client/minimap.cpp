@@ -579,8 +579,8 @@ void Minimap::drawMinimap()
 	const u32 size = 0.25 * screensize.Y;
 
 	drawMinimap(core::rect<s32>(
-		screensize.X - size - 10, 10,
-		screensize.X - 10, size + 10));
+		screensize.X - size * 2 - 10, 10,
+		screensize.X - size - 10, size + 10));
 }
 
 void Minimap::drawMinimap(core::rect<s32> rect) {
@@ -598,9 +598,6 @@ void Minimap::drawMinimap(core::rect<s32> rect) {
 	core::matrix4 oldProjMat = driver->getTransform(video::ETS_PROJECTION);
 	core::matrix4 oldViewMat = driver->getTransform(video::ETS_VIEW);
 
-//	driver->setViewPort(core::rect<s32>(
-//		screensize.X - size * 2 - 10, 10,
-//		screensize.X - size - 10, size + 10));
 	driver->setViewPort(rect);
 	driver->setTransform(video::ETS_PROJECTION, core::matrix4());
 	driver->setTransform(video::ETS_VIEW, core::matrix4());
@@ -655,7 +652,6 @@ void Minimap::drawMinimap(core::rect<s32> rect) {
 	driver->setViewPort(oldViewPort);
 
 	// Draw player markers
-//	v2s32 s_pos(screensize.X - size * 2 - 10, 10);
 	v2s32 s_pos(rect.UpperLeftCorner.X, rect.UpperLeftCorner.Y);
 	core::dimension2di imgsize(data->object_marker_red->getOriginalSize());
 	core::rect<s32> img_rect(0, 0, imgsize.Width, imgsize.Height);
