@@ -2562,8 +2562,8 @@ void Game::handlePointingAtNode(const PointedThing &pointed,
 		}
 	}
 
-	if (((wasKeyPressed(KeyType::PLACE) || g_settings->getBool("autoplace")) ||
-			(runData.repeat_place_timer >= (g_settings->getBool("fastplace") ? 0 : m_repeat_place_time))) &&
+	if ((wasKeyPressed(KeyType::PLACE) ||
+			(runData.repeat_place_timer >= (g_settings->getBool("fastplace") ? 0.001 : m_repeat_place_time))) &&
 			client->checkPrivilege("interact")) {
 		runData.repeat_place_timer = 0;
 		infostream << "Place button pressed while looking at ground" << std::endl;
