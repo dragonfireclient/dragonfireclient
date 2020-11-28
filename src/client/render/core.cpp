@@ -57,7 +57,7 @@ void RenderingCore::updateScreenSize()
 }
 
 void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_minimap,
-		bool _draw_wield_tool, bool _draw_crosshair, bool _draw_esp, bool _draw_tracers, bool _draw_node_esp, bool _draw_node_tracers)
+		bool _draw_wield_tool, bool _draw_crosshair)
 {
 	v2u32 ss = driver->getScreenSize();
 	if (screensize != ss) {
@@ -69,19 +69,19 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 	show_minimap = _show_minimap;
 	draw_wield_tool = _draw_wield_tool;
 	draw_crosshair = _draw_crosshair;
-	draw_esp = _draw_esp;
-	draw_tracers = _draw_tracers;
-	draw_node_esp = _draw_node_esp;
-	draw_node_tracers = _draw_node_tracers;
-		
+	draw_entity_esp = g_settings->getBool("enable_entity_esp");
+	draw_entity_tracers = g_settings->getBool("enable_entity_tracers");
+	draw_player_esp = g_settings->getBool("enable_player_esp");
+	draw_player_tracers = g_settings->getBool("enable_player_tracers");
+	draw_node_esp = g_settings->getBool("enable_node_esp");
+	draw_node_tracers = g_settings->getBool("enable_node_tracers");
+	
 	beforeDraw();
 	drawAll();
 }
 
 void RenderingCore::drawTracersAndESP()
-{
-	bool only_trace_players = g_settings->getBool("only_trace_players");
-	
+{	
 	ClientEnvironment &env = client->getEnv();
 	Camera *camera = client->getCamera();
 	
@@ -97,9 +97,8 @@ void RenderingCore::drawTracersAndESP()
 	material.setFlag(video::EMF_ZWRITE_ENABLE, false);
 	driver->setMaterial(material);
  	
- 	if (draw_esp || draw_tracers) {
+ 	if (draw_entity_esp || draw_entity_tracers || draw_player_esp || draw_player_tracers) {
 		auto allObjects = env.getAllActiveObjects();
-
 		for (auto &it : allObjects) {
 			ClientActiveObject *cao = it.second;
 			if (cao->isLocalPlayer() || cao->getParent())
@@ -107,7 +106,10 @@ void RenderingCore::drawTracersAndESP()
 			GenericCAO *obj = dynamic_cast<GenericCAO *>(cao);
 			if (! obj)
 				continue;
-			if (only_trace_players && ! obj->isPlayer())
+			bool is_player = obj->isPlayer();
+			bool draw_esp = is_player ? draw_player_esp : draw_entity_esp;
+			bool draw_tracers = is_player ? draw_player_tracers : draw_entity_tracers;
+			if (! (draw_esp || draw_tracers))
 				continue;
 			aabb3f box;
 			if (! obj->getSelectionBox(&box))
@@ -123,10 +125,8 @@ void RenderingCore::drawTracersAndESP()
 	}
 	if (draw_node_esp || draw_node_tracers) {
 		Map &map = env.getMap();
-
 		std::vector<v3s16> positions;
 		map.listAllLoadedBlocks(positions);
-
 		for (v3s16 blockp : positions) {
 			MapBlock *block = map.getBlockNoCreate(blockp);
 			if (! block->mesh)
@@ -159,7 +159,7 @@ void RenderingCore::draw3D()
 	if (!show_hud)
 		return;
 	hud->drawSelectionMesh();
-	if (draw_esp || draw_tracers || draw_node_esp || draw_node_tracers)
+	if (draw_entity_esp || draw_entity_tracers || draw_player_esp || draw_player_tracers || draw_node_esp || draw_node_tracers)
 		drawTracersAndESP();
 	if (draw_wield_tool)
 		camera->drawWieldedTool();

@@ -3183,7 +3183,7 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 	}
 #endif
 	RenderingEngine::draw_scene(skycolor, m_game_ui->m_flags.show_hud,
-			m_game_ui->m_flags.show_minimap, draw_wield_tool, draw_crosshair, g_settings->getBool("enable_esp"), g_settings->getBool("enable_tracers"), g_settings->getBool("enable_node_esp"), g_settings->getBool("enable_node_tracers"));
+			m_game_ui->m_flags.show_minimap, draw_wield_tool, draw_crosshair);
 
 	/*
 		Profiler graph

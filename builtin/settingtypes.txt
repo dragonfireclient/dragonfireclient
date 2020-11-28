@@ -2279,10 +2279,6 @@ spamclick (FastHit) bool false
 
 no_force_rotate (NoForceRotate) bool false
 
-enable_tracers (Tracers) bool false
-
-enable_esp (ESP) bool false
-
 no_slow (NoSlow) bool false
 
 ignore_status_messages (IgnoreStatus) bool true
@@ -2335,13 +2331,7 @@ friendlist (Killaura / Forcefield Friendlist) string
 
 cheat_hud (CheatHUD) bool true
 
-enable_node_esp (NodeESP) bool false
-
-enable_node_tracers (NodeTracers) bool false
-
 node_esp_nodes (NodeESP Nodes) string
-
-only_trace_players (OnlyTracePlayers) bool false
 
 autosprint (AutoSprint) bool false
 
@@ -2362,3 +2352,15 @@ jetpack (JetPack) bool false
 autohit (AutoHit) bool false
 
 antislip (AntiSlip) bool false
+
+enable_entity_tracers (EntityTracers) bool false
+
+enable_entity_esp (EntityESP) bool false
+
+enable_player_tracers (PlayerTracers) bool false
+
+enable_player_esp (PlayerESP) bool false
+
+enable_node_esp (NodeESP) bool false
+
+enable_node_tracers (NodeTracers) bool false

@@ -36,8 +36,10 @@ protected:
 	bool show_minimap;
 	bool draw_wield_tool;
 	bool draw_crosshair;
-	bool draw_esp;
-	bool draw_tracers;
+	bool draw_entity_esp;
+	bool draw_entity_tracers;
+	bool draw_player_esp;
+	bool draw_player_tracers;
 	bool draw_node_esp;
 	bool draw_node_tracers;
 
@@ -74,8 +76,7 @@ public:
 
 	void initialize();
 	void draw(video::SColor _skycolor, bool _show_hud, bool _show_minimap,
-			bool _draw_wield_tool, bool _draw_crosshair, bool _draw_esp,
-			bool _draw_tracers, bool _draw_node_esp, bool _draw_node_tracers);
+			bool _draw_wield_tool, bool _draw_crosshair);
 
 	inline v2u32 getVirtualSize() const { return virtual_size; }
 };

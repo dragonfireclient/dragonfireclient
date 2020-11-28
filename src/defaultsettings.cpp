@@ -102,8 +102,6 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("log_particles", "false");
 	settings->setDefault("spamclick", "false");
 	settings->setDefault("no_force_rotate", "false");
-	settings->setDefault("enable_tracers", "false");
-	settings->setDefault("enable_esp", "false");
 	settings->setDefault("no_slow", "false");
 	settings->setDefault("float_above_parent", "false");
 	settings->setDefault("ignore_status_messages", "true");
@@ -131,10 +129,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("forcefield", "false");
 	settings->setDefault("friendlist", "");
 	settings->setDefault("cheat_hud", "true");
-	settings->setDefault("enable_node_esp", "false");
-	settings->setDefault("enable_node_tracers", "false");
 	settings->setDefault("node_esp_nodes", "");
-	settings->setDefault("only_trace_players", "false");
 	settings->setDefault("autosprint", "false");
 	settings->setDefault("override_speed", "false");
 	settings->setDefault("override_jump", "false");
@@ -145,6 +140,12 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("jetpack", "false");
 	settings->setDefault("autohit", "false");
 	settings->setDefault("antislip", "false");
+	settings->setDefault("enable_entity_esp", "false");
+	settings->setDefault("enable_entity_tracers", "false");
+	settings->setDefault("enable_player_esp", "false");
+	settings->setDefault("enable_player_tracers", "false");
+	settings->setDefault("enable_node_esp", "false");
+	settings->setDefault("enable_node_tracers", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
