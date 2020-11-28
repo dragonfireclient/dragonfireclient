@@ -79,22 +79,27 @@ local function check_tool(stack, node_groups, old_best_time)
 	return best_time < old_best_time, best_time
 end
 
-core.register_on_punchnode(function(pos, node)
-	if not minetest.settings:get_bool("autotool") then return end
+function core.select_best_tool(nodename)
 	local player = minetest.localplayer
 	local inventory = minetest.get_inventory("current_player")
-	local node_groups = minetest.get_node_def(node.name).groups
+	local node_groups = minetest.get_node_def(nodename).groups
 	local new_index = player:get_wield_index()
 	local is_better, best_time = false, math.huge
 	is_better, best_time = check_tool(player:get_wielded_item(), node_groups, best_time)
 	is_better, best_time = check_tool(inventory.hand[1], node_groups, best_time)
-	for index, stack in pairs(inventory.main) do
+	for index, stack in ipairs(inventory.main) do
 		is_better, best_time = check_tool(stack, node_groups, best_time)
 		if is_better then
 			new_index = index
 		end
 	end
 	player:set_wield_index(new_index)
+end
+
+core.register_on_punchnode(function(pos, node)
+	if not minetest.settings:get_bool("autotool") then
+		core.select_best_tool(node.name)
+	end
 end)
 
 -- Enderchest

@@ -1107,6 +1107,14 @@ Passed to `HTTPApiTable.fetch` callback. Returned by
     * Reference to the camera object. See [`Camera`](#camera) class reference for methods.
 * `minetest.show_formspec(formname, formspec)` : returns true on success
 	* Shows a formspec to the player
+* `minetest.close_formspec(formname)`
+    * `formname`: has to exactly match the one given in `show_formspec`, or the
+      formspec will not close.
+    * calling `show_formspec(formname, "")` is equal to this
+      expression.
+    * to close a formspec regardless of the formname, call
+      `minetest.close_formspec("")`.
+      **USE THIS ONLY WHEN ABSOLUTELY NECESSARY!**
 * `minetest.display_chat_message(message)` returns true on success
 	* Shows a chat message to the current player.
 

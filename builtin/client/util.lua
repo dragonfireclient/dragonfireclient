@@ -49,4 +49,8 @@ function core.get_pointed_thing()
 	local def = core.get_item_def(item:get_name())
 	local ray = core.raycast(pos, pos2, true, core.settings:get_bool("point_liquids") or def and def.liquids_pointable)
 	return ray and ray:next()
-end	
+end
+
+function core.close_formspec(formname)
+	return core.show_formspec(formname, "")
+end
