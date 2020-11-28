@@ -75,6 +75,10 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 	draw_player_tracers = g_settings->getBool("enable_player_tracers");
 	draw_node_esp = g_settings->getBool("enable_node_esp");
 	draw_node_tracers = g_settings->getBool("enable_node_tracers");
+	v3f entity_color = g_settings->getV3F("entity_esp_color");	
+	v3f player_color = g_settings->getV3F("player_esp_color");
+	entity_esp_color = video::SColor(255, entity_color.X, entity_color.Y, entity_color.Z);
+	player_esp_color = video::SColor(255, player_color.X, player_color.Y, player_color.Z);
 	
 	beforeDraw();
 	drawAll();
@@ -109,6 +113,7 @@ void RenderingCore::drawTracersAndESP()
 			bool is_player = obj->isPlayer();
 			bool draw_esp = is_player ? draw_player_esp : draw_entity_esp;
 			bool draw_tracers = is_player ? draw_player_tracers : draw_entity_tracers;
+			video::SColor color = is_player ? player_esp_color : entity_esp_color;
 			if (! (draw_esp || draw_tracers))
 				continue;
 			aabb3f box;
@@ -118,9 +123,9 @@ void RenderingCore::drawTracersAndESP()
 			box.MinEdge += pos;
 			box.MaxEdge += pos;
 			if (draw_esp)
-				driver->draw3DBox(box, video::SColor(255, 255, 255, 255));
+				driver->draw3DBox(box, color);
 			if (draw_tracers)
-				driver->draw3DLine(eye_pos, box.getCenter(), video::SColor(255, 255, 255, 255));
+				driver->draw3DLine(eye_pos, box.getCenter(), color);
 		}
 	}
 	if (draw_node_esp || draw_node_tracers) {

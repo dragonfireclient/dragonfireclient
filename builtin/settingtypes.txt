@@ -2364,3 +2364,7 @@ enable_player_esp (PlayerESP) bool false
 enable_node_esp (NodeESP) bool false
 
 enable_node_tracers (NodeTracers) bool false
+
+entity_esp_color (EntityESP Color) v3f 255, 255, 255
+
+player_esp_color (PlayerESP Color) v3f 0, 255, 0
