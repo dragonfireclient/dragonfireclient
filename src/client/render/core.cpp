@@ -123,34 +123,30 @@ void RenderingCore::drawTracersAndESP()
 	}
 	if (draw_node_esp || draw_node_tracers) {
 		Map &map = env.getMap();
-		std::map<v2s16, MapSector*> *sectors = map.getSectorsPtr();
-		
-		for (auto &sector_it : *sectors) {
-			MapSector *sector = sector_it.second;
-			MapBlockVect blocks;
-			sector->getBlocks(blocks);
-			for (MapBlock *block : blocks) {
-				if (! block->mesh)
-					continue;
-				for (v3s16 p : block->mesh->esp_nodes) {
-					v3f pos = intToFloat(p, BS) - camera_offset;
-					MapNode node = map.getNode(p);
-					std::vector<aabb3f> boxes;
-					node.getSelectionBoxes(client->getNodeDefManager(), &boxes, node.getNeighbors(p, &map));
-					video::SColor color = client->getNodeDefManager()->get(node).minimap_color;
-				
-					for (aabb3f box : boxes) {
-						box.MinEdge += pos;
-						box.MaxEdge += pos;
-						if (draw_node_esp)
-							driver->draw3DBox(box, color);
-						if (draw_node_tracers)
-							driver->draw3DLine(eye_pos, box.getCenter(), color);
-					}
+
+		std::vector<v3s16> positions;
+		map.listAllLoadedBlocks(positions);
+
+		for (v3s16 blockp : positions) {
+			MapBlock *block = map.getBlockNoCreate(blockp);
+			if (! block->mesh)
+				continue;
+			for (v3s16 p : block->mesh->esp_nodes) {
+				v3f pos = intToFloat(p, BS) - camera_offset;
+				MapNode node = map.getNode(p);
+				std::vector<aabb3f> boxes;
+				node.getSelectionBoxes(client->getNodeDefManager(), &boxes, node.getNeighbors(p, &map));
+				video::SColor color = client->getNodeDefManager()->get(node).minimap_color;
+				for (aabb3f box : boxes) {
+					box.MinEdge += pos;
+					box.MaxEdge += pos;
+					if (draw_node_esp)
+						driver->draw3DBox(box, color);
+					if (draw_node_tracers)
+						driver->draw3DLine(eye_pos, box.getCenter(), color);
 				}
 			}
 		}
-
 	}
 	
 	driver->setMaterial(oldmaterial);

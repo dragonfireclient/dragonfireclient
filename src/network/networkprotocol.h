@@ -204,6 +204,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	PROTOCOL VERSION 39:
 		Updated set_sky packet
 		Adds new sun, moon and stars packets
+		Minimap modes
 */
 
 #define LATEST_PROTOCOL_VERSION 40
@@ -764,6 +765,17 @@ enum ToClientCommand
 		u8[len] formspec
 	*/
 
+	TOCLIENT_MINIMAP_MODES = 0x62,
+	/*
+		u16 count // modes
+		u16 mode  // wanted current mode index after change
+		for each mode
+			u16 type
+			std::string label
+			u16 size
+			std::string extra
+	*/
+
 	TOCLIENT_NUM_MSG_TYPES = 0x63,
 };
 
@@ -1034,7 +1046,7 @@ const static std::string accessDeniedStrings[SERVER_ACCESSDENIED_MAX] = {
 	"This server has experienced an internal error. You will now be disconnected."
 };
 
-enum PlayerListModifer: u8
+enum PlayerListModifer : u8
 {
 	PLAYER_LIST_INIT,
 	PLAYER_LIST_ADD,

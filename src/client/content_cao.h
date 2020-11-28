@@ -30,6 +30,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 class Camera;
 class Client;
 struct Nametag;
+struct MinimapMarker;
 
 /*
 	SmoothTranslator
@@ -84,6 +85,7 @@ private:
 	scene::IBillboardSceneNode *m_spritenode = nullptr;
 	scene::IDummyTransformationSceneNode *m_matrixnode = nullptr;
 	Nametag *m_nametag = nullptr;
+	MinimapMarker *m_marker = nullptr;
 	v3f m_position = v3f(0.0f, 10.0f * BS, 0);
 	v3f m_velocity;
 	v3f m_acceleration;
@@ -109,6 +111,7 @@ private:
 	v3f m_attachment_position;
 	v3f m_attachment_rotation;
 	bool m_attached_to_local = false;
+	bool m_force_visible = false;
 
 	int m_anim_frame = 0;
 	int m_anim_num_frames = 1;
@@ -241,9 +244,10 @@ public:
 	}
 
 	void setChildrenVisible(bool toset);
-	void setAttachment(int parent_id, const std::string &bone, v3f position, v3f rotation);
+	void setAttachment(int parent_id, const std::string &bone, v3f position,
+			v3f rotation, bool force_visible);
 	void getAttachment(int *parent_id, std::string *bone, v3f *position,
-			v3f *rotation) const;
+			v3f *rotation, bool *force_visible) const;
 	void clearChildAttachments();
 	void clearParentAttachment();
 	void addAttachmentChild(int child_id);
@@ -273,6 +277,8 @@ public:
 	u16 getLightPosition(v3s16 *pos);
 
 	void updateNametag();
+
+	void updateMarker();
 
 	void updateNodePos();
 
@@ -308,4 +314,6 @@ public:
 	{
 		return &m_prop;
 	}
+
+	void updateMeshCulling();
 };

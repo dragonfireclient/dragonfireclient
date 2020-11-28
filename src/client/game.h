@@ -295,7 +295,7 @@ public:
 		m_sound(sound),
 		m_ndef(ndef),
 		makes_footstep_sound(true),
-		m_player_step_timer(0),
+		m_player_step_timer(0.0f),
 		m_player_jump_timer(0.0f)
 	{
 	}
@@ -441,14 +441,13 @@ class GameGlobalShaderConstantSetter : public IShaderConstantSetter
 	CachedVertexShaderSetting<float> m_animation_timer_vertex;
 	CachedPixelShaderSetting<float> m_animation_timer_pixel;
 	CachedPixelShaderSetting<float, 3> m_day_light;
+	CachedPixelShaderSetting<float, 4> m_star_color;
 	CachedPixelShaderSetting<float, 3> m_eye_position_pixel;
 	CachedVertexShaderSetting<float, 3> m_eye_position_vertex;
 	CachedPixelShaderSetting<float, 3> m_minimap_yaw;
 	CachedPixelShaderSetting<float, 3> m_camera_offset_pixel;
 	CachedPixelShaderSetting<float, 3> m_camera_offset_vertex;
 	CachedPixelShaderSetting<SamplerLayer_t> m_base_texture;
-	CachedPixelShaderSetting<SamplerLayer_t> m_normal_texture;
-	CachedPixelShaderSetting<SamplerLayer_t> m_texture_flags;
 	Client *m_client;
 
 public:
@@ -475,14 +474,13 @@ public:
 		m_animation_timer_vertex("animationTimer"),
 		m_animation_timer_pixel("animationTimer"),
 		m_day_light("dayLight"),
+		m_star_color("starColor"),
 		m_eye_position_pixel("eyePosition"),
 		m_eye_position_vertex("eyePosition"),
 		m_minimap_yaw("yawVec"),
 		m_camera_offset_pixel("cameraOffset"),
 		m_camera_offset_vertex("cameraOffset"),
 		m_base_texture("baseTexture"),
-		m_normal_texture("normalTexture"),
-		m_texture_flags("textureFlags"),
 		m_client(client)
 	{
 		g_settings->registerChangedCallback("enable_fog", settingsCallback, this);
@@ -528,6 +526,10 @@ public:
 			sunlight.b };
 		m_day_light.set(dnc, services);
 
+		video::SColorf star_color = m_sky->getCurrentStarColor();
+		float clr[4] = {star_color.r, star_color.g, star_color.b, star_color.a};
+		m_star_color.set(clr, services);
+
 		u32 animation_timer = porting::getTimeMs() % 1000000;
 		float animation_timer_f = (float)animation_timer / 100000.f;
 		m_animation_timer_vertex.set(&animation_timer_f, services);
@@ -570,12 +572,8 @@ public:
 		m_camera_offset_pixel.set(camera_offset_array, services);
 		m_camera_offset_vertex.set(camera_offset_array, services);
 
-		SamplerLayer_t base_tex = 0,
-				normal_tex = 1,
-				flags_tex = 2;
+		SamplerLayer_t base_tex = 0;
 		m_base_texture.set(&base_tex, services);
-		m_normal_texture.set(&normal_tex, services);
-		m_texture_flags.set(&flags_tex, services);
 	}
 };
 
@@ -621,7 +619,6 @@ public:
 #endif
 
 /****************************************************************************
-
  ****************************************************************************/
 
 const float object_hit_delay = 0.2;
@@ -642,7 +639,8 @@ struct GameRunData {
 	u16 new_playeritem;
 	PointedThing pointed_old;
 	bool digging;
-	bool ldown_for_dig;
+	bool punching;
+	bool btn_down_for_dig;
 	bool dig_instantly;
 	bool digging_blocked;
 	bool left_punch;
@@ -650,7 +648,7 @@ struct GameRunData {
 	float nodig_delay_timer;
 	float dig_time;
 	float dig_time_complete;
-	float repeat_rightclick_timer;
+	float repeat_place_timer;
 	float object_hit_delay_timer;
 	float time_from_last_punch;
 	ClientActiveObject *selected_object;
@@ -802,6 +800,14 @@ public:
 	{
 		return input->wasKeyDown(k);
 	}
+	inline bool wasKeyPressed(GameKeyType k)
+	{
+		return input->wasKeyPressed(k);
+	}
+	inline bool wasKeyReleased(GameKeyType k)
+	{
+		return input->wasKeyReleased(k);
+	}
 
 #ifdef __ANDROID__
 	void handleAndroidChatInput();
@@ -891,7 +897,6 @@ public:
 	bool *reconnect_requested;
 	scene::ISceneNode *skybox;
 
-	bool random_input;
 	bool simple_singleplayer_mode;
 	/* End 'cache' */
 
@@ -916,7 +921,7 @@ public:
 	bool m_cache_enable_free_move;
 	f32  m_cache_mouse_sensitivity;
 	f32  m_cache_joystick_frustum_sensitivity;
-	f32  m_repeat_right_click_time;
+	f32  m_repeat_place_time;
 	f32  m_cache_cam_smoothing;
 	f32  m_cache_fog_start;
 
@@ -929,6 +934,7 @@ public:
 	CameraOrientation cam_view_target  = { 0 };
 	CameraOrientation cam_view  = { 0 };
 
+	int m_reset_HW_buffer_counter = 0;
 #ifdef __ANDROID__
 	bool m_cache_hold_aux1;
 	bool m_android_chat_open;

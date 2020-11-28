@@ -62,8 +62,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	Map
 */
 
-Map::Map(std::ostream &dout, IGameDef *gamedef):
-	m_dout(dout),
+Map::Map(IGameDef *gamedef):
 	m_gamedef(gamedef),
 	m_nodedef(gamedef->ndef())
 {
@@ -138,6 +137,21 @@ MapBlock * Map::getBlockNoCreate(v3s16 p3d)
 	if(block == NULL)
 		throw InvalidPositionException();
 	return block;
+}
+
+void Map::listAllLoadedBlocks(std::vector<v3s16> &dst)
+{
+	for (auto &sector_it : m_sectors) {
+		MapSector *sector = sector_it.second;
+
+		MapBlockVect blocks;
+		sector->getBlocks(blocks);
+
+		for (MapBlock *block : blocks) {
+			v3s16 p = block->getPos();
+			dst.push_back(p);
+		}
+	}
 }
 
 bool Map::isNodeUnderground(v3s16 p)
@@ -1201,7 +1215,7 @@ bool Map::isBlockOccluded(MapBlock *block, v3s16 cam_pos_nodes)
 */
 ServerMap::ServerMap(const std::string &savedir, IGameDef *gamedef,
 		EmergeManager *emerge, MetricsBackend *mb):
-	Map(dout_server, gamedef),
+	Map(gamedef),
 	settings_mgr(g_settings, savedir + DIR_DELIM + "map_meta.txt"),
 	m_emerge(emerge)
 {
@@ -1327,11 +1341,6 @@ u64 ServerMap::getSeed()
 	return getMapgenParams()->seed;
 }
 
-s16 ServerMap::getWaterLevel()
-{
-	return getMapgenParams()->water_level;
-}
-
 bool ServerMap::blockpos_over_mapgen_limit(v3s16 p)
 {
 	const s16 mapgen_limit_bp = rangelim(
@@ -1351,6 +1360,9 @@ bool ServerMap::initBlockMake(v3s16 blockpos, BlockMakeData *data)
 	v3s16 bpmin = EmergeManager::getContainingChunk(blockpos, csize);
 	v3s16 bpmax = bpmin + v3s16(1, 1, 1) * (csize - 1);
 
+	if (!m_chunks_in_progress.insert(bpmin).second)
+		return false;
+
 	bool enable_mapgen_debug_info = m_emerge->enable_mapgen_debug_info;
 	EMERGE_DBG_OUT("initBlockMake(): " PP(bpmin) " - " PP(bpmax));
 
@@ -1366,7 +1378,6 @@ bool ServerMap::initBlockMake(v3s16 blockpos, BlockMakeData *data)
 	data->seed = getSeed();
 	data->blockpos_min = bpmin;
 	data->blockpos_max = bpmax;
-	data->blockpos_requested = blockpos;
 	data->nodedef = m_nodedef;
 
 	/*
@@ -1488,6 +1499,7 @@ void ServerMap::finishBlockMake(BlockMakeData *data,
 		NOTE: Will be saved later.
 	*/
 	//save(MOD_STATE_WRITE_AT_UNLOAD);
+	m_chunks_in_progress.erase(bpmin);
 }
 
 MapSector *ServerMap::createSector(v2s16 p2d)
@@ -1732,59 +1744,6 @@ void ServerMap::updateVManip(v3s16 pos)
 	vm->m_is_dirty = true;
 }
 
-s16 ServerMap::findGroundLevel(v2s16 p2d)
-{
-#if 0
-	/*
-		Uh, just do something random...
-	*/
-	// Find existing map from top to down
-	s16 max=63;
-	s16 min=-64;
-	v3s16 p(p2d.X, max, p2d.Y);
-	for(; p.Y>min; p.Y--)
-	{
-		MapNode n = getNodeNoEx(p);
-		if(n.getContent() != CONTENT_IGNORE)
-			break;
-	}
-	if(p.Y == min)
-		goto plan_b;
-	// If this node is not air, go to plan b
-	if(getNodeNoEx(p).getContent() != CONTENT_AIR)
-		goto plan_b;
-	// Search existing walkable and return it
-	for(; p.Y>min; p.Y--)
-	{
-		MapNode n = getNodeNoEx(p);
-		if(content_walkable(n.d) && n.getContent() != CONTENT_IGNORE)
-			return p.Y;
-	}
-
-	// Move to plan b
-plan_b:
-#endif
-
-	/*
-		Determine from map generator noise functions
-	*/
-
-	s16 level = m_emerge->getGroundLevelAtPoint(p2d);
-	return level;
-
-	//double level = base_rock_level_2d(m_seed, p2d) + AVERAGE_MUD_AMOUNT;
-	//return (s16)level;
-}
-
-void ServerMap::createDirs(const std::string &path)
-{
-	if (!fs::CreateAllDirs(path)) {
-		m_dout<<"ServerMap: Failed to create directory "
-				<<"\""<<path<<"\""<<std::endl;
-		throw BaseException("ServerMap failed to create directory");
-	}
-}
-
 void ServerMap::save(ModifiedState save_level)
 {
 	if (!m_map_saving_enabled) {
@@ -1862,21 +1821,6 @@ void ServerMap::listAllLoadableBlocks(std::vector<v3s16> &dst)
 	dbase->listAllLoadableBlocks(dst);
 	if (dbase_ro)
 		dbase_ro->listAllLoadableBlocks(dst);
-}
-
-void ServerMap::listAllLoadedBlocks(std::vector<v3s16> &dst)
-{
-	for (auto &sector_it : m_sectors) {
-		MapSector *sector = sector_it.second;
-
-		MapBlockVect blocks;
-		sector->getBlocks(blocks);
-
-		for (MapBlock *block : blocks) {
-			v3s16 p = block->getPos();
-			dst.push_back(p);
-		}
-	}
 }
 
 MapDatabase *ServerMap::createDatabase(

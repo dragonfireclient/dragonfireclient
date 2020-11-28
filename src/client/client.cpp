@@ -130,6 +130,7 @@ Client::Client(
 	if (g_settings->getBool("enable_minimap")) {
 		m_minimap = new Minimap(this);
 	}
+
 	m_cache_save_interval = g_settings->getU16("server_map_save_interval");
 }
 
@@ -241,18 +242,13 @@ void Client::scanModSubfolder(const std::string &mod_name, const std::string &mo
 		infostream << "Client::scanModSubfolder(): Loading \"" << real_path
 				<< "\" as \"" << vfs_path << "\"." << std::endl;
 
-		std::ifstream is(real_path, std::ios::binary | std::ios::ate);
-		if(!is.good()) {
+		std::string contents;
+		if (!fs::ReadFile(real_path, contents)) {
 			errorstream << "Client::scanModSubfolder(): Can't read file \""
 					<< real_path << "\"." << std::endl;
 			continue;
 		}
-		auto size = is.tellg();
-		std::string contents(size, '\0');
-		is.seekg(0);
-		is.read(&contents[0], size);
 
-		infostream << "  size: " << size << " bytes" << std::endl;
 		m_mod_vfs.emplace(vfs_path, contents);
 	}
 }
@@ -333,6 +329,8 @@ Client::~Client()
 	}
 
 	delete m_minimap;
+	m_minimap = nullptr;
+
 	delete m_media_downloader;
 }
 
@@ -1310,7 +1308,7 @@ void Client::sendPlayerPos(v3f pos)
 			player->last_pitch        == player->getPitch()    &&
 			player->last_yaw          == player->getYaw()      &&
 			player->last_keyPressed   == player->keyPressed    &&
-			player->last_camera_fov   == camera_fov              &&
+			player->last_camera_fov   == camera_fov            &&
 			player->last_wanted_range == wanted_range)
 		return;
 
@@ -1671,15 +1669,13 @@ void Client::updateAllMapBlocks()
 	for (s16 Z = currentBlock.Z - 2; Z <= currentBlock.Z + 2; Z++)
 		addUpdateMeshTask(v3s16(X, Y, Z), false, true);
 	
-	std::map<v2s16, MapSector*> *sectors = m_env.getMap().getSectorsPtr();
+	Map &map = m_env.getMap();
 	
-	for (auto &sector_it : *sectors) {
-		MapSector *sector = sector_it.second;
-		MapBlockVect blocks;
-		sector->getBlocks(blocks);
-		for (MapBlock *block : blocks) {
-			addUpdateMeshTask(block->getPos(), false, false);
-		}
+	std::vector<v3s16> positions;
+	map.listAllLoadedBlocks(positions);
+	
+	for (v3s16 p : positions) {
+		addUpdateMeshTask(p, false, false);
 	}
 }
 
@@ -1691,11 +1687,6 @@ ClientEvent *Client::getClientEvent()
 	ClientEvent *event = m_client_event_queue.front();
 	m_client_event_queue.pop();
 	return event;
-}
-
-bool Client::connectedToServer()
-{
-	return m_con->Connected();
 }
 
 const Address Client::getServerAddress()

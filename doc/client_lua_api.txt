@@ -703,6 +703,11 @@ Call these functions only at load time!
     * `add` adds something to the list 
     * `del` del removes something from the list
     * `list` lists all items on the list
+* `minetest.register_on_chatcommand(function(command, params))`
+    * Called always when a chatcommand is triggered, before `minetest.registered_chatcommands`
+      is checked to see if that the command exists, but after the input is parsed.
+    * Return `true` to mark the command as handled, which means that the default
+      handlers will be prevented.
 * `minetest.register_on_death(function())`
     * Called when the local player dies
 * `minetest.register_on_hp_modification(function(hp))`
@@ -1303,8 +1308,8 @@ Methods:
        aux1 = boolean,
        sneak = boolean,
        zoom = boolean,
-       LMB = boolean,
-       RMB = boolean,
+       dig = boolean,
+       place = boolean,
     }
 ```
 
