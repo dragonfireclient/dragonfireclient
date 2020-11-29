@@ -29,7 +29,7 @@ core.register_globalstep(function(dtime)
 	end
 	-- Strip
 	if core.settings:get_bool("strip") then
-		if itemdef and itemdef.groups.tree and player:get_control().RMB then
+		if itemdef and itemdef.groups.tree and player:get_control().place then
 			strip_move_act:from("current_player", "main", wieldindex)
 			strip_move_back_act:to("current_player", "main", wieldindex)
 			strip_move_act:apply()
@@ -79,10 +79,10 @@ local function check_tool(stack, node_groups, old_best_time)
 	return best_time < old_best_time, best_time
 end
 
-function core.select_best_tool(nodename)
-	local player = minetest.localplayer
-	local inventory = minetest.get_inventory("current_player")
-	local node_groups = minetest.get_node_def(nodename).groups
+local function find_best_tool(nodename)
+	local player = core.localplayer
+	local inventory = core.get_inventory("current_player")
+	local node_groups = core.get_node_def(nodename).groups
 	local new_index = player:get_wield_index()
 	local is_better, best_time = false, math.huge
 	is_better, best_time = check_tool(player:get_wielded_item(), node_groups, best_time)
@@ -93,13 +93,35 @@ function core.select_best_tool(nodename)
 			new_index = index
 		end
 	end
-	player:set_wield_index(new_index)
+	return new_index
 end
 
+function core.select_best_tool(nodename)
+	player:set_wield_index(find_best_tool(nodename))
+end
+
+local new_index, old_index, pointed_pos
+
 core.register_on_punchnode(function(pos, node)
-	if not minetest.settings:get_bool("autotool") then
-		core.select_best_tool(node.name)
+	if minetest.settings:get_bool("autotool") then
+		pointed_pos = pos
+		old_index = old_index or core.localplayer:get_wield_index()
+		new_index = find_best_tool(node.name)
 	end
+end)
+
+core.register_globalstep(function()
+	local player = core.localplayer
+	if not new_index then return end
+	if minetest.settings:get_bool("autotool") then
+		local pt = core.get_pointed_thing()
+		if pt and pt.type == "node" and vector.equals(core.get_pointed_thing_position(pt), pointed_pos) and player:get_control().dig then
+			player:set_wield_index(new_index)
+			return
+		end
+	end
+	player:set_wield_index(old_index)
+	new_index, old_index, pointed_pos = nil
 end)
 
 -- Enderchest

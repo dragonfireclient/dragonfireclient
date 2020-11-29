@@ -12,7 +12,7 @@ core.register_globalstep(function(dtime)
 	local control = player:get_control()
 	local pointed = core.get_pointed_thing()
 	local item = player:get_wielded_item():get_name()
-	if core.settings:get_bool("killaura") or core.settings:get_bool("forcefield") and control.LMB then
+	if core.settings:get_bool("killaura") or core.settings:get_bool("forcefield") and control.dig then
 		local friendlist = core.settings:get("friendlist"):split(",")
 		for _, obj in ipairs(core.get_objects_inside_radius(player:get_pos(), 5)) do
 			local do_attack = true
@@ -45,7 +45,7 @@ core.register_globalstep(function(dtime)
 			else
 				switched_to_totem = switched_to_totem
 			end
-		elseif control.RMB and item == "mcl_end:crystal" then
+		elseif control.place and item == "mcl_end:crystal" then
 			placed_crystal = true
 		elseif control.sneak then
 			if pointed and pointed.type == "node" and not used_sneak then
