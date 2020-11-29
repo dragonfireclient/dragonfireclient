@@ -1,5 +1,3 @@
-local elapsed_time = 0
-local tick_time = 0.05
 local drop_action = InventoryAction("drop")
 
 local strip_move_act = InventoryAction("move")
@@ -48,15 +46,6 @@ core.register_globalstep(function(dtime)
 			end
 		end
 	end
-	-- NextItem
-	if core.settings:get_bool("next_item") then
-		elapsed_time = elapsed_time + dtime
-		if elapsed_time < tick_time then return end
-		if item:get_count() == 0 then
-			player:set_wield_index(wieldindex + 1)
-		end
-		elapsed_time = 0
-	end
 end)
 
 core.register_list_command("eject", "Configure AutoEject", "eject_items")
@@ -103,7 +92,7 @@ end
 local new_index, old_index, pointed_pos
 
 core.register_on_punchnode(function(pos, node)
-	if minetest.settings:get_bool("autotool") then
+	if core.settings:get_bool("autotool") then
 		pointed_pos = pos
 		old_index = old_index or core.localplayer:get_wield_index()
 		new_index = find_best_tool(node.name)
@@ -113,7 +102,7 @@ end)
 core.register_globalstep(function()
 	local player = core.localplayer
 	if not new_index then return end
-	if minetest.settings:get_bool("autotool") then
+	if core.settings:get_bool("autotool") then
 		local pt = core.get_pointed_thing()
 		if pt and pt.type == "node" and vector.equals(core.get_pointed_thing_position(pt), pointed_pos) and player:get_control().dig then
 			player:set_wield_index(new_index)
@@ -167,7 +156,7 @@ local hand_formspec = "size[9,8.75]"..
 	"listring[current_player;main]"
 	
 function core.open_handslot()
-	minetest.show_formspec("__builtin__:hand", hand_formspec)
+	core.show_formspec("__builtin__:hand", hand_formspec)
 end
 
 

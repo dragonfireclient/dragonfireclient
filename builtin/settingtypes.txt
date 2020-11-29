@@ -2295,8 +2295,6 @@ autotool (AutoTool) bool false
 
 autorespawn (AutoRespawn) bool false
 
-next_item (NextItem) bool false
-
 scaffold (Scaffold) bool false
 
 scaffold_plus (ScaffoldPlus) bool false

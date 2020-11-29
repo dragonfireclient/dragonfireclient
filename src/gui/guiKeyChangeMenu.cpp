@@ -80,7 +80,6 @@ enum
 	GUI_ID_KEY_KILLAURA_BUTTON,
 	GUI_ID_KEY_FREECAM_BUTTON,
 	GUI_ID_KEY_SCAFFOLD_BUTTON,
-	GUI_ID_KEY_NEXT_ITEM_BUTTON,
 	GUI_ID_KEY_SELECT_UP_BUTTON,
 	GUI_ID_KEY_SELECT_DOWN_BUTTON,
 	GUI_ID_KEY_SELECT_LEFT_BUTTON,
@@ -461,7 +460,6 @@ void GUIKeyChangeMenu::init_keys()
 	this->add_key(GUI_ID_KEY_KILLAURA_BUTTON,  wgettext("Killaura"),  "keymap_toggle_killaura");
 	this->add_key(GUI_ID_KEY_FREECAM_BUTTON,   wgettext("Freecam"),    "keymap_toggle_freecam");
 	this->add_key(GUI_ID_KEY_SCAFFOLD_BUTTON,  wgettext("Scaffold"),    "keymap_toggle_scaffold");
-	this->add_key(GUI_ID_KEY_NEXT_ITEM_BUTTON, wgettext("NextItem"),    "keymap_toggle_next_item");
 	this->add_key(GUI_ID_KEY_SELECT_UP_BUTTON, wgettext("C. Menu Up"),    "keymap_select_up");
 	this->add_key(GUI_ID_KEY_SELECT_DOWN_BUTTON,wgettext("C. Menu Down"), "keymap_select_down");
 	this->add_key(GUI_ID_KEY_SELECT_LEFT_BUTTON,wgettext("C. Menu Left"), "keymap_select_left");

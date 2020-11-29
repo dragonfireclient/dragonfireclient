@@ -1125,8 +1125,6 @@ void Game::processKeyInput()
 		toggleFreecam();
 	} else if (wasKeyDown(KeyType::SCAFFOLD)) {
 		toggleScaffold();
-	} else if (wasKeyDown(KeyType::NEXT_ITEM)) {
-		toggleNextItem();
 #if USE_SOUND
 	} else if (wasKeyDown(KeyType::MUTE)) {
 		if (g_settings->getBool("enable_sound")) {
@@ -1445,18 +1443,6 @@ void Game::toggleScaffold()
 		m_game_ui->showTranslatedStatusText("Scaffold enabled");
 	} else {
 		m_game_ui->showTranslatedStatusText("Scaffold disabled");
-	}
-}
-
-void Game::toggleNextItem()
-{
-	bool next_item = ! g_settings->getBool("next_item");
-	g_settings->set("next_item", bool_to_cstr(next_item));
-
-	if (next_item) {
-		m_game_ui->showTranslatedStatusText("NextItem enabled");
-	} else {
-		m_game_ui->showTranslatedStatusText("NextItem disabled");
 	}
 }
 
@@ -3472,7 +3458,6 @@ void Game::showPauseMenu()
 		"- %s: Killaura\n"
 		"- %s: Freecam\n"
 		"- %s: Scaffold\n"
-		"- %s: NextItem\n"
 	);
 
 	 char control_text_buf[600];
@@ -3492,8 +3477,7 @@ void Game::showPauseMenu()
 			GET_KEY_NAME(keymap_chat),
 			GET_KEY_NAME(keymap_toggle_killaura),
 			GET_KEY_NAME(keymap_toggle_freecam),
-			GET_KEY_NAME(keymap_toggle_scaffold),
-			GET_KEY_NAME(keymap_toggle_next_item)
+			GET_KEY_NAME(keymap_toggle_scaffold)
 			);
 
 	std::string control_text = std::string(control_text_buf);
