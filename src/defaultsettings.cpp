@@ -146,6 +146,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_node_tracers", "false");
 	settings->setDefault("entity_esp_color", "(255, 255, 255)");
 	settings->setDefault("player_esp_color", "(0, 255, 0)");	
+	settings->setDefault("noweather", "false");	
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");

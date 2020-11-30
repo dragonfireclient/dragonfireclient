@@ -1325,20 +1325,6 @@ void push_inventory(lua_State *L, Inventory *inventory)
 }
 
 /******************************************************************************/
-void push_inventory_list(lua_State *L, Inventory *inv, const char *name)
-{
-	InventoryList *invlist = inv->getList(name);
-	if(invlist == NULL){
-		lua_pushnil(L);
-		return;
-	}
-	std::vector<ItemStack> items;
-	for(u32 i=0; i<invlist->getSize(); i++)
-		items.push_back(invlist->getItem(i));
-	push_items(L, items);
-}
-
-/******************************************************************************/
 void read_inventory_list(lua_State *L, int tableindex,
 		Inventory *inv, const char *name, Server* srv, int forcesize)
 {
@@ -1365,6 +1351,19 @@ void read_inventory_list(lua_State *L, int tableindex,
 		invlist->deleteItem(index);
 		index++;
 	}
+}
+
+void push_inventory_list(lua_State *L, Inventory *inv, const char *name)
+{
+	InventoryList *invlist = inv->getList(name);
+	if(invlist == NULL){
+		lua_pushnil(L);
+		return;
+	}
+	std::vector<ItemStack> items;
+	for(u32 i=0; i<invlist->getSize(); i++)
+		items.push_back(invlist->getItem(i));
+	push_items(L, items);
 }
 
 /******************************************************************************/
@@ -1400,6 +1399,29 @@ struct TileAnimationParams read_animation_definition(lua_State *L, int index)
 	}
 
 	return anim;
+}
+
+void push_animation_definition(lua_State *L, struct TileAnimationParams anim)
+{
+	switch (anim.type) {
+	case TAT_NONE:
+		lua_pushnil(L);
+		break;
+	case TAT_VERTICAL_FRAMES:
+		lua_newtable(L);
+		setstringfield(L, -1, "type", "vertical_frames");
+		setfloatfield(L, -1, "aspect_w", anim.vertical_frames.aspect_w);
+		setfloatfield(L, -1, "aspect_h", anim.vertical_frames.aspect_h);
+		setfloatfield(L, -1, "length", anim.vertical_frames.length);
+		break;
+	case TAT_SHEET_2D:
+		lua_newtable(L);
+		setstringfield(L, -1, "type", "sheet_2d");
+		setintfield(L, -1, "frames_w", anim.sheet_2d.frames_w);
+		setintfield(L, -1, "frames_h", anim.sheet_2d.frames_h);
+		setintfield(L, -1, "frame_length", anim.sheet_2d.frame_length);
+		break;
+	}
 }
 
 /******************************************************************************/
@@ -2103,6 +2125,7 @@ void push_collision_move_result(lua_State *L, const collisionMoveResult &res)
 	/**/
 }
 
+/******************************************************************************/
 void push_physics_override(lua_State *L, float speed, float jump, float gravity, bool sneak, bool sneak_glitch, bool new_move)
 {
 	lua_createtable(L, 0, 6);

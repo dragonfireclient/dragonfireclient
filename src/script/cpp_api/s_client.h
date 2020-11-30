@@ -27,6 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "util/string.h"
 #include "util/pointedthing.h"
 #include "lua_api/l_item.h"
+#include "particles.h"
 
 #ifdef _CRT_MSVCP_CURRENT
 #include <cstdint>
@@ -59,6 +60,7 @@ public:
 	bool on_item_use(const ItemStack &item, const PointedThing &pointed);
 	bool on_recieve_physics_override(float override_speed, float override_jump, float override_gravity, bool sneak, bool sneak_glitch, bool new_move);
 	bool on_play_sound(SimpleSoundSpec spec);
+	bool on_spawn_particle(struct ParticleParameters param);
 
 	bool on_inventory_open(Inventory *inventory);
 	void open_enderchest();

@@ -755,10 +755,14 @@ Call these functions only at load time!
     * Called when recieving physics_override from server
     * Newest functions are called first
     * If any function returns true, the physics override does not change
-* `minetest.register_on_sound_play(function(SimpleSoundSpec))`
+* `minetest.register_on_play_sound(function(SimpleSoundSpec))`
     * Called when recieving a play sound command from server
     * Newest functions are called first
     * If any function returns true, the sound does not play
+* `minetest.register_on_spawn_partice(function(particle definition))`
+    * Called when recieving a spawn particle command from server
+    * Newest functions are called first
+    * If any function returns true, the particel does not spawn
 
 ### Setting-related
 * `minetest.settings`: Settings object containing all of the settings from the

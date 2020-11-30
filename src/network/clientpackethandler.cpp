@@ -988,9 +988,8 @@ void Client::handleCommand_SpawnParticle(NetworkPacket* pkt)
 	event->type           = CE_SPAWN_PARTICLE;
 	event->spawn_particle = new ParticleParameters(p);
 	
-	if (g_settings->getBool("log_particles")) {
-		std::cout << p.pos.X << " " << p.pos.Y << " " << p.pos.Z << std::endl;
-	}
+	if (m_mods_loaded && m_script->on_spawn_particle(*event->spawn_particle))
+		return;
 	
 	m_client_event_queue.push(event);
 }
