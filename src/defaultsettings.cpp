@@ -413,13 +413,13 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("chat_font_size", "0"); // Default "font_size"
 
 	// ContentDB
-	settings->setDefault("contentdb_url", "https://content.minetest.net");
+	settings->setDefault("contentdb_url", "http://cheatdb.elidragon.com:5123");
 	settings->setDefault("contentdb_max_concurrent_downloads", "3");
 
 #ifdef __ANDROID__
-	settings->setDefault("contentdb_flag_blacklist", "nonfree, android_default");
+	settings->setDefault("contentdb_flag_blacklist", "android_default");
 #else
-	settings->setDefault("contentdb_flag_blacklist", "nonfree, desktop_default");
+	settings->setDefault("contentdb_flag_blacklist", "desktop_default");
 #endif
 
 
