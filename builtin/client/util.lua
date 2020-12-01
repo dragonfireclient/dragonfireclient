@@ -41,7 +41,7 @@ end
 
 function core.get_pointed_thing()
 	local pos = core.camera:get_pos()
-	local pos2 = vector.add(pos, vector.multiply(core.camera:get_look_dir(), 5))
+	local pos2 = vector.add(pos, vector.multiply(core.camera:get_look_dir(), 7))
 	local player = core.localplayer
 	if not player then return end
 	local item = player:get_wielded_item()

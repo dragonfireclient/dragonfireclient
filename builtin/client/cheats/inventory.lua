@@ -86,7 +86,7 @@ local function find_best_tool(nodename)
 end
 
 function core.select_best_tool(nodename)
-	player:set_wield_index(find_best_tool(nodename))
+	core.localplayer:set_wield_index(find_best_tool(nodename))
 end
 
 local new_index, old_index, pointed_pos
