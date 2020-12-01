@@ -902,6 +902,9 @@ bool ModApiMainMenu::mayModifyPath(const std::string &path)
 	if (fs::PathStartsWith(path, fs::RemoveRelativePathComponents(porting::path_user + DIR_DELIM "mods")))
 		return true;
 
+	if (fs::PathStartsWith(path, fs::RemoveRelativePathComponents(porting::path_user + DIR_DELIM "clientmods")))
+		return true;
+
 	if (fs::PathStartsWith(path, fs::RemoveRelativePathComponents(porting::path_user + DIR_DELIM "textures")))
 		return true;
 

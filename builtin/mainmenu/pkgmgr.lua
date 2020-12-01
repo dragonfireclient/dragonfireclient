@@ -592,7 +592,7 @@ function pkgmgr.install_dir(type, path, basename, targetpath)
 				clean_path = get_last_folder(cleanup_path(basefolder.path))
 			end
 			if clean_path then
-				targetpath = core.get_modpath() .. DIR_DELIM .. clean_path
+				targetpath = core.get_clientmodpath() .. DIR_DELIM .. clean_path
 			else
 				return nil,
 					fgettext("Install Mod: Unable to find suitable folder name for modpack $1",
@@ -619,7 +619,7 @@ function pkgmgr.install_dir(type, path, basename, targetpath)
 			end
 
 			if targetfolder ~= nil and pkgmgr.isValidModname(targetfolder) then
-				targetpath = core.get_modpath() .. DIR_DELIM .. targetfolder
+				targetpath = core.get_clientmodpath() .. DIR_DELIM .. targetfolder
 			else
 				return nil, fgettext("Install Mod: Unable to find real mod name for: $1", path)
 			end
@@ -671,6 +671,54 @@ function pkgmgr.install(type, modfilename, basename, dest)
 end
 
 --------------------------------------------------------------------------------
+function pkgmgr.prepareclientmodlist(data)
+	local retval = {}
+
+	local clientmods = {}
+
+	--read clientmods
+	local modpath = core.get_clientmodpath()
+
+	if modpath ~= nil and
+		modpath ~= "" then
+		get_mods(modpath,clientmods)
+	end
+
+	for i=1,#clientmods,1 do
+		clientmods[i].type = "mod"
+		clientmods[i].loc = "global"
+		clientmods[i].is_clientside = true
+		retval[#retval + 1] = clientmods[i]
+	end
+
+	--read mods configuration
+	local filename = modpath ..
+				DIR_DELIM .. "mods.conf"
+
+	local conffile = Settings(filename)
+
+	for key,value in pairs(conffile:to_table()) do
+		if key:sub(1, 9) == "load_mod_" then
+			key = key:sub(10)
+			local element = nil
+			for i=1,#retval,1 do
+				if retval[i].name == key and
+					not retval[i].is_modpack then
+					element = retval[i]
+					break
+				end
+			end
+			if element ~= nil then
+				element.enabled = value ~= "false" and value ~= "nil" and value
+			else
+				core.log("info", "Clientmod: " .. key .. " " .. dump(value) .. " but not found")
+			end
+		end
+	end
+
+	return retval
+end
+
 function pkgmgr.preparemodlist(data)
 	local retval = {}
 
@@ -813,6 +861,10 @@ function pkgmgr.refresh_globals()
 			pkgmgr.comparemod, is_equal, nil, {})
 	pkgmgr.global_mods:add_sort_mechanism("alphabetic", sort_mod_list)
 	pkgmgr.global_mods:set_sortmode("alphabetic")
+	pkgmgr.clientmods = filterlist.create(pkgmgr.prepareclientmodlist,
+			pkgmgr.comparemod, is_equal, nil, {})
+	pkgmgr.clientmods:add_sort_mechanism("alphabetic", sort_mod_list)
+	pkgmgr.clientmods:set_sortmode("alphabetic")
 end
 
 --------------------------------------------------------------------------------

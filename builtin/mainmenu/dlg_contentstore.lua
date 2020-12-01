@@ -40,8 +40,8 @@ local num_per_page = 5
 local filter_type = 1
 local filter_types_titles = {
 	fgettext("All packages"),
-	fgettext("Games"),
-	fgettext("Mods"),
+--	fgettext("Games"),
+	fgettext("Clientmods"),
 	fgettext("Texture packs"),
 }
 
@@ -50,7 +50,7 @@ local download_queue = {}
 
 local filter_types_type = {
 	nil,
-	"game",
+--	"game",
 	"mod",
 	"txp",
 }
@@ -254,7 +254,7 @@ end
 function store.update_paths()
 	local mod_hash = {}
 	pkgmgr.refresh_globals()
-	for _, mod in pairs(pkgmgr.global_mods:get_list()) do
+	for _, mod in pairs(pkgmgr.clientmods:get_list()) do
 		if mod.author then
 			mod_hash[mod.author:lower() .. "/" .. mod.name] = mod
 		end
