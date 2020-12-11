@@ -22,7 +22,8 @@ core.register_globalstep(function(dtime)
 			if not node or minetest.get_node_def(node.name).buildable_to then
 				core.place_node(p)
 			end
-		elseif core.settings:get_bool("scaffold_plus") then
+		end
+		if core.settings:get_bool("scaffold_plus") then
 			local z = pos.z
 			local positions = {
 				{x = 0, y = -0.6, z = 0},
@@ -38,13 +39,22 @@ core.register_globalstep(function(dtime)
 			for i, p in pairs(positions) do
 				core.place_node(vector.add(pos, p))
 			end
-		elseif core.settings:get_bool("block_water") then
+		end
+		if core.settings:get_bool("block_water") then
 			local positions = core.find_nodes_near(pos, 5, {"mcl_core:water_source", "mcl_core:water_floating"}, true)
 			for i, p in pairs(positions) do
 				if i > nodes_per_tick then return end
 				core.place_node(p)
 			end
-		elseif core.settings:get_bool("autotnt") then
+		end
+		if core.settings:get_bool("block_lava") then
+			local positions = core.find_nodes_near(pos, 5, {"mcl_core:lava_source", "mcl_core:lava_floating"}, true)
+			for i, p in pairs(positions) do
+				if i > nodes_per_tick then return end
+				core.place_node(p)
+			end
+		end
+		if core.settings:get_bool("autotnt") then
 			local positions = core.find_nodes_near_under_air_except(pos, 5, item:get_name(), true)
 			for i, p in pairs(positions) do
 				if i > nodes_per_tick then return end
@@ -69,6 +79,6 @@ core.register_globalstep(function(dtime)
 			end
 		end
 	end
-end) 
+end)
 
  

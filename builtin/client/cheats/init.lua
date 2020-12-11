@@ -50,6 +50,7 @@ core.cheats = {
 		["Scaffold"] = "scaffold",
 		["ScaffoldPlus"] = "scaffold_plus",
 		["BlockWater"] = "block_water",
+		["BlockLava"] = "block_lava",
 		["PlaceOnTop"] = "autotnt",
 		["Replace"] = "replace",
 		["Nuke"] = "nuke",

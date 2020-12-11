@@ -240,6 +240,7 @@ void ModApiHttp::Initialize(lua_State *L, int top)
 {
 #if USE_CURL
 	API_FCT(get_http_api);
+	API_FCT(request_http_api);
 #endif
 }
 
