@@ -66,19 +66,6 @@ core.register_chatcommand("teleport", {
 	end,
 })
 
-core.register_chatcommand("teleportjump", {
-	params = "<X>,<Y>,<Z>",
-	description = "Teleport to relative coordinates.",
-	func = function(param)
-		local success, pos = core.parse_relative_pos(param)
-		if success then
-			core.localplayer:set_pos(pos)
-			return true, "Teleporting to " .. core.pos_to_string(pos)
-		end
-		return false, pos
-	end,
-})
-
 core.register_chatcommand("wielded", {
 	description = "Print itemstring of wieleded item",
 	func = function()
@@ -174,7 +161,7 @@ core.register_chatcommand("setyaw", {
 			core.localplayer:set_yaw(yaw)
 			return true
 		else
-			return false, "Invalid usage (See /help setyaw)"
+			return false, "Invalid usage (See .help setyaw)"
 		end
 	end
 })
@@ -188,7 +175,10 @@ core.register_chatcommand("setpitch", {
 			core.localplayer:set_pitch(pitch)
 			return true
 		else
-			return false, "Invalid usage (See /help setpitch)"
+			return false, "Invalid usage (See .help setpitch)"
 		end
 	end
 })
+
+core.register_list_command("xray", "Configure X-Ray", "xray_nodes") 
+core.register_list_command("search", "Configure NodeESP", "node_esp_nodes") 

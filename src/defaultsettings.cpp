@@ -98,43 +98,13 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("no_night", "false");
 	settings->setDefault("coords", "false");
 	settings->setDefault("point_liquids", "false");
-	settings->setDefault("log_particles", "false");
 	settings->setDefault("spamclick", "false");
 	settings->setDefault("no_force_rotate", "false");
 	settings->setDefault("no_slow", "false");
 	settings->setDefault("float_above_parent", "false");
-	settings->setDefault("ignore_status_messages", "true");
-	settings->setDefault("mark_deathmessages", "true");
-	settings->setDefault("autosneak", "false");
-	settings->setDefault("autoeject", "false");
-	settings->setDefault("eject_items", "");
-	settings->setDefault("autotool", "false");
-	settings->setDefault("autorespawn", "false");
-	settings->setDefault("scaffold", "false");
-	settings->setDefault("scaffold_plus", "false");
-	settings->setDefault("block_water", "false");
-	settings->setDefault("autotnt", "false");
-	settings->setDefault("replace", "false");
-	settings->setDefault("crystal_pvp", "false");
-	settings->setDefault("autototem", "false");
 	settings->setDefault("dont_point_nodes", "false");
-	settings->setDefault("strip", "false");
-	settings->setDefault("autorefill", "false");
-	settings->setDefault("nuke", "false");
-	settings->setDefault("chat_color", "rainbow");
-	settings->setDefault("use_chat_color", "false");
-	settings->setDefault("chat_reverse", "false");
-	settings->setDefault("forcefield", "false");
-	settings->setDefault("friendlist", "");
 	settings->setDefault("cheat_hud", "true");
 	settings->setDefault("node_esp_nodes", "");
-	settings->setDefault("autosprint", "false");
-	settings->setDefault("override_speed", "false");
-	settings->setDefault("override_jump", "false");
-	settings->setDefault("override_gravity", "false");
-	settings->setDefault("override_speed_factor", "1.2");
-	settings->setDefault("override_jump_factor", "2.0");
-	settings->setDefault("override_gravity_factor", "0.9");
 	settings->setDefault("jetpack", "false");
 	settings->setDefault("autohit", "false");
 	settings->setDefault("antislip", "false");
@@ -146,8 +116,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_node_tracers", "false");
 	settings->setDefault("entity_esp_color", "(255, 255, 255)");
 	settings->setDefault("player_esp_color", "(0, 255, 0)");	
-	settings->setDefault("noweather", "false");	
-	settings->setDefault("noobject", "false");	
+	settings->setDefault("scaffold", "false");							// For now	
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
