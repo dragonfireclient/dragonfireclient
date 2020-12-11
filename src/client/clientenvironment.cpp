@@ -347,9 +347,6 @@ bool isFreeClientActiveObjectId(const u16 id,
 
 u16 ClientEnvironment::addActiveObject(ClientActiveObject *object)
 {
-	GenericCAO *gcao = dynamic_cast<GenericCAO *>(object);
-	aabb3f box;
-
 	// Register object. If failed return zero id
 	if (!m_ao_manager.registerObject(object))
 		return 0;
