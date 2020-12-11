@@ -2249,8 +2249,6 @@ prevent_natural_damage (NoFallDamage) bool true
 
 freecam (Freecam) bool false
 
-killaura (Killaura) bool false
-
 no_hurt_cam (NoHurtCam) bool false
 
 increase_tool_range (IncreasedRange) bool true
@@ -2261,7 +2259,7 @@ hud_flags_bypass (HUDBypass) bool true
 
 antiknockback (AntiKnockback) bool false
 
-entity_speed (GodMode) bool false
+entity_speed (EntitySpeed) bool false
 
 jesus (Jesus) bool false
 
@@ -2273,77 +2271,15 @@ coords (Coords) bool false
 
 point_liquids (PointLiquids) bool false
 
-log_particles (ParticleExploit) bool false
-
 spamclick (FastHit) bool false
 
 no_force_rotate (NoForceRotate) bool false
 
 no_slow (NoSlow) bool false
 
-ignore_status_messages (IgnoreStatus) bool true
-
-mark_deathmessages (Deathmessages) bool true
-
-autosneak (AutoSneak) bool false
-
-autoeject (AutoEject) bool false
-
-eject_items (AutoEject Items) string
-
-autotool (AutoTool) bool false
-
-autorespawn (AutoRespawn) bool false
-
-scaffold (Scaffold) bool false
-
-scaffold_plus (ScaffoldPlus) bool false
-
-block_water (BlockWater) bool false
-
-autotnt (PlaceOnTop) bool false
-
-replace (Replace) bool false
-
-crystal_pvp (CrystalPvP) bool false
-
-autototem (AutoTotem) bool false
-
-dont_point_nodes (ThroughWalls) bool false
-
-strip (Strip) bool false
-
-autorefill (AutoRefill) bool false
-
-nuke (Nuke) bool false
-
-chat_color (Chat Color) string rainbow
-
-use_chat_color (ColoredChat) bool false
-
-chat_reverse (ReversedChat) bool false
-
-forcefield (Forcefield) bool false
-
-friendlist (Killaura / Forcefield Friendlist) string
-
 cheat_hud (CheatHUD) bool true
 
 node_esp_nodes (NodeESP Nodes) string
-
-autosprint (AutoSprint) bool false
-
-override_speed (SpeedOverride) bool false
-
-override_jump (JumpOverride) bool false
-
-override_gravity (GravityOverride) bool false
-
-override_speed_factor (SpeedOverride Factor) float 1.2
-
-override_jump_factor (JumpOverride Factor) float 2.0
-
-override_gravity_factor (GravityOverride) float 0.8
 
 jetpack (JetPack) bool false
 
@@ -2366,5 +2302,3 @@ enable_node_tracers (NodeTracers) bool false
 entity_esp_color (EntityESP Color) v3f 255, 255, 255
 
 player_esp_color (PlayerESP Color) v3f 0, 255, 0
-
-noweather (NoWeather) bool false
