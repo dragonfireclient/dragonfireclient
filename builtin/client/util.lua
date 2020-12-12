@@ -13,13 +13,13 @@ function core.parse_pos(param)
 		return true, vector.round(p)
 	end
 	return false, "Invalid position (" .. param .. ")"
-end 
+end
 
 function core.parse_relative_pos(param)
 	local success, pos = core.parse_pos(param:gsub("~", "0"))
 	if success then pos = vector.round(vector.add(core.localplayer:get_pos(), pos)) end
 	return success, pos
-end 
+end
 
 function core.find_item(item, mini, maxi)
 	for index, stack in ipairs(core.get_inventory("current_player").main) do

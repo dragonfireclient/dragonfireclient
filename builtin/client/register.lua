@@ -60,7 +60,7 @@ function core.override_item(name, redefinition)
 	end
 	local nodedef = core.get_node_def(name)
 	table.combine(itemdef, nodedef)
-	
+
 	for k, v in pairs(redefinition) do
 		rawset(itemdef, k, v)
 	end

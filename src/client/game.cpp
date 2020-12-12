@@ -3373,6 +3373,26 @@ void Game::readSettings()
 	m_does_lost_focus_pause_game = g_settings->getBool("pause_on_lost_focus");
 }
 
+bool Game::isKeyDown(GameKeyType k)
+{
+	return input->isKeyDown(k);
+}
+
+bool Game::wasKeyDown(GameKeyType k)
+{
+	return input->wasKeyDown(k);
+}
+
+bool Game::wasKeyPressed(GameKeyType k)
+{
+	return input->wasKeyPressed(k);
+}
+
+bool Game::wasKeyReleased(GameKeyType k)
+{
+	return input->wasKeyReleased(k);
+}
+
 /****************************************************************************/
 /****************************************************************************
  Shutdown / cleanup

@@ -36,4 +36,3 @@ core.register_chatcommand("respawn", {
 		end
 	end
 })
- 

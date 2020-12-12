@@ -516,6 +516,7 @@ function table.shuffle(t, from, to, random)
 	end
 end
 
+
 function table.combine(t, other)
 	other = other or {}
 	for k, v in pairs(other) do
@@ -603,7 +604,7 @@ local function rgb_to_hex(rgb)
 		while(value > 0)do
 			local index = math.fmod(value, 16) + 1
 			value = math.floor(value / 16)
-			hex = string.sub('0123456789ABCDEF', index, index) .. hex			
+			hex = string.sub('0123456789ABCDEF', index, index) .. hex
 		end
 
 		if(string.len(hex) == 0)then
@@ -624,12 +625,12 @@ local function color_from_hue(hue)
 	local c = 255
 	local x = (1 - math.abs(h%2 - 1)) * 255
 
-  	local i = math.floor(h);
+	local i = math.floor(h);
   	if (i == 0) then
 		return rgb_to_hex({c, x, 0})
-  	elseif (i == 1) then 
+	elseif (i == 1) then 
 		return rgb_to_hex({x, c, 0})
-  	elseif (i == 2) then 
+	elseif (i == 2) then 
 		return rgb_to_hex({0, c, x})
 	elseif (i == 3) then
 		return rgb_to_hex({0, x, c});
@@ -649,9 +650,9 @@ function core.rainbow(input)
 		if char:match("%s") then
 			output = output .. char
 		else
-        	output = output  .. core.get_color_escape_sequence(color_from_hue(hue)) .. char 
+			output = output  .. core.get_color_escape_sequence(color_from_hue(hue)) .. char 
 		end
-        hue = hue + step
+		hue = hue + step
 	end
 	return output
 end

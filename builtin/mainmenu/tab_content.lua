@@ -50,12 +50,12 @@ local function get_formspec(tabview, name, tabdata)
 
 		packages = filterlist.create(get_data, pkgmgr.compare_package,
 				is_equal, nil, {})
-				
+
 		local filename = core.get_clientmodpath() .. DIR_DELIM .. "mods.conf"
 
 		local conffile = Settings(filename)
 		local mods = conffile:to_table()
-	
+
 		for i = 1, #packages_raw do
 			local mod = packages_raw[i]
 			if mod.is_clientside and not mod.is_modpack then
@@ -71,7 +71,7 @@ local function get_formspec(tabview, name, tabdata)
 				mods["load_mod_" .. mod.name] = nil
 			end
 		end
-		
+
 		-- Remove mods that are not present anymore
 		for key in pairs(mods) do
 			if key:sub(1, 9) == "load_mod_" then
@@ -211,24 +211,26 @@ local function handle_buttons(tabview, fields, tabname, tabdata)
 		local event = core.explode_table_event(fields["pkglist"])
 		tabdata.selected_pkg = event.row
 		local mod = packages:get_list()[tabdata.selected_pkg]
-		
+
 		if event.type == "DCL" and mod.is_clientside then
 			pkgmgr.enable_mod({data = {list = packages, selected_mod = tabdata.selected_pkg}})
 			packages = nil
 		end
 		return true
 	end
-	
+
 	if fields.btn_mod_mgr_mp_enable ~= nil or
 			fields.btn_mod_mgr_mp_disable ~= nil then
-		pkgmgr.enable_mod({data = {list = packages, selected_mod = tabdata.selected_pkg}}, fields.btn_mod_mgr_mp_enable ~= nil)
+		pkgmgr.enable_mod({data = {list = packages, selected_mod = tabdata.selected_pkg}},
+			fields.btn_mod_mgr_mp_enable ~= nil)
 		packages = nil
 		return true
 	end
-	
+
 	if fields.btn_mod_mgr_enable_mod ~= nil or
 			fields.btn_mod_mgr_disable_mod ~= nil then
-		pkgmgr.enable_mod({data = {list = packages, selected_mod = tabdata.selected_pkg}}, fields.btn_mod_mgr_enable_mod ~= nil)
+		pkgmgr.enable_mod({data = {list = packages, selected_mod = tabdata.selected_pkg}},
+			fields.btn_mod_mgr_enable_mod ~= nil)
 		packages = nil
 		return true
 	end

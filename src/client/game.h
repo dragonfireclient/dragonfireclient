@@ -792,22 +792,10 @@ public:
 	static void updateAllMapBlocksCallback(const std::string &setting_name, void *data);
 	void readSettings();
 
-	inline bool isKeyDown(GameKeyType k)
-	{
-		return input->isKeyDown(k);
-	}
-	inline bool wasKeyDown(GameKeyType k)
-	{
-		return input->wasKeyDown(k);
-	}
-	inline bool wasKeyPressed(GameKeyType k)
-	{
-		return input->wasKeyPressed(k);
-	}
-	inline bool wasKeyReleased(GameKeyType k)
-	{
-		return input->wasKeyReleased(k);
-	}
+	bool isKeyDown(GameKeyType k);
+	bool wasKeyDown(GameKeyType k);
+	bool wasKeyPressed(GameKeyType k);
+	bool wasKeyReleased(GameKeyType k);
 
 #ifdef __ANDROID__
 	void handleAndroidChatInput();
