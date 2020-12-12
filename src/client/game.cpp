@@ -2288,12 +2288,10 @@ void Game::processPlayerInteraction(f32 dtime, bool show_hud, bool show_debug)
 	const ItemDefinition &selected_def = selected_item.getDefinition(itemdef_manager);
 	f32 d = getToolRange(selected_def, hand_item.getDefinition(itemdef_manager));
 	
-	v2f new_tool_range = g_settings->getV2F("tool_range");
+	u16 new_tool_range = g_settings->getU16("tool_range");
 	
-	if (g_settings->getBool("increase_tool_range"))
-		d = new_tool_range.X;
-	if (g_settings->getBool("increase_tool_range_plus"))
-		d = new_tool_range.Y;
+	if (g_settings->getBool("reach"))
+		d = new_tool_range;
 
 	core::line3d<f32> shootline;
 
