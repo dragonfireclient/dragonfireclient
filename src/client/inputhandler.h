@@ -30,6 +30,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #endif
 
 class InputHandler;
+class TouchScreenGUI;
 
 /****************************************************************************
  Fast key cache for main game loop
