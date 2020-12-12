@@ -49,7 +49,7 @@ if INIT == "client" then
 					local i = table.indexof(list, item)
 					if i == -1 then
 						return false, item .. " is not on the list."
-					else	
+					else
 						table.remove(list, i)
 						core.settings:set(setting, table.concat(list, ","))
 						return true, "Removed " .. item .. " from the list."

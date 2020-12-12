@@ -400,7 +400,7 @@ local function parse_config_file(read_all, parse_mods)
 				file:close()
 			end
 		end
-		
+
 		-- Parse clientmods
 		local clientmods_category_initialized = false
 		local clientmods = {}
