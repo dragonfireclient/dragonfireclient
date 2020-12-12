@@ -85,8 +85,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("freecam", "false");
 	settings->setDefault("killaura", "false");
 	settings->setDefault("no_hurt_cam", "false");
-	settings->setDefault("increase_tool_range", "true");
-	settings->setDefault("increase_tool_range_plus", "false");
+	settings->setDefault("reach", "true");
 	settings->setDefault("hud_flags_bypass", "true");
 	settings->setDefault("antiknockback", "false");
 	settings->setDefault("entity_speed", "false");
@@ -147,7 +146,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("entity_esp_color", "(255, 255, 255)");
 	settings->setDefault("player_esp_color", "(0, 255, 0)");	
 	settings->setDefault("noweather", "false");
-	settings->setDefault("tool_range", "(6, 1000)");
+	settings->setDefault("tool_range", "5");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
