@@ -1,10 +1,7 @@
 core.cheats = {
 	["Combat"] = {
 		["AntiKnockback"] = "antiknockback",
-		["FastHit"] = "spamclick",
-		["AttachmentFloat"] = "float_above_parent",
-		["ThroughWalls"] = "dont_point_nodes",
-		["AutoHit"] = "autohit",
+		["AttachmentFloat"] = "float_above_parent",		
 	},
 	["Movement"] = {
 		["Freecam"] = "freecam",
@@ -31,12 +28,14 @@ core.cheats = {
 		["NodeESP"] = "enable_node_esp",
 		["NodeTracers"] = "enable_node_tracers",
 	},
-	["World"] = {
+	["Interact"] = {
 		["FastDig"] = "fastdig",
 		["FastPlace"] = "fastplace",
 		["AutoDig"] = "autodig",
 		["AutoPlace"] = "autoplace",
 		["InstantBreak"] = "instant_break",
+		["FastHit"] = "spamclick",
+		["AutoHit"] = "autohit",
 	},
 	["Exploit"] = {
 		["EntitySpeed"] = "entity_speed",
@@ -48,6 +47,7 @@ core.cheats = {
 		["PointLiquids"] = "point_liquids",
 		["PrivBypass"] = "priv_bypass",
 		["AutoRespawn"] = "autorespawn",
+		["ThroughWalls"] = "dont_point_nodes",
 	},
 }
 
