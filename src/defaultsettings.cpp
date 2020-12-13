@@ -90,6 +90,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("antiknockback", "false");
 	settings->setDefault("entity_speed", "false");
 	settings->setDefault("autodig", "false");
+	settings->setDefault("fastdig", "false");
 	settings->setDefault("jesus", "false");
 	settings->setDefault("fastplace", "false");
 	settings->setDefault("autoplace", "false");
