@@ -54,3 +54,7 @@ end
 function core.close_formspec(formname)
 	return core.show_formspec(formname, "")
 end
+
+function core.get_nearby_objects(radius)
+	return core.get_objects_inside_radius(core.localplayer:get_pos(), radius)
+end
