@@ -2227,6 +2227,12 @@ cheat_menu_selected_font_color (Selected font color) v3f 255, 252, 88
 
 cheat_menu_selected_font_color_alpha (Selected font color alpha) int 255
 
+cheat_menu_head_height (Head height) int 50
+
+cheat_menu_entry_height (Entry height) int 40
+
+cheat_menu_entry_width (Entry width) int 200
+
 [Cheats]
 
 fullbright (Fullbright) bool false

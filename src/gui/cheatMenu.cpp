@@ -68,6 +68,10 @@ CheatMenu::CheatMenu(Client *client) : m_client(client)
 			selected_font_color.X, selected_font_color.Y,
 			selected_font_color.Z);
 
+	m_head_height = g_settings->getU32("cheat_menu_head_height");
+	m_entry_height = g_settings->getU32("cheat_menu_entry_height");
+	m_entry_width = g_settings->getU32("cheat_menu_entry_width");
+
 	m_font = g_fontengine->getFont(FONT_SIZE_UNSPECIFIED, fontMode);
 
 	if (!m_font) {

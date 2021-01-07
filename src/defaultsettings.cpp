@@ -74,7 +74,10 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("cheat_menu_font_color_alpha", "195");
 	settings->setDefault("cheat_menu_selected_font_color", "(255, 255, 255)");
 	settings->setDefault("cheat_menu_selected_font_color_alpha", "235");
-	
+	settings->setDefault("cheat_menu_head_height", "50");
+	settings->setDefault("cheat_menu_entry_height", "40");
+	settings->setDefault("cheat_menu_entry_width", "200");
+
 	// Cheats
 	settings->setDefault("xray", "false");
 	settings->setDefault("xray_nodes", "default:stone,mcl_core:stone");
@@ -114,7 +117,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_node_esp", "false");
 	settings->setDefault("enable_node_tracers", "false");
 	settings->setDefault("entity_esp_color", "(255, 255, 255)");
-	settings->setDefault("player_esp_color", "(0, 255, 0)");	
+	settings->setDefault("player_esp_color", "(0, 255, 0)");
 	settings->setDefault("tool_range", "2");
 	settings->setDefault("scaffold", "false");
 	settings->setDefault("killaura", "false");
