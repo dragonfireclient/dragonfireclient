@@ -28,6 +28,8 @@ public:
 
 	~ClientObjectRef() = default;
 
+	ClientActiveObject *getClientActiveObject();
+
 	static void Register(lua_State *L);
 
 	static void create(lua_State *L, ClientActiveObject *object);

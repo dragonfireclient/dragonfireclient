@@ -422,7 +422,7 @@ int ModApiClient::l_send_damage(lua_State *L)
 {
 	u16 damage = luaL_checknumber(L, 1);
 	getClient(L)->sendDamage(damage);
-	return 0;	
+	return 0;
 }
 
 // place_node(pos)
@@ -465,7 +465,7 @@ int ModApiClient::l_get_inventory(lua_State *L)
 	InventoryLocation inventory_location;
 	Inventory *inventory;
 	std::string location;
-	
+
 	location = readParam<std::string>(L, 1);
 
 	try {
@@ -477,7 +477,7 @@ int ModApiClient::l_get_inventory(lua_State *L)
 	} catch (SerializationError &) {
 		lua_pushnil(L);
 	}
-	
+
 	return 1;
 }
 
@@ -510,13 +510,13 @@ int ModApiClient::l_drop_selected_item(lua_State *L)
 int ModApiClient::l_get_objects_inside_radius(lua_State *L)
 {
 	ClientEnvironment &env = getClient(L)->getEnv();
-	
+
 	v3f pos = checkFloatPos(L, 1);
 	float radius = readParam<float>(L, 2) * BS;
-	
+
 	std::vector<DistanceSortedActiveObject> objs;
 	env.getActiveObjects(pos, radius, objs);
-	
+
 	int i = 0;
 	lua_createtable(L, objs.size(), 0);
 	for (const auto obj : objs) {
@@ -526,12 +526,99 @@ int ModApiClient::l_get_objects_inside_radius(lua_State *L)
 	return 1;
 }
 
-//make_screenshot()
+// make_screenshot()
 int ModApiClient::l_make_screenshot(lua_State *L)
 {
-  getClient(L)->makeScreenshot();
-  lua_pushboolean(L, true);
-  return 1;
+	getClient(L)->makeScreenshot();
+	return 0;
+}
+
+/*
+`pointed_thing`
+---------------
+
+* `{type="nothing"}`
+* `{type="node", under=pos, above=pos}`
+    * Indicates a pointed node selection box.
+    * `under` refers to the node position behind the pointed face.
+    * `above` refers to the node position in front of the pointed face.
+* `{type="object", ref=ObjectRef}`
+
+Exact pointing location (currently only `Raycast` supports these fields):
+
+* `pointed_thing.intersection_point`: The absolute world coordinates of the
+  point on the selection box which is pointed at. May be in the selection box
+  if the pointer is in the box too.
+* `pointed_thing.box_id`: The ID of the pointed selection box (counting starts
+  from 1).
+* `pointed_thing.intersection_normal`: Unit vector, points outwards of the
+  selected selection box. This specifies which face is pointed at.
+  Is a null vector `{x = 0, y = 0, z = 0}` when the pointer is inside the
+  selection box.
+*/
+
+// interact(action, pointed_thing)
+int ModApiClient::l_interact(lua_State *L)
+{
+	std::string action_str = readParam<std::string>(L, 1);
+	InteractAction action;
+
+	if (action_str == "start_digging")
+		action = INTERACT_START_DIGGING;
+	else if (action_str == "stop_digging")
+		action = INTERACT_STOP_DIGGING;
+	else if (action_str == "digging_completed")
+		action = INTERACT_DIGGING_COMPLETED;
+	else if (action_str == "place")
+		action = INTERACT_PLACE;
+	else if (action_str == "use")
+		action = INTERACT_USE;
+	else if (action_str == "activate")
+		action = INTERACT_ACTIVATE;
+	else
+		return 0;
+
+	lua_getfield(L, 2, "type");
+	if (! lua_isstring(L, -1))
+		return 0;
+	std::string type_str = lua_tostring(L, -1);
+	lua_pop(L, 1);
+
+	PointedThingType type;
+
+	if (type_str == "nothing")
+		type = POINTEDTHING_NOTHING;
+	else if (type_str == "node")
+		type = POINTEDTHING_NODE;
+	else if (type_str == "object")
+		type = POINTEDTHING_OBJECT;
+	else
+		return 0;
+
+	PointedThing pointed;
+	pointed.type = type;
+	ClientObjectRef *obj;
+
+	switch (type) {
+	case POINTEDTHING_NODE:
+		lua_getfield(L, 2, "under");
+		pointed.node_undersurface = check_v3s16(L, -1);
+
+		lua_getfield(L, 2, "above");
+		pointed.node_abovesurface = check_v3s16(L, -1);
+		break;
+	case POINTEDTHING_OBJECT:
+		lua_getfield(L, 2, "ref");
+		obj = ClientObjectRef::checkobject(L, -1);
+		pointed.object_id = obj->getClientActiveObject()->getId();
+		break;
+	default:
+		break;
+	}
+
+	getClient(L)->interact(action, pointed);
+	lua_pushboolean(L, true);
+	return 1;
 }
 
 void ModApiClient::Initialize(lua_State *L, int top)
@@ -569,5 +656,5 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(drop_selected_item);
 	API_FCT(get_objects_inside_radius);
 	API_FCT(make_screenshot);
-
+	API_FCT(interact);
 }

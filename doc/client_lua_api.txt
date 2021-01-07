@@ -793,6 +793,16 @@ Call these functions only at load time!
     * Returns the time of day: `0` for midnight, `0.5` for midday
 
 ### Map
+* `minetest.interact(action, pointed_thing)`
+    * Sends an interaction to the server
+    * `pointed_thing` is a pointed_thing
+    * `action` is one of
+        * "start_digging": Use to punch nodes / objects
+        * "stop_digging": Use to abort digging a "start_digging" command
+        * "digging_completed": Use to finish a "start_digging" command or dig a node instantly
+        * "place": Use to rightclick nodes and objects
+        * "use": Use to leftclick an item in air (pointed_thing.type is usually "nothing")
+        * "activate": Same as "use", but rightclick
 * `minetest.place_node(pos)`
     * Places the wielded node/item of the player at pos.
 * `minetest.dig_node(pos)`

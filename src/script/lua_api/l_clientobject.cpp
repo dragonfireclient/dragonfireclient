@@ -24,6 +24,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "object_properties.h"
 #include "util/pointedthing.h"
 
+ClientActiveObject *ClientObjectRef::getClientActiveObject()
+{
+	return m_object;
+}
+
 ClientObjectRef *ClientObjectRef::checkobject(lua_State *L, int narg)
 {
 	luaL_checktype(L, narg, LUA_TUSERDATA);

@@ -129,6 +129,9 @@ private:
 	// make_screenshot()
 	static int l_make_screenshot(lua_State *L);
 
+	// interact(action, pointed_thing)
+	static int l_interact(lua_State *L);
+
 public:
 	static void Initialize(lua_State *L, int top);
 };
