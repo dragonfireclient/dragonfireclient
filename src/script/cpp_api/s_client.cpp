@@ -18,6 +18,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include "nodedef.h"
+#include "itemdef.h"
 #include "s_client.h"
 #include "s_internal.h"
 #include "client/client.h"
@@ -315,6 +317,28 @@ void ScriptApiClient::open_enderchest()
 	lua_getfield(L, -1, "open_enderchest");
 	if (lua_isfunction(L, -1))
 		lua_pcall(L, 0, 0, error_handler);
+}
+
+void ScriptApiClient::set_node_def(const ContentFeatures &f)
+{
+	SCRIPTAPI_PRECHECKHEADER
+	
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "registered_nodes");
+	
+	push_content_features(L, f);
+	lua_setfield(L, -2, f.name.c_str());
+}
+
+void ScriptApiClient::set_item_def(const ItemDefinition &i)
+{
+	SCRIPTAPI_PRECHECKHEADER
+	
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "registered_items");
+	
+	push_item_definition(L, i);
+	lua_setfield(L, -2, i.name.c_str());
 }
 
 void ScriptApiClient::setEnv(ClientEnvironment *env)

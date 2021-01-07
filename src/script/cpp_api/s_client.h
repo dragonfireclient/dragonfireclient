@@ -66,6 +66,9 @@ public:
 
 	bool on_inventory_open(Inventory *inventory);
 	void open_enderchest();
+	
+	void set_node_def(const ContentFeatures &f);
+	void set_item_def(const ItemDefinition &i);
 
 	void setEnv(ClientEnvironment *env);
 };
