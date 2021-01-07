@@ -16,13 +16,17 @@ varying vec3 vPosition;
 // precision must be considered).
 varying vec3 worldPosition;
 varying lowp vec4 varColor;
-centroid varying mediump vec2 varTexCoord;
+#ifdef GL_ES
+varying mediump vec2 varTexCoord;
+#else
+centroid varying vec2 varTexCoord;
+#endif
 varying vec3 eyeVec;
 
 const float fogStart = FOG_START;
 const float fogShadingParameter = 1.0 / ( 1.0 - fogStart);
 
-#ifdef ENABLE_TONE_MAPPING
+#if ENABLE_TONE_MAPPING
 
 /* Hable's UC2 Tone mapping parameters
 	A = 0.22;
@@ -73,7 +77,7 @@ void main(void)
 
 	vec4 col = vec4(color.rgb * varColor.rgb, 1.0);
 
-#ifdef ENABLE_TONE_MAPPING
+#if ENABLE_TONE_MAPPING
 	col = applyToneMapping(col);
 #endif
 

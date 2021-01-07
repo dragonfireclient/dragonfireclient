@@ -118,7 +118,7 @@ Game::Game() :
 		&updateAllMapBlocksCallback, this);
 	g_settings->registerChangedCallback("node_esp_nodes",
 		&updateAllMapBlocksCallback, this);
-		
+
 	readSettings();
 
 #ifdef __ANDROID__
@@ -244,7 +244,7 @@ void Game::run()
 	RunStats stats              = { 0 };
 	FpsControl draw_times       = { 0 };
 	f32 dtime; // in seconds
-	
+
 	/* Clear the profiler */
 	Profiler::GraphValues dummyvalues;
 	g_profiler->graphGet(dummyvalues);
@@ -519,7 +519,7 @@ bool Game::createClient(const GameStartData &start_data)
 		return false;
 	}
 
-	GameGlobalShaderConstantSetterFactory *scsf = new GameGlobalShaderConstantSetterFactory(
+	auto *scsf = new GameGlobalShaderConstantSetterFactory(
 			&m_flags.force_fog_off, &runData.fog_range, client);
 	shader_src->addShaderConstantSetterFactory(scsf);
 
@@ -529,32 +529,20 @@ bool Game::createClient(const GameStartData &start_data)
 	/* Camera
 	 */
 	camera = new Camera(*draw_control, client);
-	if (!camera || !camera->successfullyCreated(*error_message))
+	if (!camera->successfullyCreated(*error_message))
 		return false;
 	client->setCamera(camera);
 
 	/* Clouds
 	 */
-	if (m_cache_enable_clouds) {
+	if (m_cache_enable_clouds)
 		clouds = new Clouds(smgr, -1, time(0));
-		if (!clouds) {
-			*error_message = "Memory allocation error (clouds)";
-			errorstream << *error_message << std::endl;
-			return false;
-		}
-	}
 
 	/* Skybox
 	 */
 	sky = new Sky(-1, texture_src, shader_src);
 	scsf->setSky(sky);
 	skybox = NULL;	// This is used/set later on in the main run loop
-
-	if (!sky) {
-		*error_message = "Memory allocation error sky";
-		errorstream << *error_message << std::endl;
-		return false;
-	}
 
 	/* Pre-calculated values
 	 */
@@ -585,12 +573,6 @@ bool Game::createClient(const GameStartData &start_data)
 
 	hud = new Hud(guienv, client, player, &player->inventory);
 
-	if (!hud) {
-		*error_message = "Memory error: could not create HUD";
-		errorstream << *error_message << std::endl;
-		return false;
-	}
-
 	mapper = client->getMinimap();
 
 	if (mapper && client->modsLoaded())
@@ -618,7 +600,7 @@ bool Game::initGui()
 		errorstream << *error_message << std::endl;
 		return false;
 	}
-	
+
 	m_cheat_menu = new CheatMenu(client);
 
 	if (!m_cheat_menu) {
@@ -681,9 +663,6 @@ bool Game::connectToServer(const GameStartData &start_data,
 			*draw_control, texture_src, shader_src,
 			itemdef_manager, nodedef_manager, sound, eventmgr,
 			connect_address.isIPv6(), m_game_ui.get());
-
-	if (!client)
-		return false;
 
 	client->m_simple_singleplayer_mode = simple_singleplayer_mode;
 
@@ -1079,7 +1058,7 @@ void Game::processKeyInput()
 	} else if (wasKeyDown(KeyType::SELECT_CONFIRM)) {
 		m_cheat_menu->selectConfirm();
 	}
-	
+
 	if (wasKeyDown(KeyType::DROP)) {
 		dropSelectedItem(isKeyDown(KeyType::SNEAK));
 	} else if (wasKeyDown(KeyType::AUTOFORWARD)) {
@@ -1875,7 +1854,7 @@ void Game::handleClientEvent_ShowFormSpec(ClientEvent *event, CameraOrientation 
 }
 
 void Game::handleClientEvent_ShowLocalFormSpec(ClientEvent *event, CameraOrientation *cam)
-{	
+{
 	if (event->show_formspec.formspec->empty()) {
 		auto formspec = m_game_ui->getFormspecGUI();
 		if (formspec && (event->show_formspec.formname->empty()
@@ -1889,7 +1868,7 @@ void Game::handleClientEvent_ShowLocalFormSpec(ClientEvent *event, CameraOrienta
 		GUIFormSpecMenu::create(m_game_ui->getFormspecGUI(), client, &input->joystick,
 			fs_src, txt_dst, client->getFormspecPrepend(), sound);
 	}
-	
+
 	delete event->show_formspec.formspec;
 	delete event->show_formspec.formname;
 }
@@ -2230,7 +2209,7 @@ void Game::updatePlayerCAOVisibility()
 		return;
 	playercao->updateMeshCulling();
 	bool is_visible = camera->getCameraMode() > CAMERA_MODE_FIRST || g_settings->getBool("freecam");
-	playercao->setChildrenVisible(is_visible);	
+	playercao->setChildrenVisible(is_visible);
 }
 
 void Game::updateSound(f32 dtime)
@@ -2287,8 +2266,8 @@ void Game::processPlayerInteraction(f32 dtime, bool show_hud, bool show_debug)
 
 	const ItemDefinition &selected_def = selected_item.getDefinition(itemdef_manager);
 	f32 d = getToolRange(selected_def, hand_item.getDefinition(itemdef_manager));
-	
-	
+
+
 	if (g_settings->getBool("reach"))
 		d += g_settings->getU16("tool_range");
 
@@ -2415,8 +2394,8 @@ void Game::processPlayerInteraction(f32 dtime, bool show_hud, bool show_debug)
 	wasKeyDown(KeyType::DIG);
 	wasKeyDown(KeyType::PLACE);
 
-	input->joystick.clearWasKeyDown(KeyType::DIG);
-	input->joystick.clearWasKeyDown(KeyType::PLACE);
+	input->joystick.clearWasKeyPressed(KeyType::DIG);
+	input->joystick.clearWasKeyPressed(KeyType::PLACE);
 
 	input->joystick.clearWasKeyReleased(KeyType::DIG);
 	input->joystick.clearWasKeyReleased(KeyType::PLACE);
@@ -2862,7 +2841,7 @@ void Game::handleDigging(const PointedThing &pointed, const v3s16 &nodepos,
 					player, nodepos, n, features);
 		}
 	}
-	
+
 	if(g_settings->getBool("instant_break")) {
 		runData.dig_time_complete = 0;
 		runData.dig_instantly = true;
@@ -3603,7 +3582,7 @@ void the_game(bool *kill,
 		bool *reconnect_requested) // Used for local game
 {
 	Game game;
-	
+
 	g_game = &game;
 
 	/* Make a copy of the server address because if a local singleplayer server

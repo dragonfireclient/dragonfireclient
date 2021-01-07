@@ -203,7 +203,7 @@ struct LocalFormspecHandler : public TextDest
 			return;
 		}
 
-		if (m_client && m_client->modsLoaded())
+		if (m_client->modsLoaded())
 			m_client->getScript()->on_formspec_input(m_formname, fields);
 	}
 
@@ -492,12 +492,8 @@ public:
 		g_settings->deregisterChangedCallback("enable_fog", settingsCallback, this);
 	}
 
-	virtual void onSetConstants(video::IMaterialRendererServices *services,
-			bool is_highlevel)
+	void onSetConstants(video::IMaterialRendererServices *services) override
 	{
-		if (!is_highlevel)
-			return;
-
 		// Background color
 		video::SColor bgcolor = m_sky->getBgColor();
 		video::SColorf bgcolorf(bgcolor);
@@ -604,7 +600,7 @@ public:
 
 	virtual IShaderConstantSetter* create()
 	{
-		GameGlobalShaderConstantSetter *scs = new GameGlobalShaderConstantSetter(
+		auto *scs = new GameGlobalShaderConstantSetter(
 				m_sky, m_force_fog_off, m_fog_range, m_client);
 		if (!m_sky)
 			created_nosky.push_back(scs);
@@ -643,7 +639,6 @@ struct GameRunData {
 	bool btn_down_for_dig;
 	bool dig_instantly;
 	bool digging_blocked;
-	bool left_punch;
 	bool reset_jump_timer;
 	float nodig_delay_timer;
 	float dig_time;
@@ -852,10 +847,10 @@ public:
 	ISoundManager *sound = nullptr;
 	bool sound_is_dummy = false;
 	SoundMaker *soundmaker = nullptr;
-	
+
 	ChatBackend *chat_backend = nullptr;
 	LogOutputBuffer m_chat_log_buf;
-	
+
 	EventManager *eventmgr = nullptr;
 	QuicktuneShortcutter *quicktune = nullptr;
 	bool registration_confirmation_shown = false;

@@ -152,6 +152,9 @@ joystick_type (Joystick type) enum auto auto,generic,xbox
 #    when holding down a joystick button combination.
 repeat_joystick_button_time (Joystick button repetition interval) float 0.17 0.001
 
+#    The deadzone of the joystick
+joystick_deadzone (Joystick deadzone) int 2048
+
 #    The sensitivity of the joystick axes for moving the
 #    ingame view frustum around.
 joystick_frustum_sensitivity (Joystick frustum sensitivity) float 170
@@ -1060,6 +1063,13 @@ full_block_send_enable_min_time_from_building (Delay in sending blocks after bui
 #    client number.
 max_packets_per_iteration (Max. packets per iteration) int 1024
 
+#    ZLib compression level to use when sending mapblocks to the client.
+#    -1 - Zlib's default compression level
+#     0 - no compresson, fastest
+#     9 - best compression, slowest
+#     (levels 1-3 use Zlib's "fast" method, 4-9 use the normal method)
+map_compression_level_net (Map Compression Level for Network Transfer) int -1 -1 9
+
 [*Game]
 
 #    Default game when creating a new world.
@@ -1251,6 +1261,13 @@ max_objects_per_block (Maximum objects per block) int 64
 
 #    See https://www.sqlite.org/pragma.html#pragma_synchronous
 sqlite_synchronous (Synchronous SQLite) enum 2 0,1,2
+
+#    ZLib compression level to use when saving mapblocks to disk.
+#    -1 - Zlib's default compression level
+#     0 - no compresson, fastest
+#     9 - best compression, slowest
+#     (levels 1-3 use Zlib's "fast" method, 4-9 use the normal method)
+map_compression_level_disk (Map Compression Level for Disk Storage) int 3 -1 9
 
 #    Length of a server tick and the interval at which objects are generally updated over
 #    network.
@@ -2200,6 +2217,7 @@ contentdb_url (ContentDB URL) string https://content.minetest.net
 contentdb_flag_blacklist (ContentDB Flag Blacklist) string nonfree, desktop_default
 
 #    Maximum number of concurrent downloads. Downloads exceeding this limit will be queued.
+#    This should be lower than curl_parallel_limit.
 contentdb_max_concurrent_downloads (ContentDB Max Concurrent Downloads) int 3
 
 [Cheat Menu]

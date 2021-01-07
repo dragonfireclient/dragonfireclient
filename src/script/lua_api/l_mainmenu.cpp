@@ -687,6 +687,14 @@ int ModApiMainMenu::l_get_mapgen_names(lua_State *L)
 
 
 /******************************************************************************/
+int ModApiMainMenu::l_get_user_path(lua_State *L)
+{
+	std::string path = fs::RemoveRelativePathComponents(porting::path_user);
+	lua_pushstring(L, path.c_str());
+	return 1;
+}
+
+/******************************************************************************/
 int ModApiMainMenu::l_get_modpath(lua_State *L)
 {
 	std::string modpath = fs::RemoveRelativePathComponents(
@@ -792,6 +800,15 @@ int ModApiMainMenu::l_copy_dir(lua_State *L)
 		return 1;
 	}
 	lua_pushboolean(L,false);
+	return 1;
+}
+
+/******************************************************************************/
+int ModApiMainMenu::l_is_dir(lua_State *L)
+{
+	const char *path = luaL_checkstring(L, 1);
+
+	lua_pushboolean(L, fs::IsDir(path));
 	return 1;
 }
 
@@ -1070,7 +1087,15 @@ int ModApiMainMenu::l_get_max_supp_proto(lua_State *L)
 int ModApiMainMenu::l_open_url(lua_State *L)
 {
 	std::string url = luaL_checkstring(L, 1);
-	lua_pushboolean(L, porting::openURL(url));
+	lua_pushboolean(L, porting::open_url(url));
+	return 1;
+}
+
+/******************************************************************************/
+int ModApiMainMenu::l_open_dir(lua_State *L)
+{
+	std::string path = luaL_checkstring(L, 1);
+	lua_pushboolean(L, porting::open_directory(path));
 	return 1;
 }
 
@@ -1116,6 +1141,7 @@ void ModApiMainMenu::Initialize(lua_State *L, int top)
 	API_FCT(set_background);
 	API_FCT(set_topleft_text);
 	API_FCT(get_mapgen_names);
+	API_FCT(get_user_path);
 	API_FCT(get_modpath);
 	API_FCT(get_clientmodpath);
 	API_FCT(get_gamepath);
@@ -1125,6 +1151,7 @@ void ModApiMainMenu::Initialize(lua_State *L, int top)
 	API_FCT(create_dir);
 	API_FCT(delete_dir);
 	API_FCT(copy_dir);
+	API_FCT(is_dir);
 	API_FCT(extract_zip);
 	API_FCT(may_modify_path);
 	API_FCT(get_mainmenu_path);
@@ -1137,6 +1164,7 @@ void ModApiMainMenu::Initialize(lua_State *L, int top)
 	API_FCT(get_min_supp_proto);
 	API_FCT(get_max_supp_proto);
 	API_FCT(open_url);
+	API_FCT(open_dir);
 	API_FCT(do_async_callback);
 }
 
@@ -1147,6 +1175,7 @@ void ModApiMainMenu::InitializeAsync(lua_State *L, int top)
 	API_FCT(get_games);
 	API_FCT(get_favorites);
 	API_FCT(get_mapgen_names);
+	API_FCT(get_user_path);
 	API_FCT(get_modpath);
 	API_FCT(get_clientmodpath);
 	API_FCT(get_gamepath);
@@ -1156,6 +1185,7 @@ void ModApiMainMenu::InitializeAsync(lua_State *L, int top)
 	API_FCT(create_dir);
 	API_FCT(delete_dir);
 	API_FCT(copy_dir);
+	API_FCT(is_dir);
 	//API_FCT(extract_zip); //TODO remove dependency to GuiEngine
 	API_FCT(may_modify_path);
 	API_FCT(download_file);

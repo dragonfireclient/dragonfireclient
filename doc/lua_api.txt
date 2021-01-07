@@ -2113,6 +2113,22 @@ Examples
     list[current_player;main;0,3.5;8,4;]
     list[current_player;craft;3,0;3,3;]
     list[current_player;craftpreview;7,1;1,1;]
+   
+Version History
+---------------
+
+* FORMSPEC VERSION 1:
+  * (too much)
+* FORMSPEC VERSION 2:
+  * Forced real coordinates
+  * background9[]: 9-slice scaling parameters
+* FORMSPEC VERSION 3:
+  * Formspec elements are drawn in the order of definition
+  * bgcolor[]: use 3 parameters (bgcolor, formspec (now an enum), fbgcolor)
+  * box[] and image[] elements enable clipping by default
+  * new element: scroll_container[]
+* FORMSPEC VERSION 4:
+  * Allow dropdown indexing events
 
 Elements
 --------
@@ -2125,6 +2141,7 @@ Elements
 * Clients older than this version can neither show newer elements nor display
   elements with new arguments correctly.
 * Available since feature `formspec_version_element`.
+* See also: [Version History]
 
 ### `size[<W>,<H>,<fixed_size>]`
 
@@ -2277,7 +2294,7 @@ Elements
 * `frame duration`: Milliseconds between each frame. `0` means the frames don't advance.
 * `frame start` (Optional): The index of the frame to start on. Default `1`.
 
-### `model[<X>,<Y>;<W>,<H>;<name>;<mesh>;<textures>;<rotation X,Y>;<continuous>;<mouse control>]`
+### `model[<X>,<Y>;<W>,<H>;<name>;<mesh>;<textures>;<rotation X,Y>;<continuous>;<mouse control>;<frame loop range>]`
 
 * Show a mesh model.
 * `name`: Element name that can be used for styling
@@ -2288,6 +2305,9 @@ Elements
   The axes are euler angles in degrees.
 * `continuous` (Optional): Whether the rotation is continuous. Default `false`.
 * `mouse control` (Optional): Whether the model can be controlled with the mouse. Default `true`.
+* `frame loop range` (Optional): Range of the animation frames.
+    * Defaults to the full range of all available frames.
+    * Syntax: `<begin>,<end>`
 
 ### `item_image[<X>,<Y>;<W>,<H>;<item name>]`
 
@@ -2789,6 +2809,7 @@ Some types may inherit styles from parent types.
 * image_button
 * item_image_button
 * label
+* model
 * pwdfield, inherits from field
 * scrollbar
 * tabheader
@@ -4188,6 +4209,8 @@ Callbacks:
     * Called when the object is instantiated.
     * `dtime_s` is the time passed since the object was unloaded, which can be
       used for updating the entity state.
+* `on_deactivate(self)
+    * Called when the object is about to get removed or unloaded.
 * `on_step(self, dtime)`
     * Called on every server tick, after movement and collision processing.
       `dtime` is usually 0.1 seconds, as per the `dedicated_server_step` setting
@@ -4308,11 +4331,14 @@ Utilities
 
 * `minetest.get_current_modname()`: returns the currently loading mod's name,
   when loading a mod.
-* `minetest.get_modpath(modname)`: returns e.g.
-  `"/home/user/.minetest/usermods/modname"`.
-    * Useful for loading additional `.lua` modules or static data from mod
-* `minetest.get_modnames()`: returns a list of installed mods
-    * Return a list of installed mods, sorted alphabetically
+* `minetest.get_modpath(modname)`: returns the directory path for a mod,
+  e.g. `"/home/user/.minetest/usermods/modname"`.
+    * Returns nil if the mod is not enabled or does not exist (not installed).
+    * Works regardless of whether the mod has been loaded yet.
+    * Useful for loading additional `.lua` modules or static data from a mod,
+  or checking if a mod is enabled.
+* `minetest.get_modnames()`: returns a list of enabled mods, sorted alphabetically.
+    * Does not include disabled mods, even if they are installed.
 * `minetest.get_worldpath()`: returns e.g. `"/home/user/.minetest/world"`
     * Useful for storing custom data
 * `minetest.is_singleplayer()`
@@ -4872,6 +4898,9 @@ Environment access
 * `minetest.get_objects_inside_radius(pos, radius)`: returns a list of
   ObjectRefs.
     * `radius`: using an euclidean metric
+* `minetest.get_objects_in_area(pos1, pos2)`: returns a list of
+  ObjectRefs.
+     * `pos1` and `pos2` are the min and max positions of the area to search.
 * `minetest.set_timeofday(val)`
     * `val` is between `0` and `1`; `0` for midnight, `0.5` for midday
 * `minetest.get_timeofday()`
@@ -7614,6 +7643,13 @@ Used by `minetest.register_node`.
         -- intensity: 1.0 = mid range of regular TNT.
         -- If defined, called when an explosion touches the node, instead of
         -- removing the node.
+        
+        mod_origin = "modname",
+        -- stores which mod actually registered a node
+        -- if it can not find a source, returns "??"
+        -- useful for getting what mod truly registered something
+        -- example: if a node is registered as ":othermodname:nodename", 
+        -- nodename will show "othermodname", but mod_orgin will say "modname"
     }
 
 Crafting recipes
