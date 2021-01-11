@@ -33,10 +33,10 @@ rubenwardy, paramat:
   textures/base/pack/start_icon.png
   textures/base/pack/end_icon.png
 
-erlehmann:
-  misc/minetest-icon-24x24.png
-  misc/minetest-icon.ico
-  misc/minetest.svg
+EliasFleckenstein03:
+  misc/dragonfire-icon-24x24.png
+  misc/dragonfire-icon.ico
+  misc/dragonfire.svg
   textures/base/pack/logo.png
 
 JRottm

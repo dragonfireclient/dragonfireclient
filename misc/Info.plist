@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>minetest</string>
 	<key>CFBundleIconFile</key>
-	<string>minetest-icon.icns</string>
+	<string>dragonfire-icon.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>net.minetest.minetest</string>
 </dict>

@@ -14,7 +14,7 @@
 #endif
 
 LANGUAGE 0, SUBLANG_NEUTRAL
-130        ICON         "minetest-icon.ico"
+130        ICON         "dragonfire-icon.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

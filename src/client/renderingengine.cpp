@@ -347,15 +347,14 @@ bool RenderingEngine::setWindowIcon()
 #if defined(XORG_USED)
 #if RUN_IN_PLACE
 	return setXorgWindowIconFromPath(
-			porting::path_share + "/misc/" PROJECT_NAME "-xorg-icon-128.png");
+			porting::path_share + "/misc/dragonfire-xorg-icon-128.png");
 #else
 	// We have semi-support for reading in-place data if we are
 	// compiled with RUN_IN_PLACE. Don't break with this and
 	// also try the path_share location.
 	return setXorgWindowIconFromPath(
-			       ICON_DIR "/hicolor/128x128/apps/" PROJECT_NAME ".png") ||
-	       setXorgWindowIconFromPath(porting::path_share + "/misc/" PROJECT_NAME
-							       "-xorg-icon-128.png");
+			       ICON_DIR "/hicolor/128x128/apps/dragonfire.png") ||
+	       setXorgWindowIconFromPath(porting::path_share + "/misc/dragonfire-xorg-icon-128.png");
 #endif
 #elif defined(_WIN32)
 	HWND hWnd; // Window handle
