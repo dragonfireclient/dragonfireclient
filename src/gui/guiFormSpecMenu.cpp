@@ -19,6 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 
 #include <cstdlib>
+#include <cmath>
 #include <algorithm>
 #include <iterator>
 #include <limits>
@@ -497,19 +498,39 @@ void GUIFormSpecMenu::parseList(parserData *data, const std::string &element)
 			3
 		);
 
-		v2f32 slot_spacing = data->real_coordinates ?
-				v2f32(imgsize.X * 1.25f, imgsize.Y * 1.25f) : spacing;
+		auto style = getDefaultStyleForElement("list", spec.fname);
 
-		v2s32 pos = data->real_coordinates ? getRealCoordinateBasePos(v_pos)
-				: getElementBasePos(&v_pos);
+		v2f32 slot_scale = style.getVector2f(StyleSpec::SIZE, v2f32(0, 0));
+		v2f32 slot_size(
+			slot_scale.X <= 0 ? imgsize.X : std::max<f32>(slot_scale.X * imgsize.X, 1),
+			slot_scale.Y <= 0 ? imgsize.Y : std::max<f32>(slot_scale.Y * imgsize.Y, 1)
+		);
+
+		v2f32 slot_spacing = style.getVector2f(StyleSpec::SPACING, v2f32(-1, -1));
+		v2f32 default_spacing = data->real_coordinates ?
+				v2f32(imgsize.X * 0.25f, imgsize.Y * 0.25f) :
+				v2f32(spacing.X - imgsize.X, spacing.Y - imgsize.Y);
+
+		slot_spacing.X = slot_spacing.X < 0 ? default_spacing.X :
+				imgsize.X * slot_spacing.X;
+		slot_spacing.Y = slot_spacing.Y < 0 ? default_spacing.Y :
+				imgsize.Y * slot_spacing.Y;
+
+		slot_spacing += slot_size;
+
+		v2s32 pos = data->real_coordinates ? getRealCoordinateBasePos(v_pos) :
+				getElementBasePos(&v_pos);
 
 		core::rect<s32> rect = core::rect<s32>(pos.X, pos.Y,
-				pos.X + (geom.X - 1) * slot_spacing.X + imgsize.X,
-				pos.Y + (geom.Y - 1) * slot_spacing.Y + imgsize.Y);
+				pos.X + (geom.X - 1) * slot_spacing.X + slot_size.X,
+				pos.Y + (geom.Y - 1) * slot_spacing.Y + slot_size.Y);
 
 		GUIInventoryList *e = new GUIInventoryList(Environment, data->current_parent,
-				spec.fid, rect, m_invmgr, loc, listname, geom, start_i, imgsize,
-				slot_spacing, this, data->inventorylist_options, m_font);
+				spec.fid, rect, m_invmgr, loc, listname, geom, start_i,
+				v2s32(slot_size.X, slot_size.Y), slot_spacing, this,
+				data->inventorylist_options, m_font);
+
+		e->setNotClipped(style.getBool(StyleSpec::NOCLIP, false));
 
 		m_inventorylists.push_back(e);
 		m_fields.push_back(spec);
@@ -907,7 +928,7 @@ void GUIFormSpecMenu::parseAnimatedImage(parserData *data, const std::string &el
 
 	core::rect<s32> rect = core::rect<s32>(pos, pos + geom);
 
-	GUIAnimatedImage *e = new GUIAnimatedImage(Environment, this, spec.fid,
+	GUIAnimatedImage *e = new GUIAnimatedImage(Environment, data->current_parent, spec.fid,
 		rect, texture_name, frame_count, frame_duration, m_tsrc);
 
 	if (parts.size() >= 7)
@@ -3505,8 +3526,6 @@ bool GUIFormSpecMenu::getAndroidUIInput()
 
 GUIInventoryList::ItemSpec GUIFormSpecMenu::getItemAtPos(v2s32 p) const
 {
-	core::rect<s32> imgrect(0, 0, imgsize.X, imgsize.Y);
-
 	for (const GUIInventoryList *e : m_inventorylists) {
 		s32 item_index = e->getItemIndexAtPos(p);
 		if (item_index != -1)
@@ -3837,7 +3856,7 @@ ItemStack GUIFormSpecMenu::verifySelectedItem()
 	return ItemStack();
 }
 
-void GUIFormSpecMenu::acceptInput(FormspecQuitMode quitmode=quit_mode_no)
+void GUIFormSpecMenu::acceptInput(FormspecQuitMode quitmode)
 {
 	if(m_text_dst)
 	{

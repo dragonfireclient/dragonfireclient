@@ -544,7 +544,7 @@ function core.node_dig(pos, node, digger)
 		log("info", diggername .. " tried to dig "
 			.. node.name .. " which is not diggable "
 			.. core.pos_to_string(pos))
-		return
+		return false
 	end
 
 	if core.is_protected(pos, diggername) then
@@ -553,7 +553,7 @@ function core.node_dig(pos, node, digger)
 				.. " at protected position "
 				.. core.pos_to_string(pos))
 		core.record_protection_violation(pos, diggername)
-		return
+		return false
 	end
 
 	log('action', diggername .. " digs "
@@ -636,6 +636,8 @@ function core.node_dig(pos, node, digger)
 		local node_copy = {name=node.name, param1=node.param1, param2=node.param2}
 		callback(pos_copy, node_copy, digger)
 	end
+
+	return true
 end
 
 function core.itemstring_with_palette(item, palette_index)
@@ -692,10 +694,6 @@ core.nodedef_default = {
 
 	on_receive_fields = nil,
 
-	on_metadata_inventory_move = core.node_metadata_inventory_move_allow_all,
-	on_metadata_inventory_offer = core.node_metadata_inventory_offer_allow_all,
-	on_metadata_inventory_take = core.node_metadata_inventory_take_allow_all,
-
 	-- Node properties
 	drawtype = "normal",
 	visual_scale = 1.0,
@@ -706,7 +704,6 @@ core.nodedef_default = {
 	--	{name="", backface_culling=true},
 	--	{name="", backface_culling=true},
 	--},
-	alpha = 255,
 	post_effect_color = {a=0, r=0, g=0, b=0},
 	paramtype = "none",
 	paramtype2 = "none",

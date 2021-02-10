@@ -27,9 +27,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "log.h"
 #include "config.h"
 #include "porting.h"
-#ifdef __ANDROID__
-#include "settings.h" // For g_settings
-#endif
 
 namespace fs
 {
@@ -359,8 +356,9 @@ std::string TempPath()
 		compatible with lua's os.tmpname which under the default
 		configuration hardcodes mkstemp("/tmp/lua_XXXXXX").
 	*/
+
 #ifdef __ANDROID__
-	return g_settings->get("TMPFolder");
+	return porting::path_cache;
 #else
 	return DIR_DELIM "tmp";
 #endif
@@ -399,21 +397,6 @@ void GetRecursiveSubPaths(const std::string &path,
 		if (n.dir)
 			GetRecursiveSubPaths(fullpath, dst, list_files, ignore);
 	}
-}
-
-bool DeletePaths(const std::vector<std::string> &paths)
-{
-	bool success = true;
-	// Go backwards to succesfully delete the output of GetRecursiveSubPaths
-	for(int i=paths.size()-1; i>=0; i--){
-		const std::string &path = paths[i];
-		bool did = DeleteSingleFileOrEmptyDirectory(path);
-		if(!did){
-			errorstream<<"Failed to delete "<<path<<std::endl;
-			success = false;
-		}
-	}
-	return success;
 }
 
 bool RecursiveDeleteContent(const std::string &path)

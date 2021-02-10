@@ -125,8 +125,6 @@ public:
 			m_animation_force_timer--;
 	}
 
-	void updateCameraOffset(v3s16 camera_offset);
-
 	std::set<v3s16> esp_nodes;
 
 private:

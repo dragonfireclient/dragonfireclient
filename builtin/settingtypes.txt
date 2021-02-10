@@ -976,7 +976,7 @@ serverlist_url (Serverlist URL) string servers.minetest.net
 
 #    File in client/serverlist/ that contains your favorite servers displayed in the
 #    Multiplayer Tab.
-serverlist_file (Serverlist file) string favoriteservers.txt
+serverlist_file (Serverlist file) string favoriteservers.json
 
 #    Maximum size of the out chat queue.
 #    0 to disable queueing and -1 to make the queue size unlimited.
@@ -1097,7 +1097,7 @@ default_stack_max (Default stack size) int 99
 #    Enable players getting damage and dying.
 enable_damage (Damage) bool false
 
-#    Enable creative mode for new created maps.
+#    Enable creative mode for all players
 creative_mode (Creative) bool false
 
 #    A chosen map seed for a new map, leave empty for random.
