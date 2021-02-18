@@ -440,7 +440,7 @@ int ModApiClient::l_place_node(lua_State *L)
 	pointed.node_abovesurface = pos;
 	pointed.node_undersurface = pos;
 	NodeMetadata *meta = map.getNodeMetadata(pos);
-	g_game->nodePlacement(selected_def, selected_item, pos, pos, pointed, meta);
+	g_game->nodePlacement(selected_def, selected_item, pos, pos, pointed, meta, true);
 	return 0;
 }
 

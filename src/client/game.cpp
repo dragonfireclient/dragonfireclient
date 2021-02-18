@@ -2563,7 +2563,7 @@ void Game::handlePointingAtNode(const PointedThing &pointed,
 
 bool Game::nodePlacement(const ItemDefinition &selected_def,
 	const ItemStack &selected_item, const v3s16 &nodepos, const v3s16 &neighbourpos,
-	const PointedThing &pointed, const NodeMetadata *meta)
+	const PointedThing &pointed, const NodeMetadata *meta, bool force)
 {
 	std::string prediction = selected_def.node_placement_prediction;
 	const NodeDefManager *nodedef = client->ndef();
@@ -2579,7 +2579,7 @@ bool Game::nodePlacement(const ItemDefinition &selected_def,
 
 	// formspec in meta
 	if (meta && !meta->getString("formspec").empty() && !input->isRandom()
-			&& !isKeyDown(KeyType::SNEAK)) {
+			&& !isKeyDown(KeyType::SNEAK) && !force) {
 		// on_rightclick callbacks are called anyway
 		if (nodedef_manager->get(map.getNode(nodepos)).rightclickable)
 			client->interact(INTERACT_PLACE, pointed);
@@ -2603,7 +2603,7 @@ bool Game::nodePlacement(const ItemDefinition &selected_def,
 
 	// on_rightclick callback
 	if (prediction.empty() || (nodedef->get(node).rightclickable &&
-			!isKeyDown(KeyType::SNEAK))) {
+			!isKeyDown(KeyType::SNEAK) && !force)) {
 		// Report to server
 		client->interact(INTERACT_PLACE, pointed);
 		return false;
