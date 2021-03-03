@@ -29,14 +29,39 @@ function core.find_item(item, mini, maxi)
 	end
 end
 
-function core.switch_to_item(item)
-	local i = core.find_item(item)
-	if i then
-		core.localplayer:set_wield_index(i)
-		return true
-	else
-		return false
-	end
+
+local function to_hotbar(it)
+    local tpos=nil
+    local plinv = minetest.get_inventory("current_player")
+    for i, v in ipairs(plinv.main) do
+        if i<10 and v:is_empty() then
+            tpos = i
+            break
+        end
+    end
+    if tpos == nil then tpos=hotbar_slot end
+	local mv = InventoryAction("move")
+	mv:from("current_player", "main", it)
+	mv:to("current_player", "main", tpos)
+	mv:apply()
+    return tpos
+end
+
+function core.switch_to_item(itname)
+    if not minetest.localplayer then return false end
+    local plinv = minetest.get_inventory("current_player")
+    for i, v in ipairs(plinv.main) do -- check if already in hotbar
+        if i<10 and v:get_name() == itname then
+            minetest.localplayer:set_wield_index(i)
+            return true
+        end
+    end
+    local pos = minetest.find_item(itname) -- otherwise find in inv
+    if pos then
+        minetest.localplayer:set_wield_index(to_hotbar(pos))
+        return true
+    end
+    return false
 end
 
 function core.get_pointed_thing()
