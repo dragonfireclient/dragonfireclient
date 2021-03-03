@@ -32,6 +32,7 @@ end
 
 local function to_hotbar(it)
     local tpos=nil
+    local hotbar_slot = 8
     local plinv = minetest.get_inventory("current_player")
     for i, v in ipairs(plinv.main) do
         if i<10 and v:is_empty() then
