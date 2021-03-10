@@ -65,6 +65,9 @@ private:
 	// get_wielded_item(self)
 	static int l_get_wielded_item(lua_State *L);
 
+	// get_hotbar_size(self)
+	static int l_get_hotbar_size(lua_State *L);
+
 	static int l_is_attached(lua_State *L);
 	static int l_is_touching_ground(lua_State *L);
 	static int l_is_in_liquid(lua_State *L);

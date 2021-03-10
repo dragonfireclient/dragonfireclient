@@ -69,7 +69,7 @@ core.register_chatcommand("teleport", {
 core.register_chatcommand("wielded", {
 	description = "Print itemstring of wieleded item",
 	func = function()
-		return true, core.localplayer:get_wielded_item():get_name()
+		return true, core.localplayer:get_wielded_item():to_string()
 	end
 })
 
