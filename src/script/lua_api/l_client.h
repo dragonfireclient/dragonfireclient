@@ -132,6 +132,12 @@ private:
 	// interact(action, pointed_thing)
 	static int l_interact(lua_State *L);
 
+	// send_inventory_fields(formname, fields)
+	static int l_send_inventory_fields(lua_State *L);
+
+	// send_nodemeta_fields(position, formname, fields)
+	static int l_send_nodemeta_fields(lua_State *L);
+
 public:
 	static void Initialize(lua_State *L, int top);
 };

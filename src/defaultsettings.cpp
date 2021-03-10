@@ -417,7 +417,7 @@ void set_default_settings()
 	settings->setDefault("max_simultaneous_block_sends_per_client", "40");
 	settings->setDefault("time_send_interval", "5");
 
-	settings->setDefault("default_game", "mineclone2");
+	settings->setDefault("default_game", "MineClone2");
 	settings->setDefault("motd", "");
 	settings->setDefault("max_users", "15");
 	settings->setDefault("creative_mode", "false");

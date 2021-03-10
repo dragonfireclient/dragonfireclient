@@ -4,9 +4,9 @@ set -e
 CORE_GIT=https://github.com/EliasFleckenstein03/dragonfireclient
 CORE_BRANCH=master
 CORE_NAME=dragonfireclient
-GAME_GIT=https://git.minetest.land/Wuzzy/MineClone2
+GAME_GIT=https://git.minetest.land/MineClone2/MineClone2
 GAME_BRANCH=master
-GAME_NAME=mineclone2
+GAME_NAME=MineClone2
 
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 if [ $# -ne 1 ]; then
