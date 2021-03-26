@@ -8,11 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: minetest\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2020-08-22 14:59+0200\n"
-=======
-"POT-Creation-Date: 2021-01-30 21:13+0100\n"
->>>>>>> 9736b9cea5f841bb0e9bb2c9c05c3b2560327064
+"POT-Creation-Date: 2021-02-23 19:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +16,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: builtin/client/death_formspec.lua src/client/game.cpp
+msgid "You died"
+msgstr ""
+
+#: builtin/client/death_formspec.lua src/client/game.cpp
+msgid "Respawn"
+msgstr ""
 
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
@@ -508,10 +512,6 @@ msgid "Rename Modpack:"
 msgstr ""
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
-msgid "Clientmods"
-msgstr ""
-
-#: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Disabled"
 msgstr ""
 
@@ -698,6 +698,10 @@ msgstr ""
 msgid "Try reenabling public serverlist and check your internet connection."
 msgstr ""
 
+#: builtin/mainmenu/serverlistmgr.lua
+msgid "Public server list is disabled"
+msgstr ""
+
 #: builtin/mainmenu/tab_content.lua
 msgid "Installed Packages:"
 msgstr ""
@@ -740,10 +744,6 @@ msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
 msgid "Credits"
-msgstr ""
-
-#: builtin/mainmenu/tab_credits.lua
-msgid "Hackers"
 msgstr ""
 
 #: builtin/mainmenu/tab_credits.lua
@@ -1211,22 +1211,6 @@ msgid "Noclip mode disabled"
 msgstr ""
 
 #: src/client/game.cpp
-msgid "Killaura enabled"
-msgstr ""
-
-#: src/client/game.cpp
-msgid "Killaura disabled"
-msgstr ""
-
-#: src/client/game.cpp
-msgid "Freecam enabled"
-msgstr ""
-
-#: src/client/game.cpp
-msgid "Freecam disabled"
-msgstr ""
-
-#: src/client/game.cpp
 msgid "Cinematic mode enabled"
 msgstr ""
 
@@ -1310,14 +1294,6 @@ msgid "Zoom currently disabled by game or mod"
 msgstr ""
 
 #: src/client/game.cpp
-msgid "You died"
-msgstr ""
-
-#: src/client/game.cpp
-msgid "Respawn"
-msgstr ""
-
-#: src/client/game.cpp
 msgid ""
 "Default Controls:\n"
 "No menu visible:\n"
@@ -1347,12 +1323,9 @@ msgid ""
 "- %s: sneak/climb down\n"
 "- %s: drop item\n"
 "- %s: inventory\n"
-"- %s: special inventory\n"
 "- Mouse: turn/look\n"
 "- Mouse wheel: select item\n"
 "- %s: chat\n"
-"- %s: Killaura\n"
-"- %s: Freecam\n"
 msgstr ""
 
 #: src/client/game.cpp
@@ -1448,14 +1421,6 @@ msgstr ""
 
 #: src/client/gameui.cpp
 msgid "Chat hidden"
-msgstr ""
-
-#: src/client/gameui.cpp
-msgid "Cheat Menu shown"
-msgstr ""
-
-#: src/client/gameui.cpp
-msgid "Cheat Menu hidden"
 msgstr ""
 
 #: src/client/gameui.cpp
@@ -1831,10 +1796,6 @@ msgid "Inventory"
 msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
-msgid "Special Inv."
-msgstr ""
-
-#: src/gui/guiKeyChangeMenu.cpp
 msgid "Prev. item"
 msgstr ""
 
@@ -1924,38 +1885,6 @@ msgstr ""
 
 #: src/gui/guiKeyChangeMenu.cpp
 msgid "Toggle fog"
-msgstr ""
-
-#: src/gui/guiKeyChangeMenu.cpp
-msgid "Toggle C. Menu"
-msgstr ""
-
-#: src/gui/guiKeyChangeMenu.cpp
-msgid "Toggle Killaura"
-msgstr ""
-
-#: src/gui/guiKeyChangeMenu.cpp
-msgid "Toggle Freec."
-msgstr ""
-
-#: src/gui/guiKeyChangeMenu.cpp
-msgid "C. Menu Up"
-msgstr ""
-
-#: src/gui/guiKeyChangeMenu.cpp
-msgid "C. Menu Down"
-msgstr ""
-
-#: src/gui/guiKeyChangeMenu.cpp
-msgid "C. Menu Left"
-msgstr ""
-
-#: src/gui/guiKeyChangeMenu.cpp
-msgid "C. Menu Right"
-msgstr ""
-
-#: src/gui/guiKeyChangeMenu.cpp
-msgid "C. Menu Enter"
 msgstr ""
 
 #: src/gui/guiPasswordChange.cpp
@@ -3032,6 +2961,16 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Basic"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Show nametag backgrounds by default"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Whether nametag backgrounds should be shown by default.\n"
+"Mods may still set a background."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4501,7 +4440,7 @@ msgid "Creative"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Enable creative mode for new created maps."
+msgid "Enable creative mode for all players"
 msgstr ""
 
 #: src/settings_translation_file.cpp

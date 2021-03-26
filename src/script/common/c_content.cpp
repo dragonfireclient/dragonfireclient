@@ -120,6 +120,8 @@ void read_item_definition(lua_State* L, int index,
 	// "" = no prediction
 	getstringfield(L, index, "node_placement_prediction",
 			def.node_placement_prediction);
+
+	getintfield(L, index, "place_param2", def.place_param2);
 }
 
 /******************************************************************************/
@@ -141,8 +143,10 @@ void push_item_definition_full(lua_State *L, const ItemDefinition &i)
 	lua_setfield(L, -2, "name");
 	lua_pushstring(L, i.description.c_str());
 	lua_setfield(L, -2, "description");
-	lua_pushstring(L, i.short_description.c_str());
-	lua_setfield(L, -2, "short_description");
+	if (!i.short_description.empty()) {
+		lua_pushstring(L, i.short_description.c_str());
+		lua_setfield(L, -2, "short_description");
+	}
 	lua_pushstring(L, type.c_str());
 	lua_setfield(L, -2, "type");
 	lua_pushstring(L, i.inventory_image.c_str());
@@ -313,6 +317,17 @@ void read_object_properties(lua_State *L, int index,
 			prop->nametag_color = color;
 	}
 	lua_pop(L, 1);
+	lua_getfield(L, -1, "nametag_bgcolor");
+	if (!lua_isnil(L, -1)) {
+		if (lua_toboolean(L, -1)) {
+			video::SColor color;
+			if (read_color(L, -1, &color))
+				prop->nametag_bgcolor = color;
+		} else {
+			prop->nametag_bgcolor = nullopt;
+		}
+	}
+	lua_pop(L, 1);
 
 	lua_getfield(L, -1, "automatic_face_movement_max_rotation_per_sec");
 	if (lua_isnumber(L, -1)) {
@@ -404,6 +419,13 @@ void push_object_properties(lua_State *L, ObjectProperties *prop)
 	lua_setfield(L, -2, "nametag");
 	push_ARGB8(L, prop->nametag_color);
 	lua_setfield(L, -2, "nametag_color");
+	if (prop->nametag_bgcolor) {
+		push_ARGB8(L, prop->nametag_bgcolor.value());
+		lua_setfield(L, -2, "nametag_bgcolor");
+	} else {
+		lua_pushboolean(L, false);
+		lua_setfield(L, -2, "nametag_bgcolor");
+	}
 	lua_pushnumber(L, prop->automatic_face_movement_max_rotation_per_sec);
 	lua_setfield(L, -2, "automatic_face_movement_max_rotation_per_sec");
 	lua_pushlstring(L, prop->infotext.c_str(), prop->infotext.size());

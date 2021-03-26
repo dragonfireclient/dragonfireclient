@@ -11,12 +11,12 @@ core.register_on_death(function()
 	if core.settings:get_bool("autorespawn") then
 		core.send_respawn()
 	else
-		core.show_formspec("__builtin__:death", death_formspec)
+		core.show_formspec("bultin:death", death_formspec)
 	end
 end)
 
 core.register_on_formspec_input(function(formname, fields)
-	if formname == "__builtin__:death" then
+	if formname == "bultin:death" then
 		if fields.btn_ghost_mode then
 			core.display_chat_message("You are in ghost mode. Use .respawn to Respawn.")
 		else
