@@ -946,13 +946,21 @@ Call these functions only at load time!
 
 ### HTTP Requests
 
-* `minetest.get_http_api()`
-    * returns `HTTPApiTable` containing http functions.
-    * The returned table contains the functions `fetch_sync`, `fetch_async` and
+* `minetest.request_http_api()`:
+    * returns `HTTPApiTable` containing http functions if the calling mod has
+      been granted access by being listed in the `secure.http_mods` or
+      `secure.trusted_mods` setting, otherwise returns `nil`.
+    * The returned table contains the functions `fetch`, `fetch_async` and
       `fetch_async_get` described below.
+    * Only works at init time and must be called from the mod's main scope
+      (not from a function).
     * Function only exists if minetest server was built with cURL support.
-* `HTTPApiTable.fetch_sync(HTTPRequest req)`: returns HTTPRequestResult
-    * Performs given request synchronously
+    * **DO NOT ALLOW ANY OTHER MODS TO ACCESS THE RETURNED TABLE, STORE IT IN
+      A LOCAL VARIABLE!**
+* `HTTPApiTable.fetch(HTTPRequest req, callback)`
+    * Performs given request asynchronously and calls callback upon completion
+    * callback: `function(HTTPRequestResult res)`
+    * Use this HTTP function if you are unsure, the others are for advanced use
 * `HTTPApiTable.fetch_async(HTTPRequest req)`: returns handle
     * Performs given request asynchronously and returns handle for
       `HTTPApiTable.fetch_async_get`
@@ -1114,6 +1122,14 @@ Passed to `HTTPApiTable.fetch` callback. Returned by
     * Checks if a global variable has been set, without triggering a warning.
 * `minetest.make_screenshot()`
     * Triggers the MT makeScreenshot functionality
+* `minetest.request_insecure_environment()`: returns an environment containing
+  insecure functions if the calling mod has been listed as trusted in the
+  `secure.trusted_mods` setting or security is disabled, otherwise returns
+  `nil`.
+    * Only works at init time and must be called from the mod's main scope
+      (ie: the init.lua of the mod, not from another Lua file or within a function).
+    * **DO NOT ALLOW ANY OTHER MODS TO ACCESS THE RETURNED ENVIRONMENT, STORE
+      IT IN A LOCAL VARIABLE!**
 
 ### UI
 * `minetest.ui.minimap`
