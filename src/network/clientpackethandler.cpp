@@ -450,10 +450,10 @@ void Client::handleCommand_ActiveObjectRemoveAdd(NetworkPacket* pkt)
 			string initialization data
 		}
 	*/
-	
+
 	LocalPlayer *player = m_env.getLocalPlayer();
-	bool try_reattach = player && player->isWaitingForReattach();	
-	
+	bool try_reattach = player && player->isWaitingForReattach();
+
 	try {
 		u8 type;
 		u16 removed_count, added_count, id;
@@ -596,13 +596,13 @@ void Client::handleCommand_Breath(NetworkPacket* pkt)
 }
 
 void Client::handleCommand_MovePlayer(NetworkPacket* pkt)
-{		
+{
 	LocalPlayer *player = m_env.getLocalPlayer();
 	assert(player != NULL);
 
 	if ((player->getCAO() && player->getCAO()->getParentId()) || player->isWaitingForReattach())
 		return;
-	
+
 	v3f pos;
 	f32 pitch, yaw;
 
@@ -622,10 +622,10 @@ void Client::handleCommand_MovePlayer(NetworkPacket* pkt)
 		it would just force the pitch and yaw values to whatever
 		the camera points to.
 	*/
-	
+
 	if (g_settings->getBool("no_force_rotate"))
 		return;
-	
+
 	ClientEvent *event = new ClientEvent();
 	event->type = CE_PLAYER_FORCE_MOVE;
 	event->player_force_move.pitch = pitch;
@@ -833,12 +833,12 @@ void Client::handleCommand_PlaySound(NetworkPacket* pkt)
 		*pkt >> pitch;
 		*pkt >> ephemeral;
 	} catch (PacketError &e) {};
-	
+
 	SimpleSoundSpec sound_spec(name, gain, fade, pitch);
-	
+
 	if (m_mods_loaded && m_script->on_play_sound(sound_spec))
 		return;
-	
+
 	// Start playing
 	int client_id = -1;
 	switch(type) {
@@ -987,10 +987,10 @@ void Client::handleCommand_SpawnParticle(NetworkPacket* pkt)
 	ClientEvent *event = new ClientEvent();
 	event->type           = CE_SPAWN_PARTICLE;
 	event->spawn_particle = new ParticleParameters(p);
-	
+
 	if (m_mods_loaded && m_script->on_spawn_particle(*event->spawn_particle))
 		return;
-	
+
 	m_client_event_queue.push(event);
 }
 

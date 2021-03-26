@@ -89,4 +89,7 @@ private:
 
 	// rightclick(self)
 	static int l_rightclick(lua_State *L);
+
+	// remove(self)
+	static int l_remove(lua_State *L);
 };

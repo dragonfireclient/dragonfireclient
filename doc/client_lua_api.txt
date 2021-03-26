@@ -94,7 +94,7 @@ Mod directory structure
 
 The format is documented in `builtin/settingtypes.txt`.
 It is parsed by the main menu settings dialogue to list mod-specific
-settings in the "Clientmods" category.    
+settings in the "Clientmods" category.
 
 ### modname
 
@@ -700,7 +700,7 @@ Call these functions only at load time!
     * Registers a chatcommand `command` to manage a list that takes the args `del | add | list <param>`
     * The list is stored comma-seperated in `setting`
     * `desc` is the description
-    * `add` adds something to the list 
+    * `add` adds something to the list
     * `del` del removes something from the list
     * `list` lists all items on the list
 * `minetest.register_on_chatcommand(function(command, params))`
@@ -1051,7 +1051,7 @@ Passed to `HTTPApiTable.fetch` callback. Returned by
 * `minetest.register_cheat(name, category, setting | function)`
     * Register an entry for the cheat menu
     * If the Category is nonexistant, it will be created
-    * If the 3rd argument is a string it will be interpreted as a setting and toggled 
+    * If the 3rd argument is a string it will be interpreted as a setting and toggled
         when the player selects the entry in the cheat menu
     * If the 3rd argument is a function it will be called
         when the player selects the entry in the cheat menu
@@ -1400,7 +1400,8 @@ This is basically a reference to a C++ `GenericCAO`.
 * `get_max_hp()`: returns the maximum heath
 * `punch()`: punches the object
 * `rightclick()`: rightclicks the object
-    
+* `remove()`: removes the object permanently
+
 ### `Raycast`
 
 A raycast on the map. It works with selection boxes.
@@ -1792,7 +1793,7 @@ A reference to a C++ InventoryAction. You can move, drop and craft items in all 
     * it specifies how many items to drop / craft / move
     * `0` means move all items
     * default count: `0`
-    
+
 #### example
     `local move_act = InventoryAction("move")
     move_act:from("current_player", "main", 1)
@@ -1807,7 +1808,7 @@ A reference to a C++ InventoryAction. You can move, drop and craft items in all 
     drop_act:apply()
     `
     * e.g. In first hotbar slot there are tree logs: Move one to craft field, then craft wood out of it and immediately drop it
-    
 
-    
+
+
 

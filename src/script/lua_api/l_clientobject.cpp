@@ -173,6 +173,15 @@ int ClientObjectRef::l_rightclick(lua_State *L)
 	return 0;
 }
 
+int ClientObjectRef::l_remove(lua_State *L)
+{
+	ClientObjectRef *ref = checkobject(L, 1);
+	ClientActiveObject *cao = get_cao(ref);
+	getClient(L)->getEnv().removeActiveObject(cao->getId());
+
+	return 0;
+}
+
 ClientObjectRef::ClientObjectRef(ClientActiveObject *object) : m_object(object)
 {
 }
