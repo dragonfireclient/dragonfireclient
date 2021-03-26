@@ -172,7 +172,7 @@ void LocalPlayer::move(f32 dtime, Environment *env, f32 pos_max_d,
 {
 	if (m_cao && m_cao->m_waiting_for_reattach > 0)
 		m_cao->m_waiting_for_reattach -= dtime;
-	
+
 	// Node at feet position, update each ClientEnvironment::step()
 	if (!collision_info || collision_info->empty())
 		m_standing_node = floatToInt(m_position, BS);
@@ -461,8 +461,6 @@ void LocalPlayer::move(f32 dtime, Environment *env, f32 pos_max_d,
 			m_speed.Y += jumpspeed;
 		}
 		setSpeed(m_speed);
-		if (! m_freecam)
-			m_legit_speed = m_speed;
 		m_can_jump = false;
 	}
 
