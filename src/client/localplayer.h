@@ -140,8 +140,8 @@ public:
 	v3f getPosition() const { return m_position; }
 
 	v3f getLegitPosition() const { return m_legit_position; }
-	
-	v3f getLegitSpeed() const { return m_legit_speed; }
+
+	v3f getLegitSpeed() const { return m_freecam ? m_legit_speed : m_speed; }
 
 	inline void setLegitPosition(const v3f &position)
 	{
@@ -151,18 +151,18 @@ public:
 			setPosition(position);
 	}
 
-	inline void freecamEnable() 
+	inline void freecamEnable()
 	{
 		m_freecam = true;
 	}
-	
-	inline void freecamDisable() 
+
+	inline void freecamDisable()
 	{
 		m_freecam = false;
 		setPosition(m_legit_position);
 		setSpeed(m_legit_speed);
 	}
-	
+
 	// Non-transformed eye offset getters
 	// For accurate positions, use the Camera functions
 	v3f getEyePosition() const { return m_position + getEyeOffset(); }
@@ -184,13 +184,13 @@ public:
 	{
 		added_velocity += vel;
 	}
-	
+
 	void tryReattach(int id);
-	
+
 	bool isWaitingForReattach() const;
-	
+
 	bool canWalkOn(const ContentFeatures &f);
-	
+
 private:
 	void accelerate(const v3f &target_speed, const f32 max_increase_H,
 		const f32 max_increase_V, const bool use_pitch);

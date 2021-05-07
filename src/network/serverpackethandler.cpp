@@ -174,6 +174,16 @@ void Server::handleCommand_Init(NetworkPacket* pkt)
 		return;
 	}
 
+	RemotePlayer *player = m_env->getPlayer(playername);
+
+	// If player is already connected, cancel
+	if (player && player->getPeerId() != PEER_ID_INEXISTENT) {
+		actionstream << "Server: Player with name \"" << playername <<
+			"\" tried to connect, but player with same name is already connected" << std::endl;
+		DenyAccess(peer_id, SERVER_ACCESSDENIED_ALREADY_CONNECTED);
+		return;
+	}
+
 	m_clients.setPlayerName(peer_id, playername);
 	//TODO (later) case insensitivity
 
@@ -488,8 +498,12 @@ void Server::process_PlayerPos(RemotePlayer *player, PlayerSAO *playersao,
 	pitch = modulo360f(pitch);
 	yaw = wrapDegrees_0_360(yaw);
 
-	playersao->setBasePosition(position);
-	player->setSpeed(speed);
+	if (!playersao->isAttached()) {
+		// Only update player positions when moving freely
+		// to not interfere with attachment handling
+		playersao->setBasePosition(position);
+		player->setSpeed(speed);
+	}
 	playersao->setLookPitch(pitch);
 	playersao->setPlayerYaw(yaw);
 	playersao->setFov(fov);
@@ -622,21 +636,36 @@ void Server::handleCommand_InventoryAction(NetworkPacket* pkt)
 
 	const bool player_has_interact = checkPriv(player->getName(), "interact");
 
-	auto check_inv_access = [player, player_has_interact] (
+	auto check_inv_access = [player, player_has_interact, this] (
 			const InventoryLocation &loc) -> bool {
-		if (loc.type == InventoryLocation::CURRENT_PLAYER)
-			return false; // Only used internally on the client, never sent
-		if (loc.type == InventoryLocation::PLAYER) {
-			// Allow access to own inventory in all cases
-			return loc.name == player->getName();
-		}
 
-		if (!player_has_interact) {
+		// Players without interact may modify their own inventory
+		if (!player_has_interact && loc.type != InventoryLocation::PLAYER) {
 			infostream << "Cannot modify foreign inventory: "
 					<< "No interact privilege" << std::endl;
 			return false;
 		}
-		return true;
+
+		switch (loc.type) {
+		case InventoryLocation::CURRENT_PLAYER:
+			// Only used internally on the client, never sent
+			return false;
+		case InventoryLocation::PLAYER:
+			// Allow access to own inventory in all cases
+			return loc.name == player->getName();
+		case InventoryLocation::NODEMETA:
+			{
+				// Check for out-of-range interaction
+				v3f node_pos   = intToFloat(loc.p, BS);
+				v3f player_pos = player->getPlayerSAO()->getEyePosition();
+				f32 d = player_pos.getDistanceFrom(node_pos);
+				return checkInteractDistance(player, d, "inventory");
+			}
+		case InventoryLocation::DETACHED:
+			return getInventoryMgr()->checkDetachedInventoryAccess(loc, player->getName());
+		default:
+			return false;
+		}
 	};
 
 	/*
@@ -655,18 +684,6 @@ void Server::handleCommand_InventoryAction(NetworkPacket* pkt)
 		if (!check_inv_access(ma->from_inv) ||
 				!check_inv_access(ma->to_inv))
 			return;
-
-		InventoryLocation *remote = ma->from_inv.type == InventoryLocation::PLAYER ?
-			&ma->to_inv : &ma->from_inv;
-
-		// Check for out-of-range interaction
-		if (remote->type == InventoryLocation::NODEMETA) {
-			v3f node_pos   = intToFloat(remote->p, BS);
-			v3f player_pos = player->getPlayerSAO()->getEyePosition();
-			f32 d = player_pos.getDistanceFrom(node_pos);
-			if (!checkInteractDistance(player, d, "inventory"))
-				return;
-		}
 
 		/*
 			Disable moving items out of craftpreview

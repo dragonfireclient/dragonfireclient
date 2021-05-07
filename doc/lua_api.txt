@@ -256,6 +256,9 @@ Subfolders with names starting with `_` or `.` are ignored.
 If a subfolder contains a media file with the same name as a media file
 in one of its parents, the parent's file is used.
 
+Although it is discouraged, a mod can overwrite a media file of any mod that it
+depends on by supplying a file with an equal name.
+
 Naming conventions
 ------------------
 
@@ -2296,7 +2299,7 @@ Elements
 * `frame duration`: Milliseconds between each frame. `0` means the frames don't advance.
 * `frame start` (Optional): The index of the frame to start on. Default `1`.
 
-### `model[<X>,<Y>;<W>,<H>;<name>;<mesh>;<textures>;<rotation X,Y>;<continuous>;<mouse control>;<frame loop range>]`
+### `model[<X>,<Y>;<W>,<H>;<name>;<mesh>;<textures>;<rotation X,Y>;<continuous>;<mouse control>;<frame loop range>;<animation speed>]`
 
 * Show a mesh model.
 * `name`: Element name that can be used for styling
@@ -2310,6 +2313,7 @@ Elements
 * `frame loop range` (Optional): Range of the animation frames.
     * Defaults to the full range of all available frames.
     * Syntax: `<begin>,<end>`
+* `animation speed` (Optional): Sets the animation speed. Default 0 FPS.
 
 ### `item_image[<X>,<Y>;<W>,<H>;<item name>]`
 
@@ -2675,7 +2679,7 @@ Elements
         * `span=<value>`: number of following columns to affect
           (default: infinite).
 
-### `style[<selector 1>,<selector 2>;<prop1>;<prop2>;...]`
+### `style[<selector 1>,<selector 2>,...;<prop1>;<prop2>;...]`
 
 * Set the style for the element(s) matching `selector` by name.
 * `selector` can be one of:
@@ -2688,7 +2692,7 @@ Elements
 * See [Styling Formspecs].
 
 
-### `style_type[<selector 1>,<selector 2>;<prop1>;<prop2>;...]`
+### `style_type[<selector 1>,<selector 2>,...;<prop1>;<prop2>;...]`
 
 * Set the style for the element(s) matching `selector` by type.
 * `selector` can be one of:
@@ -2761,10 +2765,10 @@ Styling Formspecs
 
 Formspec elements can be themed using the style elements:
 
-    style[<name 1>,<name 2>;<prop1>;<prop2>;...]
-    style[<name 1>:<state>,<name 2>:<state>;<prop1>;<prop2>;...]
-    style_type[<type 1>,<type 2>;<prop1>;<prop2>;...]
-    style_type[<type 1>:<state>,<type 2>:<state>;<prop1>;<prop2>;...]
+    style[<name 1>,<name 2>,...;<prop1>;<prop2>;...]
+    style[<name 1>:<state>,<name 2>:<state>,...;<prop1>;<prop2>;...]
+    style_type[<type 1>,<type 2>,...;<prop1>;<prop2>;...]
+    style_type[<type 1>:<state>,<type 2>:<state>,...;<prop1>;<prop2>;...]
 
 Where a prop is:
 
@@ -3267,7 +3271,6 @@ Helper functions
     * returns true when the passed number represents NaN.
 * `minetest.get_us_time()`
     * returns time with microsecond precision. May not return wall time.
-    * This value might overflow on certain 32-bit systems!
 * `table.copy(table)`: returns a table
     * returns a deep copy of `table`
 * `table.indexof(list, val)`: returns the smallest numerical index containing
@@ -6041,18 +6044,18 @@ an itemstring, a table or `nil`.
   stack).
 * `set_metadata(metadata)`: (DEPRECATED) Returns true.
 * `get_description()`: returns the description shown in inventory list tooltips.
-    * The engine uses the same as this function for item descriptions.
+    * The engine uses this when showing item descriptions in tooltips.
     * Fields for finding the description, in order:
         * `description` in item metadata (See [Item Metadata].)
         * `description` in item definition
         * item name
-* `get_short_description()`: returns the short description.
+* `get_short_description()`: returns the short description or nil.
     * Unlike the description, this does not include new lines.
-    * The engine uses the same as this function for short item descriptions.
     * Fields for finding the short description, in order:
         * `short_description` in item metadata (See [Item Metadata].)
         * `short_description` in item definition
-        * first line of the description (See `get_description()`.)
+        * first line of the description (From item meta or def, see `get_description()`.)
+        * Returns nil if none of the above are set
 * `clear()`: removes all items from the stack, making it empty.
 * `replace(item)`: replace the contents of this stack.
     * `item` can also be an itemstring or table.
@@ -6276,15 +6279,21 @@ object you are working with still exists.
 * `get_nametag_attributes()`
     * returns a table with the attributes of the nametag of an object
     * {
-        color = {a=0..255, r=0..255, g=0..255, b=0..255},
         text = "",
+        color = {a=0..255, r=0..255, g=0..255, b=0..255},
+        bgcolor = {a=0..255, r=0..255, g=0..255, b=0..255},
       }
 * `set_nametag_attributes(attributes)`
     * sets the attributes of the nametag of an object
     * `attributes`:
       {
-        color = ColorSpec,
         text = "My Nametag",
+        color = ColorSpec,
+        -- ^ Text color
+        bgcolor = ColorSpec or false,
+        -- ^ Sets background color of nametag
+        -- `false` will cause the background to be set automatically based on user settings
+        -- Default: false
       }
 
 #### Lua entity only (no-op for other objects)
@@ -6958,9 +6967,13 @@ Player properties need to be saved manually.
         -- For all other objects, a nil or empty string removes the nametag.
         -- To hide a nametag, set its color alpha to zero. That will disable it entirely.
 
-
         nametag_color = <ColorSpec>,
-        -- Sets color of nametag
+        -- Sets text color of nametag
+
+        nametag_bgcolor = <ColorSpec>,
+        -- Sets background color of nametag
+        -- `false` will cause the background to be set automatically based on user settings.
+        -- Default: false
 
         infotext = "",
         -- By default empty, text to be shown when pointed at object
@@ -7173,8 +7186,9 @@ Used by `minetest.register_node`, `minetest.register_craftitem`, and
 
         short_description = "Steel Axe",
         -- Must not contain new lines.
-        -- Defaults to the first line of description.
-        -- See also: `get_short_description` in [`ItemStack`]
+        -- Defaults to nil.
+        -- Use an [`ItemStack`] to get the short description, eg:
+        --   ItemStack(itemname):get_short_description()
 
         groups = {},
         -- key = name, value = rating; rating = 1..3.

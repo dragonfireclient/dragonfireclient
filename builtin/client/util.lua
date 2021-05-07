@@ -84,3 +84,23 @@ end
 function core.get_nearby_objects(radius)
 	return core.get_objects_inside_radius(core.localplayer:get_pos(), radius)
 end
+
+-- HTTP callback interface
+
+function core.http_add_fetch(httpenv)
+	httpenv.fetch = function(req, callback)
+		local handle = httpenv.fetch_async(req)
+
+		local function update_http_status()
+			local res = httpenv.fetch_async_get(handle)
+			if res.completed then
+				callback(res)
+			else
+				core.after(0, update_http_status)
+			end
+		end
+		core.after(0, update_http_status)
+	end
+
+	return httpenv
+end

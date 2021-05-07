@@ -68,6 +68,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "util/pointedthing.h"
 #include "util/quicktune_shortcutter.h"
 #include "irrlicht_changes/static_text.h"
+#include "irr_ptr.h"
 #include "version.h"
 #include "script/scripting_client.h"
 #include "hud.h"
@@ -442,6 +443,7 @@ class GameGlobalShaderConstantSetter : public IShaderConstantSetter
 	CachedPixelShaderSetting<float, 3> m_camera_offset_pixel;
 	CachedPixelShaderSetting<float, 3> m_camera_offset_vertex;
 	CachedPixelShaderSetting<SamplerLayer_t> m_base_texture;
+	CachedPixelShaderSetting<SamplerLayer_t> m_normal_texture;
 	Client *m_client;
 
 public:
@@ -475,6 +477,7 @@ public:
 		m_camera_offset_pixel("cameraOffset"),
 		m_camera_offset_vertex("cameraOffset"),
 		m_base_texture("baseTexture"),
+		m_normal_texture("normalTexture"),
 		m_client(client)
 	{
 		g_settings->registerChangedCallback("enable_fog", settingsCallback, this);
@@ -562,8 +565,9 @@ public:
 		m_camera_offset_pixel.set(camera_offset_array, services);
 		m_camera_offset_vertex.set(camera_offset_array, services);
 
-		SamplerLayer_t base_tex = 0;
+		SamplerLayer_t base_tex = 0, normal_tex = 1;
 		m_base_texture.set(&base_tex, services);
+		m_normal_texture.set(&normal_tex, services);
 	}
 };
 
@@ -659,6 +663,8 @@ struct ClientEventHandler
 {
 	void (Game::*handler)(ClientEvent *, CameraOrientation *);
 };
+
+using PausedNodesList = std::vector<std::pair<irr_ptr<scene::IAnimatedMeshSceneNode>, float>>;
 
 class Game {
 public:
@@ -798,6 +804,9 @@ public:
 	void showDeathFormspec();
 	void showPauseMenu();
 
+	void pauseAnimation();
+	void resumeAnimation();
+
 	// ClientEvent handlers
 	void handleClientEvent_None(ClientEvent *event, CameraOrientation *cam);
 	void handleClientEvent_PlayerDamage(ClientEvent *event, CameraOrientation *cam);
@@ -824,6 +833,8 @@ public:
 		const v3s16 &nodepos, const v3s16 &neighbourpos, const PointedThing &pointed,
 		const NodeMetadata *meta, bool force = false);
 	static const ClientEventHandler clientEventHandler[CLIENTEVENT_MAX];
+
+	f32 getSensitivityScaleFactor() const;
 
 	InputHandler *input = nullptr;
 
@@ -859,6 +870,9 @@ public:
 	Hud *hud = nullptr;
 	Minimap *mapper = nullptr;
 
+	// Map server hud ids to client hud ids
+	std::unordered_map<u32, u32> m_hud_server_to_client;
+
 	GameRunData runData;
 	Flags m_flags;
 
@@ -873,6 +887,7 @@ public:
 	std::string *error_message;
 	bool *reconnect_requested;
 	scene::ISceneNode *skybox;
+	PausedNodesList paused_animated_nodes;
 
 	bool simple_singleplayer_mode;
 	/* End 'cache' */

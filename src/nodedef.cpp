@@ -1691,8 +1691,7 @@ bool NodeDefManager::nodeboxConnects(MapNode from, MapNode to,
 
 NodeResolver::NodeResolver()
 {
-	m_nodenames.reserve(16);
-	m_nnlistsizes.reserve(4);
+	reset();
 }
 
 
@@ -1794,4 +1793,17 @@ bool NodeResolver::getIdsFromNrBacklog(std::vector<content_t> *result_out,
 	}
 
 	return success;
+}
+
+void NodeResolver::reset(bool resolve_done)
+{
+	m_nodenames.clear();
+	m_nodenames_idx = 0;
+	m_nnlistsizes.clear();
+	m_nnlistsizes_idx = 0;
+
+	m_resolve_done = resolve_done;
+
+	m_nodenames.reserve(16);
+	m_nnlistsizes.reserve(4);
 }
