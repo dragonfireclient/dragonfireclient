@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/client.h"
 #include "irrlichttypes_extrabloated.h"
 #include "script/scripting_client.h"
+#include "client/fontengine.h"
 #include <cstddef>
 #include <string>
 
@@ -63,15 +64,15 @@ private:
 	int m_selected_cheat = 0;
 	int m_selected_category = 0;
 
-	int m_head_height = 50;
-	int m_entry_height = 40;
-	int m_entry_width = 200;
-	int m_gap = 3;
+	int m_head_height = 30;
+	int m_entry_height = 30;
+	int m_entry_width = 125;
+	int m_gap = 1;
 
-	video::SColor m_bg_color = video::SColor(192, 255, 145, 88);
-	video::SColor m_active_bg_color = video::SColor(192, 255, 87, 53);
-	video::SColor m_font_color = video::SColor(255, 0, 0, 0);
-	video::SColor m_selected_font_color = video::SColor(255, 255, 252, 88);
+	video::SColor m_bg_color = video::SColor(100, 10, 10, 10);
+	video::SColor m_active_bg_color = video::SColor(192, 10, 100, 10);
+	video::SColor m_font_color = video::SColor(255, 0, 255, 0);
+	video::SColor m_selected_font_color = video::SColor(255, 250, 250, 250);
 
 	FontMode fontStringToEnum(std::string str);
 
@@ -81,4 +82,9 @@ private:
 	v2u32 m_fontsize;
 
 	float m_rainbow_offset = 0.0;
+
+	void drawRect(video::IVideoDriver *driver, std::string name,
+				int x, int y,
+				int width, int height,
+				bool active, bool selected);
 };
