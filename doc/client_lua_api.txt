@@ -766,6 +766,8 @@ Call these functions only at load time!
 * `minetest.register_on_object_properties_change(function(obj))`
     * Called every time the properties of an object are changed server-side
     * May modify the object's properties without the fear of infinite recursion
+* `minetest.register_on_object_hp_change(function(obj))`
+    * Called every time the hp of an object are changes server-side
 
 ### Setting-related
 * `minetest.settings`: Settings object containing all of the settings from the
@@ -1422,6 +1424,7 @@ This is basically a reference to a C++ `GenericCAO`.
 * `punch()`: punches the object
 * `rightclick()`: rightclicks the object
 * `remove()`: removes the object permanently
+* `set_nametag_images(images)`: Provides a list of images to be drawn below the nametag
 
 ### `Raycast`
 

@@ -962,13 +962,14 @@ void GenericCAO::updateNametag()
 		// Add nametag
 		m_nametag = m_client->getCamera()->addNametag(node,
 			m_prop.nametag, m_prop.nametag_color,
-			m_prop.nametag_bgcolor, pos);
+			m_prop.nametag_bgcolor, pos, nametag_images);
 	} else {
 		// Update nametag
 		m_nametag->text = m_prop.nametag;
 		m_nametag->textcolor = m_prop.nametag_color;
 		m_nametag->bgcolor = m_prop.nametag_bgcolor;
 		m_nametag->pos = pos;
+		m_nametag->setImages(nametag_images);
 	}
 }
 
@@ -1863,6 +1864,9 @@ void GenericCAO::processMessage(const std::string &data)
 			// Same as 'ObjectRef::l_remove'
 			if (!m_is_player)
 				clearChildAttachments();
+		} else {
+			if (m_client->modsLoaded())
+				m_client->getScript()->on_object_hp_change(m_id);
 		}
 	} else if (cmd == AO_CMD_UPDATE_ARMOR_GROUPS) {
 		m_armor_groups.clear();

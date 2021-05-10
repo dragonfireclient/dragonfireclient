@@ -98,4 +98,7 @@ private:
 
 	// remove(self)
 	static int l_remove(lua_State *L);
+
+	// set_nametag_images(self, images)
+	static int l_set_nametag_images(lua_State *L);
 };

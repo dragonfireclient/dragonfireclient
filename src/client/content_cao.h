@@ -318,4 +318,6 @@ public:
 	void setProperties(ObjectProperties newprops);
 
 	void updateMeshCulling();
+
+	std::vector<std::string> nametag_images = {};
 };

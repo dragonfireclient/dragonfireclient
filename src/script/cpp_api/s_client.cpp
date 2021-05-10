@@ -308,6 +308,21 @@ void ScriptApiClient::on_object_properties_change(s16 id)
 	runCallbacks(1, RUN_CALLBACKS_MODE_FIRST);
 }
 
+void ScriptApiClient::on_object_hp_change(s16 id)
+{
+	SCRIPTAPI_PRECHECKHEADER
+
+	// Get core.on_object_hp_change
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "registered_on_object_hp_change");
+
+	// Push data
+	ClientObjectRef::create(L, id);
+
+	// Call functions
+	runCallbacks(1, RUN_CALLBACKS_MODE_FIRST);
+}
+
 bool ScriptApiClient::on_inventory_open(Inventory *inventory)
 {
 	SCRIPTAPI_PRECHECKHEADER
