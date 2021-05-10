@@ -181,7 +181,7 @@ public:
 	{
 		return m_velocity;
 	}
-	
+
 	inline const u16 getHp() const
 	{
 		return m_hp;
@@ -307,13 +307,15 @@ public:
 	{
 		return m_prop.infotext;
 	}
-	
+
 	float m_waiting_for_reattach;
-	
+
 	ObjectProperties *getProperties()
 	{
 		return &m_prop;
 	}
+
+	void setProperties(ObjectProperties newprops);
 
 	void updateMeshCulling();
 };

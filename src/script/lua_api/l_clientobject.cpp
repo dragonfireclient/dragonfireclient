@@ -160,6 +160,16 @@ int ClientObjectRef::l_get_properties(lua_State *L)
 	return 1;
 }
 
+int ClientObjectRef::l_set_properties(lua_State *L)
+{
+	ClientObjectRef *ref = checkobject(L, 1);
+	GenericCAO *gcao = get_generic_cao(ref, L);
+	ObjectProperties prop = *gcao->getProperties();
+	read_object_properties(L, 2, nullptr, &prop, getClient(L)->idef());
+	gcao->setProperties(prop);
+	return 1;
+}
+
 int ClientObjectRef::l_get_hp(lua_State *L)
 {
 	ClientObjectRef *ref = checkobject(L, 1);
@@ -259,6 +269,7 @@ luaL_Reg ClientObjectRef::methods[] = {luamethod(ClientObjectRef, get_pos),
 		luamethod(ClientObjectRef, get_nametag),
 		luamethod(ClientObjectRef, get_item_textures),
 		luamethod(ClientObjectRef, get_properties),
+		luamethod(ClientObjectRef, set_properties),
 		luamethod(ClientObjectRef, get_hp),
 		luamethod(ClientObjectRef, get_max_hp), luamethod(ClientObjectRef, punch),
 		luamethod(ClientObjectRef, rightclick), {0, 0}};
