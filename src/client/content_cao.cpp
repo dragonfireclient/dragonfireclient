@@ -828,6 +828,9 @@ void GenericCAO::addToScene(ITextureSource *tsrc)
 	updateAttachments();
 	setNodeLight(m_last_light);
 	updateMeshCulling();
+
+	if (m_client->modsLoaded())
+		m_client->getScript()->on_object_properties_change(m_id);
 }
 
 void GenericCAO::updateLight(u32 day_night_ratio)
