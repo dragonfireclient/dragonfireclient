@@ -78,6 +78,9 @@ private:
 	// get_textures(self)
 	static int l_get_item_textures(lua_State *L);
 
+	// get_properties(self)
+	static int l_get_properties(lua_State *L);
+
 	// get_hp(self)
 	static int l_get_hp(lua_State *L);
 

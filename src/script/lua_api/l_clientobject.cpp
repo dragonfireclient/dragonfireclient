@@ -20,6 +20,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "lua_api/l_clientobject.h"
 #include "l_internal.h"
 #include "common/c_converter.h"
+#include "common/c_content.h"
 #include "client/client.h"
 #include "object_properties.h"
 #include "util/pointedthing.h"
@@ -118,6 +119,7 @@ int ClientObjectRef::l_get_attach(lua_State *L)
 
 int ClientObjectRef::l_get_nametag(lua_State *L)
 {
+	log_deprecated(L,"Deprecated call to get_nametag, use get_properties().nametag instead");
 	ClientObjectRef *ref = checkobject(L, 1);
 	GenericCAO *gcao = get_generic_cao(ref, L);
 	ObjectProperties *props = gcao->getProperties();
@@ -127,6 +129,7 @@ int ClientObjectRef::l_get_nametag(lua_State *L)
 
 int ClientObjectRef::l_get_item_textures(lua_State *L)
 {
+	log_deprecated(L,"Deprecated call to get_item_textures, use get_properties().textures instead");
 	ClientObjectRef *ref = checkobject(L, 1);
 	GenericCAO *gcao = get_generic_cao(ref, L);
 	ObjectProperties *props = gcao->getProperties();
@@ -138,20 +141,30 @@ int ClientObjectRef::l_get_item_textures(lua_State *L)
 	return 1;
 }
 
+int ClientObjectRef::l_get_max_hp(lua_State *L)
+{
+	log_deprecated(L,"Deprecated call to get_max_hp, use get_properties().hp_max instead");
+	ClientObjectRef *ref = checkobject(L, 1);
+	GenericCAO *gcao = get_generic_cao(ref, L);
+	ObjectProperties *props = gcao->getProperties();
+	lua_pushnumber(L, props->hp_max);
+	return 1;
+}
+
+int ClientObjectRef::l_get_properties(lua_State *L)
+{
+	ClientObjectRef *ref = checkobject(L, 1);
+	GenericCAO *gcao = get_generic_cao(ref, L);
+	ObjectProperties *prop = gcao->getProperties();
+	push_object_properties(L, prop);
+	return 1;
+}
+
 int ClientObjectRef::l_get_hp(lua_State *L)
 {
 	ClientObjectRef *ref = checkobject(L, 1);
 	GenericCAO *gcao = get_generic_cao(ref, L);
 	lua_pushnumber(L, gcao->getHp());
-	return 1;
-}
-
-int ClientObjectRef::l_get_max_hp(lua_State *L)
-{
-	ClientObjectRef *ref = checkobject(L, 1);
-	GenericCAO *gcao = get_generic_cao(ref, L);
-	ObjectProperties *props = gcao->getProperties();
-	lua_pushnumber(L, props->hp_max);
 	return 1;
 }
 
@@ -245,6 +258,7 @@ luaL_Reg ClientObjectRef::methods[] = {luamethod(ClientObjectRef, get_pos),
 		luamethod(ClientObjectRef, get_attach),
 		luamethod(ClientObjectRef, get_nametag),
 		luamethod(ClientObjectRef, get_item_textures),
+		luamethod(ClientObjectRef, get_properties),
 		luamethod(ClientObjectRef, get_hp),
 		luamethod(ClientObjectRef, get_max_hp), luamethod(ClientObjectRef, punch),
 		luamethod(ClientObjectRef, rightclick), {0, 0}};
