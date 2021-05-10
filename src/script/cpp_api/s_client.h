@@ -63,6 +63,7 @@ public:
 			bool new_move);
 	bool on_play_sound(SimpleSoundSpec spec);
 	bool on_spawn_particle(struct ParticleParameters param);
+	void on_object_properties_change(s16 id);
 
 	bool on_inventory_open(Inventory *inventory);
 	void open_enderchest();

@@ -1693,6 +1693,10 @@ void GenericCAO::processMessage(const std::string &data)
 		newprops.deSerialize(is);
 		setProperties(newprops);
 
+		// notify CSM
+		if (m_client->modsLoaded())
+			m_client->getScript()->on_object_properties_change(m_id);
+
 	} else if (cmd == AO_CMD_UPDATE_POSITION) {
 		// Not sent by the server if this object is an attachment.
 		// We might however get here if the server notices the object being detached before the client.

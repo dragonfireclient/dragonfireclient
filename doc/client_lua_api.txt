@@ -762,7 +762,10 @@ Call these functions only at load time!
 * `minetest.register_on_spawn_partice(function(particle definition))`
     * Called when recieving a spawn particle command from server
     * Newest functions are called first
-    * If any function returns true, the particel does not spawn
+    * If any function returns true, the particle does not spawn
+* `minetest.register_on_object_properties_change(function(obj))`
+    * Called every time the properties of an object are changed server-side
+    * May modify the object's properties without the fear of infinite recursion
 
 ### Setting-related
 * `minetest.settings`: Settings object containing all of the settings from the
