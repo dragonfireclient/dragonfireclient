@@ -107,6 +107,7 @@ core.registered_on_play_sound, core.register_on_play_sound = make_registration()
 core.registered_on_spawn_particle, core.register_on_spawn_particle = make_registration()
 core.registered_on_object_properties_change, core.register_on_object_properties_change = make_registration()
 core.registered_on_object_hp_change, core.register_on_object_hp_change = make_registration()
+core.registered_on_object_add, core.register_on_object_add = make_registration()
 
 core.registered_nodes = {}
 core.registered_items = {}

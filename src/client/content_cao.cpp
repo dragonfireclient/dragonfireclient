@@ -830,6 +830,9 @@ void GenericCAO::addToScene(ITextureSource *tsrc)
 	updateMeshCulling();
 
 	if (m_client->modsLoaded())
+		m_client->getScript()->on_object_add(m_id);
+
+	if (m_client->modsLoaded())
 		m_client->getScript()->on_object_properties_change(m_id);
 }
 

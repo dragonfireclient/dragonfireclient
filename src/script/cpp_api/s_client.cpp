@@ -297,7 +297,7 @@ void ScriptApiClient::on_object_properties_change(s16 id)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
-	// Get core.on_object_properties_change
+	// Get core.registered_on_object_properties_change
 	lua_getglobal(L, "core");
 	lua_getfield(L, -1, "registered_on_object_properties_change");
 
@@ -312,9 +312,24 @@ void ScriptApiClient::on_object_hp_change(s16 id)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
-	// Get core.on_object_hp_change
+	// Get core.registered_on_object_hp_change
 	lua_getglobal(L, "core");
 	lua_getfield(L, -1, "registered_on_object_hp_change");
+
+	// Push data
+	push_objectRef(L, id);
+
+	// Call functions
+	runCallbacks(1, RUN_CALLBACKS_MODE_FIRST);
+}
+
+void ScriptApiClient::on_object_add(s16 id)
+{
+	SCRIPTAPI_PRECHECKHEADER
+
+	// Get core.registered_on_object_add
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "registered_on_object_add");
 
 	// Push data
 	push_objectRef(L, id);
