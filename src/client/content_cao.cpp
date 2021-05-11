@@ -828,16 +828,19 @@ void GenericCAO::addToScene(ITextureSource *tsrc)
 	updateAttachments();
 	setNodeLight(m_last_light);
 	updateMeshCulling();
+
+	if (m_client->modsLoaded())
+		m_client->getScript()->on_object_properties_change(m_id);
 }
 
 void GenericCAO::updateLight(u32 day_night_ratio)
-{		
+{
 	if (m_glow < 0)
 		return;
 
 	u8 light_at_pos = 0;
 	bool pos_ok = false;
-		
+
 	v3s16 pos[3];
 	u16 npos = getLightPosition(pos);
 	for (u16 i = 0; i < npos; i++) {
@@ -959,13 +962,14 @@ void GenericCAO::updateNametag()
 		// Add nametag
 		m_nametag = m_client->getCamera()->addNametag(node,
 			m_prop.nametag, m_prop.nametag_color,
-			m_prop.nametag_bgcolor, pos);
+			m_prop.nametag_bgcolor, pos, nametag_images);
 	} else {
 		// Update nametag
 		m_nametag->text = m_prop.nametag;
 		m_nametag->textcolor = m_prop.nametag_color;
 		m_nametag->bgcolor = m_prop.nametag_bgcolor;
 		m_nametag->pos = pos;
+		m_nametag->setImages(nametag_images);
 	}
 }
 
@@ -1629,6 +1633,57 @@ bool GenericCAO::visualExpiryRequired(const ObjectProperties &new_) const
 		(uses_legacy_texture && old.textures != new_.textures);
 }
 
+void GenericCAO::setProperties(ObjectProperties newprops)
+{
+	// Check what exactly changed
+	bool expire_visuals = visualExpiryRequired(newprops);
+	bool textures_changed = m_prop.textures != newprops.textures;
+
+	// Apply changes
+	m_prop = std::move(newprops);
+
+	m_selection_box = m_prop.selectionbox;
+	m_selection_box.MinEdge *= BS;
+	m_selection_box.MaxEdge *= BS;
+
+	m_tx_size.X = 1.0f / m_prop.spritediv.X;
+	m_tx_size.Y = 1.0f / m_prop.spritediv.Y;
+
+	if(!m_initial_tx_basepos_set){
+		m_initial_tx_basepos_set = true;
+		m_tx_basepos = m_prop.initial_sprite_basepos;
+	}
+	if (m_is_local_player) {
+		LocalPlayer *player = m_env->getLocalPlayer();
+		player->makes_footstep_sound = m_prop.makes_footstep_sound;
+		aabb3f collision_box = m_prop.collisionbox;
+		collision_box.MinEdge *= BS;
+		collision_box.MaxEdge *= BS;
+		player->setCollisionbox(collision_box);
+		player->setEyeHeight(m_prop.eye_height);
+		player->setZoomFOV(m_prop.zoom_fov);
+	}
+
+	if ((m_is_player && !m_is_local_player) && m_prop.nametag.empty())
+		m_prop.nametag = m_name;
+	if (m_is_local_player)
+		m_prop.show_on_minimap = false;
+
+	if (expire_visuals) {
+		expireVisuals();
+	} else {
+		infostream << "GenericCAO: properties updated but expiring visuals"
+			<< " not necessary" << std::endl;
+		if (textures_changed) {
+			// don't update while punch texture modifier is active
+			if (m_reset_textures_timer < 0)
+				updateTextures(m_current_texture_modifier);
+		}
+		updateNametag();
+		updateMarker();
+	}
+}
+
 void GenericCAO::processMessage(const std::string &data)
 {
 	//infostream<<"GenericCAO: Got message"<<std::endl;
@@ -1640,54 +1695,12 @@ void GenericCAO::processMessage(const std::string &data)
 		newprops.show_on_minimap = m_is_player; // default
 
 		newprops.deSerialize(is);
+		setProperties(newprops);
 
-		// Check what exactly changed
-		bool expire_visuals = visualExpiryRequired(newprops);
-		bool textures_changed = m_prop.textures != newprops.textures;
+		// notify CSM
+		if (m_client->modsLoaded())
+			m_client->getScript()->on_object_properties_change(m_id);
 
-		// Apply changes
-		m_prop = std::move(newprops);
-
-		m_selection_box = m_prop.selectionbox;
-		m_selection_box.MinEdge *= BS;
-		m_selection_box.MaxEdge *= BS;
-
-		m_tx_size.X = 1.0f / m_prop.spritediv.X;
-		m_tx_size.Y = 1.0f / m_prop.spritediv.Y;
-
-		if(!m_initial_tx_basepos_set){
-			m_initial_tx_basepos_set = true;
-			m_tx_basepos = m_prop.initial_sprite_basepos;
-		}
-		if (m_is_local_player) {
-			LocalPlayer *player = m_env->getLocalPlayer();
-			player->makes_footstep_sound = m_prop.makes_footstep_sound;
-			aabb3f collision_box = m_prop.collisionbox;
-			collision_box.MinEdge *= BS;
-			collision_box.MaxEdge *= BS;
-			player->setCollisionbox(collision_box);
-			player->setEyeHeight(m_prop.eye_height);
-			player->setZoomFOV(m_prop.zoom_fov);
-		}
-
-		if ((m_is_player && !m_is_local_player) && m_prop.nametag.empty())
-			m_prop.nametag = m_name;
-		if (m_is_local_player)
-			m_prop.show_on_minimap = false;
-
-		if (expire_visuals) {
-			expireVisuals();
-		} else {
-			infostream << "GenericCAO: properties updated but expiring visuals"
-				<< " not necessary" << std::endl;
-			if (textures_changed) {
-				// don't update while punch texture modifier is active
-				if (m_reset_textures_timer < 0)
-					updateTextures(m_current_texture_modifier);
-			}
-			updateNametag();
-			updateMarker();
-		}
 	} else if (cmd == AO_CMD_UPDATE_POSITION) {
 		// Not sent by the server if this object is an attachment.
 		// We might however get here if the server notices the object being detached before the client.
@@ -1752,10 +1765,10 @@ void GenericCAO::processMessage(const std::string &data)
 		if(m_is_local_player)
 		{
 			Client *client = m_env->getGameDef();
-			
+
 			if (client->modsLoaded() && client->getScript()->on_recieve_physics_override(override_speed, override_jump, override_gravity, sneak, sneak_glitch, new_move))
 				return;
-			
+
 			LocalPlayer *player = m_env->getLocalPlayer();
 			player->physics_override_speed = override_speed;
 			player->physics_override_jump = override_jump;
@@ -1851,6 +1864,9 @@ void GenericCAO::processMessage(const std::string &data)
 			// Same as 'ObjectRef::l_remove'
 			if (!m_is_player)
 				clearChildAttachments();
+		} else {
+			if (m_client->modsLoaded())
+				m_client->getScript()->on_object_hp_change(m_id);
 		}
 	} else if (cmd == AO_CMD_UPDATE_ARMOR_GROUPS) {
 		m_armor_groups.clear();

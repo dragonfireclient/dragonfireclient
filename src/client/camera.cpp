@@ -35,6 +35,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "util/numeric.h"
 #include "constants.h"
 #include "fontengine.h"
+#include "guiscalingfilter.h"
 #include "script/scripting_client.h"
 
 #define CAMERA_OFFSET_STEP 200
@@ -715,7 +716,7 @@ void Camera::drawNametags()
 			screen_pos.Y = screensize.Y *
 				(0.5 - transformed_pos[1] * zDiv * 0.5) - textsize.Height / 2;
 			core::rect<s32> size(0, 0, textsize.Width, textsize.Height);
-			core::rect<s32> bg_size(-2, 0, textsize.Width+2, textsize.Height);
+			core::rect<s32> bg_size(-2, 0, std::max(textsize.Width+2, (u32) nametag->images_dim.Width), textsize.Height + nametag->images_dim.Height);
 
 			auto bgcolor = nametag->getBgColor(m_show_nametag_backgrounds);
 			if (bgcolor.getAlpha() != 0)
@@ -724,15 +725,29 @@ void Camera::drawNametags()
 			font->draw(
 				translate_string(utf8_to_wide(nametag->text)).c_str(),
 				size + screen_pos, nametag->textcolor);
+
+			v2s32 image_pos(screen_pos);
+			image_pos.Y += textsize.Height;
+
+			const video::SColor color(255, 255, 255, 255);
+			const video::SColor colors[] = {color, color, color, color};
+
+			for (video::ITexture *texture : nametag->images) {
+				core::dimension2di imgsize(texture->getOriginalSize());
+				core::rect<s32> rect(core::position2d<s32>(0, 0), imgsize);
+				draw2DImageFilterScaled(driver, texture, rect + image_pos, rect, NULL, colors, true);
+				image_pos += core::dimension2di(imgsize.Width, 0);
+			}
+
 		}
 	}
 }
-
 Nametag *Camera::addNametag(scene::ISceneNode *parent_node,
 		const std::string &text, video::SColor textcolor,
-		Optional<video::SColor> bgcolor, const v3f &pos)
+		Optional<video::SColor> bgcolor, const v3f &pos,
+		const std::vector<std::string> &images)
 {
-	Nametag *nametag = new Nametag(parent_node, text, textcolor, bgcolor, pos);
+	Nametag *nametag = new Nametag(parent_node, text, textcolor, bgcolor, pos, m_client->tsrc(), images);
 	m_nametags.push_back(nametag);
 	return nametag;
 }

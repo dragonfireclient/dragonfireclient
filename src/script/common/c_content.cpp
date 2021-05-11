@@ -200,7 +200,7 @@ void read_object_properties(lua_State *L, int index,
 	if (getintfield(L, -1, "hp_max", hp_max)) {
 		prop->hp_max = (u16)rangelim(hp_max, 0, U16_MAX);
 
-		if (prop->hp_max < sao->getHP()) {
+		if (sao && prop->hp_max < sao->getHP()) {
 			PlayerHPChangeReason reason(PlayerHPChangeReason::SET_HP);
 			sao->setHP(prop->hp_max, reason);
 			if (sao->getType() == ACTIVEOBJECT_TYPE_PLAYER)
@@ -209,7 +209,7 @@ void read_object_properties(lua_State *L, int index,
 	}
 
 	if (getintfield(L, -1, "breath_max", prop->breath_max)) {
-		if (sao->getType() == ACTIVEOBJECT_TYPE_PLAYER) {
+		if (sao && sao->getType() == ACTIVEOBJECT_TYPE_PLAYER) {
 			PlayerSAO *player = (PlayerSAO *)sao;
 			if (prop->breath_max < player->getBreath())
 				player->setBreath(prop->breath_max);
