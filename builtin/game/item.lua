@@ -15,15 +15,6 @@ end
 -- Item definition helpers
 --
 
-function core.inventorycube(img1, img2, img3)
-	img2 = img2 or img1
-	img3 = img3 or img1
-	return "[inventorycube"
-			.. "{" .. img1:gsub("%^", "&")
-			.. "{" .. img2:gsub("%^", "&")
-			.. "{" .. img3:gsub("%^", "&")
-end
-
 function core.dir_to_facedir(dir, is6d)
 	--account for y if requested
 	if is6d and math.abs(dir.y) > math.abs(dir.x) and math.abs(dir.y) > math.abs(dir.z) then

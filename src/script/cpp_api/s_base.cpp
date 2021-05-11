@@ -21,6 +21,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "cpp_api/s_internal.h"
 #include "cpp_api/s_security.h"
 #include "lua_api/l_object.h"
+#include "lua_api/l_clientobject.h"
 #include "common/c_converter.h"
 #include "server/player_sao.h"
 #include "filesys.h"
@@ -354,13 +355,16 @@ void ScriptApiBase::setOriginFromTableRaw(int index, const char *fxn)
  *     since we lose control over the ref and the contained pointer.
  */
 
-void ScriptApiBase::addObjectReference(ServerActiveObject *cobj)
+void ScriptApiBase::addObjectReference(ActiveObject *cobj)
 {
 	SCRIPTAPI_PRECHECKHEADER
 	//infostream<<"scriptapi_add_object_reference: id="<<cobj->getId()<<std::endl;
 
 	// Create object on stack
-	ObjectRef::create(L, cobj); // Puts ObjectRef (as userdata) on stack
+	if (m_type == ScriptingType::Client)
+		ClientObjectRef::create(L, dynamic_cast<ClientActiveObject *>(cobj));
+	else
+		ObjectRef::create(L, dynamic_cast<ServerActiveObject *>(cobj)); // Puts ObjectRef (as userdata) on stack
 	int object = lua_gettop(L);
 
 	// Get core.object_refs table
@@ -375,7 +379,7 @@ void ScriptApiBase::addObjectReference(ServerActiveObject *cobj)
 	lua_settable(L, objectstable);
 }
 
-void ScriptApiBase::removeObjectReference(ServerActiveObject *cobj)
+void ScriptApiBase::removeObjectReference(ActiveObject *cobj)
 {
 	SCRIPTAPI_PRECHECKHEADER
 	//infostream<<"scriptapi_rm_object_reference: id="<<cobj->getId()<<std::endl;
@@ -390,7 +394,10 @@ void ScriptApiBase::removeObjectReference(ServerActiveObject *cobj)
 	lua_pushnumber(L, cobj->getId()); // Push id
 	lua_gettable(L, objectstable);
 	// Set object reference to NULL
-	ObjectRef::set_null(L);
+	if (m_type == ScriptingType::Client)
+		ClientObjectRef::set_null(L);
+	else
+		ObjectRef::set_null(L);
 	lua_pop(L, 1); // pop object
 
 	// Set object_refs[id] = nil
@@ -413,7 +420,6 @@ void ScriptApiBase::objectrefGetOrCreate(lua_State *L,
 					<< ", this is probably a bug." << std::endl;
 	}
 }
-
 void ScriptApiBase::pushPlayerHPChangeReason(lua_State *L, const PlayerHPChangeReason &reason)
 {
 	if (reason.hasLuaReference())

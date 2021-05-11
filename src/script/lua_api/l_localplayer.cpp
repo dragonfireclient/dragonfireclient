@@ -483,7 +483,7 @@ int LuaLocalPlayer::l_get_object(lua_State *L)
 	ClientEnvironment &env = getClient(L)->getEnv();
 	ClientActiveObject *obj = env.getGenericCAO(player->getCAO()->getId());
 
-	ClientObjectRef::create(L, obj);
+	push_objectRef(L, obj->getId());
 
 	return 1;
 }

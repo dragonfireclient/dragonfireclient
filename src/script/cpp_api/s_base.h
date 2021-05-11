@@ -73,6 +73,7 @@ class Game;
 class IGameDef;
 class Environment;
 class GUIEngine;
+class ActiveObject;
 class ServerActiveObject;
 struct PlayerHPChangeReason;
 
@@ -99,8 +100,8 @@ public:
 		RunCallbacksMode mode, const char *fxn);
 
 	/* object */
-	void addObjectReference(ServerActiveObject *cobj);
-	void removeObjectReference(ServerActiveObject *cobj);
+	void addObjectReference(ActiveObject *cobj);
+	void removeObjectReference(ActiveObject *cobj);
 
 	IGameDef *getGameDef() { return m_gamedef; }
 	Server* getServer();

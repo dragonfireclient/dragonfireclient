@@ -516,6 +516,35 @@ TileDef read_tiledef(lua_State *L, int index, u8 drawtype)
 }
 
 /******************************************************************************/
+void push_tiledef(lua_State *L, TileDef tiledef)
+{
+	lua_newtable(L);
+	setstringfield(L, -1, "name", tiledef.name);
+	setboolfield(L, -1, "backface_culling", tiledef.backface_culling);
+	setboolfield(L, -1, "tileable_horizontal", tiledef.tileable_horizontal);
+	setboolfield(L, -1, "tileable_vertical", tiledef.tileable_vertical);
+	std::string align_style;
+	switch (tiledef.align_style) {
+	case ALIGN_STYLE_USER_DEFINED:
+			align_style = "user";
+			break;
+	case ALIGN_STYLE_WORLD:
+			align_style = "world";
+			break;
+	default:
+			align_style = "node";
+	}
+	setstringfield(L, -1, "align_style", align_style);
+	setintfield(L, -1, "scale", tiledef.scale);
+	if (tiledef.has_color) {
+		push_ARGB8(L, tiledef.color);
+		lua_setfield(L, -2, "color");
+	}
+	push_animation_definition(L, tiledef.animation);
+	lua_setfield(L, -2, "animation");
+}
+
+/******************************************************************************/
 void read_content_features(lua_State *L, ContentFeatures &f, int index)
 {
 	if(index < 0)
@@ -835,9 +864,32 @@ void push_content_features(lua_State *L, const ContentFeatures &c)
 	std::string drawtype(ScriptApiNode::es_DrawType[(int)c.drawtype].str);
 	std::string liquid_type(ScriptApiNode::es_LiquidType[(int)c.liquid_type].str);
 
-	/* Missing "tiles" because I don't see a usecase (at least not yet). */
-
 	lua_newtable(L);
+
+	// tiles
+	lua_newtable(L);
+	for (int i = 0; i < 6; i++) {
+		push_tiledef(L, c.tiledef[i]);
+		lua_rawseti(L, -2, i + 1);
+	}
+	lua_setfield(L, -2, "tiles");
+
+	// overlay_tiles
+	lua_newtable(L);
+	for (int i = 0; i < 6; i++) {
+		push_tiledef(L, c.tiledef_overlay[i]);
+		lua_rawseti(L, -2, i + 1);
+	}
+	lua_setfield(L, -2, "overlay_tiles");
+
+	// special_tiles
+	lua_newtable(L);
+	for (int i = 0; i < CF_SPECIAL_COUNT; i++) {
+		push_tiledef(L, c.tiledef_special[i]);
+		lua_rawseti(L, -2, i + 1);
+	}
+	lua_setfield(L, -2, "special_tiles");
+
 	lua_pushboolean(L, c.has_on_construct);
 	lua_setfield(L, -2, "has_on_construct");
 	lua_pushboolean(L, c.has_on_destruct);
@@ -1886,14 +1938,7 @@ void push_pointed_thing(lua_State *L, const PointedThing &pointed, bool csm,
 	} else if (pointed.type == POINTEDTHING_OBJECT) {
 		lua_pushstring(L, "object");
 		lua_setfield(L, -2, "type");
-		if (csm) {
-#ifndef SERVER
-			ClientObjectRef::create(L, pointed.object_id);
-#endif
-		} else {
-			push_objectRef(L, pointed.object_id);
-		}
-
+		push_objectRef(L, pointed.object_id);
 		lua_setfield(L, -2, "ref");
 	} else {
 		lua_pushstring(L, "nothing");

@@ -110,3 +110,4 @@ core.registered_on_object_hp_change, core.register_on_object_hp_change = make_re
 
 core.registered_nodes = {}
 core.registered_items = {}
+core.object_refs = {}

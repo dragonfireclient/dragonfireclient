@@ -1170,7 +1170,7 @@ void ServerEnvironment::clearObjects(ClearObjectsMode mode)
 		// Tell the object about removal
 		obj->removingFromEnvironment();
 		// Deregister in scripting api
-		m_script->removeObjectReference(obj);
+		m_script->removeObjectReference(dynamic_cast<ActiveObject *>(obj));
 
 		// Delete active object
 		if (obj->environmentDeletes())
@@ -1736,7 +1736,7 @@ u16 ServerEnvironment::addActiveObjectRaw(ServerActiveObject *object,
 	}
 
 	// Register reference in scripting api (must be done before post-init)
-	m_script->addObjectReference(object);
+	m_script->addObjectReference(dynamic_cast<ActiveObject *>(object));
 	// Post-initialize object
 	object->addedToEnvironment(dtime_s);
 
@@ -1826,7 +1826,7 @@ void ServerEnvironment::removeRemovedObjects()
 		// Tell the object about removal
 		obj->removingFromEnvironment();
 		// Deregister in scripting api
-		m_script->removeObjectReference(obj);
+		m_script->removeObjectReference(dynamic_cast<ActiveObject *>(obj));
 
 		// Delete
 		if (obj->environmentDeletes())
@@ -2091,7 +2091,7 @@ void ServerEnvironment::deactivateFarObjects(bool _force_delete)
 		// Tell the object about removal
 		obj->removingFromEnvironment();
 		// Deregister in scripting api
-		m_script->removeObjectReference(obj);
+		m_script->removeObjectReference(dynamic_cast<ActiveObject *>(obj));
 
 		// Delete active object
 		if (obj->environmentDeletes())

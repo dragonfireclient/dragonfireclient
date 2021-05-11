@@ -352,6 +352,7 @@ void ClientEnvironment::addActiveObject(u16 id, u8 type,
 {
 	ClientActiveObject* obj =
 		ClientActiveObject::create((ActiveObjectType) type, m_client, this);
+
 	if(obj == NULL)
 	{
 		infostream<<"ClientEnvironment::addActiveObject(): "
@@ -361,6 +362,9 @@ void ClientEnvironment::addActiveObject(u16 id, u8 type,
 	}
 
 	obj->setId(id);
+
+	if (m_client->modsLoaded())
+		m_client->getScript()->addObjectReference(dynamic_cast<ActiveObject*>(obj));
 
 	try
 	{
@@ -394,8 +398,13 @@ void ClientEnvironment::removeActiveObject(u16 id)
 {
 	// Get current attachment childs to detach them visually
 	std::unordered_set<int> attachment_childs;
-	if (auto *obj = getActiveObject(id))
+	auto *obj = getActiveObject(id);
+	if (obj) {
 		attachment_childs = obj->getAttachmentChildIds();
+
+		if (m_client->modsLoaded())
+			m_client->getScript()->removeObjectReference(dynamic_cast<ActiveObject*>(obj));
+	}
 
 	m_ao_manager.removeObject(id);
 

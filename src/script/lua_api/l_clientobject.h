@@ -35,6 +35,8 @@ public:
 	static void create(lua_State *L, ClientActiveObject *object);
 	static void create(lua_State *L, s16 id);
 
+	static void set_null(lua_State *L);
+
 	static ClientObjectRef *checkobject(lua_State *L, int narg);
 
 private:
