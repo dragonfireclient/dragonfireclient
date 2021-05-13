@@ -84,7 +84,7 @@ int LuaLocalPlayer::l_set_yaw(lua_State *L)
 	LocalPlayer *player = getobject(L, 1);
 
 	if (lua_isnumber(L, 2)) {
-		int yaw = lua_tonumber(L, 2);
+		double yaw = lua_tonumber(L, 2);
 		player->setYaw(yaw);
 		g_game->cam_view.camera_yaw = yaw;
 		g_game->cam_view_target.camera_yaw = yaw;
@@ -104,7 +104,7 @@ int LuaLocalPlayer::l_set_pitch(lua_State *L)
 	LocalPlayer *player = getobject(L, 1);
 
 	if (lua_isnumber(L, 2)) {
-		int pitch = lua_tonumber(L, 2);
+		double pitch = lua_tonumber(L, 2);
 		player->setPitch(pitch);
 		g_game->cam_view.camera_pitch = pitch;
 		g_game->cam_view_target.camera_pitch = pitch;
