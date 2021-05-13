@@ -53,10 +53,12 @@ static video::SMaterial baseMaterial()
 	return mat;
 };
 
-Sky::Sky(s32 id, ITextureSource *tsrc, IShaderSource *ssrc) :
-		scene::ISceneNode(RenderingEngine::get_scene_manager()->getRootSceneNode(),
-			RenderingEngine::get_scene_manager(), id)
+Sky::Sky(s32 id, RenderingEngine *rendering_engine, ITextureSource *tsrc, IShaderSource *ssrc) :
+		scene::ISceneNode(rendering_engine->get_scene_manager()->getRootSceneNode(),
+			rendering_engine->get_scene_manager(), id)
 {
+	m_seed = (u64)myrand() << 32 | myrand();
+
 	setAutomaticCulling(scene::EAC_OFF);
 	m_box.MaxEdge.set(0, 0, 0);
 	m_box.MinEdge.set(0, 0, 0);
@@ -82,13 +84,13 @@ Sky::Sky(s32 id, ITextureSource *tsrc, IShaderSource *ssrc) :
 	// Ensures that sun and moon textures and tonemaps are correct.
 	setSkyDefaults();
 	m_sun_texture = tsrc->isKnownSourceImage(m_sun_params.texture) ?
-		tsrc->getTextureForMesh(m_sun_params.texture) : NULL;
+		tsrc->getTextureForMesh(m_sun_params.texture) : nullptr;
 	m_moon_texture = tsrc->isKnownSourceImage(m_moon_params.texture) ?
-		tsrc->getTextureForMesh(m_moon_params.texture) : NULL;
+		tsrc->getTextureForMesh(m_moon_params.texture) : nullptr;
 	m_sun_tonemap = tsrc->isKnownSourceImage(m_sun_params.tonemap) ?
-		tsrc->getTexture(m_sun_params.tonemap) : NULL;
+		tsrc->getTexture(m_sun_params.tonemap) : nullptr;
 	m_moon_tonemap = tsrc->isKnownSourceImage(m_moon_params.tonemap) ?
-		tsrc->getTexture(m_moon_params.tonemap) : NULL;
+		tsrc->getTexture(m_moon_params.tonemap) : nullptr;
 
 	if (m_sun_texture) {
 		m_materials[3] = baseMaterial();
@@ -744,14 +746,14 @@ void Sky::place_sky_body(
 	}
 }
 
-void Sky::setSunTexture(std::string sun_texture,
-		std::string sun_tonemap, ITextureSource *tsrc)
+void Sky::setSunTexture(const std::string &sun_texture,
+		const std::string &sun_tonemap, ITextureSource *tsrc)
 {
 	// Ignore matching textures (with modifiers) entirely,
 	// but lets at least update the tonemap before hand.
 	m_sun_params.tonemap = sun_tonemap;
 	m_sun_tonemap = tsrc->isKnownSourceImage(m_sun_params.tonemap) ?
-		tsrc->getTexture(m_sun_params.tonemap) : NULL;
+		tsrc->getTexture(m_sun_params.tonemap) : nullptr;
 	m_materials[3].Lighting = !!m_sun_tonemap;
 
 	if (m_sun_params.texture == sun_texture)
@@ -780,7 +782,7 @@ void Sky::setSunTexture(std::string sun_texture,
 	}
 }
 
-void Sky::setSunriseTexture(std::string sunglow_texture,
+void Sky::setSunriseTexture(const std::string &sunglow_texture,
 		ITextureSource* tsrc)
 {
 	// Ignore matching textures (with modifiers) entirely.
@@ -792,14 +794,14 @@ void Sky::setSunriseTexture(std::string sunglow_texture,
 	);
 }
 
-void Sky::setMoonTexture(std::string moon_texture,
-		std::string moon_tonemap, ITextureSource *tsrc)
+void Sky::setMoonTexture(const std::string &moon_texture,
+	const std::string &moon_tonemap, ITextureSource *tsrc)
 {
 	// Ignore matching textures (with modifiers) entirely,
 	// but lets at least update the tonemap before hand.
 	m_moon_params.tonemap = moon_tonemap;
 	m_moon_tonemap = tsrc->isKnownSourceImage(m_moon_params.tonemap) ?
-		tsrc->getTexture(m_moon_params.tonemap) : NULL;
+		tsrc->getTexture(m_moon_params.tonemap) : nullptr;
 	m_materials[4].Lighting = !!m_moon_tonemap;
 
 	if (m_moon_params.texture == moon_texture)
@@ -833,7 +835,6 @@ void Sky::setStarCount(u16 star_count, bool force_update)
 	// Allow force updating star count at game init.
 	if (m_star_params.count != star_count || force_update) {
 		m_star_params.count = star_count;
-		m_seed = (u64)myrand() << 32 | myrand();
 		updateStars();
 	}
 }
@@ -893,7 +894,7 @@ void Sky::setSkyColors(const SkyColor &sky_color)
 }
 
 void Sky::setHorizonTint(video::SColor sun_tint, video::SColor moon_tint,
-		std::string use_sun_tint)
+	const std::string &use_sun_tint)
 {
 	// Change sun and moon tinting:
 	m_sky_params.fog_sun_tint = sun_tint;
@@ -907,7 +908,7 @@ void Sky::setHorizonTint(video::SColor sun_tint, video::SColor moon_tint,
 		m_default_tint = true;
 }
 
-void Sky::addTextureToSkybox(std::string texture, int material_id,
+void Sky::addTextureToSkybox(const std::string &texture, int material_id,
 		ITextureSource *tsrc)
 {
 	// Sanity check for more than six textures.

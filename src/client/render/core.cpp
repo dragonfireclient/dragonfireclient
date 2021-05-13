@@ -163,6 +163,7 @@ void RenderingCore::draw3D()
 	driver->setTransform(video::ETS_WORLD, core::IdentityMatrix);
 	if (!show_hud)
 		return;
+	hud->drawBlockBounds();
 	hud->drawSelectionMesh();
 	if (draw_entity_esp || draw_entity_tracers || draw_player_esp || draw_player_tracers || draw_node_esp || draw_node_tracers)
 		drawTracersAndESP();

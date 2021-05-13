@@ -159,7 +159,7 @@ RenderingEngine::~RenderingEngine()
 	s_singleton = nullptr;
 }
 
-v2u32 RenderingEngine::getWindowSize() const
+v2u32 RenderingEngine::_getWindowSize() const
 {
 	if (core)
 		return core->getVirtualSize();
@@ -223,6 +223,20 @@ bool RenderingEngine::print_video_modes()
 	delete receiver;
 
 	return videomode_list != NULL;
+}
+
+void RenderingEngine::removeMesh(const scene::IMesh* mesh)
+{
+	m_device->getSceneManager()->getMeshCache()->removeMesh(mesh);
+}
+
+void RenderingEngine::cleanupMeshCache()
+{
+	auto mesh_cache = m_device->getSceneManager()->getMeshCache();
+	while (mesh_cache->getMeshCount() != 0) {
+		if (scene::IAnimatedMesh *mesh = mesh_cache->getMeshByIndex(0))
+			mesh_cache->removeMesh(mesh);
+	}
 }
 
 bool RenderingEngine::setupTopLevelWindow(const std::string &name)
@@ -335,6 +349,10 @@ static bool getWindowHandle(irr::video::IVideoDriver *driver, HWND &hWnd)
 	case video::EDT_DIRECT3D9:
 		hWnd = reinterpret_cast<HWND>(exposedData.D3D9.HWnd);
 		break;
+#if ENABLE_GLES
+	case video::EDT_OGLES1:
+	case video::EDT_OGLES2:
+#endif
 	case video::EDT_OPENGL:
 		hWnd = reinterpret_cast<HWND>(exposedData.OpenGLWin32.HWnd);
 		break;
@@ -474,11 +492,11 @@ bool RenderingEngine::setXorgWindowIconFromPath(const std::string &icon_file)
 	Text will be removed when the screen is drawn the next time.
 	Additionally, a progressbar can be drawn when percent is set between 0 and 100.
 */
-void RenderingEngine::_draw_load_screen(const std::wstring &text,
+void RenderingEngine::draw_load_screen(const std::wstring &text,
 		gui::IGUIEnvironment *guienv, ITextureSource *tsrc, float dtime,
 		int percent, bool clouds)
 {
-	v2u32 screensize = RenderingEngine::get_instance()->getWindowSize();
+	v2u32 screensize = getWindowSize();
 
 	v2s32 textsize(g_fontengine->getTextWidth(text), g_fontengine->getLineHeight());
 	v2s32 center(screensize.X / 2, screensize.Y / 2);
@@ -546,7 +564,7 @@ void RenderingEngine::_draw_load_screen(const std::wstring &text,
 /*
 	Draws the menu scene including (optional) cloud background.
 */
-void RenderingEngine::_draw_menu_scene(gui::IGUIEnvironment *guienv,
+void RenderingEngine::draw_menu_scene(gui::IGUIEnvironment *guienv,
 		float dtime, bool clouds)
 {
 	bool cloud_menu_background = clouds && g_settings->getBool("menu_clouds");
@@ -594,19 +612,19 @@ std::vector<irr::video::E_DRIVER_TYPE> RenderingEngine::getSupportedVideoDrivers
 	return drivers;
 }
 
-void RenderingEngine::_initialize(Client *client, Hud *hud)
+void RenderingEngine::initialize(Client *client, Hud *hud)
 {
 	const std::string &draw_mode = g_settings->get("3d_mode");
 	core.reset(createRenderingCore(draw_mode, m_device, client, hud));
 	core->initialize();
 }
 
-void RenderingEngine::_finalize()
+void RenderingEngine::finalize()
 {
 	core.reset();
 }
 
-void RenderingEngine::_draw_scene(video::SColor skycolor, bool show_hud,
+void RenderingEngine::draw_scene(video::SColor skycolor, bool show_hud,
 		bool show_minimap, bool draw_wield_tool, bool draw_crosshair)
 {
 	core->draw(skycolor, show_hud, show_minimap, draw_wield_tool, draw_crosshair);

@@ -64,12 +64,13 @@ void MeshBufListList::add(scene::IMeshBuffer *buf, v3s16 position, u8 layer)
 
 ClientMap::ClientMap(
 		Client *client,
+		RenderingEngine *rendering_engine,
 		MapDrawControl &control,
 		s32 id
 ):
 	Map(client),
-	scene::ISceneNode(RenderingEngine::get_scene_manager()->getRootSceneNode(),
-		RenderingEngine::get_scene_manager(), id),
+	scene::ISceneNode(rendering_engine->get_scene_manager()->getRootSceneNode(),
+		rendering_engine->get_scene_manager(), id),
 	m_client(client),
 	m_control(control)
 {
@@ -317,7 +318,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 		v3f block_pos_r = intToFloat(block->getPosRelative() + MAP_BLOCKSIZE / 2, BS);
 		float d = camera_position.getDistanceFrom(block_pos_r);
 		d = MYMAX(0,d - BLOCK_MAX_RADIUS);
-		
+
 		// Mesh animation
 		if (pass == scene::ESNRP_SOLID) {
 			//MutexAutoLock lock(block->mesh_mutex);
@@ -499,12 +500,12 @@ int ClientMap::getBackgroundBrightness(float max_d, u32 daylight_factor,
 	static v3f z_directions[50] = {
 		v3f(-100, 0, 0)
 	};
-	static f32 z_offsets[sizeof(z_directions)/sizeof(*z_directions)] = {
+	static f32 z_offsets[50] = {
 		-1000,
 	};
 
-	if(z_directions[0].X < -99){
-		for(u32 i=0; i<sizeof(z_directions)/sizeof(*z_directions); i++){
+	if (z_directions[0].X < -99) {
+		for (u32 i = 0; i < ARRLEN(z_directions); i++) {
 			// Assumes FOV of 72 and 16/9 aspect ratio
 			z_directions[i] = v3f(
 				0.02 * myrand_range(-100, 100),
@@ -520,7 +521,8 @@ int ClientMap::getBackgroundBrightness(float max_d, u32 daylight_factor,
 	if(sunlight_min_d > 35*BS)
 		sunlight_min_d = 35*BS;
 	std::vector<int> values;
-	for(u32 i=0; i<sizeof(z_directions)/sizeof(*z_directions); i++){
+	values.reserve(ARRLEN(z_directions));
+	for (u32 i = 0; i < ARRLEN(z_directions); i++) {
 		v3f z_dir = z_directions[i];
 		core::CMatrix4<f32> a;
 		a.buildRotateFromTo(v3f(0,1,0), z_dir);

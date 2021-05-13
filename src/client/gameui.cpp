@@ -55,7 +55,7 @@ void GameUI::init()
 {
 	m_guitext_coords = gui::StaticText::add(guienv, L"", core::rect<s32>(0, 0, 0, 0), false,
 		false, guiroot);
-	
+
 	// First line of debug text
 	m_guitext = gui::StaticText::add(guienv, utf8_to_wide(PROJECT_NAME_C).c_str(),
 		core::rect<s32>(0, 0, 0, 0), false, false, guiroot);
@@ -102,7 +102,8 @@ void GameUI::update(const RunStats &stats, Client *client, MapDrawControl *draw_
 {
 	LocalPlayer *player = client->getEnv().getLocalPlayer();
 	v3f player_position = player->getPosition();
-	v2u32 screensize = RenderingEngine::get_instance()->getWindowSize();
+
+	v2u32 screensize = RenderingEngine::getWindowSize();
 
 	bool show_coords = g_settings->getBool("coords");
 
@@ -115,7 +116,7 @@ void GameUI::update(const RunStats &stats, Client *client, MapDrawControl *draw_
 		setStaticText(m_guitext_coords, utf8_to_wide(os.str()).c_str());
 		m_guitext_coords->setRelativePosition(core::rect<s32>(5, screensize.Y - 5 - g_fontengine->getTextHeight(), screensize.X, screensize.Y));
 	}
-	
+
 	m_guitext_coords->setVisible(show_coords);
 
 	if (m_flags.show_debug) {
@@ -238,9 +239,9 @@ void GameUI::setChatText(const EnrichedString &chat_text, u32 recent_chat_count)
 {
 
 	// Update gui element size and position
-	
-	const v2u32 &window_size = RenderingEngine::get_instance()->getWindowSize();
-	
+
+	const v2u32 &window_size = RenderingEngine::getWindowSize();
+
 	s32 chat_y = window_size.Y - 150 - m_guitext_chat->getTextHeight();
 
 	if (m_flags.show_debug)
@@ -276,7 +277,7 @@ void GameUI::updateProfiler()
 		core::position2di upper_left(6, 50);
 		core::position2di lower_right = upper_left;
 		lower_right.X += size.Width + 10;
-		lower_right.Y += size.Height; 
+		lower_right.Y += size.Height;
 
 		m_guitext_profiler->setRelativePosition(core::rect<s32>(upper_left, lower_right));
 	}

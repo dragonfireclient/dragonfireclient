@@ -67,7 +67,7 @@ enum ContentParamType2
 	CPT2_WALLMOUNTED,
 	// Block level like FLOWINGLIQUID
 	CPT2_LEVELED,
-	// 2D rotation for things like plants
+	// 2D rotation
 	CPT2_DEGROTATE,
 	// Mesh options for plants
 	CPT2_MESHOPTIONS,
@@ -79,6 +79,8 @@ enum ContentParamType2
 	CPT2_COLORED_WALLMOUNTED,
 	// Glasslike framed drawtype internal liquid level, param2 values 0 to 63
 	CPT2_GLASSLIKE_LIQUID_LEVEL,
+	// 3 bits of palette index, then degrotate
+	CPT2_COLORED_DEGROTATE,
 };
 
 enum LiquidType
@@ -658,9 +660,7 @@ public:
 	 * total ContentFeatures.
 	 * @param progress_cbk_args passed to the callback function
 	 */
-	void updateTextures(IGameDef *gamedef,
-		void (*progress_cbk)(void *progress_args, u32 progress, u32 max_progress),
-		void *progress_cbk_args);
+	void updateTextures(IGameDef *gamedef, void *progress_cbk_args);
 
 	/*!
 	 * Writes the content of this manager to the given output stream.
@@ -723,7 +723,7 @@ private:
 	 * @param i a content ID
 	 * @param name a node name
 	 */
-	void addNameIdMapping(content_t i, std::string name);
+	void addNameIdMapping(content_t i, const std::string &name);
 
 	/*!
 	 * Removes a content ID from all groups.
