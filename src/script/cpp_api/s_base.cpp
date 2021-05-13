@@ -361,9 +361,11 @@ void ScriptApiBase::addObjectReference(ActiveObject *cobj)
 	//infostream<<"scriptapi_add_object_reference: id="<<cobj->getId()<<std::endl;
 
 	// Create object on stack
+#ifndef SERVER
 	if (m_type == ScriptingType::Client)
 		ClientObjectRef::create(L, dynamic_cast<ClientActiveObject *>(cobj));
 	else
+#endif
 		ObjectRef::create(L, dynamic_cast<ServerActiveObject *>(cobj)); // Puts ObjectRef (as userdata) on stack
 	int object = lua_gettop(L);
 
@@ -394,9 +396,11 @@ void ScriptApiBase::removeObjectReference(ActiveObject *cobj)
 	lua_pushnumber(L, cobj->getId()); // Push id
 	lua_gettable(L, objectstable);
 	// Set object reference to NULL
+#ifndef SERVER
 	if (m_type == ScriptingType::Client)
 		ClientObjectRef::set_null(L);
 	else
+#endif
 		ObjectRef::set_null(L);
 	lua_pop(L, 1); // pop object
 
