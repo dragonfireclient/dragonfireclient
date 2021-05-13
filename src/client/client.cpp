@@ -913,9 +913,9 @@ void Client::Send(NetworkPacket* pkt)
 
 // Will fill up 12 + 12 + 4 + 4 + 4 bytes
 void writePlayerPos(LocalPlayer *myplayer, ClientMap *clientMap, NetworkPacket *pkt)
-{	
+{
 	v3f pf           = myplayer->getLegitPosition() * 100;
-	v3f sf           = myplayer->getLegitSpeed() * 100;
+	v3f sf           = myplayer->getSendSpeed() * 100;
 	s32 pitch        = myplayer->getPitch() * 100;
 	s32 yaw          = myplayer->getYaw() * 100;
 	u32 keyPressed   = myplayer->keyPressed;
@@ -1286,7 +1286,7 @@ void Client::sendPlayerPos(v3f pos)
 
 	if (
 			player->last_position     == pos &&
-			player->last_speed        == player->getLegitSpeed()    &&
+			player->last_speed        == player->getSendSpeed()    &&
 			player->last_pitch        == player->getPitch()    &&
 			player->last_yaw          == player->getYaw()      &&
 			player->last_keyPressed   == player->keyPressed    &&
@@ -1295,7 +1295,7 @@ void Client::sendPlayerPos(v3f pos)
 		return;
 
 	player->last_position     = pos;
-	player->last_speed        = player->getLegitSpeed();
+	player->last_speed        = player->getSendSpeed();
 	player->last_pitch        = player->getPitch();
 	player->last_yaw          = player->getYaw();
 	player->last_keyPressed   = player->keyPressed;
@@ -1645,17 +1645,17 @@ void Client::addUpdateMeshTaskForNode(v3s16 nodepos, bool ack_to_server, bool ur
 void Client::updateAllMapBlocks()
 {
 	v3s16 currentBlock = getNodeBlockPos(floatToInt(m_env.getLocalPlayer()->getPosition(), BS));
-	
+
 	for (s16 X = currentBlock.X - 2; X <= currentBlock.X + 2; X++)
 	for (s16 Y = currentBlock.Y - 2; Y <= currentBlock.Y + 2; Y++)
 	for (s16 Z = currentBlock.Z - 2; Z <= currentBlock.Z + 2; Z++)
 		addUpdateMeshTask(v3s16(X, Y, Z), false, true);
-	
+
 	Map &map = m_env.getMap();
-	
+
 	std::vector<v3s16> positions;
 	map.listAllLoadedBlocks(positions);
-	
+
 	for (v3s16 p : positions) {
 		addUpdateMeshTask(p, false, false);
 	}

@@ -70,6 +70,8 @@ public:
 	bool on_inventory_open(Inventory *inventory);
 	void open_enderchest();
 
+	v3f get_send_speed(v3f speed);
+
 	void set_node_def(const ContentFeatures &f);
 	void set_item_def(const ItemDefinition &i);
 

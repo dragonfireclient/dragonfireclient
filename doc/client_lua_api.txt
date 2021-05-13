@@ -674,6 +674,11 @@ Minetest namespace reference
 ### Global callback registration functions
 Call these functions only at load time!
 
+* `minetest.get_send_speed(speed)`
+	* This function is called every time the player's speed is sent to server
+	* The `speed` argument is the actual speed of the player
+	* If you define it, you can return a modified `speed`. This speed will be
+		sent to server instead.
 * `minetest.open_enderchest()`
     * This function is called if the client uses the Keybind for it (by default "O")
     * You can override it

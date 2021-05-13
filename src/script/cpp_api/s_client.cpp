@@ -365,6 +365,27 @@ void ScriptApiClient::open_enderchest()
 		lua_pcall(L, 0, 0, error_handler);
 }
 
+v3f ScriptApiClient::get_send_speed(v3f speed)
+{
+	SCRIPTAPI_PRECHECKHEADER
+
+	PUSH_ERROR_HANDLER(L);
+	int error_handler = lua_gettop(L) - 1;
+	lua_insert(L, error_handler);
+
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "get_send_speed");
+	if (lua_isfunction(L, -1)) {
+		speed /= BS;
+		push_v3f(L, speed);
+		lua_pcall(L, 1, 1, error_handler);
+		speed = read_v3f(L, -1);
+		speed *= BS;
+	}
+
+	return speed;
+}
+
 void ScriptApiClient::set_node_def(const ContentFeatures &f)
 {
 	SCRIPTAPI_PRECHECKHEADER
