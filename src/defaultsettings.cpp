@@ -77,7 +77,7 @@ void set_default_settings()
 	settings->setDefault("cheat_menu_selected_font_color", "(255, 255, 255)");
 	settings->setDefault("cheat_menu_selected_font_color_alpha", "235");
 	settings->setDefault("cheat_menu_head_height", "50");
-	settings->setDefault("cheat_menu_entry_height", "40");
+	settings->setDefault("cheat_menu_entry_height", "35");
 	settings->setDefault("cheat_menu_entry_width", "200");
 
 	// Cheats
