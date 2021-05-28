@@ -12,6 +12,22 @@ function vector.new(a, b, c)
 	return {x=0, y=0, z=0}
 end
 
+function vector.from_string(s, init)
+	local x, y, z, np = string.match(s, "^%s*%(%s*([^%s,]+)%s*[,%s]%s*([^%s,]+)%s*[,%s]" ..
+			"%s*([^%s,]+)%s*[,%s]?%s*%)()", init)
+	x = tonumber(x)
+	y = tonumber(y)
+	z = tonumber(z)
+	if not (x and y and z) then
+		return nil
+	end
+	return {x = x, y = y, z = z}, np
+end
+
+function vector.to_string(v)
+	return string.format("(%g, %g, %g)", v.x, v.y, v.z)
+end
+
 function vector.equals(a, b)
 	return a.x == b.x and
 	       a.y == b.y and
@@ -41,9 +57,9 @@ end
 
 function vector.round(v)
 	return {
-		x = math.floor(v.x + 0.5),
-		y = math.floor(v.y + 0.5),
-		z = math.floor(v.z + 0.5)
+		x = math.round(v.x),
+		y = math.round(v.y),
+		z = math.round(v.z)
 	}
 end
 

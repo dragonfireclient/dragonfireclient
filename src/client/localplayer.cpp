@@ -709,6 +709,16 @@ v3s16 LocalPlayer::getLightPosition() const
 	return floatToInt(m_position + v3f(0.0f, BS * 1.5f, 0.0f), BS);
 }
 
+v3f LocalPlayer::getSendSpeed()
+{
+	v3f speed = getLegitSpeed();
+
+	if (m_client->modsLoaded())
+		speed = m_client->getScript()->get_send_speed(speed);
+
+	return speed;
+}
+
 v3f LocalPlayer::getEyeOffset() const
 {
 	float eye_height = camera_barely_in_ceiling ? m_eye_height - 0.125f : m_eye_height;

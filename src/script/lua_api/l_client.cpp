@@ -520,7 +520,7 @@ int ModApiClient::l_get_objects_inside_radius(lua_State *L)
 	int i = 0;
 	lua_createtable(L, objs.size(), 0);
 	for (const auto obj : objs) {
-		ClientObjectRef::create(L, obj.obj);							// TODO: getObjectRefOrCreate
+		push_objectRef(L, obj.obj->getId());
 		lua_rawseti(L, -2, ++i);
 	}
 	return 1;

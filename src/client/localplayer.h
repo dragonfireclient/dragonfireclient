@@ -143,6 +143,8 @@ public:
 
 	v3f getLegitSpeed() const { return m_freecam ? m_legit_speed : m_speed; }
 
+	v3f getSendSpeed();
+
 	inline void setLegitPosition(const v3f &position)
 	{
 		if (m_freecam)

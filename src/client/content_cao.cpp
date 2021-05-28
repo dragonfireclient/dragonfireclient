@@ -24,7 +24,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <IMeshManipulator.h>
 #include <IAnimatedMeshSceneNode.h>
 #include "client/client.h"
-#include "client/renderingengine.h"
 #include "client/sound.h"
 #include "client/tile.h"
 #include "util/basic_macros.h"
@@ -190,7 +189,7 @@ public:
 
 	static ClientActiveObject* create(Client *client, ClientEnvironment *env);
 
-	void addToScene(ITextureSource *tsrc);
+	void addToScene(ITextureSource *tsrc, scene::ISceneManager *smgr);
 	void removeFromScene(bool permanent);
 	void updateLight(u32 day_night_ratio);
 	void updateNodePos();
@@ -221,7 +220,7 @@ ClientActiveObject* TestCAO::create(Client *client, ClientEnvironment *env)
 	return new TestCAO(client, env);
 }
 
-void TestCAO::addToScene(ITextureSource *tsrc)
+void TestCAO::addToScene(ITextureSource *tsrc, scene::ISceneManager *smgr)
 {
 	if(m_node != NULL)
 		return;
@@ -250,7 +249,7 @@ void TestCAO::addToScene(ITextureSource *tsrc)
 	// Add to mesh
 	mesh->addMeshBuffer(buf);
 	buf->drop();
-	m_node = RenderingEngine::get_scene_manager()->addMeshSceneNode(mesh, NULL);
+	m_node = smgr->addMeshSceneNode(mesh, NULL);
 	mesh->drop();
 	updateNodePos();
 }
@@ -595,9 +594,9 @@ void GenericCAO::removeFromScene(bool permanent)
 		m_client->getMinimap()->removeMarker(&m_marker);
 }
 
-void GenericCAO::addToScene(ITextureSource *tsrc)
+void GenericCAO::addToScene(ITextureSource *tsrc, scene::ISceneManager *smgr)
 {
-	m_smgr = RenderingEngine::get_scene_manager();
+	m_smgr = smgr;
 
 	if (getSceneNode() != NULL) {
 		return;
@@ -629,8 +628,7 @@ void GenericCAO::addToScene(ITextureSource *tsrc)
 	}
 
 	auto grabMatrixNode = [this] {
-		m_matrixnode = RenderingEngine::get_scene_manager()->
-				addDummyTransformationSceneNode();
+		m_matrixnode = m_smgr->addDummyTransformationSceneNode();
 		m_matrixnode->grab();
 	};
 
@@ -648,7 +646,7 @@ void GenericCAO::addToScene(ITextureSource *tsrc)
 
 	if (m_prop.visual == "sprite") {
 		grabMatrixNode();
-		m_spritenode = RenderingEngine::get_scene_manager()->addBillboardSceneNode(
+		m_spritenode = m_smgr->addBillboardSceneNode(
 				m_matrixnode, v2f(1, 1), v3f(0,0,0), -1);
 		m_spritenode->grab();
 		m_spritenode->setMaterialTexture(0,
@@ -733,8 +731,7 @@ void GenericCAO::addToScene(ITextureSource *tsrc)
 			mesh->addMeshBuffer(buf);
 			buf->drop();
 		}
-		m_meshnode = RenderingEngine::get_scene_manager()->
-			addMeshSceneNode(mesh, m_matrixnode);
+		m_meshnode = m_smgr->addMeshSceneNode(mesh, m_matrixnode);
 		m_meshnode->grab();
 		mesh->drop();
 		// Set it to use the materials of the meshbuffers directly.
@@ -743,8 +740,7 @@ void GenericCAO::addToScene(ITextureSource *tsrc)
 	} else if (m_prop.visual == "cube") {
 		grabMatrixNode();
 		scene::IMesh *mesh = createCubeMesh(v3f(BS,BS,BS));
-		m_meshnode = RenderingEngine::get_scene_manager()->
-			addMeshSceneNode(mesh, m_matrixnode);
+		m_meshnode = m_smgr->addMeshSceneNode(mesh, m_matrixnode);
 		m_meshnode->grab();
 		mesh->drop();
 
@@ -757,8 +753,7 @@ void GenericCAO::addToScene(ITextureSource *tsrc)
 		grabMatrixNode();
 		scene::IAnimatedMesh *mesh = m_client->getMesh(m_prop.mesh, true);
 		if (mesh) {
-			m_animated_meshnode = RenderingEngine::get_scene_manager()->
-				addAnimatedMeshSceneNode(mesh, m_matrixnode);
+			m_animated_meshnode = m_smgr->addAnimatedMeshSceneNode(mesh, m_matrixnode);
 			m_animated_meshnode->grab();
 			mesh->drop(); // The scene node took hold of it
 
@@ -799,8 +794,7 @@ void GenericCAO::addToScene(ITextureSource *tsrc)
 			infostream << "serialized form: " << m_prop.wield_item << std::endl;
 			item.deSerialize(m_prop.wield_item, m_client->idef());
 		}
-		m_wield_meshnode = new WieldMeshSceneNode(
-			RenderingEngine::get_scene_manager(), -1);
+		m_wield_meshnode = new WieldMeshSceneNode(m_smgr, -1);
 		m_wield_meshnode->setItem(item, m_client,
 			(m_prop.visual == "wielditem"));
 
@@ -828,6 +822,9 @@ void GenericCAO::addToScene(ITextureSource *tsrc)
 	updateAttachments();
 	setNodeLight(m_last_light);
 	updateMeshCulling();
+
+	if (m_client->modsLoaded())
+		m_client->getScript()->on_object_add(m_id);
 
 	if (m_client->modsLoaded())
 		m_client->getScript()->on_object_properties_change(m_id);
@@ -1086,7 +1083,7 @@ void GenericCAO::step(float dtime, ClientEnvironment *env)
 		}
 
 		removeFromScene(false);
-		addToScene(m_client->tsrc());
+		addToScene(m_client->tsrc(), m_smgr);
 
 		// Attachments, part 2: Now that the parent has been refreshed, put its attachments back
 		for (u16 cao_id : m_attachment_child_ids) {
@@ -1485,11 +1482,8 @@ void GenericCAO::updateAnimation()
 	if (m_animated_meshnode->getAnimationSpeed() != m_animation_speed)
 		m_animated_meshnode->setAnimationSpeed(m_animation_speed);
 	m_animated_meshnode->setTransitionTime(m_animation_blend);
-// Requires Irrlicht 1.8 or greater
-#if (IRRLICHT_VERSION_MAJOR == 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR > 1
 	if (m_animated_meshnode->getLoopMode() != m_animation_loop)
 		m_animated_meshnode->setLoopMode(m_animation_loop);
-#endif
 }
 
 void GenericCAO::updateAnimationSpeed()
@@ -1505,10 +1499,10 @@ void GenericCAO::updateBonePosition()
 	if (m_bone_position.empty() || !m_animated_meshnode)
 		return;
 
-	m_animated_meshnode->setJointMode(irr::scene::EJUOR_CONTROL); // To write positions to the mesh on render
+	m_animated_meshnode->setJointMode(scene::EJUOR_CONTROL); // To write positions to the mesh on render
 	for (auto &it : m_bone_position) {
 		std::string bone_name = it.first;
-		irr::scene::IBoneSceneNode* bone = m_animated_meshnode->getJointNode(bone_name.c_str());
+		scene::IBoneSceneNode* bone = m_animated_meshnode->getJointNode(bone_name.c_str());
 		if (bone) {
 			bone->setPosition(it.second.X);
 			bone->setRotation(it.second.Y);
@@ -1517,7 +1511,7 @@ void GenericCAO::updateBonePosition()
 
 	// search through bones to find mistakenly rotated bones due to bug in Irrlicht
 	for (u32 i = 0; i < m_animated_meshnode->getJointCount(); ++i) {
-		irr::scene::IBoneSceneNode *bone = m_animated_meshnode->getJointNode(i);
+		scene::IBoneSceneNode *bone = m_animated_meshnode->getJointNode(i);
 		if (!bone)
 			continue;
 
@@ -1962,7 +1956,7 @@ void GenericCAO::updateMeshCulling()
 		return;
 	}
 
-	irr::scene::ISceneNode *node = getSceneNode();
+	scene::ISceneNode *node = getSceneNode();
 	if (!node)
 		return;
 

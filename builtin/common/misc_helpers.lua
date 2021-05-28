@@ -244,6 +244,15 @@ function math.factorial(x)
 	return v
 end
 
+
+function math.round(x)
+	if x >= 0 then
+		return math.floor(x + 0.5)
+	end
+	return math.ceil(x - 0.5)
+end
+
+
 function core.formspec_escape(text)
 	if text ~= nil then
 		text = string.gsub(text,"\\","\\\\")
@@ -784,4 +793,13 @@ end
 
 function core.is_nan(number)
 	return number ~= number
+end
+
+function core.inventorycube(img1, img2, img3)
+	img2 = img2 or img1
+	img3 = img3 or img1
+	return "[inventorycube"
+			.. "{" .. img1:gsub("%^", "&")
+			.. "{" .. img2:gsub("%^", "&")
+			.. "{" .. img3:gsub("%^", "&")
 end

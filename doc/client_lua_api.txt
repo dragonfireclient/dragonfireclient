@@ -658,6 +658,9 @@ Minetest namespace reference
 * `minetest.sha1(data, [raw])`: returns the sha1 hash of data
     * `data`: string of data to hash
     * `raw`: return raw bytes instead of hex digits, default: false
+* `minetest.colorspec_to_colorstring(colorspec)`: Converts a ColorSpec to a
+  ColorString. If the ColorSpec is invalid, returns `nil`.
+    * `colorspec`: The ColorSpec to convert
 * `minetest.get_csm_restrictions()`: returns a table of `Flags` indicating the
    restrictions applied to the current mod.
    * If a flag in this table is set to true, the feature is RESTRICTED.
@@ -674,6 +677,11 @@ Minetest namespace reference
 ### Global callback registration functions
 Call these functions only at load time!
 
+* `minetest.get_send_speed(speed)`
+	* This function is called every time the player's speed is sent to server
+	* The `speed` argument is the actual speed of the player
+	* If you define it, you can return a modified `speed`. This speed will be
+		sent to server instead.
 * `minetest.open_enderchest()`
     * This function is called if the client uses the Keybind for it (by default "O")
     * You can override it
@@ -763,6 +771,8 @@ Call these functions only at load time!
     * Called when recieving a spawn particle command from server
     * Newest functions are called first
     * If any function returns true, the particle does not spawn
+* `minetest.register_on_object_add(function(obj))`
+	* Called every time an object is added
 * `minetest.register_on_object_properties_change(function(obj))`
     * Called every time the properties of an object are changed server-side
     * May modify the object's properties without the fear of infinite recursion
@@ -934,6 +944,8 @@ Call these functions only at load time!
     * Convert between two privilege representations
 
 ### Client Environment
+* `minetest.object_refs`
+    * Map of object references, indexed by active object id
 * `minetest.get_player_names()`
     * Returns list of player names on server (nil if CSM_RF_READ_PLAYERINFO is enabled by server)
 * `minetest.get_objects_inside_radius(pos, radius)`: returns a list of
@@ -1454,6 +1466,8 @@ It can be created via `Raycast(pos1, pos2, objects, liquids)` or
 
 -----------------
 ### Definitions
+* `minetest.inventorycube(img1, img2, img3)`
+    * Returns a string for making an image of a cube (useful as an item image)
 * `minetest.get_node_def(nodename)`
 	* Returns [node definition](#node-definition) table of `nodename`
 * `minetest.get_item_def(itemstring)`
@@ -1465,10 +1479,67 @@ It can be created via `Raycast(pos1, pos2, objects, liquids)` or
       {light_source=minetest.LIGHT_MAX})`
     * Doesnt really work yet an causes strange bugs, I'm working to make is better
 
+
+#### Tile definition
+
+* `"image.png"`
+* `{name="image.png", animation={Tile Animation definition}}`
+* `{name="image.png", backface_culling=bool, align_style="node"/"world"/"user", scale=int}`
+    * backface culling enabled by default for most nodes
+    * align style determines whether the texture will be rotated with the node
+      or kept aligned with its surroundings. "user" means that client
+      setting will be used, similar to `glasslike_framed_optional`.
+      Note: supported by solid nodes and nodeboxes only.
+    * scale is used to make texture span several (exactly `scale`) nodes,
+      instead of just one, in each direction. Works for world-aligned
+      textures only.
+      Note that as the effect is applied on per-mapblock basis, `16` should
+      be equally divisible by `scale` or you may get wrong results.
+* `{name="image.png", color=ColorSpec}`
+    * the texture's color will be multiplied with this color.
+    * the tile's color overrides the owning node's color in all cases.
+
+##### Tile definition
+
+    {
+        type = "vertical_frames",
+
+        aspect_w = 16,
+        -- Width of a frame in pixels
+
+        aspect_h = 16,
+        -- Height of a frame in pixels
+
+        length = 3.0,
+        -- Full loop length
+    }
+
+    {
+        type = "sheet_2d",
+
+        frames_w = 5,
+        -- Width in number of frames
+
+        frames_h = 3,
+        -- Height in number of frames
+
+        frame_length = 0.5,
+        -- Length of a single frame
+    }
+
 #### Node Definition
 
 ```lua
 	{
+        tiles = {tile definition 1, def2, def3, def4, def5, def6},
+        -- Textures of node; +Y, -Y, +X, -X, +Z, -Z
+        overlay_tiles = {tile definition 1, def2, def3, def4, def5, def6},
+        -- Same as `tiles`, but these textures are drawn on top of the base
+        -- tiles. This is used to colorize only specific parts of the
+        -- texture. If the texture name is an empty string, that overlay is not
+        -- drawn
+        special_tiles = {tile definition 1, Tile definition 2},
+        -- Special textures of node; used rarely.
 		has_on_construct = bool,        -- Whether the node has the on_construct callback defined
 		has_on_destruct = bool,         -- Whether the node has the on_destruct callback defined
 		has_after_destruct = bool,      -- Whether the node has the after_destruct callback defined
@@ -1630,9 +1701,8 @@ The following functions provide escape sequences:
 
 Named colors are also supported and are equivalent to
 [CSS Color Module Level 4](http://dev.w3.org/csswg/css-color/#named-colors).
-To specify the value of the alpha channel, append `#AA` to the end of the color name
-(e.g. `colorname#08`). For named colors the hexadecimal string representing the alpha
-value must (always) be two hexadecimal digits.
+To specify the value of the alpha channel, append `#A` or `#AA` to the end of
+the color name (e.g. `colorname#08`).
 
 `Color`
 -------------

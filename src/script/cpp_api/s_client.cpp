@@ -297,12 +297,12 @@ void ScriptApiClient::on_object_properties_change(s16 id)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
-	// Get core.on_object_properties_change
+	// Get core.registered_on_object_properties_change
 	lua_getglobal(L, "core");
 	lua_getfield(L, -1, "registered_on_object_properties_change");
 
 	// Push data
-	ClientObjectRef::create(L, id);
+	push_objectRef(L, id);
 
 	// Call functions
 	runCallbacks(1, RUN_CALLBACKS_MODE_FIRST);
@@ -312,12 +312,27 @@ void ScriptApiClient::on_object_hp_change(s16 id)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
-	// Get core.on_object_hp_change
+	// Get core.registered_on_object_hp_change
 	lua_getglobal(L, "core");
 	lua_getfield(L, -1, "registered_on_object_hp_change");
 
 	// Push data
-	ClientObjectRef::create(L, id);
+	push_objectRef(L, id);
+
+	// Call functions
+	runCallbacks(1, RUN_CALLBACKS_MODE_FIRST);
+}
+
+void ScriptApiClient::on_object_add(s16 id)
+{
+	SCRIPTAPI_PRECHECKHEADER
+
+	// Get core.registered_on_object_add
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "registered_on_object_add");
+
+	// Push data
+	push_objectRef(L, id);
 
 	// Call functions
 	runCallbacks(1, RUN_CALLBACKS_MODE_FIRST);
@@ -348,6 +363,27 @@ void ScriptApiClient::open_enderchest()
 	lua_getfield(L, -1, "open_enderchest");
 	if (lua_isfunction(L, -1))
 		lua_pcall(L, 0, 0, error_handler);
+}
+
+v3f ScriptApiClient::get_send_speed(v3f speed)
+{
+	SCRIPTAPI_PRECHECKHEADER
+
+	PUSH_ERROR_HANDLER(L);
+	int error_handler = lua_gettop(L) - 1;
+	lua_insert(L, error_handler);
+
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "get_send_speed");
+	if (lua_isfunction(L, -1)) {
+		speed /= BS;
+		push_v3f(L, speed);
+		lua_pcall(L, 1, 1, error_handler);
+		speed = read_v3f(L, -1);
+		speed *= BS;
+	}
+
+	return speed;
 }
 
 void ScriptApiClient::set_node_def(const ContentFeatures &f)
