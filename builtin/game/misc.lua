@@ -1,5 +1,7 @@
 -- Minetest: builtin/misc.lua
 
+local S = core.get_translator("__builtin")
+
 --
 -- Misc. API functions
 --
@@ -42,15 +44,15 @@ end
 
 function core.send_join_message(player_name)
 	if not core.is_singleplayer() then
-		core.chat_send_all("*** " .. player_name .. " joined the game.")
+		core.chat_send_all("*** " .. S("@1 joined the game.", player_name))
 	end
 end
 
 
 function core.send_leave_message(player_name, timed_out)
-	local announcement = "*** " ..  player_name .. " left the game."
+	local announcement = "*** " .. S("@1 left the game.", player_name)
 	if timed_out then
-		announcement = announcement .. " (timed out)"
+		announcement = "*** " .. S("@1 left the game (timed out).", player_name)
 	end
 	core.chat_send_all(announcement)
 end
@@ -265,4 +267,27 @@ end
 
 function core.cancel_shutdown_requests()
 	core.request_shutdown("", false, -1)
+end
+
+
+-- Callback handling for dynamic_add_media
+
+local dynamic_add_media_raw = core.dynamic_add_media_raw
+core.dynamic_add_media_raw = nil
+function core.dynamic_add_media(filepath, callback)
+	local ret = dynamic_add_media_raw(filepath)
+	if ret == false then
+		return ret
+	end
+	if callback == nil then
+		core.log("deprecated", "Calling minetest.dynamic_add_media without "..
+			"a callback is deprecated and will stop working in future versions.")
+	else
+		-- At the moment async loading is not actually implemented, so we
+		-- immediately call the callback ourselves
+		for _, name in ipairs(ret) do
+			callback(name)
+		end
+	end
+	return true
 end

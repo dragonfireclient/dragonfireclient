@@ -36,6 +36,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "lua_api/l_util.h"
 #include "lua_api/l_item.h"
 #include "lua_api/l_nodemeta.h"
+#include "lua_api/l_noise.h"
 #include "lua_api/l_localplayer.h"
 #include "lua_api/l_camera.h"
 #include "lua_api/l_settings.h"
@@ -71,6 +72,11 @@ ClientScripting::ClientScripting(Client *client):
 void ClientScripting::InitializeModApi(lua_State *L, int top)
 {
 	LuaItemStack::Register(L);
+	LuaPerlinNoise::Register(L);
+	LuaPerlinNoiseMap::Register(L);
+	LuaPseudoRandom::Register(L);
+	LuaPcgRandom::Register(L);
+	LuaSecureRandom::Register(L);
 	ItemStackMetaRef::Register(L);
 	LuaRaycast::Register(L);
 	StorageRef::Register(L);

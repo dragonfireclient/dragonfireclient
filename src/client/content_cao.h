@@ -181,13 +181,15 @@ public:
 	{
 		return m_velocity;
 	}
-	
+
 	inline const u16 getHp() const
 	{
 		return m_hp;
 	}
 
 	const bool isImmortal();
+
+	inline const ObjectProperties &getProperties() const { return m_prop; }
 
 	scene::ISceneNode *getSceneNode() const;
 
@@ -260,7 +262,7 @@ public:
 
 	void removeFromScene(bool permanent);
 
-	void addToScene(ITextureSource *tsrc);
+	void addToScene(ITextureSource *tsrc, scene::ISceneManager *smgr);
 
 	inline void expireVisuals()
 	{
@@ -307,13 +309,17 @@ public:
 	{
 		return m_prop.infotext;
 	}
-	
+
 	float m_waiting_for_reattach;
-	
+
 	ObjectProperties *getProperties()
 	{
 		return &m_prop;
 	}
 
+	void setProperties(ObjectProperties newprops);
+
 	void updateMeshCulling();
+
+	std::vector<std::string> nametag_images = {};
 };

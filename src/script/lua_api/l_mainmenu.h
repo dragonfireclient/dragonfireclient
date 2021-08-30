@@ -58,7 +58,7 @@ private:
 	 * @param path path to check
 	 * @return true if the path may be modified
 	 */
-	static bool mayModifyPath(const std::string &path);
+	static bool mayModifyPath(std::string path);
 
 	//api calls
 
@@ -73,10 +73,6 @@ private:
 	static int l_get_worlds(lua_State *L);
 
 	static int l_get_mapgen_names(lua_State *L);
-
-	static int l_get_favorites(lua_State *L);
-
-	static int l_delete_favorite(lua_State *L);
 
 	static int l_gettext(lua_State *L);
 
@@ -125,6 +121,8 @@ private:
 	static int l_get_texturepath_share(lua_State *L);
 
 	static int l_get_cache_path(lua_State *L);
+
+	static int l_get_temp_path(lua_State *L);
 
 	static int l_create_dir(lua_State *L);
 

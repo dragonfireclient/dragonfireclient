@@ -98,6 +98,7 @@ Client::Client(
 		NodeDefManager *nodedef,
 		ISoundManager *sound,
 		MtEventManager *event,
+		RenderingEngine *rendering_engine,
 		bool ipv6,
 		GameUI *game_ui
 ):
@@ -108,8 +109,9 @@ Client::Client(
 	m_nodedef(nodedef),
 	m_sound(sound),
 	m_event(event),
+	m_rendering_engine(rendering_engine),
 	m_env(
-		new ClientMap(this, control, 666),
+		new ClientMap(this, rendering_engine, control, 666),
 		tsrc, this
 	),
 	m_particle_manager(&m_env),
@@ -160,20 +162,6 @@ void Client::loadMods()
 	scanModIntoMemory(BUILTIN_MOD_NAME, getBuiltinLuaPath());
 	m_script->loadModFromMemory(BUILTIN_MOD_NAME);
 
-	// TODO Uncomment when server-sent CSM and verifying of builtin are complete
-	/*
-	// Don't load client-provided mods if disabled by server
-	if (checkCSMRestrictionFlag(CSMRestrictionFlags::CSM_RF_LOAD_CLIENT_MODS)) {
-		warningstream << "Client-provided mod loading is disabled by server." <<
-			std::endl;
-		// If builtin integrity is wrong, disconnect user
-		if (!checkBuiltinIntegrity()) {
-			// TODO disconnect user
-		}
-		return;
-	}
-	*/
-
 	ClientModConfiguration modconf(getClientModsLuaPath());
 	m_mods = modconf.getMods();
 	// complain about mods with unsatisfied dependencies
@@ -217,12 +205,6 @@ void Client::loadMods()
 		m_script->on_camera_ready(m_camera);
 	if (m_minimap)
 		m_script->on_minimap_ready(m_minimap);
-}
-
-bool Client::checkBuiltinIntegrity()
-{
-	// TODO
-	return true;
 }
 
 void Client::scanModSubfolder(const std::string &mod_name, const std::string &mod_path,
@@ -321,12 +303,7 @@ Client::~Client()
 	}
 
 	// cleanup 3d model meshes on client shutdown
-	while (RenderingEngine::get_mesh_cache()->getMeshCount() != 0) {
-		scene::IAnimatedMesh *mesh = RenderingEngine::get_mesh_cache()->getMeshByIndex(0);
-
-		if (mesh)
-			RenderingEngine::get_mesh_cache()->removeMesh(mesh);
-	}
+	m_rendering_engine->cleanupMeshCache();
 
 	delete m_minimap;
 	m_minimap = nullptr;
@@ -683,15 +660,11 @@ bool Client::loadMedia(const std::string &data, const std::string &filename,
 		TRACESTREAM(<< "Client: Attempting to load image "
 			<< "file \"" << filename << "\"" << std::endl);
 
-		io::IFileSystem *irrfs = RenderingEngine::get_filesystem();
-		video::IVideoDriver *vdrv = RenderingEngine::get_video_driver();
+		io::IFileSystem *irrfs = m_rendering_engine->get_filesystem();
+		video::IVideoDriver *vdrv = m_rendering_engine->get_video_driver();
 
-		// Silly irrlicht's const-incorrectness
-		Buffer<char> data_rw(data.c_str(), data.size());
-
-		// Create an irrlicht memory file
 		io::IReadFile *rfile = irrfs->createMemoryReadFile(
-				*data_rw, data_rw.getSize(), "_tempreadfile");
+				data.c_str(), data.size(), "_tempreadfile");
 
 		FATAL_ERROR_IF(!rfile, "Could not create irrlicht memory file.");
 
@@ -930,9 +903,9 @@ void Client::Send(NetworkPacket* pkt)
 
 // Will fill up 12 + 12 + 4 + 4 + 4 bytes
 void writePlayerPos(LocalPlayer *myplayer, ClientMap *clientMap, NetworkPacket *pkt)
-{	
+{
 	v3f pf           = myplayer->getLegitPosition() * 100;
-	v3f sf           = myplayer->getLegitSpeed() * 100;
+	v3f sf           = myplayer->getSendSpeed() * 100;
 	s32 pitch        = myplayer->getPitch() * 100;
 	s32 yaw          = myplayer->getYaw() * 100;
 	u32 keyPressed   = myplayer->keyPressed;
@@ -1219,7 +1192,7 @@ void Client::sendChatMessage(const std::wstring &message)
 	if (canSendChatMessage()) {
 		u32 now = time(NULL);
 		float time_passed = now - m_last_chat_message_sent;
-		m_last_chat_message_sent = time(NULL);
+		m_last_chat_message_sent = now;
 
 		m_chat_message_allowance += time_passed * (CLIENT_CHAT_MESSAGE_LIMIT_PER_10S / 8.0f);
 		if (m_chat_message_allowance > CLIENT_CHAT_MESSAGE_LIMIT_PER_10S)
@@ -1298,13 +1271,12 @@ void Client::sendPlayerPos(v3f pos)
 	// Save bandwidth by only updating position when
 	// player is not dead and something changed
 
-	// FIXME: This part causes breakages in mods like 3d_armor, and has been commented for now
-	// if (m_activeobjects_received && player->isDead())
-	//	return;
+	if (m_activeobjects_received && player->isDead())
+		return;
 
 	if (
 			player->last_position     == pos &&
-			player->last_speed        == player->getLegitSpeed()    &&
+			player->last_speed        == player->getSendSpeed()    &&
 			player->last_pitch        == player->getPitch()    &&
 			player->last_yaw          == player->getYaw()      &&
 			player->last_keyPressed   == player->keyPressed    &&
@@ -1313,7 +1285,7 @@ void Client::sendPlayerPos(v3f pos)
 		return;
 
 	player->last_position     = pos;
-	player->last_speed        = player->getLegitSpeed();
+	player->last_speed        = player->getSendSpeed();
 	player->last_pitch        = player->getPitch();
 	player->last_yaw          = player->getYaw();
 	player->last_keyPressed   = player->keyPressed;
@@ -1446,6 +1418,11 @@ bool Client::updateWieldedItem()
 		list->setModified(false);
 
 	return true;
+}
+
+scene::ISceneManager* Client::getSceneManager()
+{
+	return m_rendering_engine->get_scene_manager();
 }
 
 Inventory* Client::getInventory(const InventoryLocation &loc)
@@ -1663,17 +1640,17 @@ void Client::addUpdateMeshTaskForNode(v3s16 nodepos, bool ack_to_server, bool ur
 void Client::updateAllMapBlocks()
 {
 	v3s16 currentBlock = getNodeBlockPos(floatToInt(m_env.getLocalPlayer()->getPosition(), BS));
-	
+
 	for (s16 X = currentBlock.X - 2; X <= currentBlock.X + 2; X++)
 	for (s16 Y = currentBlock.Y - 2; Y <= currentBlock.Y + 2; Y++)
 	for (s16 Z = currentBlock.Z - 2; Z <= currentBlock.Z + 2; Z++)
 		addUpdateMeshTask(v3s16(X, Y, Z), false, true);
-	
+
 	Map &map = m_env.getMap();
-	
+
 	std::vector<v3s16> positions;
 	map.listAllLoadedBlocks(positions);
-	
+
 	for (v3s16 p : positions) {
 		addUpdateMeshTask(p, false, false);
 	}
@@ -1710,7 +1687,7 @@ typedef struct TextureUpdateArgs {
 	ITextureSource *tsrc;
 } TextureUpdateArgs;
 
-void texture_update_progress(void *args, u32 progress, u32 max_progress)
+void Client::showUpdateProgressTexture(void *args, u32 progress, u32 max_progress)
 {
 		TextureUpdateArgs* targs = (TextureUpdateArgs*) args;
 		u16 cur_percent = ceil(progress / (double) max_progress * 100.);
@@ -1729,7 +1706,7 @@ void texture_update_progress(void *args, u32 progress, u32 max_progress)
 			targs->last_time_ms = time_ms;
 			std::basic_stringstream<wchar_t> strm;
 			strm << targs->text_base << " " << targs->last_percent << "%...";
-			RenderingEngine::draw_load_screen(strm.str(), targs->guienv, targs->tsrc, 0,
+			m_rendering_engine->draw_load_screen(strm.str(), targs->guienv, targs->tsrc, 0,
 				72 + (u16) ((18. / 100.) * (double) targs->last_percent), true);
 		}
 }
@@ -1750,21 +1727,21 @@ void Client::afterContentReceived()
 
 	// Rebuild inherited images and recreate textures
 	infostream<<"- Rebuilding images and textures"<<std::endl;
-	RenderingEngine::draw_load_screen(text, guienv, m_tsrc, 0, 70);
+	m_rendering_engine->draw_load_screen(text, guienv, m_tsrc, 0, 70);
 	m_tsrc->rebuildImagesAndTextures();
 	delete[] text;
 
 	// Rebuild shaders
 	infostream<<"- Rebuilding shaders"<<std::endl;
 	text = wgettext("Rebuilding shaders...");
-	RenderingEngine::draw_load_screen(text, guienv, m_tsrc, 0, 71);
+	m_rendering_engine->draw_load_screen(text, guienv, m_tsrc, 0, 71);
 	m_shsrc->rebuildShaders();
 	delete[] text;
 
 	// Update node aliases
 	infostream<<"- Updating node aliases"<<std::endl;
 	text = wgettext("Initializing nodes...");
-	RenderingEngine::draw_load_screen(text, guienv, m_tsrc, 0, 72);
+	m_rendering_engine->draw_load_screen(text, guienv, m_tsrc, 0, 72);
 	m_nodedef->updateAliases(m_itemdef);
 	for (const auto &path : getTextureDirs()) {
 		TextureOverrideSource override_source(path + DIR_DELIM + "override.txt");
@@ -1783,7 +1760,7 @@ void Client::afterContentReceived()
 	tu_args.last_percent = 0;
 	tu_args.text_base =  wgettext("Initializing nodes");
 	tu_args.tsrc = m_tsrc;
-	m_nodedef->updateTextures(this, texture_update_progress, &tu_args);
+	m_nodedef->updateTextures(this, &tu_args);
 	delete[] tu_args.text_base;
 
 	// Start mesh update thread after setting up content definitions
@@ -1797,7 +1774,7 @@ void Client::afterContentReceived()
 		m_script->on_client_ready(m_env.getLocalPlayer());
 
 	text = wgettext("Done!");
-	RenderingEngine::draw_load_screen(text, guienv, m_tsrc, 0, 100);
+	m_rendering_engine->draw_load_screen(text, guienv, m_tsrc, 0, 100);
 	infostream<<"Client::afterContentReceived() done"<<std::endl;
 	delete[] text;
 }
@@ -1815,7 +1792,7 @@ float Client::getCurRate()
 
 void Client::makeScreenshot()
 {
-	irr::video::IVideoDriver *driver = RenderingEngine::get_video_driver();
+	irr::video::IVideoDriver *driver = m_rendering_engine->get_video_driver();
 	irr::video::IImage* const raw_image = driver->createScreenShot();
 
 	if (!raw_image)
@@ -1875,7 +1852,7 @@ void Client::makeScreenshot()
 				sstr << "Failed to save screenshot '" << filename << "'";
 			}
 			pushToChatQueue(new ChatMessage(CHATMESSAGE_TYPE_SYSTEM,
-					narrow_to_wide(sstr.str())));
+					utf8_to_wide(sstr.str())));
 			infostream << sstr.str() << std::endl;
 			image->drop();
 		}
@@ -1965,16 +1942,17 @@ scene::IAnimatedMesh* Client::getMesh(const std::string &filename, bool cache)
 
 	// Create the mesh, remove it from cache and return it
 	// This allows unique vertex colors and other properties for each instance
-	Buffer<char> data_rw(data.c_str(), data.size()); // Const-incorrect Irrlicht
-	io::IReadFile *rfile   = RenderingEngine::get_filesystem()->createMemoryReadFile(
-			*data_rw, data_rw.getSize(), filename.c_str());
+	io::IReadFile *rfile = m_rendering_engine->get_filesystem()->createMemoryReadFile(
+			data.c_str(), data.size(), filename.c_str());
 	FATAL_ERROR_IF(!rfile, "Could not create/open RAM file");
 
-	scene::IAnimatedMesh *mesh = RenderingEngine::get_scene_manager()->getMesh(rfile);
+	scene::IAnimatedMesh *mesh = m_rendering_engine->get_scene_manager()->getMesh(rfile);
 	rfile->drop();
+	if (!mesh)
+		return nullptr;
 	mesh->grab();
 	if (!cache)
-		RenderingEngine::get_mesh_cache()->removeMesh(mesh);
+		m_rendering_engine->removeMesh(mesh);
 	return mesh;
 }
 

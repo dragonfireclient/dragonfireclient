@@ -148,7 +148,7 @@ std::string PlayerSAO::getClientInitializationData(u16 protocol_version)
 
 void PlayerSAO::getStaticData(std::string * result) const
 {
-	FATAL_ERROR("Obsolete function");
+	FATAL_ERROR("This function shall not be called for PlayerSAO");
 }
 
 void PlayerSAO::step(float dtime, bool send_recommended)
@@ -260,10 +260,13 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 	// otherwise it's calculated normally.
 	// If the object gets detached this comes into effect automatically from
 	// the last known origin.
-	if (isAttached()) {
-		v3f pos = m_env->getActiveObject(m_attachment_parent_id)->getBasePosition();
+	if (auto *parent = getParent()) {
+		v3f pos = parent->getBasePosition();
 		m_last_good_position = pos;
 		setBasePosition(pos);
+
+		if (m_player)
+			m_player->setSpeed(v3f());
 	}
 
 	if (!send_recommended)
@@ -456,6 +459,11 @@ u16 PlayerSAO::punch(v3f dir,
 	return hitparams.wear;
 }
 
+void PlayerSAO::rightClick(ServerActiveObject *clicker)
+{
+	m_env->getScriptIface()->on_rightclickplayer(this, clicker);
+}
+
 void PlayerSAO::setHP(s32 hp, const PlayerHPChangeReason &reason)
 {
 	if (hp == (s32)m_hp)
@@ -565,32 +573,9 @@ void PlayerSAO::setMaxSpeedOverride(const v3f &vel)
 bool PlayerSAO::checkMovementCheat()
 {
 	if (m_is_singleplayer ||
+			isAttached() ||
 			g_settings->getBool("disable_anticheat")) {
 		m_last_good_position = m_base_position;
-		return false;
-	}
-	if (UnitSAO *parent = dynamic_cast<UnitSAO *>(getParent())) {
-		v3f attachment_pos;
-		{
-			int parent_id;
-			std::string bone;
-			v3f attachment_rot;
-			bool force_visible;
-			getAttachment(&parent_id, &bone, &attachment_pos, &attachment_rot, &force_visible);
-		}
-
-		v3f parent_pos = parent->getBasePosition();
-		f32 diff = m_base_position.getDistanceFromSQ(parent_pos) - attachment_pos.getLengthSQ();
-		const f32 maxdiff = 4.0f * BS; // fair trade-off value for various latencies
-
-		if (diff > maxdiff * maxdiff) {
-			setBasePosition(parent_pos);
-			actionstream << "Server: " << m_player->getName()
-					<< " moved away from parent; diff=" << sqrtf(diff) / BS
-					<< " resetting position." << std::endl;
-			return true;
-		}
-		// Player movement is locked to the entity. Skip further checks
 		return false;
 	}
 

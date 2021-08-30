@@ -256,6 +256,9 @@ Subfolders with names starting with `_` or `.` are ignored.
 If a subfolder contains a media file with the same name as a media file
 in one of its parents, the parent's file is used.
 
+Although it is discouraged, a mod can overwrite a media file of any mod that it
+depends on by supplying a file with an equal name.
+
 Naming conventions
 ------------------
 
@@ -1045,9 +1048,9 @@ The function of `param2` is determined by `paramtype2` in node definition.
             * The height of the 'plantlike' section is stored in `param2`.
             * The height is (`param2` / 16) nodes.
 * `paramtype2 = "degrotate"`
-    * Only valid for "plantlike" drawtype. The rotation of the node is stored in
-      `param2`.
-    * Values range 0 - 179. The value stored in `param2` is multiplied by two to
+    * Valid for `plantlike` and `mesh` drawtypes. The rotation of the node is
+      stored in `param2`.
+    * Values range 0–239. The value stored in `param2` is multiplied by 1.5 to
       get the actual rotation in degrees of the node.
 * `paramtype2 = "meshoptions"`
     * Only valid for "plantlike" drawtype. `param2` encodes the shape and
@@ -1085,6 +1088,11 @@ The function of `param2` is determined by `paramtype2` in node definition.
     * `param2` values 0-63 define 64 levels of internal liquid, 0 being empty
       and 63 being full.
     * Liquid texture is defined using `special_tiles = {"modname_tilename.png"}`
+* `paramtype2 = "colordegrotate"`
+    * Same as `degrotate`, but with colors.
+    * The first (most-significant) three bits of `param2` tells which color
+      is picked from the palette. The palette should have 8 pixels.
+    * Remaining 5 bits store rotation in range 0–23 (i.e. in 15° steps)
 * `paramtype2 = "none"`
     * `param2` will not be used by the engine and can be used to store
       an arbitrary value
@@ -1104,8 +1112,20 @@ Look for examples in `games/devtest` or `games/minetest_game`.
     * Invisible, uses no texture.
 * `liquid`
     * The cubic source node for a liquid.
+    * Faces bordering to the same node are never rendered.
+    * Connects to node specified in `liquid_alternative_flowing`.
+    * Use `backface_culling = false` for the tiles you want to make
+      visible when inside the node.
 * `flowingliquid`
     * The flowing version of a liquid, appears with various heights and slopes.
+    * Faces bordering to the same node are never rendered.
+    * Connects to node specified in `liquid_alternative_source`.
+    * Node textures are defined with `special_tiles` where the first tile
+      is for the top and bottom faces and the second tile is for the side
+      faces.
+    * `tiles` is used for the item/inventory/wield image rendering.
+    * Use `backface_culling = false` for the special tiles you want to make
+      visible when inside the node
 * `glasslike`
     * Often used for partially-transparent nodes.
     * Only external sides of textures are visible.
@@ -1132,14 +1152,20 @@ Look for examples in `games/devtest` or `games/minetest_game`.
       used to compensate for how `glasslike` reduces visual thickness.
 * `torchlike`
     * A single vertical texture.
-    * If placed on top of a node, uses the first texture specified in `tiles`.
-    * If placed against the underside of a node, uses the second texture
-      specified in `tiles`.
-    * If placed on the side of a node, uses the third texture specified in
-      `tiles` and is perpendicular to that node.
+    * If `paramtype2="[color]wallmounted":
+        * If placed on top of a node, uses the first texture specified in `tiles`.
+        * If placed against the underside of a node, uses the second texture
+          specified in `tiles`.
+        * If placed on the side of a node, uses the third texture specified in
+          `tiles` and is perpendicular to that node.
+    * If `paramtype2="none"`:
+        * Will be rendered as if placed on top of a node (see
+          above) and only the first texture is used.
 * `signlike`
     * A single texture parallel to, and mounted against, the top, underside or
       side of a node.
+    * If `paramtype2="[color]wallmounted", it rotates according to `param2`
+    * If `paramtype2="none"`, it will always be on the floor.
 * `plantlike`
     * Two vertical and diagonal textures at right-angles to each other.
     * See `paramtype2 = "meshoptions"` above for other options.
@@ -1722,7 +1748,15 @@ to games.
     * `3`: the node always gets the digging time 0 seconds (torch)
 * `disable_jump`: Player (and possibly other things) cannot jump from node
   or if their feet are in the node. Note: not supported for `new_move = false`
-* `fall_damage_add_percent`: damage speed = `speed * (1 + value/100)`
+* `fall_damage_add_percent`: modifies the fall damage suffered when hitting
+  the top of this node. There's also an armor group with the same name.
+  The final player damage is determined by the following formula:
+    damage =
+      collision speed
+      * ((node_fall_damage_add_percent   + 100) / 100) -- node group
+      * ((player_fall_damage_add_percent + 100) / 100) -- player armor group
+      - (14)                                           -- constant tolerance
+  Negative damage values are discarded as no damage.
 * `falling_node`: if there is no walkable block under the node it will fall
 * `float`: the node will not fall through liquids
 * `level`: Can be used to give an additional sense of progression in the game.
@@ -1742,11 +1776,15 @@ to games.
   `"toolrepair"` crafting recipe
 
 
-### `ObjectRef` groups
+### `ObjectRef` armor groups
 
 * `immortal`: Skips all damage and breath handling for an object. This group
-  will also hide the integrated HUD status bars for players, and is
-  automatically set to all players when damage is disabled on the server.
+  will also hide the integrated HUD status bars for players. It is
+  automatically set to all players when damage is disabled on the server and
+  cannot be reset (subject to change).
+* `fall_damage_add_percent`: Modifies the fall damage suffered by players
+  when they hit the ground. It is analog to the node group with the same
+  name. See the node group above for the exact calculation.
 * `punch_operable`: For entities; disables the regular damage mechanism for
   players punching it by hand or a non-tool item, so that it can do something
   else than take damage.
@@ -2113,7 +2151,7 @@ Examples
     list[current_player;main;0,3.5;8,4;]
     list[current_player;craft;3,0;3,3;]
     list[current_player;craftpreview;7,1;1,1;]
-   
+
 Version History
 ---------------
 
@@ -2226,7 +2264,8 @@ Elements
 * Show an inventory list if it has been sent to the client. Nothing will
   be shown if the inventory list is of size 0.
 * **Note**: With the new coordinate system, the spacing between inventory
-  slots is one-fourth the size of an inventory slot.
+  slots is one-fourth the size of an inventory slot by default. Also see
+  [Styling Formspecs] for changing the size of slots and spacing.
 
 ### `list[<inventory location>;<list name>;<X>,<Y>;<W>,<H>;<starting item index>]`
 
@@ -2294,7 +2333,7 @@ Elements
 * `frame duration`: Milliseconds between each frame. `0` means the frames don't advance.
 * `frame start` (Optional): The index of the frame to start on. Default `1`.
 
-### `model[<X>,<Y>;<W>,<H>;<name>;<mesh>;<textures>;<rotation X,Y>;<continuous>;<mouse control>;<frame loop range>]`
+### `model[<X>,<Y>;<W>,<H>;<name>;<mesh>;<textures>;<rotation X,Y>;<continuous>;<mouse control>;<frame loop range>;<animation speed>]`
 
 * Show a mesh model.
 * `name`: Element name that can be used for styling
@@ -2308,6 +2347,7 @@ Elements
 * `frame loop range` (Optional): Range of the animation frames.
     * Defaults to the full range of all available frames.
     * Syntax: `<begin>,<end>`
+* `animation speed` (Optional): Sets the animation speed. Default 0 FPS.
 
 ### `item_image[<X>,<Y>;<W>,<H>;<item name>]`
 
@@ -2673,7 +2713,7 @@ Elements
         * `span=<value>`: number of following columns to affect
           (default: infinite).
 
-### `style[<selector 1>,<selector 2>;<prop1>;<prop2>;...]`
+### `style[<selector 1>,<selector 2>,...;<prop1>;<prop2>;...]`
 
 * Set the style for the element(s) matching `selector` by name.
 * `selector` can be one of:
@@ -2686,7 +2726,7 @@ Elements
 * See [Styling Formspecs].
 
 
-### `style_type[<selector 1>,<selector 2>;<prop1>;<prop2>;...]`
+### `style_type[<selector 1>,<selector 2>,...;<prop1>;<prop2>;...]`
 
 * Set the style for the element(s) matching `selector` by type.
 * `selector` can be one of:
@@ -2759,10 +2799,10 @@ Styling Formspecs
 
 Formspec elements can be themed using the style elements:
 
-    style[<name 1>,<name 2>;<prop1>;<prop2>;...]
-    style[<name 1>:<state>,<name 2>:<state>;<prop1>;<prop2>;...]
-    style_type[<type 1>,<type 2>;<prop1>;<prop2>;...]
-    style_type[<type 1>:<state>,<type 2>:<state>;<prop1>;<prop2>;...]
+    style[<name 1>,<name 2>,...;<prop1>;<prop2>;...]
+    style[<name 1>:<state>,<name 2>:<state>,...;<prop1>;<prop2>;...]
+    style_type[<type 1>,<type 2>,...;<prop1>;<prop2>;...]
+    style_type[<type 1>:<state>,<type 2>:<state>,...;<prop1>;<prop2>;...]
 
 Where a prop is:
 
@@ -2809,6 +2849,7 @@ Some types may inherit styles from parent types.
 * image_button
 * item_image_button
 * label
+* list
 * model
 * pwdfield, inherits from field
 * scrollbar
@@ -2869,14 +2910,14 @@ Some types may inherit styles from parent types.
     * noclip - boolean, set to true to allow the element to exceed formspec bounds.
     * padding - rect, adds space between the edges of the button and the content. This value is
                 relative to bgimg_middle.
-    * sound - a sound to be played when clicked.
+    * sound - a sound to be played when triggered.
     * textcolor - color, default white.
 * checkbox
     * noclip - boolean, set to true to allow the element to exceed formspec bounds.
-    * sound - a sound to be played when clicked.
+    * sound - a sound to be played when triggered.
 * dropdown
     * noclip - boolean, set to true to allow the element to exceed formspec bounds.
-    * sound - a sound to be played when clicked.
+    * sound - a sound to be played when the entry is changed.
 * field, pwdfield, textarea
     * border - set to false to hide the textbox background and border. Default true.
     * font - Sets font type. See button `font` property for more information.
@@ -2896,6 +2937,10 @@ Some types may inherit styles from parent types.
     * font - Sets font type. See button `font` property for more information.
     * font_size - Sets font size. See button `font_size` property for more information.
     * noclip - boolean, set to true to allow the element to exceed formspec bounds.
+* list
+    * noclip - boolean, set to true to allow the element to exceed formspec bounds.
+    * size - 2d vector, sets the size of inventory slots in coordinates.
+    * spacing - 2d vector, sets the space between inventory slots in coordinates.
 * image_button (additional properties)
     * fgimg - standard image. Defaults to none.
     * fgimg_hovered - image when hovered. Defaults to fgimg when not provided.
@@ -2903,12 +2948,12 @@ Some types may inherit styles from parent types.
     * fgimg_pressed - image when pressed. Defaults to fgimg when not provided.
         * This is deprecated, use states instead.
     * NOTE: The parameters of any given image_button will take precedence over fgimg/fgimg_pressed
-    * sound - a sound to be played when clicked.
+    * sound - a sound to be played when triggered.
 * scrollbar
     * noclip - boolean, set to true to allow the element to exceed formspec bounds.
 * tabheader
     * noclip - boolean, set to true to allow the element to exceed formspec bounds.
-    * sound - a sound to be played when clicked.
+    * sound - a sound to be played when a different tab is selected.
     * textcolor - color. Default white.
 * table, textlist
     * font - Sets font type. See button `font` property for more information.
@@ -3067,9 +3112,8 @@ Colors
 
 Named colors are also supported and are equivalent to
 [CSS Color Module Level 4](http://dev.w3.org/csswg/css-color/#named-colors).
-To specify the value of the alpha channel, append `#AA` to the end of the color
-name (e.g. `colorname#08`). For named colors the hexadecimal string
-representing the alpha value must (always) be two hexadecimal digits.
+To specify the value of the alpha channel, append `#A` or `#AA` to the end of
+the color name (e.g. `colorname#08`).
 
 `ColorSpec`
 -----------
@@ -3135,6 +3179,16 @@ For the following functions, `v`, `v1`, `v2` are vectors,
     * Returns a vector.
     * A copy of `a` if `a` is a vector.
     * `{x = a, y = b, z = c}`, if all of `a`, `b`, `c` are defined numbers.
+* `vector.from_string(s[, init])`:
+    * Returns `v, np`, where `v` is a vector read from the given string `s` and
+      `np` is the next position in the string after the vector.
+    * Returns `nil` on failure.
+    * `s`: Has to begin with a substring of the form `"(x, y, z)"`. Additional
+           spaces, leaving away commas and adding an additional comma to the end
+           is allowed.
+    * `init`: If given starts looking for the vector at this string index.
+* `vector.to_string(v)`:
+    * Returns a string of the form `"(x, y, z)"`.
 * `vector.direction(p1, p2)`:
     * Returns a vector of length 1 with direction `p1` to `p2`.
     * If `p1` and `p2` are identical, returns `{x = 0, y = 0, z = 0}`.
@@ -3149,6 +3203,7 @@ For the following functions, `v`, `v1`, `v2` are vectors,
     * Returns a vector, each dimension rounded down.
 * `vector.round(v)`:
     * Returns a vector, each dimension rounded to nearest integer.
+    * At a multiple of 0.5, rounds away from zero.
 * `vector.apply(v, func)`:
     * Returns a vector where the function `func` has been applied to each
       component.
@@ -3223,6 +3278,8 @@ Helper functions
     * If the absolute value of `x` is within the `tolerance` or `x` is NaN,
       `0` is returned.
 * `math.factorial(x)`: returns the factorial of `x`
+* `math.round(x)`: Returns `x` rounded to the nearest integer.
+    * At a multiple of 0.5, rounds away from zero.
 * `string.split(str, separator, include_empty, max_splits, sep_is_pattern)`
     * `separator`: string, default: `","`
     * `include_empty`: boolean, default: `false`
@@ -3260,7 +3317,6 @@ Helper functions
     * returns true when the passed number represents NaN.
 * `minetest.get_us_time()`
     * returns time with microsecond precision. May not return wall time.
-    * This value might overflow on certain 32-bit systems!
 * `table.copy(table)`: returns a table
     * returns a deep copy of `table`
 * `table.indexof(list, val)`: returns the smallest numerical index containing
@@ -3271,7 +3327,8 @@ Helper functions
     * Appends all values in `other_table` to `table` - uses `#table + 1` to
       find new indices.
 * `table.key_value_swap(t)`: returns a table with keys and values swapped
-    * If multiple keys in `t` map to the same value, the result is undefined.
+    * If multiple keys in `t` map to the same value, it is unspecified which
+      value maps to that key.
 * `table.shuffle(table, [from], [to], [random_func])`:
     * Shuffles elements `from` to `to` in `table` in place
     * `from` defaults to `1`
@@ -4381,6 +4438,11 @@ Utilities
           object_step_has_moveresult = true,
           -- Whether get_velocity() and add_velocity() can be used on players (5.4.0)
           direct_velocity_on_players = true,
+          -- nodedef's use_texture_alpha accepts new string modes (5.4.0)
+          use_texture_alpha_string_modes = true,
+          -- degrotate param2 rotates in units of 1.5° instead of 2°
+          -- thus changing the range of values from 0-179 to 0-240 (5.5.0)
+          degrotate_240_steps = true,
       }
 
 * `minetest.has_feature(arg)`: returns `boolean, missing_features`
@@ -4440,6 +4502,9 @@ Utilities
 * `minetest.sha1(data, [raw])`: returns the sha1 hash of data
     * `data`: string of data to hash
     * `raw`: return raw bytes instead of hex digits, default: false
+* `minetest.colorspec_to_colorstring(colorspec)`: Converts a ColorSpec to a
+  ColorString. If the ColorSpec is invalid, returns `nil`.
+    * `colorspec`: The ColorSpec to convert
 
 Logging
 -------
@@ -4589,6 +4654,10 @@ Call these functions only at load time!
       the puncher to the punched.
     * `damage`: Number that represents the damage calculated by the engine
     * should return `true` to prevent the default damage mechanism
+* `minetest.register_on_rightclickplayer(function(player, clicker))`
+    * Called when a player is right-clicked
+    * `player`: ObjectRef - Player that was right-clicked
+    * `clicker`: ObjectRef - Object that right-clicked, may or may not be a player
 * `minetest.register_on_player_hpchange(function(player, hp_change, reason), modifier)`
     * Called when the player gets damaged or healed
     * `player`: ObjectRef of the player
@@ -4639,6 +4708,7 @@ Call these functions only at load time!
     * `cheat`: `{type=<cheat_type>}`, where `<cheat_type>` is one of:
         * `moved_too_fast`
         * `interacted_too_far`
+        * `interacted_with_self`
         * `interacted_while_dead`
         * `finished_unknown_dig`
         * `dug_unbreakable`
@@ -4879,7 +4949,7 @@ Environment access
     * Punch node with the same effects that a player would cause
 * `minetest.spawn_falling_node(pos)`
     * Change node into falling node
-    * Returns `true` if successful, `false` on failure
+    * Returns `true` and the ObjectRef of the spawned entity if successful, `false` on failure
 
 * `minetest.find_nodes_with_meta(pos1, pos2)`
     * Get a table of positions of nodes that have metadata within a region
@@ -5434,20 +5504,22 @@ Server
     * Returns a code (0: successful, 1: no such player, 2: player is connected)
 * `minetest.remove_player_auth(name)`: remove player authentication data
     * Returns boolean indicating success (false if player nonexistant)
-* `minetest.dynamic_add_media(filepath)`
-    * Adds the file at the given path to the media sent to clients by the server
-      on startup and also pushes this file to already connected clients.
+* `minetest.dynamic_add_media(filepath, callback)`
+    * `filepath`: path to a media file on the filesystem
+    * `callback`: function with arguments `name`, where name is a player name
+      (previously there was no callback argument; omitting it is deprecated)
+    * Adds the file to the media sent to clients by the server on startup
+      and also pushes this file to already connected clients.
       The file must be a supported image, sound or model format. It must not be
       modified, deleted, moved or renamed after calling this function.
       The list of dynamically added media is not persisted.
-    * Returns boolean indicating success (duplicate files count as error)
-    * The media will be ready to use (in e.g. entity textures, sound_play)
-      immediately after calling this function.
+    * Returns false on error, true if the request was accepted
+    * The given callback will be called for every player as soon as the
+      media is available on the client.
       Old clients that lack support for this feature will not see the media
-      unless they reconnect to the server.
-    * Since media transferred this way does not use client caching or HTTP
-      transfers, dynamic media should not be used with big files or performance
-      will suffer.
+      unless they reconnect to the server. (callback won't be called)
+    * Since media transferred this way currently does not use client caching
+       or HTTP transfers, dynamic media should not be used with big files.
 
 Bans
 ----
@@ -6025,18 +6097,18 @@ an itemstring, a table or `nil`.
   stack).
 * `set_metadata(metadata)`: (DEPRECATED) Returns true.
 * `get_description()`: returns the description shown in inventory list tooltips.
-    * The engine uses the same as this function for item descriptions.
+    * The engine uses this when showing item descriptions in tooltips.
     * Fields for finding the description, in order:
         * `description` in item metadata (See [Item Metadata].)
         * `description` in item definition
         * item name
-* `get_short_description()`: returns the short description.
+* `get_short_description()`: returns the short description or nil.
     * Unlike the description, this does not include new lines.
-    * The engine uses the same as this function for short item descriptions.
     * Fields for finding the short description, in order:
         * `short_description` in item metadata (See [Item Metadata].)
         * `short_description` in item definition
-        * first line of the description (See `get_description()`.)
+        * first line of the description (From item meta or def, see `get_description()`.)
+        * Returns nil if none of the above are set
 * `clear()`: removes all items from the stack, making it empty.
 * `replace(item)`: replace the contents of this stack.
     * `item` can also be an itemstring or table.
@@ -6213,8 +6285,8 @@ object you are working with still exists.
     * `time_from_last_punch` = time since last punch action of the puncher
     * `direction`: can be `nil`
 * `right_click(clicker)`; `clicker` is another `ObjectRef`
-* `get_hp()`: returns number of hitpoints (2 * number of hearts)
-* `set_hp(hp, reason)`: set number of hitpoints (2 * number of hearts).
+* `get_hp()`: returns number of health points
+* `set_hp(hp, reason)`: set number of health points
     * See reason in register_on_player_hpchange
     * Is limited to the range of 0 ... 65535 (2^16 - 1)
     * For players: HP are also limited by `hp_max` specified in the player's
@@ -6237,21 +6309,22 @@ object you are working with still exists.
   `frame_loop`.
 * `set_animation_frame_speed(frame_speed)`
     * `frame_speed`: number, default: `15.0`
-* `set_attach(parent, bone, position, rotation, forced_visible)`
-    * `bone`: string
-    * `position`: `{x=num, y=num, z=num}` (relative)
-    * `rotation`: `{x=num, y=num, z=num}` = Rotation on each axis, in degrees
+* `set_attach(parent[, bone, position, rotation, forced_visible])`
+    * `bone`: string. Default is `""`, the root bone
+    * `position`: `{x=num, y=num, z=num}`, relative, default `{x=0, y=0, z=0}`
+    * `rotation`: `{x=num, y=num, z=num}` = Rotation on each axis, in degrees.
+      Default `{x=0, y=0, z=0}`
     * `forced_visible`: Boolean to control whether the attached entity
-       should appear in first person.
+       should appear in first person. Default `false`.
 * `get_attach()`: returns parent, bone, position, rotation, forced_visible,
     or nil if it isn't attached.
 * `get_children()`: returns a list of ObjectRefs that are attached to the
     object.
 * `set_detach()`
-* `set_bone_position(bone, position, rotation)`
-    * `bone`: string
-    * `position`: `{x=num, y=num, z=num}` (relative)
-    * `rotation`: `{x=num, y=num, z=num}`
+* `set_bone_position([bone, position, rotation])`
+    * `bone`: string. Default is `""`, the root bone
+    * `position`: `{x=num, y=num, z=num}`, relative, `default {x=0, y=0, z=0}`
+    * `rotation`: `{x=num, y=num, z=num}`, default `{x=0, y=0, z=0}`
 * `get_bone_position(bone)`: returns position and rotation of the bone
 * `set_properties(object property table)`
 * `get_properties()`: returns object property table
@@ -6259,15 +6332,21 @@ object you are working with still exists.
 * `get_nametag_attributes()`
     * returns a table with the attributes of the nametag of an object
     * {
-        color = {a=0..255, r=0..255, g=0..255, b=0..255},
         text = "",
+        color = {a=0..255, r=0..255, g=0..255, b=0..255},
+        bgcolor = {a=0..255, r=0..255, g=0..255, b=0..255},
       }
 * `set_nametag_attributes(attributes)`
     * sets the attributes of the nametag of an object
     * `attributes`:
       {
-        color = ColorSpec,
         text = "My Nametag",
+        color = ColorSpec,
+        -- ^ Text color
+        bgcolor = ColorSpec or false,
+        -- ^ Sets background color of nametag
+        -- `false` will cause the background to be set automatically based on user settings
+        -- Default: false
       }
 
 #### Lua entity only (no-op for other objects)
@@ -6579,8 +6658,8 @@ object you are working with still exists.
     * `frame_speed` sets the animations frame speed. Default is 30.
 * `get_local_animation()`: returns idle, walk, dig, walk_while_dig tables and
   `frame_speed`.
-* `set_eye_offset(firstperson, thirdperson)`: defines offset vectors for camera
-  per player.
+* `set_eye_offset([firstperson, thirdperson])`: defines offset vectors for
+  camera per player. An argument defaults to `{x=0, y=0, z=0}` if unspecified.
     * in first person view
     * in third person view (max. values `{x=-10/10,y=-10,15,z=-5/5}`)
 * `get_eye_offset()`: returns first and third person offsets.
@@ -6936,10 +7015,18 @@ Player properties need to be saved manually.
         -- in mods.
 
         nametag = "",
-        -- By default empty, for players their name is shown if empty
+        -- The name to display on the head of the object. By default empty.
+        -- If the object is a player, a nil or empty nametag is replaced by the player's name.
+        -- For all other objects, a nil or empty string removes the nametag.
+        -- To hide a nametag, set its color alpha to zero. That will disable it entirely.
 
         nametag_color = <ColorSpec>,
-        -- Sets color of nametag
+        -- Sets text color of nametag
+
+        nametag_bgcolor = <ColorSpec>,
+        -- Sets background color of nametag
+        -- `false` will cause the background to be set automatically based on user settings.
+        -- Default: false
 
         infotext = "",
         -- By default empty, text to be shown when pointed at object
@@ -7152,8 +7239,9 @@ Used by `minetest.register_node`, `minetest.register_craftitem`, and
 
         short_description = "Steel Axe",
         -- Must not contain new lines.
-        -- Defaults to the first line of description.
-        -- See also: `get_short_description` in [`ItemStack`]
+        -- Defaults to nil.
+        -- Use an [`ItemStack`] to get the short description, eg:
+        --   ItemStack(itemname):get_short_description()
 
         groups = {},
         -- key = name, value = rating; rating = 1..3.
@@ -7326,10 +7414,18 @@ Used by `minetest.register_node`.
         -- If the node has a palette, then this setting only has an effect in
         -- the inventory and on the wield item.
 
-        use_texture_alpha = false,
-        -- Use texture's alpha channel
-        -- If this is set to false, the node will be rendered fully opaque
-        -- regardless of any texture transparency.
+        use_texture_alpha = ...,
+        -- Specifies how the texture's alpha channel will be used for rendering.
+        -- possible values:
+        -- * "opaque": Node is rendered opaque regardless of alpha channel
+        -- * "clip": A given pixel is either fully see-through or opaque
+        --           depending on the alpha channel being below/above 50% in value
+        -- * "blend": The alpha channel specifies how transparent a given pixel
+        --            of the rendered node is
+        -- The default is "opaque" for drawtypes normal, liquid and flowingliquid;
+        -- "clip" otherwise.
+        -- If set to a boolean value (deprecated): true either sets it to blend
+        -- or clip, false sets it to clip or opaque mode depending on the drawtype.
 
         palette = "palette.png",
         -- The node's `param2` is used to select a pixel from the image.
@@ -7371,7 +7467,16 @@ Used by `minetest.register_node`.
         -- If true, liquids flow into and replace this node.
         -- Warning: making a liquid node 'floodable' will cause problems.
 
-        liquidtype = "none",  -- "none" / "source" / "flowing"
+        liquidtype = "none",  -- specifies liquid physics
+        -- * "none":    no liquid physics
+        -- * "source":  spawns flowing liquid nodes at all 4 sides and below;
+        --              recommended drawtype: "liquid".
+        -- * "flowing": spawned from source, spawns more flowing liquid nodes
+        --              around it until `liquid_range` is reached;
+        --              will drain out without a source;
+        --              recommended drawtype: "flowingliquid".
+        -- If it's "source" or "flowing" and `liquid_range > 0`, then
+        -- both `liquid_alternative_*` fields must be specified
 
         liquid_alternative_flowing = "",  -- Flowing version of source liquid
 
@@ -7394,7 +7499,10 @@ Used by `minetest.register_node`.
         -- `minetest.set_node_level` and `minetest.add_node_level`.
 		-- Values above 124 might causes collision detection issues.
 
-        liquid_range = 8,  -- Number of flowing nodes around source (max. 8)
+        liquid_range = 8,
+        -- Maximum distance that flowing liquid nodes can spread around
+        -- source on flat land;
+        -- maximum = 8; set to 0 to disable liquid flow
 
         drowning = 0,
         -- Player will take this amount of damage if no bubbles are left
@@ -7604,6 +7712,8 @@ Used by `minetest.register_node`.
         on_dig = function(pos, node, digger),
         -- default: minetest.node_dig
         -- By default checks privileges, wears out tool and removes node.
+        -- return true if the node was dug successfully, false otherwise.
+        -- Deprecated: returning nil is the same as returning true.
 
         on_timer = function(pos, elapsed),
         -- default: nil
@@ -7643,12 +7753,12 @@ Used by `minetest.register_node`.
         -- intensity: 1.0 = mid range of regular TNT.
         -- If defined, called when an explosion touches the node, instead of
         -- removing the node.
-        
+
         mod_origin = "modname",
         -- stores which mod actually registered a node
         -- if it can not find a source, returns "??"
         -- useful for getting what mod truly registered something
-        -- example: if a node is registered as ":othermodname:nodename", 
+        -- example: if a node is registered as ":othermodname:nodename",
         -- nodename will show "othermodname", but mod_orgin will say "modname"
     }
 
@@ -8339,7 +8449,7 @@ Used by `HTTPApiTable.fetch` and `HTTPApiTable.fetch_async`.
         url = "http://example.org",
 
         timeout = 10,
-        -- Timeout for connection in seconds. Default is 3 seconds.
+        -- Timeout for request to be completed in seconds. Default depends on engine settings.
 
         method = "GET", "POST", "PUT" or "DELETE"
         -- The http method to use. Defaults to "GET".

@@ -440,7 +440,7 @@ int ModApiClient::l_place_node(lua_State *L)
 	pointed.node_abovesurface = pos;
 	pointed.node_undersurface = pos;
 	NodeMetadata *meta = map.getNodeMetadata(pos);
-	g_game->nodePlacement(selected_def, selected_item, pos, pos, pointed, meta);
+	g_game->nodePlacement(selected_def, selected_item, pos, pos, pointed, meta, true);
 	return 0;
 }
 
@@ -520,7 +520,7 @@ int ModApiClient::l_get_objects_inside_radius(lua_State *L)
 	int i = 0;
 	lua_createtable(L, objs.size(), 0);
 	for (const auto obj : objs) {
-		ClientObjectRef::create(L, obj.obj);							// TODO: getObjectRefOrCreate
+		push_objectRef(L, obj.obj->getId());
 		lua_rawseti(L, -2, ++i);
 	}
 	return 1;
@@ -621,6 +621,48 @@ int ModApiClient::l_interact(lua_State *L)
 	return 1;
 }
 
+StringMap *table_to_stringmap(lua_State *L, int index)
+{
+	StringMap *m = new StringMap;
+
+	lua_pushvalue(L, index);
+	lua_pushnil(L);
+
+	while (lua_next(L, -2)) {
+		lua_pushvalue(L, -2);
+		std::basic_string<char> key = lua_tostring(L, -1);
+		std::basic_string<char> value = lua_tostring(L, -2);
+		(*m)[key] = value;
+		lua_pop(L, 2);
+	}
+
+	lua_pop(L, 1);
+
+	return m;
+}
+
+// send_inventory_fields(formname, fields)
+// Only works if the inventory form was opened beforehand.
+int ModApiClient::l_send_inventory_fields(lua_State *L)
+{
+	std::string formname = luaL_checkstring(L, 1);
+	StringMap *fields = table_to_stringmap(L, 2);
+
+	getClient(L)->sendInventoryFields(formname, *fields);
+	return 0;
+}
+
+// send_nodemeta_fields(position, formname, fields)
+int ModApiClient::l_send_nodemeta_fields(lua_State *L)
+{
+	v3s16 pos = check_v3s16(L, 1);
+	std::string formname = luaL_checkstring(L, 2);
+	StringMap *m = table_to_stringmap(L, 3);
+
+	getClient(L)->sendNodemetaFields(pos, formname, *m);
+	return 0;
+}
+
 void ModApiClient::Initialize(lua_State *L, int top)
 {
 	API_FCT(get_current_modname);
@@ -657,4 +699,6 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(get_objects_inside_radius);
 	API_FCT(make_screenshot);
 	API_FCT(interact);
+	API_FCT(send_inventory_fields);
+	API_FCT(send_nodemeta_fields);
 }

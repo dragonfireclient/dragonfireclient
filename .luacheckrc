@@ -19,8 +19,8 @@ read_globals = {
 	"Settings",
 
 	string = {fields = {"split", "trim"}},
-	table  = {fields = {"copy", "getn", "indexof", "insert_all"}},
-	math   = {fields = {"hypot"}},
+	table  = {fields = {"copy", "getn", "indexof", "insert_all", "combine"}},
+	math   = {fields = {"hypot", "round"}},
 }
 
 globals = {

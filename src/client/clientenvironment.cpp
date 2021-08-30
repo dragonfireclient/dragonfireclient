@@ -235,7 +235,16 @@ void ClientEnvironment::step(float dtime)
 			&player_collisions);
 	}
 
-	bool player_immortal = lplayer->getCAO() && lplayer->getCAO()->isImmortal();
+	bool player_immortal = false;
+	f32 player_fall_factor = 1.0f;
+	GenericCAO *playercao = lplayer->getCAO();
+	if (playercao) {
+		player_immortal = playercao->isImmortal();
+		int addp_p = itemgroup_get(playercao->getGroups(),
+			"fall_damage_add_percent");
+		// convert armor group into an usable fall damage factor
+		player_fall_factor = 1.0f + (float)addp_p / 100.0f;
+	}
 
 	for (const CollisionInfo &info : player_collisions) {
 		v3f speed_diff = info.new_speed - info.old_speed;;
@@ -248,17 +257,20 @@ void ClientEnvironment::step(float dtime)
 		speed_diff.Z = 0;
 		f32 pre_factor = 1; // 1 hp per node/s
 		f32 tolerance = BS*14; // 5 without damage
-		f32 post_factor = 1; // 1 hp per node/s
 		if (info.type == COLLISION_NODE) {
 			const ContentFeatures &f = m_client->ndef()->
 				get(m_map->getNode(info.node_p));
-			// Determine fall damage multiplier
-			int addp = itemgroup_get(f.groups, "fall_damage_add_percent");
-			pre_factor = 1.0f + (float)addp / 100.0f;
+			// Determine fall damage modifier
+			int addp_n = itemgroup_get(f.groups, "fall_damage_add_percent");
+			// convert node group to an usable fall damage factor
+			f32 node_fall_factor = 1.0f + (float)addp_n / 100.0f;
+			// combine both player fall damage modifiers
+			pre_factor = node_fall_factor * player_fall_factor;
 		}
 		float speed = pre_factor * speed_diff.getLength();
-		if (speed > tolerance && !player_immortal) {
-			f32 damage_f = (speed - tolerance) / BS * post_factor;
+
+		if (speed > tolerance && !player_immortal && pre_factor > 0.0f) {
+			f32 damage_f = (speed - tolerance) / BS;
 			u16 damage = (u16)MYMIN(damage_f + 0.5, U16_MAX);
 			if (damage != 0) {
 				damageLocalPlayer(damage, true);
@@ -334,20 +346,13 @@ GenericCAO* ClientEnvironment::getGenericCAO(u16 id)
 	return NULL;
 }
 
-bool isFreeClientActiveObjectId(const u16 id,
-	ClientActiveObjectMap &objects)
-{
-	return id != 0 && objects.find(id) == objects.end();
-
-}
-
 u16 ClientEnvironment::addActiveObject(ClientActiveObject *object)
 {
 	// Register object. If failed return zero id
 	if (!m_ao_manager.registerObject(object))
 		return 0;
 
-	object->addToScene(m_texturesource);
+	object->addToScene(m_texturesource, m_client->getSceneManager());
 
 	// Update lighting immediately
 	object->updateLight(getDayNightRatio());
@@ -359,6 +364,7 @@ void ClientEnvironment::addActiveObject(u16 id, u8 type,
 {
 	ClientActiveObject* obj =
 		ClientActiveObject::create((ActiveObjectType) type, m_client, this);
+
 	if(obj == NULL)
 	{
 		infostream<<"ClientEnvironment::addActiveObject(): "
@@ -368,6 +374,9 @@ void ClientEnvironment::addActiveObject(u16 id, u8 type,
 	}
 
 	obj->setId(id);
+
+	if (m_client->modsLoaded())
+		m_client->getScript()->addObjectReference(dynamic_cast<ActiveObject*>(obj));
 
 	try
 	{
@@ -401,8 +410,13 @@ void ClientEnvironment::removeActiveObject(u16 id)
 {
 	// Get current attachment childs to detach them visually
 	std::unordered_set<int> attachment_childs;
-	if (auto *obj = getActiveObject(id))
+	auto *obj = getActiveObject(id);
+	if (obj) {
 		attachment_childs = obj->getAttachmentChildIds();
+
+		if (m_client->modsLoaded())
+			m_client->getScript()->removeObjectReference(dynamic_cast<ActiveObject*>(obj));
+	}
 
 	m_ao_manager.removeObject(id);
 

@@ -7,7 +7,7 @@ core.register_on_sending_chat_message(function(message)
 
 	local first_char = message:sub(1,1)
 	if first_char == "/" or first_char == "." then
-		core.display_chat_message(core.gettext("issued command: ") .. message)
+		core.display_chat_message(core.gettext("Issued command: ") .. message)
 	end
 
 	if first_char ~= "." then
@@ -18,7 +18,7 @@ core.register_on_sending_chat_message(function(message)
 	param = param or ""
 
 	if not cmd then
-		core.display_chat_message(core.gettext("-!- Empty command"))
+		core.display_chat_message("-!- " .. core.gettext("Empty command."))
 		return true
 	end
 
@@ -35,7 +35,7 @@ core.register_on_sending_chat_message(function(message)
 			core.display_chat_message(result)
 		end
 	else
-		core.display_chat_message(core.gettext("-!- Invalid command: ") .. cmd)
+		core.display_chat_message("-!- " .. core.gettext("Invalid command: ") .. cmd)
 	end
 
 	return true
@@ -69,7 +69,7 @@ core.register_chatcommand("teleport", {
 core.register_chatcommand("wielded", {
 	description = "Print itemstring of wieleded item",
 	func = function()
-		return true, core.localplayer:get_wielded_item():get_name()
+		return true, core.localplayer:get_wielded_item():to_string()
 	end
 })
 

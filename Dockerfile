@@ -1,6 +1,7 @@
-FROM alpine:3.11
+FROM alpine:3.13
 
 ENV MINETEST_GAME_VERSION master
+ENV IRRLICHT_VERSION master
 
 COPY .git /usr/src/minetest/.git
 COPY CMakeLists.txt /usr/src/minetest/CMakeLists.txt
@@ -18,9 +19,7 @@ COPY textures /usr/src/minetest/textures
 
 WORKDIR /usr/src/minetest
 
-RUN apk add --no-cache git build-base irrlicht-dev cmake bzip2-dev libpng-dev \
-		jpeg-dev libxxf86vm-dev mesa-dev sqlite-dev libogg-dev \
-		libvorbis-dev openal-soft-dev curl-dev freetype-dev zlib-dev \
+RUN apk add --no-cache git build-base cmake sqlite-dev curl-dev zlib-dev \
 		gmp-dev jsoncpp-dev postgresql-dev luajit-dev ca-certificates && \
 	git clone --depth=1 -b ${MINETEST_GAME_VERSION} https://github.com/minetest/minetest_game.git ./games/minetest_game && \
 	rm -fr ./games/minetest_game/.git
@@ -36,6 +35,9 @@ RUN git clone --recursive https://github.com/jupp0r/prometheus-cpp/ && \
 	make -j2 && \
 	make install
 
+RUN git clone --depth=1 https://github.com/minetest/irrlicht/ -b ${IRRLICHT_VERSION} && \
+	cp -r irrlicht/include /usr/include/irrlichtmt
+
 WORKDIR /usr/src/minetest
 RUN mkdir build && \
 	cd build && \
@@ -49,9 +51,9 @@ RUN mkdir build && \
 	make -j2 && \
 	make install
 
-FROM alpine:3.11
+FROM alpine:3.13
 
-RUN apk add --no-cache sqlite-libs curl gmp libstdc++ libgcc libpq luajit && \
+RUN apk add --no-cache sqlite-libs curl gmp libstdc++ libgcc libpq luajit jsoncpp && \
 	adduser -D minetest --uid 30000 -h /var/lib/minetest && \
 	chown -R minetest:minetest /var/lib/minetest
 

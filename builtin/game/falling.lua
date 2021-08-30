@@ -84,9 +84,6 @@ core.register_entity(":__builtin:falling_node", {
 			local textures
 			if def.tiles and def.tiles[1] then
 				local tile = def.tiles[1]
-				if def.drawtype == "torchlike" and def.paramtype2 ~= "wallmounted" then
-					tile = def.tiles[2] or def.tiles[1]
-				end
 				if type(tile) == "table" then
 					tile = tile.name
 				end
@@ -147,11 +144,7 @@ core.register_entity(":__builtin:falling_node", {
 
 		-- Rotate entity
 		if def.drawtype == "torchlike" then
-			if def.paramtype2 == "wallmounted" then
-				self.object:set_yaw(math.pi*0.25)
-			else
-				self.object:set_yaw(-math.pi*0.25)
-			end
+			self.object:set_yaw(math.pi*0.25)
 		elseif ((node.param2 ~= 0 or def.drawtype == "nodebox" or def.drawtype == "mesh")
 				and (def.wield_image == "" or def.wield_image == nil))
 				or def.drawtype == "signlike"
@@ -165,8 +158,12 @@ core.register_entity(":__builtin:falling_node", {
 				if euler then
 					self.object:set_rotation(euler)
 				end
-			elseif (def.paramtype2 == "wallmounted" or def.paramtype2 == "colorwallmounted") then
+			elseif (def.paramtype2 == "wallmounted" or def.paramtype2 == "colorwallmounted" or def.drawtype == "signlike") then
 				local rot = node.param2 % 8
+				if (def.drawtype == "signlike" and def.paramtype2 ~= "wallmounted" and def.paramtype2 ~= "colorwallmounted") then
+					-- Change rotation to "floor" by default for non-wallmounted paramtype2
+					rot = 1
+				end
 				local pitch, yaw, roll = 0, 0, 0
 				if def.drawtype == "nodebox" or def.drawtype == "mesh" then
 					if rot == 0 then
@@ -208,6 +205,14 @@ core.register_entity(":__builtin:falling_node", {
 					end
 				end
 				self.object:set_rotation({x=pitch, y=yaw, z=roll})
+			elseif (def.drawtype == "mesh" and def.paramtype2 == "degrotate") then
+				local p2 = (node.param2 - (def.place_param2 or 0)) % 240
+				local yaw = (p2 / 240) * (math.pi * 2)
+				self.object:set_yaw(yaw)
+			elseif (def.drawtype == "mesh" and def.paramtype2 == "colordegrotate") then
+				local p2 = (node.param2 % 32 - (def.place_param2 or 0) % 32) % 24
+				local yaw = (p2 / 24) * (math.pi * 2)
+				self.object:set_yaw(yaw)
 			end
 		end
 	end,
@@ -407,7 +412,7 @@ local function convert_to_falling_node(pos, node)
 
 	obj:get_luaentity():set_node(node, metatable)
 	core.remove_node(pos)
-	return true
+	return true, obj
 end
 
 function core.spawn_falling_node(pos)

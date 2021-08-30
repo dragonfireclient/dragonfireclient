@@ -27,8 +27,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "mapgen/mapgen.h" // Mapgen::setDefaultSettings
 #include "util/string.h"
 
-void set_default_settings(Settings *settings)
+void set_default_settings()
 {
+	Settings *settings = Settings::createLayer(SL_DEFAULTS);
+
 	// Client and server
 	settings->setDefault("language", "");
 	settings->setDefault("name", "");
@@ -54,7 +56,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("client_unload_unused_data_timeout", "600");
 	settings->setDefault("client_mapblock_limit", "7500");
 	settings->setDefault("enable_build_where_you_stand", "true");
-	settings->setDefault("curl_timeout", "5000");
+	settings->setDefault("curl_timeout", "20000");
 	settings->setDefault("curl_parallel_limit", "8");
 	settings->setDefault("curl_file_download_timeout", "300000");
 	settings->setDefault("curl_verify_cert", "true");
@@ -75,7 +77,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("cheat_menu_selected_font_color", "(255, 255, 255)");
 	settings->setDefault("cheat_menu_selected_font_color_alpha", "235");
 	settings->setDefault("cheat_menu_head_height", "50");
-	settings->setDefault("cheat_menu_entry_height", "40");
+	settings->setDefault("cheat_menu_entry_height", "35");
 	settings->setDefault("cheat_menu_entry_width", "200");
 
 	// Cheats
@@ -137,7 +139,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_zoom", "KEY_KEY_Z");
 	settings->setDefault("keymap_inventory", "KEY_KEY_I");
 	settings->setDefault("keymap_enderchest", "KEY_KEY_O");
-	settings->setDefault("keymap_special1", "KEY_KEY_E");
+	settings->setDefault("keymap_aux1", "KEY_KEY_E");
 	settings->setDefault("keymap_chat", "KEY_KEY_T");
 	settings->setDefault("keymap_cmd", "/");
 	settings->setDefault("keymap_cmd_local", ".");
@@ -154,6 +156,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_increase_volume", "");
 	settings->setDefault("keymap_decrease_volume", "");
 	settings->setDefault("keymap_cinematic", "");
+	settings->setDefault("keymap_toggle_block_bounds", "");
 	settings->setDefault("keymap_toggle_hud", "KEY_F1");
 	settings->setDefault("keymap_toggle_chat", "KEY_F2");
 	settings->setDefault("keymap_toggle_fog", "KEY_F3");
@@ -306,6 +309,7 @@ void set_default_settings(Settings *settings)
 #endif
 	settings->setDefault("enable_particles", "true");
 	settings->setDefault("arm_inertia", "true");
+	settings->setDefault("show_nametag_backgrounds", "true");
 
 	settings->setDefault("enable_minimap", "true");
 	settings->setDefault("minimap_shape_round", "false");
@@ -351,7 +355,7 @@ void set_default_settings(Settings *settings)
 
 	// Main menu
 	settings->setDefault("main_menu_path", "");
-	settings->setDefault("serverlist_file", "favoriteservers.txt");
+	settings->setDefault("serverlist_file", "favoriteservers.json");
 
 #if USE_FREETYPE
 	settings->setDefault("freetype", "true");
@@ -369,12 +373,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("mono_font_path_bold_italic", porting::getDataPath("fonts" DIR_DELIM "Cousine-BoldItalic.ttf"));
 	settings->setDefault("fallback_font_path", porting::getDataPath("fonts" DIR_DELIM "DroidSansFallbackFull.ttf"));
 
-	settings->setDefault("fallback_font_shadow", "1");
-	settings->setDefault("fallback_font_shadow_alpha", "128");
-
 	std::string font_size_str = std::to_string(TTF_DEFAULT_FONT_SIZE);
-
-	settings->setDefault("fallback_font_size", font_size_str);
 #else
 	settings->setDefault("freetype", "false");
 	settings->setDefault("font_path", porting::getDataPath("fonts" DIR_DELIM "mono_dejavu_sans"));
@@ -415,7 +414,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("max_simultaneous_block_sends_per_client", "40");
 	settings->setDefault("time_send_interval", "5");
 
-	settings->setDefault("default_game", "mineclone2");
+	settings->setDefault("default_game", "MineClone2");
 	settings->setDefault("motd", "");
 	settings->setDefault("max_users", "15");
 	settings->setDefault("creative_mode", "false");
@@ -527,10 +526,9 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("screen_h", "0");
 	settings->setDefault("fullscreen", "true");
 	settings->setDefault("touchtarget", "true");
-	settings->setDefault("TMPFolder", porting::path_cache);
 	settings->setDefault("touchscreen_threshold","20");
 	settings->setDefault("fixed_virtual_joystick", "false");
-	settings->setDefault("virtual_joystick_triggers_aux", "false");
+	settings->setDefault("virtual_joystick_triggers_aux1", "false");
 	settings->setDefault("smooth_lighting", "false");
 	settings->setDefault("max_simultaneous_block_sends_per_client", "10");
 	settings->setDefault("emergequeue_limit_diskonly", "16");

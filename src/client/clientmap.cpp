@@ -64,12 +64,13 @@ void MeshBufListList::add(scene::IMeshBuffer *buf, v3s16 position, u8 layer)
 
 ClientMap::ClientMap(
 		Client *client,
+		RenderingEngine *rendering_engine,
 		MapDrawControl &control,
 		s32 id
 ):
 	Map(client),
-	scene::ISceneNode(RenderingEngine::get_scene_manager()->getRootSceneNode(),
-		RenderingEngine::get_scene_manager(), id),
+	scene::ISceneNode(rendering_engine->get_scene_manager()->getRootSceneNode(),
+		rendering_engine->get_scene_manager(), id),
 	m_client(client),
 	m_control(control)
 {
@@ -165,6 +166,9 @@ void ClientMap::updateDrawList()
 	v3s16 p_blocks_max;
 	getBlocksInViewRange(cam_pos_nodes, &p_blocks_min, &p_blocks_max);
 
+	// Read the vision range, unless unlimited range is enabled.
+	float range = m_control.range_all ? 1e7 : m_control.wanted_range;
+
 	// Number of blocks currently loaded by the client
 	u32 blocks_loaded = 0;
 	// Number of blocks with mesh in rendering range
@@ -181,6 +185,7 @@ void ClientMap::updateDrawList()
 				m_nodedef->get(n).solidness == 2)
 			occlusion_culling_enabled = false;
 	}
+
 
 	// Uncomment to debug occluded blocks in the wireframe mode
 	// TODO: Include this as a flag for an extended debugging setting
@@ -218,32 +223,34 @@ void ClientMap::updateDrawList()
 				continue;
 			}
 
-			float range = 100000 * BS;
-			if (!m_control.range_all)
-				range = m_control.wanted_range * BS;
+			v3s16 block_coord = block->getPos();
+			v3s16 block_position = block->getPosRelative() + MAP_BLOCKSIZE / 2;
 
-			float d = 0.0;
-			if (!isBlockInSight(block->getPos(), camera_position,
-					camera_direction, camera_fov, range, &d))
-				continue;
+			// First, perform a simple distance check, with a padding of one extra block.
+			if (!m_control.range_all &&
+					block_position.getDistanceFrom(cam_pos_nodes) > range + MAP_BLOCKSIZE)
+				continue; // Out of range, skip.
 
+			// Keep the block alive as long as it is in range.
+			block->resetUsageTimer();
 			blocks_in_range_with_mesh++;
 
-			/*
-				Occlusion culling
-			*/
+			// Frustum culling
+			float d = 0.0;
+			if (!isBlockInSight(block_coord, camera_position,
+					camera_direction, camera_fov, range * BS, &d))
+				continue;
+
+			// Occlusion culling
 			if ((!m_control.range_all && d > m_control.wanted_range * BS) ||
 					(occlusion_culling_enabled && isBlockOccluded(block, cam_pos_nodes))) {
 				blocks_occlusion_culled++;
 				continue;
 			}
 
-			// This block is in range. Reset usage timer.
-			block->resetUsageTimer();
-
 			// Add to set
 			block->refGrab();
-			m_drawlist[block->getPos()] = block;
+			m_drawlist[block_coord] = block;
 
 			sector_blocks_drawn++;
 		} // foreach sectorblocks
@@ -282,8 +289,6 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 	const u32 daynight_ratio = m_client->getEnv().getDayNightRatio();
 
 	const v3f camera_position = m_camera_position;
-	const v3f camera_direction = m_camera_direction;
-	const f32 camera_fov = m_camera_fov;
 
 	/*
 		Get all blocks and draw all visible ones
@@ -310,10 +315,9 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 		if (!block->mesh)
 			continue;
 
-		float d = 0.0;
-		if (!isBlockInSight(block->getPos(), camera_position,
-				camera_direction, camera_fov, 100000 * BS, &d))
-			continue;
+		v3f block_pos_r = intToFloat(block->getPosRelative() + MAP_BLOCKSIZE / 2, BS);
+		float d = camera_position.getDistanceFrom(block_pos_r);
+		d = MYMAX(0,d - BLOCK_MAX_RADIUS);
 
 		// Mesh animation
 		if (pass == scene::ESNRP_SOLID) {
@@ -496,12 +500,12 @@ int ClientMap::getBackgroundBrightness(float max_d, u32 daylight_factor,
 	static v3f z_directions[50] = {
 		v3f(-100, 0, 0)
 	};
-	static f32 z_offsets[sizeof(z_directions)/sizeof(*z_directions)] = {
+	static f32 z_offsets[50] = {
 		-1000,
 	};
 
-	if(z_directions[0].X < -99){
-		for(u32 i=0; i<sizeof(z_directions)/sizeof(*z_directions); i++){
+	if (z_directions[0].X < -99) {
+		for (u32 i = 0; i < ARRLEN(z_directions); i++) {
 			// Assumes FOV of 72 and 16/9 aspect ratio
 			z_directions[i] = v3f(
 				0.02 * myrand_range(-100, 100),
@@ -517,7 +521,8 @@ int ClientMap::getBackgroundBrightness(float max_d, u32 daylight_factor,
 	if(sunlight_min_d > 35*BS)
 		sunlight_min_d = 35*BS;
 	std::vector<int> values;
-	for(u32 i=0; i<sizeof(z_directions)/sizeof(*z_directions); i++){
+	values.reserve(ARRLEN(z_directions));
+	for (u32 i = 0; i < ARRLEN(z_directions); i++) {
 		v3f z_dir = z_directions[i];
 		core::CMatrix4<f32> a;
 		a.buildRotateFromTo(v3f(0,1,0), z_dir);

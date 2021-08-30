@@ -66,10 +66,10 @@ int LuaLocalPlayer::l_get_velocity(lua_State *L)
 int LuaLocalPlayer::l_set_velocity(lua_State *L)
 {
 	LocalPlayer *player = getobject(L, 1);
-	
+
 	v3f pos = checkFloatPos(L, 2);
 	player->setSpeed(pos);
-	
+
 	return 0;
 }
 
@@ -84,12 +84,12 @@ int LuaLocalPlayer::l_set_yaw(lua_State *L)
 	LocalPlayer *player = getobject(L, 1);
 
 	if (lua_isnumber(L, 2)) {
-		int yaw = lua_tonumber(L, 2);
+		double yaw = lua_tonumber(L, 2);
 		player->setYaw(yaw);
 		g_game->cam_view.camera_yaw = yaw;
 		g_game->cam_view_target.camera_yaw = yaw;
 	}
-	
+
 	return 0;
 }
 
@@ -104,12 +104,12 @@ int LuaLocalPlayer::l_set_pitch(lua_State *L)
 	LocalPlayer *player = getobject(L, 1);
 
 	if (lua_isnumber(L, 2)) {
-		int pitch = lua_tonumber(L, 2);
+		double pitch = lua_tonumber(L, 2);
 		player->setPitch(pitch);
 		g_game->cam_view.camera_pitch = pitch;
 		g_game->cam_view_target.camera_pitch = pitch;
 	}
-	
+
 	return 0;
 }
 
@@ -144,7 +144,7 @@ int LuaLocalPlayer::l_set_wield_index(lua_State *L)
 {
 	LocalPlayer *player = getobject(L, 1);
 	u32 index = luaL_checkinteger(L, 2) - 1;
-	
+
 	player->setWieldIndex(index);
 	g_game->processItemSelection(&g_game->runData.new_playeritem);
 	ItemStack selected_item, hand_item;
@@ -226,7 +226,7 @@ int LuaLocalPlayer::l_get_physics_override(lua_State *L)
 	LocalPlayer *player = getobject(L, 1);
 
 	push_physics_override(L, player->physics_override_speed, player->physics_override_jump, player->physics_override_gravity, player->physics_override_sneak, player->physics_override_sneak_glitch, player->physics_override_new_move);
-	
+
 	return 1;
 }
 
@@ -234,7 +234,7 @@ int LuaLocalPlayer::l_get_physics_override(lua_State *L)
 int LuaLocalPlayer::l_set_physics_override(lua_State *L)
 {
 	LocalPlayer *player = getobject(L, 1);
-	
+
 	player->physics_override_speed = getfloatfield_default(
 			L, 2, "speed", player->physics_override_speed);
 	player->physics_override_jump = getfloatfield_default(
@@ -331,7 +331,7 @@ int LuaLocalPlayer::l_get_pos(lua_State *L)
 int LuaLocalPlayer::l_set_pos(lua_State *L)
 {
 	LocalPlayer *player = getobject(L, 1);
-	
+
 	v3f pos = checkFloatPos(L, 2);
 	player->setPosition(pos);
 	getClient(L)->sendPlayerPos();
@@ -476,13 +476,23 @@ int LuaLocalPlayer::l_hud_get(lua_State *L)
 	return 1;
 }
 
+// get_object(self)
 int LuaLocalPlayer::l_get_object(lua_State *L)
 {
 	LocalPlayer *player = getobject(L, 1);
 	ClientEnvironment &env = getClient(L)->getEnv();
 	ClientActiveObject *obj = env.getGenericCAO(player->getCAO()->getId());
 
-	ClientObjectRef::create(L, obj);
+	push_objectRef(L, obj->getId());
+
+	return 1;
+}
+
+// get_hotbar_size(self)
+int LuaLocalPlayer::l_get_hotbar_size(lua_State *L)
+{
+	LocalPlayer *player = getobject(L, 1);
+	lua_pushnumber(L, player->hud_hotbar_itemcount);
 
 	return 1;
 }
@@ -585,6 +595,7 @@ const luaL_Reg LuaLocalPlayer::methods[] = {
 		luamethod(LuaLocalPlayer, hud_change),
 		luamethod(LuaLocalPlayer, hud_get),
 		luamethod(LuaLocalPlayer, get_object),
+		luamethod(LuaLocalPlayer, get_hotbar_size),
 
 		{0, 0}
 };

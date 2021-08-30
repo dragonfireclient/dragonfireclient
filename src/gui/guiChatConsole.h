@@ -68,11 +68,11 @@ public:
 	// Irrlicht draw method
 	virtual void draw();
 
-	bool canTakeFocus(gui::IGUIElement* element) { return false; }
-
 	virtual bool OnEvent(const SEvent& event);
 
 	virtual void setVisible(bool visible);
+
+	virtual bool acceptsIME() { return true; }
 
 private:
 	void reformatConsole();

@@ -25,6 +25,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/client.h"
 #include "common/c_converter.h"
 #include "common/c_content.h"
+#include "lua_api/l_clientobject.h"
 #include "s_item.h"
 
 void ScriptApiClient::on_mods_loaded()
@@ -176,7 +177,7 @@ bool ScriptApiClient::on_punchnode(v3s16 p, MapNode node)
 
 	const NodeDefManager *ndef = getClient()->ndef();
 
-	// Get core.registered_on_punchgnode
+	// Get core.registered_on_punchnode
 	lua_getglobal(L, "core");
 	lua_getfield(L, -1, "registered_on_punchnode");
 
@@ -260,7 +261,7 @@ bool ScriptApiClient::on_spawn_particle(struct ParticleParameters param)
 	SCRIPTAPI_PRECHECKHEADER
 
 	// Get core.registered_on_play_sound
-	
+
 	lua_getglobal(L, "core");
 	lua_getfield(L, -1, "registered_on_spawn_particle");
 
@@ -285,11 +286,56 @@ bool ScriptApiClient::on_spawn_particle(struct ParticleParameters param)
 		pushnode(L, param.node, getGameDef()->ndef());
 		lua_setfield(L, -2, "node");
 	}
-	setintfield(L, -1, "node_tile", param.node_tile);	
-	
+	setintfield(L, -1, "node_tile", param.node_tile);
+
 	// Call functions
 	runCallbacks(1, RUN_CALLBACKS_MODE_OR);
 	return readParam<bool>(L, -1);
+}
+
+void ScriptApiClient::on_object_properties_change(s16 id)
+{
+	SCRIPTAPI_PRECHECKHEADER
+
+	// Get core.registered_on_object_properties_change
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "registered_on_object_properties_change");
+
+	// Push data
+	push_objectRef(L, id);
+
+	// Call functions
+	runCallbacks(1, RUN_CALLBACKS_MODE_FIRST);
+}
+
+void ScriptApiClient::on_object_hp_change(s16 id)
+{
+	SCRIPTAPI_PRECHECKHEADER
+
+	// Get core.registered_on_object_hp_change
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "registered_on_object_hp_change");
+
+	// Push data
+	push_objectRef(L, id);
+
+	// Call functions
+	runCallbacks(1, RUN_CALLBACKS_MODE_FIRST);
+}
+
+void ScriptApiClient::on_object_add(s16 id)
+{
+	SCRIPTAPI_PRECHECKHEADER
+
+	// Get core.registered_on_object_add
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "registered_on_object_add");
+
+	// Push data
+	push_objectRef(L, id);
+
+	// Call functions
+	runCallbacks(1, RUN_CALLBACKS_MODE_FIRST);
 }
 
 bool ScriptApiClient::on_inventory_open(Inventory *inventory)
@@ -308,24 +354,45 @@ bool ScriptApiClient::on_inventory_open(Inventory *inventory)
 void ScriptApiClient::open_enderchest()
 {
 	SCRIPTAPI_PRECHECKHEADER
-	
+
 	PUSH_ERROR_HANDLER(L);
 	int error_handler = lua_gettop(L) - 1;
 	lua_insert(L, error_handler);
-	
+
 	lua_getglobal(L, "core");
 	lua_getfield(L, -1, "open_enderchest");
 	if (lua_isfunction(L, -1))
 		lua_pcall(L, 0, 0, error_handler);
 }
 
+v3f ScriptApiClient::get_send_speed(v3f speed)
+{
+	SCRIPTAPI_PRECHECKHEADER
+
+	PUSH_ERROR_HANDLER(L);
+	int error_handler = lua_gettop(L) - 1;
+	lua_insert(L, error_handler);
+
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "get_send_speed");
+	if (lua_isfunction(L, -1)) {
+		speed /= BS;
+		push_v3f(L, speed);
+		lua_pcall(L, 1, 1, error_handler);
+		speed = read_v3f(L, -1);
+		speed *= BS;
+	}
+
+	return speed;
+}
+
 void ScriptApiClient::set_node_def(const ContentFeatures &f)
 {
 	SCRIPTAPI_PRECHECKHEADER
-	
+
 	lua_getglobal(L, "core");
 	lua_getfield(L, -1, "registered_nodes");
-	
+
 	push_content_features(L, f);
 	lua_setfield(L, -2, f.name.c_str());
 }
@@ -333,10 +400,10 @@ void ScriptApiClient::set_node_def(const ContentFeatures &f)
 void ScriptApiClient::set_item_def(const ItemDefinition &i)
 {
 	SCRIPTAPI_PRECHECKHEADER
-	
+
 	lua_getglobal(L, "core");
 	lua_getfield(L, -1, "registered_items");
-	
+
 	push_item_definition(L, i);
 	lua_setfield(L, -2, i.name.c_str());
 }

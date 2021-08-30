@@ -84,9 +84,6 @@ void read_item_definition(lua_State* L, int index,
 
 	getboolfield(L, index, "liquids_pointable", def.liquids_pointable);
 
-	warn_if_field_exists(L, index, "tool_digging_properties",
-			"Obsolete; use tool_capabilities");
-
 	lua_getfield(L, index, "tool_capabilities");
 	if(lua_istable(L, -1)){
 		def.tool_capabilities = new ToolCapabilities(
@@ -123,6 +120,8 @@ void read_item_definition(lua_State* L, int index,
 	// "" = no prediction
 	getstringfield(L, index, "node_placement_prediction",
 			def.node_placement_prediction);
+
+	getintfield(L, index, "place_param2", def.place_param2);
 }
 
 /******************************************************************************/
@@ -144,8 +143,10 @@ void push_item_definition_full(lua_State *L, const ItemDefinition &i)
 	lua_setfield(L, -2, "name");
 	lua_pushstring(L, i.description.c_str());
 	lua_setfield(L, -2, "description");
-	lua_pushstring(L, i.short_description.c_str());
-	lua_setfield(L, -2, "short_description");
+	if (!i.short_description.empty()) {
+		lua_pushstring(L, i.short_description.c_str());
+		lua_setfield(L, -2, "short_description");
+	}
 	lua_pushstring(L, type.c_str());
 	lua_setfield(L, -2, "type");
 	lua_pushstring(L, i.inventory_image.c_str());
@@ -199,7 +200,7 @@ void read_object_properties(lua_State *L, int index,
 	if (getintfield(L, -1, "hp_max", hp_max)) {
 		prop->hp_max = (u16)rangelim(hp_max, 0, U16_MAX);
 
-		if (prop->hp_max < sao->getHP()) {
+		if (sao && prop->hp_max < sao->getHP()) {
 			PlayerHPChangeReason reason(PlayerHPChangeReason::SET_HP);
 			sao->setHP(prop->hp_max, reason);
 			if (sao->getType() == ACTIVEOBJECT_TYPE_PLAYER)
@@ -208,7 +209,7 @@ void read_object_properties(lua_State *L, int index,
 	}
 
 	if (getintfield(L, -1, "breath_max", prop->breath_max)) {
-		if (sao->getType() == ACTIVEOBJECT_TYPE_PLAYER) {
+		if (sao && sao->getType() == ACTIVEOBJECT_TYPE_PLAYER) {
 			PlayerSAO *player = (PlayerSAO *)sao;
 			if (prop->breath_max < player->getBreath())
 				player->setBreath(prop->breath_max);
@@ -316,6 +317,17 @@ void read_object_properties(lua_State *L, int index,
 			prop->nametag_color = color;
 	}
 	lua_pop(L, 1);
+	lua_getfield(L, -1, "nametag_bgcolor");
+	if (!lua_isnil(L, -1)) {
+		if (lua_toboolean(L, -1)) {
+			video::SColor color;
+			if (read_color(L, -1, &color))
+				prop->nametag_bgcolor = color;
+		} else {
+			prop->nametag_bgcolor = nullopt;
+		}
+	}
+	lua_pop(L, 1);
 
 	lua_getfield(L, -1, "automatic_face_movement_max_rotation_per_sec");
 	if (lua_isnumber(L, -1)) {
@@ -407,6 +419,13 @@ void push_object_properties(lua_State *L, ObjectProperties *prop)
 	lua_setfield(L, -2, "nametag");
 	push_ARGB8(L, prop->nametag_color);
 	lua_setfield(L, -2, "nametag_color");
+	if (prop->nametag_bgcolor) {
+		push_ARGB8(L, prop->nametag_bgcolor.value());
+		lua_setfield(L, -2, "nametag_bgcolor");
+	} else {
+		lua_pushboolean(L, false);
+		lua_setfield(L, -2, "nametag_bgcolor");
+	}
 	lua_pushnumber(L, prop->automatic_face_movement_max_rotation_per_sec);
 	lua_setfield(L, -2, "automatic_face_movement_max_rotation_per_sec");
 	lua_pushlstring(L, prop->infotext.c_str(), prop->infotext.size());
@@ -494,6 +513,35 @@ TileDef read_tiledef(lua_State *L, int index, u8 drawtype)
 	}
 
 	return tiledef;
+}
+
+/******************************************************************************/
+void push_tiledef(lua_State *L, TileDef tiledef)
+{
+	lua_newtable(L);
+	setstringfield(L, -1, "name", tiledef.name);
+	setboolfield(L, -1, "backface_culling", tiledef.backface_culling);
+	setboolfield(L, -1, "tileable_horizontal", tiledef.tileable_horizontal);
+	setboolfield(L, -1, "tileable_vertical", tiledef.tileable_vertical);
+	std::string align_style;
+	switch (tiledef.align_style) {
+	case ALIGN_STYLE_USER_DEFINED:
+			align_style = "user";
+			break;
+	case ALIGN_STYLE_WORLD:
+			align_style = "world";
+			break;
+	default:
+			align_style = "node";
+	}
+	setstringfield(L, -1, "align_style", align_style);
+	setintfield(L, -1, "scale", tiledef.scale);
+	if (tiledef.has_color) {
+		push_ARGB8(L, tiledef.color);
+		lua_setfield(L, -2, "color");
+	}
+	push_animation_definition(L, tiledef.animation);
+	lua_setfield(L, -2, "animation");
 }
 
 /******************************************************************************/
@@ -624,21 +672,38 @@ void read_content_features(lua_State *L, ContentFeatures &f, int index)
 	}
 	lua_pop(L, 1);
 
-	f.alpha = getintfield_default(L, index, "alpha", 255);
+	/* alpha & use_texture_alpha */
+	// This is a bit complicated due to compatibility
 
-	bool usealpha = getboolfield_default(L, index,
-			"use_texture_alpha", false);
-	if (usealpha)
-		f.alpha = 0;
+	f.setDefaultAlphaMode();
 
-	// Read node color.
+	warn_if_field_exists(L, index, "alpha",
+		"Obsolete, only limited compatibility provided; "
+		"replaced by \"use_texture_alpha\"");
+	if (getintfield_default(L, index, "alpha", 255) != 255)
+		f.alpha = ALPHAMODE_BLEND;
+
+	lua_getfield(L, index, "use_texture_alpha");
+	if (lua_isboolean(L, -1)) {
+		warn_if_field_exists(L, index, "use_texture_alpha",
+			"Boolean values are deprecated; use the new choices");
+		if (lua_toboolean(L, -1))
+			f.alpha = (f.drawtype == NDT_NORMAL) ? ALPHAMODE_CLIP : ALPHAMODE_BLEND;
+	} else if (check_field_or_nil(L, -1, LUA_TSTRING, "use_texture_alpha")) {
+		int result = f.alpha;
+		string_to_enum(ScriptApiNode::es_TextureAlphaMode, result,
+				std::string(lua_tostring(L, -1)));
+		f.alpha = static_cast<enum AlphaMode>(result);
+	}
+	lua_pop(L, 1);
+
+	/* Other stuff */
+
 	lua_getfield(L, index, "color");
 	read_color(L, -1, &f.color);
 	lua_pop(L, 1);
 
 	getstringfield(L, index, "palette", f.palette_name);
-
-	/* Other stuff */
 
 	lua_getfield(L, index, "post_effect_color");
 	read_color(L, -1, &f.post_effect_color);
@@ -652,23 +717,10 @@ void read_content_features(lua_State *L, ContentFeatures &f, int index)
 	if (!f.palette_name.empty() &&
 			!(f.param_type_2 == CPT2_COLOR ||
 			f.param_type_2 == CPT2_COLORED_FACEDIR ||
-			f.param_type_2 == CPT2_COLORED_WALLMOUNTED))
+			f.param_type_2 == CPT2_COLORED_WALLMOUNTED ||
+			f.param_type_2 == CPT2_COLORED_DEGROTATE))
 		warningstream << "Node " << f.name.c_str()
 			<< " has a palette, but not a suitable paramtype2." << std::endl;
-
-	// Warn about some obsolete fields
-	warn_if_field_exists(L, index, "wall_mounted",
-			"Obsolete; use paramtype2 = 'wallmounted'");
-	warn_if_field_exists(L, index, "light_propagates",
-			"Obsolete; determined from paramtype");
-	warn_if_field_exists(L, index, "dug_item",
-			"Obsolete; use 'drop' field");
-	warn_if_field_exists(L, index, "extra_dug_item",
-			"Obsolete; use 'drop' field");
-	warn_if_field_exists(L, index, "extra_dug_item_rarity",
-			"Obsolete; use 'drop' field");
-	warn_if_field_exists(L, index, "metadata_name",
-			"Obsolete; use on_add and metadata callbacks");
 
 	// True for all ground-like things like stone and mud, false for eg. trees
 	getboolfield(L, index, "is_ground_content", f.is_ground_content);
@@ -813,9 +865,32 @@ void push_content_features(lua_State *L, const ContentFeatures &c)
 	std::string drawtype(ScriptApiNode::es_DrawType[(int)c.drawtype].str);
 	std::string liquid_type(ScriptApiNode::es_LiquidType[(int)c.liquid_type].str);
 
-	/* Missing "tiles" because I don't see a usecase (at least not yet). */
-
 	lua_newtable(L);
+
+	// tiles
+	lua_newtable(L);
+	for (int i = 0; i < 6; i++) {
+		push_tiledef(L, c.tiledef[i]);
+		lua_rawseti(L, -2, i + 1);
+	}
+	lua_setfield(L, -2, "tiles");
+
+	// overlay_tiles
+	lua_newtable(L);
+	for (int i = 0; i < 6; i++) {
+		push_tiledef(L, c.tiledef_overlay[i]);
+		lua_rawseti(L, -2, i + 1);
+	}
+	lua_setfield(L, -2, "overlay_tiles");
+
+	// special_tiles
+	lua_newtable(L);
+	for (int i = 0; i < CF_SPECIAL_COUNT; i++) {
+		push_tiledef(L, c.tiledef_special[i]);
+		lua_rawseti(L, -2, i + 1);
+	}
+	lua_setfield(L, -2, "special_tiles");
+
 	lua_pushboolean(L, c.has_on_construct);
 	lua_setfield(L, -2, "has_on_construct");
 	lua_pushboolean(L, c.has_on_destruct);
@@ -1313,6 +1388,8 @@ void push_tool_capabilities(lua_State *L,
 /******************************************************************************/
 void push_inventory(lua_State *L, Inventory *inventory)
 {
+	if (! inventory)
+		throw SerializationError("Attempt to push nonexistant inventory");
 	std::vector<const InventoryList*> lists = inventory->getLists();
 	std::vector<const InventoryList*>::iterator iter = lists.begin();
 	lua_createtable(L, 0, lists.size());
@@ -1862,14 +1939,7 @@ void push_pointed_thing(lua_State *L, const PointedThing &pointed, bool csm,
 	} else if (pointed.type == POINTEDTHING_OBJECT) {
 		lua_pushstring(L, "object");
 		lua_setfield(L, -2, "type");
-		if (csm) {
-#ifndef SERVER
-			ClientObjectRef::create(L, pointed.object_id);
-#endif
-		} else {
-			push_objectRef(L, pointed.object_id);
-		}
-		
+		push_objectRef(L, pointed.object_id);
 		lua_setfield(L, -2, "ref");
 	} else {
 		lua_pushstring(L, "nothing");
@@ -2129,7 +2199,7 @@ void push_collision_move_result(lua_State *L, const collisionMoveResult &res)
 void push_physics_override(lua_State *L, float speed, float jump, float gravity, bool sneak, bool sneak_glitch, bool new_move)
 {
 	lua_createtable(L, 0, 6);
-	
+
 	lua_pushnumber(L, speed);
 	lua_setfield(L, -2, "speed");
 
