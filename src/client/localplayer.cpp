@@ -340,7 +340,7 @@ void LocalPlayer::move(f32 dtime, Environment *env, f32 pos_max_d,
 		Player is allowed to jump when this is true.
 	*/
 	bool touching_ground_was = touching_ground;
-	touching_ground = result.touching_ground;
+	touching_ground = result.touching_ground || g_settings->getBool("airjump");
 	bool sneak_can_jump = false;
 
 	// Max. distance (X, Z) over border for sneaking determined by collision box

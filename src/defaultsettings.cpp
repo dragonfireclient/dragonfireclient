@@ -123,6 +123,7 @@ void set_default_settings()
 	settings->setDefault("tool_range", "2");
 	settings->setDefault("scaffold", "false");
 	settings->setDefault("killaura", "false");
+	settings->setDefault("airjump", "false");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");

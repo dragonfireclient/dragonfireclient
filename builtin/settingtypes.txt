@@ -2323,3 +2323,5 @@ player_esp_color (PlayerESP Color) v3f 0, 255, 0
 tool_range (Additional Tool Range) int 2
 
 reach (Reach) bool false
+
+airjump (AirJump) bool false

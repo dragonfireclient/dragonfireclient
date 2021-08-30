@@ -12,6 +12,7 @@ core.cheats = {
 		["NoSlow"] = "no_slow",
 		["JetPack"] = "jetpack",
 		["AntiSlip"] = "antislip",
+		["AirJump"] = "airjump",
 	},
 	["Render"] = {
 		["Xray"] = "xray",
