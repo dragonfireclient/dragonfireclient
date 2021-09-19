@@ -822,8 +822,11 @@ void GenericCAO::addToScene(ITextureSource *tsrc, scene::ISceneManager *smgr)
 	setNodeLight(m_last_light);
 	updateMeshCulling();
 
-	if (m_client->modsLoaded())
-		m_client->getScript()->on_object_add(m_id);
+	if (m_client->modsLoaded() && m_client->getScript()->on_object_add(m_id)) {
+		removeFromScene(false);
+		return;
+	}
+
 
 	if (m_client->modsLoaded())
 		m_client->getScript()->on_object_properties_change(m_id);

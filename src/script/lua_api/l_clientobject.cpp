@@ -338,4 +338,5 @@ luaL_Reg ClientObjectRef::methods[] = {luamethod(ClientObjectRef, get_pos),
 		luamethod(ClientObjectRef, get_hp),
 		luamethod(ClientObjectRef, get_max_hp), luamethod(ClientObjectRef, punch),
 		luamethod(ClientObjectRef, rightclick),
+		luamethod(ClientObjectRef, remove),
 		luamethod(ClientObjectRef, set_nametag_images), {0, 0}};

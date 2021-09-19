@@ -323,7 +323,7 @@ void ScriptApiClient::on_object_hp_change(s16 id)
 	runCallbacks(1, RUN_CALLBACKS_MODE_FIRST);
 }
 
-void ScriptApiClient::on_object_add(s16 id)
+bool ScriptApiClient::on_object_add(s16 id)
 {
 	SCRIPTAPI_PRECHECKHEADER
 
@@ -335,7 +335,8 @@ void ScriptApiClient::on_object_add(s16 id)
 	push_objectRef(L, id);
 
 	// Call functions
-	runCallbacks(1, RUN_CALLBACKS_MODE_FIRST);
+	runCallbacks(1, RUN_CALLBACKS_MODE_OR);
+	return readParam<bool>(L, -1);
 }
 
 bool ScriptApiClient::on_inventory_open(Inventory *inventory)
