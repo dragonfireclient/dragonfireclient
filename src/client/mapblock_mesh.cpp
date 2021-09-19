@@ -410,20 +410,20 @@ static void getNodeTextureCoords(v3f base, const v3f &scale, const v3s16 &dir, f
 	if (dir.X > 0 || dir.Y != 0 || dir.Z < 0)
 		base -= scale;
 	if (dir == v3s16(0,0,1)) {
-		*u = -base.X - 1;
-		*v = -base.Y - 1;
+		*u = -base.X;
+		*v = -base.Y;
 	} else if (dir == v3s16(0,0,-1)) {
 		*u = base.X + 1;
-		*v = -base.Y - 2;
+		*v = -base.Y - 1;
 	} else if (dir == v3s16(1,0,0)) {
 		*u = base.Z + 1;
-		*v = -base.Y - 2;
-	} else if (dir == v3s16(-1,0,0)) {
-		*u = -base.Z - 1;
 		*v = -base.Y - 1;
+	} else if (dir == v3s16(-1,0,0)) {
+		*u = -base.Z;
+		*v = -base.Y;
 	} else if (dir == v3s16(0,1,0)) {
 		*u = base.X + 1;
-		*v = -base.Z - 2;
+		*v = -base.Z - 1;
 	} else if (dir == v3s16(0,-1,0)) {
 		*u = base.X + 1;
 		*v = base.Z + 1;
@@ -805,7 +805,7 @@ static void getTileInfo(
 	VoxelManipulator &vmanip = data->m_vmanip;
 	const NodeDefManager *ndef = data->m_client->ndef();
 	v3s16 blockpos_nodes = data->m_blockpos * MAP_BLOCKSIZE;
-	
+
 	const MapNode &n0 = vmanip.getNodeRefUnsafe(blockpos_nodes + p);
 
 	content_t c0 = n0.getContent();
@@ -894,6 +894,9 @@ static void updateFastFaceRow(
 		g_settings->getBool("enable_shaders") &&
 		g_settings->getBool("enable_waving_water");
 
+	static thread_local const bool force_not_tiling =
+			g_settings->getBool("enable_dynamic_shadows");
+
 	v3s16 p = startpos;
 
 	u16 continuous_tiles_count = 1;
@@ -925,7 +928,7 @@ static void updateFastFaceRow(
 		// the face must be drawn anyway
 		if (j != MAP_BLOCKSIZE - 1) {
 			p += translate_dir;
-			
+
 			getTileInfo(data, p, face_dir,
 					next_makes_face, next_p_corrected,
 					next_face_dir_corrected, next_lights,
@@ -933,8 +936,9 @@ static void updateFastFaceRow(
 					next_tile,
 					xray,
 					xraySet);
-			
-			if (next_makes_face == makes_face
+
+			if (!force_not_tiling
+					&& next_makes_face == makes_face
 					&& next_p_corrected == p_corrected + translate_dir
 					&& next_face_dir_corrected == face_dir_corrected
 					&& memcmp(next_lights, lights, sizeof(lights)) == 0
@@ -1077,16 +1081,16 @@ MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
 	std::set<content_t> xraySet, nodeESPSet;
 	if (xray)
 		xraySet = splitToContentT(g_settings->get("xray_nodes"), data->m_client->ndef());
-	
+
 	nodeESPSet = splitToContentT(g_settings->get("node_esp_nodes"), data->m_client->ndef());
-	
+
 	/*
 		We are including the faces of the trailing edges of the block.
 		This means that when something changes, the caller must
 		also update the meshes of the blocks at the leading edges.
 
 		NOTE: This is the slowest part of this method.
-	*/	
+	*/
 	{
 		// 4-23ms for MAP_BLOCKSIZE=16  (NOTE: probably outdated)
 		//TimeTaker timer2("updateAllFastFaceRows()");

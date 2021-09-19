@@ -70,12 +70,12 @@ end
 
 -- Table of possible dirs
 local facedir_to_dir = {
-	{x= 0, y=0,  z= 1},
-	{x= 1, y=0,  z= 0},
-	{x= 0, y=0,  z=-1},
-	{x=-1, y=0,  z= 0},
-	{x= 0, y=-1, z= 0},
-	{x= 0, y=1,  z= 0},
+	vector.new( 0,  0,  1),
+	vector.new( 1,  0,  0),
+	vector.new( 0,  0, -1),
+	vector.new(-1,  0,  0),
+	vector.new( 0, -1,  0),
+	vector.new( 0,  1,  0),
 }
 -- Mapping from facedir value to index in facedir_to_dir.
 local facedir_to_dir_map = {
@@ -114,12 +114,12 @@ end
 
 -- table of dirs in wallmounted order
 local wallmounted_to_dir = {
-	[0] = {x = 0, y = 1, z = 0},
-	{x =  0, y = -1, z =  0},
-	{x =  1, y =  0, z =  0},
-	{x = -1, y =  0, z =  0},
-	{x =  0, y =  0, z =  1},
-	{x =  0, y =  0, z = -1},
+	[0] = vector.new( 0,  1,  0),
+	vector.new( 0, -1,  0),
+	vector.new( 1,  0,  0),
+	vector.new(-1,  0,  0),
+	vector.new( 0,  0,  1),
+	vector.new( 0,  0, -1),
 }
 function core.wallmounted_to_dir(wallmounted)
 	return wallmounted_to_dir[wallmounted % 8]
@@ -130,7 +130,7 @@ function core.dir_to_yaw(dir)
 end
 
 function core.yaw_to_dir(yaw)
-	return {x = -math.sin(yaw), y = 0, z = math.cos(yaw)}
+	return vector.new(-math.sin(yaw), 0, math.cos(yaw))
 end
 
 function core.is_colored_paramtype(ptype)
@@ -151,6 +151,18 @@ function core.strip_param2_color(param2, paramtype2)
 	end
 	-- paramtype2 == "color" requires no modification.
 	return param2
+end
+
+local function has_all_groups(tbl, required_groups)
+	if type(required_groups) == "string" then
+		return (tbl[required_groups] or 0) ~= 0
+	end
+	for _, group in ipairs(required_groups) do
+		if (tbl[group] or 0) == 0 then
+			return false
+		end
+	end
+	return true
 end
 
 function core.get_node_drops(node, toolname)
@@ -192,7 +204,7 @@ function core.get_node_drops(node, toolname)
 		if item.rarity ~= nil then
 			good_rarity = item.rarity < 1 or math.random(item.rarity) == 1
 		end
-		if item.tools ~= nil then
+		if item.tools ~= nil or item.tool_groups ~= nil then
 			good_tool = false
 		end
 		if item.tools ~= nil and toolname then
@@ -204,6 +216,27 @@ function core.get_node_drops(node, toolname)
 				end
 				if good_tool then
 					break
+				end
+			end
+		end
+		if item.tool_groups ~= nil and toolname then
+			local tooldef = core.registered_items[toolname]
+			if tooldef ~= nil and type(tooldef.groups) == "table" then
+				if type(item.tool_groups) == "string" then
+					-- tool_groups can be a string which specifies the required group
+					good_tool = core.get_item_group(toolname, item.tool_groups) ~= 0
+				else
+					-- tool_groups can be a list of sufficient requirements.
+					-- i.e. if any item in the list can be satisfied then the tool is good
+					assert(type(item.tool_groups) == "table")
+					for _, required_groups in ipairs(item.tool_groups) do
+						-- required_groups can be either a string (a single group),
+						-- or an array of strings where all must be in tooldef.groups
+						good_tool = has_all_groups(tooldef.groups, required_groups)
+						if good_tool then
+							break
+						end
+					end
 				end
 			end
 		end
@@ -268,12 +301,12 @@ function core.item_place_node(itemstack, placer, pointed_thing, param2,
 	end
 
 	-- Place above pointed node
-	local place_to = {x = above.x, y = above.y, z = above.z}
+	local place_to = vector.new(above)
 
 	-- If node under is buildable_to, place into it instead (eg. snow)
 	if olddef_under.buildable_to then
 		log("info", "node under is buildable to")
-		place_to = {x = under.x, y = under.y, z = under.z}
+		place_to = vector.new(under)
 	end
 
 	if core.is_protected(place_to, playername) then
@@ -293,22 +326,14 @@ function core.item_place_node(itemstack, placer, pointed_thing, param2,
 		newnode.param2 = def.place_param2
 	elseif (def.paramtype2 == "wallmounted" or
 			def.paramtype2 == "colorwallmounted") and not param2 then
-		local dir = {
-			x = under.x - above.x,
-			y = under.y - above.y,
-			z = under.z - above.z
-		}
+		local dir = vector.subtract(under, above)
 		newnode.param2 = core.dir_to_wallmounted(dir)
 	-- Calculate the direction for furnaces and chests and stuff
 	elseif (def.paramtype2 == "facedir" or
 			def.paramtype2 == "colorfacedir") and not param2 then
 		local placer_pos = placer and placer:get_pos()
 		if placer_pos then
-			local dir = {
-				x = above.x - placer_pos.x,
-				y = above.y - placer_pos.y,
-				z = above.z - placer_pos.z
-			}
+			local dir = vector.subtract(above, placer_pos)
 			newnode.param2 = core.dir_to_facedir(dir)
 			log("info", "facedir: " .. newnode.param2)
 		end
@@ -362,7 +387,7 @@ function core.item_place_node(itemstack, placer, pointed_thing, param2,
 	-- Run callback
 	if def.after_place_node and not prevent_after_place then
 		-- Deepcopy place_to and pointed_thing because callback can modify it
-		local place_to_copy = {x=place_to.x, y=place_to.y, z=place_to.z}
+		local place_to_copy = vector.new(place_to)
 		local pointed_thing_copy = copy_pointed_thing(pointed_thing)
 		if def.after_place_node(place_to_copy, placer, itemstack,
 				pointed_thing_copy) then
@@ -373,7 +398,7 @@ function core.item_place_node(itemstack, placer, pointed_thing, param2,
 	-- Run script hook
 	for _, callback in ipairs(core.registered_on_placenodes) do
 		-- Deepcopy pos, node and pointed_thing because callback can modify them
-		local place_to_copy = {x=place_to.x, y=place_to.y, z=place_to.z}
+		local place_to_copy = vector.new(place_to)
 		local newnode_copy = {name=newnode.name, param1=newnode.param1, param2=newnode.param2}
 		local oldnode_copy = {name=oldnode.name, param1=oldnode.param1, param2=oldnode.param2}
 		local pointed_thing_copy = copy_pointed_thing(pointed_thing)
@@ -519,11 +544,11 @@ function core.handle_node_drops(pos, drops, digger)
 	for _, dropped_item in pairs(drops) do
 		local left = give_item(dropped_item)
 		if not left:is_empty() then
-			local p = {
-				x = pos.x + math.random()/2-0.25,
-				y = pos.y + math.random()/2-0.25,
-				z = pos.z + math.random()/2-0.25,
-			}
+			local p = vector.offset(pos,
+				math.random()/2-0.25,
+				math.random()/2-0.25,
+				math.random()/2-0.25
+			)
 			core.add_item(p, left)
 		end
 	end
@@ -582,7 +607,7 @@ function core.node_dig(pos, node, digger)
 	if def and def.preserve_metadata then
 		local oldmeta = core.get_meta(pos):to_table().fields
 		-- Copy pos and node because the callback can modify them.
-		local pos_copy = {x=pos.x, y=pos.y, z=pos.z}
+		local pos_copy = vector.new(pos)
 		local node_copy = {name=node.name, param1=node.param1, param2=node.param2}
 		local drop_stacks = {}
 		for k, v in pairs(drops) do
@@ -614,7 +639,7 @@ function core.node_dig(pos, node, digger)
 	-- Run callback
 	if def and def.after_dig_node then
 		-- Copy pos and node because callback can modify them
-		local pos_copy = {x=pos.x, y=pos.y, z=pos.z}
+		local pos_copy = vector.new(pos)
 		local node_copy = {name=node.name, param1=node.param1, param2=node.param2}
 		def.after_dig_node(pos_copy, node_copy, oldmetadata, digger)
 	end
@@ -627,7 +652,7 @@ function core.node_dig(pos, node, digger)
 		end
 
 		-- Copy pos and node because callback can modify them
-		local pos_copy = {x=pos.x, y=pos.y, z=pos.z}
+		local pos_copy = vector.new(pos)
 		local node_copy = {name=node.name, param1=node.param1, param2=node.param2}
 		callback(pos_copy, node_copy, digger)
 	end
@@ -670,7 +695,7 @@ core.nodedef_default = {
 	groups = {},
 	inventory_image = "",
 	wield_image = "",
-	wield_scale = {x=1,y=1,z=1},
+	wield_scale = vector.new(1, 1, 1),
 	stack_max = default_stack_max,
 	usable = false,
 	liquids_pointable = false,
@@ -729,7 +754,7 @@ core.craftitemdef_default = {
 	groups = {},
 	inventory_image = "",
 	wield_image = "",
-	wield_scale = {x=1,y=1,z=1},
+	wield_scale = vector.new(1, 1, 1),
 	stack_max = default_stack_max,
 	liquids_pointable = false,
 	tool_capabilities = nil,
@@ -748,7 +773,7 @@ core.tooldef_default = {
 	groups = {},
 	inventory_image = "",
 	wield_image = "",
-	wield_scale = {x=1,y=1,z=1},
+	wield_scale = vector.new(1, 1, 1),
 	stack_max = 1,
 	liquids_pointable = false,
 	tool_capabilities = nil,
@@ -767,7 +792,7 @@ core.noneitemdef_default = {  -- This is used for the hand and unknown items
 	groups = {},
 	inventory_image = "",
 	wield_image = "",
-	wield_scale = {x=1,y=1,z=1},
+	wield_scale = vector.new(1, 1, 1),
 	stack_max = default_stack_max,
 	liquids_pointable = false,
 	tool_capabilities = nil,

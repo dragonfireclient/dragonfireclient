@@ -122,7 +122,7 @@ void               push_object_properties    (lua_State *L,
 
 void               push_inventory       	 (lua_State *L,
                                               Inventory *inventory);
-                                              
+
 void               push_inventory_list       (lua_State *L,
                                               Inventory *inv,
                                               const char *name);
@@ -197,14 +197,14 @@ void               read_json_value           (lua_State *L, Json::Value &root,
 void push_pointed_thing(lua_State *L, const PointedThing &pointed, bool csm =
 	false, bool hitpoint = false);
 
-void               push_objectRef            (lua_State *L, const u16 id);
+void push_objectRef            (lua_State *L, const u16 id);
 
-void               read_hud_element          (lua_State *L, HudElement *elem);
+void read_hud_element          (lua_State *L, HudElement *elem);
 
-void               push_hud_element          (lua_State *L, HudElement *elem);
+void push_hud_element          (lua_State *L, HudElement *elem);
 
-HudElementStat     read_hud_change           (lua_State *L, HudElement *elem, void **value);
+bool read_hud_change           (lua_State *L, HudElementStat &stat, HudElement *elem, void **value);
 
-void               push_collision_move_result(lua_State *L, const collisionMoveResult &res);
+void push_collision_move_result(lua_State *L, const collisionMoveResult &res);
 
-void			   push_physics_override	 (lua_State *L, float speed, float jump, float gravity, bool sneak, bool sneak_glitch, bool new_move);
+void push_physics_override	   (lua_State *L, float speed, float jump, float gravity, bool sneak, bool sneak_glitch, bool new_move);

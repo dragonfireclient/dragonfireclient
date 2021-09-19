@@ -684,6 +684,7 @@ public:
 	bool handleCallbacks();
 	void processQueues();
 	void updateProfilers(const RunStats &stats, const FpsControl &draw_times, f32 dtime);
+	void updateDebugState();
 	void updateStats(RunStats *stats, const FpsControl &draw_times, f32 dtime);
 	void updateProfilerGraphs(ProfilerGraph *graph);
 
@@ -706,6 +707,7 @@ public:
 	void toggleScaffold();
 	void toggleNextItem();
 	void toggleCinematic();
+	void toggleBlockBounds();
 	void toggleAutoforward();
 
 	void toggleMinimap(bool shift_pressed);
@@ -752,6 +754,7 @@ public:
 			const ItemStack &selected_item, const ItemStack &hand_item, f32 dtime);
 	void updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 			const CameraOrientation &cam);
+	void updateShadows();
 
 	// Misc
 	void limitFps(FpsControl *fps_timings, f32 *dtime);

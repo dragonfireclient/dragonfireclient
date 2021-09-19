@@ -25,6 +25,14 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <string>
 #include "irrlichttypes_extrabloated.h"
 #include "debug.h"
+#include "client/render/core.h"
+// include the shadow mapper classes too
+#include "client/shadows/dynamicshadowsrender.h"
+
+struct VideoDriverInfo {
+	std::string name;
+	std::string friendly_name;
+};
 
 class ITextureSource;
 class Camera;
@@ -45,8 +53,7 @@ public:
 
 	video::IVideoDriver *getVideoDriver() { return driver; }
 
-	static const char *getVideoDriverName(irr::video::E_DRIVER_TYPE type);
-	static const char *getVideoDriverFriendlyName(irr::video::E_DRIVER_TYPE type);
+	static const VideoDriverInfo &getVideoDriverInfo(irr::video::E_DRIVER_TYPE type);
 	static float getDisplayDensity();
 	static v2u32 getDisplaySize();
 
@@ -113,7 +120,13 @@ public:
 		return m_device->run();
 	}
 
-	static std::vector<core::vector3d<u32>> getSupportedVideoModes();
+	// FIXME: this is still global when it shouldn't be
+	static ShadowRenderer *get_shadow_renderer()
+	{
+		if (s_singleton && s_singleton->core)
+			return s_singleton->core->get_shadow_renderer();
+		return nullptr;
+	}
 	static std::vector<irr::video::E_DRIVER_TYPE> getSupportedVideoDrivers();
 
 private:

@@ -23,6 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <IMeshManipulator.h>
 #include <IAnimatedMeshSceneNode.h>
 #include "client/client.h"
+#include "client/renderingengine.h"
 #include "client/sound.h"
 #include "client/tile.h"
 #include "util/basic_macros.h"
@@ -346,18 +347,6 @@ void GenericCAO::initialize(const std::string &data)
 	infostream<<"GenericCAO: Got init data"<<std::endl;
 	processInitData(data);
 
-	if (m_is_player) {
-		// Check if it's the current player
-		LocalPlayer *player = m_env->getLocalPlayer();
-		if (player && strcmp(player->getName(), m_name.c_str()) == 0) {
-			m_is_local_player = true;
-			m_is_visible = false;
-			player->setCAO(this);
-
-			m_prop.show_on_minimap = false;
-		}
-	}
-
 	m_enable_shaders = g_settings->getBool("enable_shaders");
 }
 
@@ -379,6 +368,16 @@ void GenericCAO::processInitData(const std::string &data)
 	m_position = readV3F32(is);
 	m_rotation = readV3F32(is);
 	m_hp = readU16(is);
+
+	if (m_is_player) {
+		// Check if it's the current player
+		LocalPlayer *player = m_env->getLocalPlayer();
+		if (player && strcmp(player->getName(), m_name.c_str()) == 0) {
+			m_is_local_player = true;
+			m_is_visible = false;
+			player->setCAO(this);
+		}
+	}
 
 	const u8 num_messages = readU8(is);
 
@@ -559,6 +558,9 @@ void GenericCAO::removeFromScene(bool permanent)
 
 		clearParentAttachment();
 	}
+
+	if (auto shadow = RenderingEngine::get_shadow_renderer())
+		shadow->removeNodeFromShadowList(getSceneNode());
 
 	if (m_meshnode) {
 		m_meshnode->remove();
@@ -808,10 +810,13 @@ void GenericCAO::addToScene(ITextureSource *tsrc, scene::ISceneManager *smgr)
 	if (m_reset_textures_timer < 0)
 		updateTextures(m_current_texture_modifier);
 
-	scene::ISceneNode *node = getSceneNode();
+	if (scene::ISceneNode *node = getSceneNode()) {
+		if (m_matrixnode)
+			node->setParent(m_matrixnode);
 
-	if (node && m_matrixnode)
-		node->setParent(m_matrixnode);
+		if (auto shadow = RenderingEngine::get_shadow_renderer())
+			shadow->addNodeToShadowList(node);
+	}
 
 	updateNametag();
 	updateMarker();
@@ -1011,9 +1016,7 @@ void GenericCAO::step(float dtime, ClientEnvironment *env)
 			const PlayerControl &controls = player->getPlayerControl();
 
 			bool walking = false;
-			if ((controls.up || controls.down || controls.left || controls.right ||
-					controls.forw_move_joystick_axis != 0.f ||
-					controls.sidew_move_joystick_axis != 0.f) && ! g_settings->getBool("freecam"))
+			if (controls.movement_speed > 0.001f && ! g_settings->getBool("freecam"))
 				walking = true;
 
 			f32 new_speed = player->local_animation_speed;
@@ -1028,9 +1031,10 @@ void GenericCAO::step(float dtime, ClientEnvironment *env)
 					g_settings->getBool("free_move") &&
 					m_client->checkLocalPrivilege("fly")))) || g_settings->getBool("freecam"))
 					new_speed *= 1.5;
-			// slowdown speed if sneeking
+			// slowdown speed if sneaking
 			if (controls.sneak && walking && ! g_settings->getBool("no_slow"))
 				new_speed /= 2;
+			new_speed *= controls.movement_speed;
 
 			if (walking && (controls.dig || controls.place)) {
 				new_anim = player->local_animations[3];
@@ -1744,6 +1748,7 @@ void GenericCAO::processMessage(const std::string &data)
 
 		m_tx_basepos = p;
 		m_anim_num_frames = num_frames;
+		m_anim_frame = 0;
 		m_anim_framelength = framelength;
 		m_tx_select_horiz_by_yawpitch = select_horiz_by_yawpitch;
 

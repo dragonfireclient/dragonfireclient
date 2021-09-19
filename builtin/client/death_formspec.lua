@@ -1,8 +1,8 @@
 local death_formspec = ""
 	.. "size[11,5.5]"
 	.. "bgcolor[#320000b4;true]"
-	.. "label[4.85,1.35;" .. "You died" .. "]"
-	.. "button_exit[2,3;3,0.5;btn_respawn;" .. "Respawn" .. "]"
+	.. "label[4.85,1.35;" .. fgettext("You died") .. "]"
+	.. "button_exit[2,3;3,0.5;btn_respawn;" .. fgettext("Respawn") .. "]"
 	.. "button_exit[6,3;3,0.5;btn_ghost_mode;" .. "Ghost Mode" .. "]"
 	.. "set_focus[btn_respawn;true]"
 

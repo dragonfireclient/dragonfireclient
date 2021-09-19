@@ -178,11 +178,7 @@ void Client::loadMods()
 
 	// Load "mod" scripts
 	for (const ModSpec &mod : m_mods) {
-		if (!string_allowed(mod.name, MODNAME_ALLOWED_CHARS)) {
-			throw ModError("Error loading mod \"" + mod.name +
-				"\": Mod name does not follow naming conventions: "
-					"Only characters [a-z0-9_] are allowed.");
-		}
+		mod.checkAndLog();
 		scanModIntoMemory(mod.name, mod.path);
 	}
 
@@ -213,6 +209,9 @@ void Client::scanModSubfolder(const std::string &mod_name, const std::string &mo
 	std::string full_path = mod_path + DIR_DELIM + mod_subpath;
 	std::vector<fs::DirListNode> mod = fs::GetDirListing(full_path);
 	for (const fs::DirListNode &j : mod) {
+		if (j.name[0] == '.')
+			continue;
+
 		if (j.dir) {
 			scanModSubfolder(mod_name, mod_path, mod_subpath + j.name + DIR_DELIM);
 			continue;
@@ -559,6 +558,29 @@ void Client::step(float dtime)
 			m_media_downloader = NULL;
 		}
 	}
+	{
+		// Acknowledge dynamic media downloads to server
+		std::vector<u32> done;
+		for (auto it = m_pending_media_downloads.begin();
+				it != m_pending_media_downloads.end();) {
+			assert(it->second->isStarted());
+			it->second->step(this);
+			if (it->second->isDone()) {
+				done.emplace_back(it->first);
+
+				it = m_pending_media_downloads.erase(it);
+			} else {
+				it++;
+			}
+
+			if (done.size() == 255) { // maximum in one packet
+				sendHaveMedia(done);
+				done.clear();
+			}
+		}
+		if (!done.empty())
+			sendHaveMedia(done);
+	}
 
 	/*
 		If the server didn't update the inventory in a while, revert
@@ -774,7 +796,8 @@ void Client::request_media(const std::vector<std::string> &file_requests)
 	Send(&pkt);
 
 	infostream << "Client: Sending media request list to server ("
-			<< file_requests.size() << " files. packet size)" << std::endl;
+			<< file_requests.size() << " files, packet size "
+			<< pkt.getSize() << ")" << std::endl;
 }
 
 void Client::initLocalMapSaving(const Address &address,
@@ -1307,6 +1330,19 @@ void Client::sendPlayerPos()
 	sendPlayerPos(player->getLegitPosition());
 }
 
+void Client::sendHaveMedia(const std::vector<u32> &tokens)
+{
+	NetworkPacket pkt(TOSERVER_HAVE_MEDIA, 1 + tokens.size() * 4);
+
+	sanity_check(tokens.size() < 256);
+
+	pkt << static_cast<u8>(tokens.size());
+	for (u32 token : tokens)
+		pkt << token;
+
+	Send(&pkt);
+}
+
 void Client::removeNode(v3s16 p)
 {
 	std::map<v3s16, MapBlock*> modified_blocks;
@@ -1679,13 +1715,13 @@ float Client::mediaReceiveProgress()
 	return 1.0; // downloader only exists when not yet done
 }
 
-typedef struct TextureUpdateArgs {
+struct TextureUpdateArgs {
 	gui::IGUIEnvironment *guienv;
 	u64 last_time_ms;
 	u16 last_percent;
 	const wchar_t* text_base;
 	ITextureSource *tsrc;
-} TextureUpdateArgs;
+};
 
 void Client::showUpdateProgressTexture(void *args, u32 progress, u32 max_progress)
 {
@@ -1704,8 +1740,8 @@ void Client::showUpdateProgressTexture(void *args, u32 progress, u32 max_progres
 
 		if (do_draw) {
 			targs->last_time_ms = time_ms;
-			std::basic_stringstream<wchar_t> strm;
-			strm << targs->text_base << " " << targs->last_percent << "%...";
+			std::wostringstream strm;
+			strm << targs->text_base << L" " << targs->last_percent << L"%...";
 			m_rendering_engine->draw_load_screen(strm.str(), targs->guienv, targs->tsrc, 0,
 				72 + (u16) ((18. / 100.) * (double) targs->last_percent), true);
 		}
@@ -1758,7 +1794,7 @@ void Client::afterContentReceived()
 	tu_args.guienv = guienv;
 	tu_args.last_time_ms = porting::getTimeMs();
 	tu_args.last_percent = 0;
-	tu_args.text_base =  wgettext("Initializing nodes");
+	tu_args.text_base = wgettext("Initializing nodes");
 	tu_args.tsrc = m_tsrc;
 	m_nodedef->updateTextures(this, &tu_args);
 	delete[] tu_args.text_base;

@@ -844,7 +844,7 @@ void Map::transformLiquids(std::map<v3s16, MapBlock*> &modified_blocks,
 		m_transforming_liquid.push_back(iter);
 
 	voxalgo::update_lighting_nodes(this, changed_nodes, modified_blocks);
-
+	env->getScriptIface()->on_liquid_transformed(changed_nodes);
 
 	/* ----------------------------------------------------------------------
 	 * Manage the queue so that it does not grow indefinately
@@ -1562,6 +1562,11 @@ MapBlock *ServerMap::getBlockOrEmerge(v3s16 p3d)
 		m_emerge->enqueueBlockEmerge(PEER_ID_INEXISTENT, p3d, false);
 
 	return block;
+}
+
+bool ServerMap::isBlockInQueue(v3s16 pos)
+{
+	return m_emerge && m_emerge->isBlockInQueue(pos);
 }
 
 // N.B.  This requires no synchronization, since data will not be modified unless

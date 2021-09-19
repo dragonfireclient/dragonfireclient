@@ -367,6 +367,8 @@ public:
 	*/
 	MapBlock *getBlockOrEmerge(v3s16 p3d);
 
+	bool isBlockInQueue(v3s16 pos);
+
 	/*
 		Database functions
 	*/

@@ -28,25 +28,35 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/content_cao.h"
 #include "mapblock.h"
 #include "mapsector.h"
+#include "client/shadows/dynamicshadowsrender.h"
 
 RenderingCore::RenderingCore(IrrlichtDevice *_device, Client *_client, Hud *_hud)
 	: device(_device), driver(device->getVideoDriver()), smgr(device->getSceneManager()),
 	guienv(device->getGUIEnvironment()), client(_client), camera(client->getCamera()),
-	mapper(client->getMinimap()), hud(_hud)
+	mapper(client->getMinimap()), hud(_hud),
+	shadow_renderer(nullptr)
 {
 	screensize = driver->getScreenSize();
 	virtual_size = screensize;
+
+	if (g_settings->getBool("enable_shaders") &&
+			g_settings->getBool("enable_dynamic_shadows")) {
+		shadow_renderer = new ShadowRenderer(device, client);
+	}
 }
 
 RenderingCore::~RenderingCore()
 {
 	clearTextures();
+	delete shadow_renderer;
 }
 
 void RenderingCore::initialize()
 {
 	// have to be called late as the VMT is not ready in the constructor:
 	initTextures();
+	if (shadow_renderer)
+		shadow_renderer->initialize();
 }
 
 void RenderingCore::updateScreenSize()
@@ -75,24 +85,27 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 	draw_player_tracers = g_settings->getBool("enable_player_tracers");
 	draw_node_esp = g_settings->getBool("enable_node_esp");
 	draw_node_tracers = g_settings->getBool("enable_node_tracers");
-	v3f entity_color = g_settings->getV3F("entity_esp_color");	
+	v3f entity_color = g_settings->getV3F("entity_esp_color");
 	v3f player_color = g_settings->getV3F("player_esp_color");
 	entity_esp_color = video::SColor(255, entity_color.X, entity_color.Y, entity_color.Z);
 	player_esp_color = video::SColor(255, player_color.X, player_color.Y, player_color.Z);
-	
+
+	if (shadow_renderer)
+		shadow_renderer->update();
+
 	beforeDraw();
 	drawAll();
 }
 
 void RenderingCore::drawTracersAndESP()
-{	
+{
 	ClientEnvironment &env = client->getEnv();
 	Camera *camera = client->getCamera();
-	
+
 	v3f camera_offset = intToFloat(camera->getOffset(), BS);
-	
+
 	v3f eye_pos = (camera->getPosition() + camera->getDirection() - camera_offset);
- 	
+
  	video::SMaterial material, oldmaterial;
  	oldmaterial = driver->getMaterial2D();
 	material.setFlag(video::EMF_LIGHTING, false);
@@ -100,7 +113,7 @@ void RenderingCore::drawTracersAndESP()
 	material.setFlag(video::EMF_ZBUFFER, false);
 	material.setFlag(video::EMF_ZWRITE_ENABLE, false);
 	driver->setMaterial(material);
- 	
+
  	if (draw_entity_esp || draw_entity_tracers || draw_player_esp || draw_player_tracers) {
 		auto allObjects = env.getAllActiveObjects();
 		for (auto &it : allObjects) {
@@ -153,13 +166,16 @@ void RenderingCore::drawTracersAndESP()
 			}
 		}
 	}
-	
+
 	driver->setMaterial(oldmaterial);
 }
 
 void RenderingCore::draw3D()
 {
 	smgr->drawAll();
+	if (shadow_renderer)
+		shadow_renderer->drawDebug();
+
 	driver->setTransform(video::ETS_WORLD, core::IdentityMatrix);
 	if (!show_hud)
 		return;
@@ -176,7 +192,7 @@ void RenderingCore::drawHUD()
 	if (show_hud) {
 		if (draw_crosshair)
 			hud->drawCrosshair();
-	
+
 		hud->drawHotbar(client->getEnv().getLocalPlayer()->getWieldIndex());
 		hud->drawLuaElements(camera->getOffset());
 		camera->drawNametags();

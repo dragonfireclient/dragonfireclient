@@ -203,8 +203,6 @@ void read_object_properties(lua_State *L, int index,
 		if (sao && prop->hp_max < sao->getHP()) {
 			PlayerHPChangeReason reason(PlayerHPChangeReason::SET_HP);
 			sao->setHP(prop->hp_max, reason);
-			if (sao->getType() == ACTIVEOBJECT_TYPE_PLAYER)
-				sao->getEnv()->getGameDef()->SendPlayerHPOrDie((PlayerSAO *)sao, reason);
 		}
 	}
 
@@ -1407,26 +1405,28 @@ void read_inventory_list(lua_State *L, int tableindex,
 {
 	if(tableindex < 0)
 		tableindex = lua_gettop(L) + 1 + tableindex;
+
 	// If nil, delete list
 	if(lua_isnil(L, tableindex)){
 		inv->deleteList(name);
 		return;
 	}
-	// Otherwise set list
+
+	// Get Lua-specified items to insert into the list
 	std::vector<ItemStack> items = read_items(L, tableindex,srv);
-	int listsize = (forcesize != -1) ? forcesize : items.size();
+	size_t listsize = (forcesize >= 0) ? forcesize : items.size();
+
+	// Create or resize/clear list
 	InventoryList *invlist = inv->addList(name, listsize);
-	int index = 0;
-	for(std::vector<ItemStack>::const_iterator
-			i = items.begin(); i != items.end(); ++i){
-		if(forcesize != -1 && index == forcesize)
-			break;
-		invlist->changeItem(index, *i);
-		index++;
+	if (!invlist) {
+		luaL_error(L, "inventory list: cannot create list named '%s'", name);
+		return;
 	}
-	while(forcesize != -1 && index < forcesize){
-		invlist->deleteItem(index);
-		index++;
+
+	for (size_t i = 0; i < items.size(); ++i) {
+		if (i == listsize)
+			break; // Truncate provided list of items
+		invlist->changeItem(i, items[i]);
 	}
 }
 
@@ -2013,6 +2013,8 @@ void read_hud_element(lua_State *L, HudElement *elem)
 	elem->world_pos = lua_istable(L, -1) ? read_v3f(L, -1) : v3f();
 	lua_pop(L, 1);
 
+	elem->style = getintfield_default(L, 2, "style", 0);
+
 	/* check for known deprecated element usage */
 	if ((elem->type  == HUD_ELEM_STATBAR) && (elem->size == v2s32()))
 		log_deprecated(L,"Deprecated usage of statbar without size!");
@@ -2067,17 +2069,22 @@ void push_hud_element(lua_State *L, HudElement *elem)
 
 	lua_pushstring(L, elem->text2.c_str());
 	lua_setfield(L, -2, "text2");
+
+	lua_pushinteger(L, elem->style);
+	lua_setfield(L, -2, "style");
 }
 
-HudElementStat read_hud_change(lua_State *L, HudElement *elem, void **value)
+bool read_hud_change(lua_State *L, HudElementStat &stat, HudElement *elem, void **value)
 {
-	HudElementStat stat = HUD_STAT_NUMBER;
-	std::string statstr;
-	if (lua_isstring(L, 3)) {
+	std::string statstr = lua_tostring(L, 3);
+	{
 		int statint;
-		statstr = lua_tostring(L, 3);
-		stat = string_to_enum(es_HudElementStat, statint, statstr) ?
-				(HudElementStat)statint : stat;
+		if (!string_to_enum(es_HudElementStat, statint, statstr)) {
+			script_log_unique(L, "Unknown HUD stat type: " + statstr, warningstream);
+			return false;
+		}
+
+		stat = (HudElementStat)statint;
 	}
 
 	switch (stat) {
@@ -2135,8 +2142,13 @@ HudElementStat read_hud_change(lua_State *L, HudElement *elem, void **value)
 			elem->text2 = luaL_checkstring(L, 4);
 			*value = &elem->text2;
 			break;
+		case HUD_STAT_STYLE:
+			elem->style = luaL_checknumber(L, 4);
+			*value = &elem->style;
+			break;
 	}
-	return stat;
+
+	return true;
 }
 
 /******************************************************************************/

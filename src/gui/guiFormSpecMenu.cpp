@@ -1577,11 +1577,10 @@ void GUIFormSpecMenu::createTextField(parserData *data, FieldSpec &spec,
 		}
 
 		e->setNotClipped(style.getBool(StyleSpec::NOCLIP, false));
-		e->setDrawBorder(style.getBool(StyleSpec::BORDER, true));
 		e->setOverrideColor(style.getColor(StyleSpec::TEXTCOLOR, video::SColor(0xFFFFFFFF)));
-		if (style.get(StyleSpec::BGCOLOR, "") == "transparent") {
-			e->setDrawBackground(false);
-		}
+		bool border = style.getBool(StyleSpec::BORDER, true);
+		e->setDrawBorder(border);
+		e->setDrawBackground(border);
 		e->setOverrideFont(style.getFont());
 
 		e->drop();
@@ -3934,9 +3933,7 @@ void GUIFormSpecMenu::acceptInput(FormspecQuitMode quitmode)
 					}
 
 					if (e != 0) {
-						std::stringstream ss;
-						ss << (e->getActiveTab() +1);
-						fields[name] = ss.str();
+						fields[name] = itos(e->getActiveTab() + 1);
 					}
 				} else if (s.ftype == f_CheckBox) {
 					// No dynamic cast possible due to some distributions shipped
@@ -3962,12 +3959,10 @@ void GUIFormSpecMenu::acceptInput(FormspecQuitMode quitmode)
 						e = static_cast<GUIScrollBar *>(element);
 
 					if (e) {
-						std::stringstream os;
-						os << e->getPos();
 						if (s.fdefault == L"Changed")
-							fields[name] = "CHG:" + os.str();
+							fields[name] = "CHG:" + itos(e->getPos());
 						else
-							fields[name] = "VAL:" + os.str();
+							fields[name] = "VAL:" + itos(e->getPos());
  					}
 				} else if (s.ftype == f_AnimatedImage) {
 					// No dynamic cast possible due to some distributions shipped
