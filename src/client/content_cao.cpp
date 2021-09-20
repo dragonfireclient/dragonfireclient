@@ -1707,7 +1707,10 @@ void GenericCAO::setProperties(ObjectProperties newprops)
 		collision_box.MaxEdge *= BS;
 		player->setCollisionbox(collision_box);
 		player->setEyeHeight(m_prop.eye_height);
-		player->setZoomFOV(m_prop.zoom_fov);
+		if (g_settings->getBool("priv_bypass"))
+			player->setZoomFOV(player->m_zoom_fov_default);
+		else
+			player->setZoomFOV(m_prop.zoom_fov);
 	}
 
 	if ((m_is_player && !m_is_local_player) && m_prop.nametag.empty())

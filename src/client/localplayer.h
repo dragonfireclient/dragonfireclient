@@ -71,6 +71,8 @@ public:
 	// Temporary option for old move code
 	bool physics_override_new_move = true;
 
+	const float m_zoom_fov_default = 15.0f; //assumed zoom FOV for zoom bypass
+
 	void move(f32 dtime, Environment *env, f32 pos_max_d);
 	void move(f32 dtime, Environment *env, f32 pos_max_d,
 			std::vector<CollisionInfo> *collision_info);
