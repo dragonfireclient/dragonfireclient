@@ -455,6 +455,7 @@ int ModApiClient::l_dig_node(lua_State *L)
 	pointed.node_undersurface = pos;
 	client->interact(INTERACT_START_DIGGING, pointed);
 	client->interact(INTERACT_DIGGING_COMPLETED, pointed);
+	client->removeNode(pos);
 	return 0;
 }
 
