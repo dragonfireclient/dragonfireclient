@@ -16,6 +16,7 @@ if core.settings:get_bool("profiler.load") then
 end
 
 dofile(commonpath .. "after.lua")
+dofile(commonpath .. "voxelarea.lua")
 dofile(gamepath .. "item_entity.lua")
 dofile(gamepath .. "deprecated.lua")
 dofile(gamepath .. "misc.lua")
@@ -28,7 +29,6 @@ dofile(gamepath .. "static_spawn.lua")
 dofile(gamepath .. "detached_inventory.lua")
 assert(loadfile(gamepath .. "falling.lua"))(builtin_shared)
 dofile(gamepath .. "features.lua")
-dofile(gamepath .. "voxelarea.lua")
 dofile(gamepath .. "forceloading.lua")
 dofile(gamepath .. "statbars.lua")
 dofile(gamepath .. "knockback.lua")

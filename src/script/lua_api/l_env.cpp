@@ -757,7 +757,7 @@ int ModApiEnvMod::l_get_objects_in_area(lua_State *L)
 {
 	GET_ENV_PTR;
 	ScriptApiBase *script = getScriptApiBase(L);
-	
+
 	v3f minp = read_v3f(L, 1) * BS;
 	v3f maxp = read_v3f(L, 2) * BS;
 	aabb3f box(minp, maxp);
@@ -900,13 +900,13 @@ int ModApiEnvMod::l_find_nodes_near(lua_State *L)
 	if (Client *client = getClient(L))
 		radius = client->CSMClampRadius(pos, radius);
 #endif
-	
+
 	std::vector<u32> individual_count;
 	individual_count.resize(filter.size());
-	
+
 	lua_newtable(L);
 	u32 i = 0;
-	
+
 	for (int d = start_radius; d <= radius; d++) {
 		const std::vector<v3s16> &list = FacePositionCache::getFacePositions(d);
 		for (const v3s16 &posi : list) {
@@ -950,13 +950,13 @@ int ModApiEnvMod::l_find_nodes_near_under_air(lua_State *L)
 	if (Client *client = getClient(L))
 		radius = client->CSMClampRadius(pos, radius);
 #endif
-	
+
 	std::vector<u32> individual_count;
 	individual_count.resize(filter.size());
-	
+
 	lua_newtable(L);
 	u32 i = 0;
-	
+
 	for (int d = start_radius; d <= radius; d++) {
 		const std::vector<v3s16> &list = FacePositionCache::getFacePositions(d);
 		for (const v3s16 &posi : list) {
@@ -1004,13 +1004,13 @@ int ModApiEnvMod::l_find_nodes_near_under_air_except(lua_State *L)
 	if (Client *client = getClient(L))
 		radius = client->CSMClampRadius(pos, radius);
 #endif
-	
+
 	std::vector<u32> individual_count;
 	individual_count.resize(filter.size());
-	
+
 	lua_newtable(L);
 	u32 i = 0;
-	
+
 	for (int d = start_radius; d <= radius; d++) {
 		const std::vector<v3s16> &list = FacePositionCache::getFacePositions(d);
 		for (const v3s16 &posi : list) {
@@ -1457,7 +1457,7 @@ int ModApiEnvMod::l_find_path(lua_State *L)
 		if (algorithm == "Dijkstra")
 			algo = PA_DIJKSTRA;
 	}
-	
+
 	std::vector<v3s16> path = get_path(&env->getMap(), env->getGameDef()->ndef(), pos1, pos2,
 		searchdistance, max_jump, max_drop, algo);
 
@@ -1564,7 +1564,7 @@ int ModApiEnvMod::l_compare_block_status(lua_State *L)
 	v3s16 nodepos = check_v3s16(L, 1);
 	std::string condition_s = luaL_checkstring(L, 2);
 	auto status = env->getBlockStatus(getNodeBlockPos(nodepos));
-	
+
 	int condition_i = -1;
 	if (!string_to_enum(es_BlockStatusType, condition_i, condition_s))
 		return 0; // Unsupported
@@ -1664,6 +1664,7 @@ void ModApiEnvMod::InitializeClient(lua_State *L, int top)
 	API_FCT(find_nodes_near_under_air_except);
 	API_FCT(find_nodes_in_area);
 	API_FCT(find_nodes_in_area_under_air);
+	API_FCT(get_voxel_manip);
 	API_FCT(find_path);
 	API_FCT(line_of_sight);
 	API_FCT(raycast);
