@@ -182,7 +182,7 @@ Download IrrlichtMt to `lib/irrlichtmt`, it will be used to satisfy the Irrlicht
 
     cd lib/
     wget https://github.com/minetest/irrlicht/archive/refs/tags/1.9.0mt3.tar.gz
-    tar xf master.tar.gz
+    tar xf 1.9.0mt3.tar.gz
     mv irrlicht-master irrlichtmt
     cd ..
 
