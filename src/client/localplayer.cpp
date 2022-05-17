@@ -279,6 +279,25 @@ void LocalPlayer::move(f32 dtime, Environment *env, f32 pos_max_d,
 			nodemgr->get(node2.getContent()).climbable) && !free_move;
 	}
 
+	if (!is_climbing && !free_move && g_settings->getBool("spider")) {
+		v3s16 spider_positions[4] = {
+			floatToInt(position + v3f(+1.0f, +0.0f,  0.0f) * BS, BS),
+			floatToInt(position + v3f(-1.0f, +0.0f,  0.0f) * BS, BS),
+			floatToInt(position + v3f( 0.0f, +0.0f, +1.0f) * BS, BS),
+			floatToInt(position + v3f( 0.0f, +0.0f, -1.0f) * BS, BS),
+		};
+
+		for (v3s16 sp : spider_positions) {
+			bool is_valid;
+			MapNode node = map->getNode(sp, &is_valid);
+
+			if (is_valid && nodemgr->get(node.getContent()).walkable) {
+				is_climbing = true;
+				break;
+			}
+		}
+	}
+
 	/*
 		Collision uncertainty radius
 		Make it a bit larger than the maximum distance of movement
