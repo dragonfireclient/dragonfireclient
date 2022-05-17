@@ -474,7 +474,7 @@ int ModApiClient::l_get_inventory(lua_State *L)
 		inventory = client->getInventory(inventory_location);
 		if (! inventory)
 			throw SerializationError(std::string("Attempt to access nonexistant inventory (") + location + ")");
-		push_inventory(L, inventory);
+		push_inventory_lists(L, *inventory);
 	} catch (SerializationError &) {
 		lua_pushnil(L);
 	}

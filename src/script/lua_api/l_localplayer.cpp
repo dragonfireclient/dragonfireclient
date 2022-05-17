@@ -196,11 +196,11 @@ int LuaLocalPlayer::l_is_in_liquid_stable(lua_State *L)
 	return 1;
 }
 
-int LuaLocalPlayer::l_get_liquid_viscosity(lua_State *L)
+int LuaLocalPlayer::l_get_move_resistance(lua_State *L)
 {
 	LocalPlayer *player = getobject(L, 1);
 
-	lua_pushinteger(L, player->liquid_viscosity);
+	lua_pushinteger(L, player->move_resistance);
 	return 1;
 }
 
@@ -302,13 +302,15 @@ int LuaLocalPlayer::l_get_control(lua_State *L)
 	set("dig",   c.dig);
 	set("place", c.place);
 	// Player movement in polar coordinates and non-binary speed
-	set("movement_speed",     c.movement_speed);
-	set("movement_direction", c.movement_direction);
+	lua_pushnumber(L, c.movement_speed);
+	lua_setfield(L, -2, "movement_speed");
+	lua_pushnumber(L, c.movement_direction);
+	lua_setfield(L, -2, "movement_direction");
 	// Provide direction keys to ensure compatibility
-	set("up",    player->keyPressed & (1 << 0)); // Up, down, left, and right were removed in favor of
-	set("down",  player->keyPressed & (1 << 1)); // analog  direction indicators and are therefore not
-	set("left",  player->keyPressed & (1 << 2)); // available as booleans anymore. The corresponding values
-	set("right", player->keyPressed & (1 << 3)); // can still be read from the keyPressed bits though.
+	set("up",    c.direction_keys & (1 << 0));
+	set("down",  c.direction_keys & (1 << 1));
+	set("left",  c.direction_keys & (1 << 2));
+	set("right", c.direction_keys & (1 << 3));
 
 	return 1;
 }
@@ -576,7 +578,6 @@ const luaL_Reg LuaLocalPlayer::methods[] = {
 		luamethod(LuaLocalPlayer, is_touching_ground),
 		luamethod(LuaLocalPlayer, is_in_liquid),
 		luamethod(LuaLocalPlayer, is_in_liquid_stable),
-		luamethod(LuaLocalPlayer, get_liquid_viscosity),
 		luamethod(LuaLocalPlayer, is_climbing),
 		luamethod(LuaLocalPlayer, swimming_vertical),
 		luamethod(LuaLocalPlayer, get_physics_override),
@@ -601,6 +602,8 @@ const luaL_Reg LuaLocalPlayer::methods[] = {
 		luamethod(LuaLocalPlayer, hud_get),
 		luamethod(LuaLocalPlayer, get_object),
 		luamethod(LuaLocalPlayer, get_hotbar_size),
+
+		luamethod(LuaLocalPlayer, get_move_resistance),
 
 		{0, 0}
 };

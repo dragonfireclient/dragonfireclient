@@ -15,142 +15,17 @@ end
 -- Item definition helpers
 --
 
-function core.dir_to_facedir(dir, is6d)
-	--account for y if requested
-	if is6d and math.abs(dir.y) > math.abs(dir.x) and math.abs(dir.y) > math.abs(dir.z) then
-
-		--from above
-		if dir.y < 0 then
-			if math.abs(dir.x) > math.abs(dir.z) then
-				if dir.x < 0 then
-					return 19
-				else
-					return 13
-				end
-			else
-				if dir.z < 0 then
-					return 10
-				else
-					return 4
-				end
-			end
-
-		--from below
-		else
-			if math.abs(dir.x) > math.abs(dir.z) then
-				if dir.x < 0 then
-					return 15
-				else
-					return 17
-				end
-			else
-				if dir.z < 0 then
-					return 6
-				else
-					return 8
-				end
-			end
+function core.get_pointed_thing_position(pointed_thing, above)
+	if pointed_thing.type == "node" then
+		if above then
+			-- The position where a node would be placed
+			return pointed_thing.above
 		end
-
-	--otherwise, place horizontally
-	elseif math.abs(dir.x) > math.abs(dir.z) then
-		if dir.x < 0 then
-			return 3
-		else
-			return 1
-		end
-	else
-		if dir.z < 0 then
-			return 2
-		else
-			return 0
-		end
+		-- The position where a node would be dug
+		return pointed_thing.under
+	elseif pointed_thing.type == "object" then
+		return pointed_thing.ref and pointed_thing.ref:get_pos()
 	end
-end
-
--- Table of possible dirs
-local facedir_to_dir = {
-	vector.new( 0,  0,  1),
-	vector.new( 1,  0,  0),
-	vector.new( 0,  0, -1),
-	vector.new(-1,  0,  0),
-	vector.new( 0, -1,  0),
-	vector.new( 0,  1,  0),
-}
--- Mapping from facedir value to index in facedir_to_dir.
-local facedir_to_dir_map = {
-	[0]=1, 2, 3, 4,
-	5, 2, 6, 4,
-	6, 2, 5, 4,
-	1, 5, 3, 6,
-	1, 6, 3, 5,
-	1, 4, 3, 2,
-}
-function core.facedir_to_dir(facedir)
-	return facedir_to_dir[facedir_to_dir_map[facedir % 32]]
-end
-
-function core.dir_to_wallmounted(dir)
-	if math.abs(dir.y) > math.max(math.abs(dir.x), math.abs(dir.z)) then
-		if dir.y < 0 then
-			return 1
-		else
-			return 0
-		end
-	elseif math.abs(dir.x) > math.abs(dir.z) then
-		if dir.x < 0 then
-			return 3
-		else
-			return 2
-		end
-	else
-		if dir.z < 0 then
-			return 5
-		else
-			return 4
-		end
-	end
-end
-
--- table of dirs in wallmounted order
-local wallmounted_to_dir = {
-	[0] = vector.new( 0,  1,  0),
-	vector.new( 0, -1,  0),
-	vector.new( 1,  0,  0),
-	vector.new(-1,  0,  0),
-	vector.new( 0,  0,  1),
-	vector.new( 0,  0, -1),
-}
-function core.wallmounted_to_dir(wallmounted)
-	return wallmounted_to_dir[wallmounted % 8]
-end
-
-function core.dir_to_yaw(dir)
-	return -math.atan2(dir.x, dir.z)
-end
-
-function core.yaw_to_dir(yaw)
-	return vector.new(-math.sin(yaw), 0, math.cos(yaw))
-end
-
-function core.is_colored_paramtype(ptype)
-	return (ptype == "color") or (ptype == "colorfacedir") or
-		(ptype == "colorwallmounted") or (ptype == "colordegrotate")
-end
-
-function core.strip_param2_color(param2, paramtype2)
-	if not core.is_colored_paramtype(paramtype2) then
-		return nil
-	end
-	if paramtype2 == "colorfacedir" then
-		param2 = math.floor(param2 / 32) * 32
-	elseif paramtype2 == "colorwallmounted" then
-		param2 = math.floor(param2 / 8) * 8
-	elseif paramtype2 == "colordegrotate" then
-		param2 = math.floor(param2 / 32) * 32
-	end
-	-- paramtype2 == "color" requires no modification.
-	return param2
 end
 
 local function has_all_groups(tbl, required_groups)
@@ -477,34 +352,41 @@ function core.do_item_eat(hp_change, replace_with_item, itemstack, user, pointed
 			return result
 		end
 	end
+	-- read definition before potentially emptying the stack
 	local def = itemstack:get_definition()
-	if itemstack:take_item() ~= nil then
-		user:set_hp(user:get_hp() + hp_change)
+	if itemstack:take_item():is_empty() then
+		return itemstack
+	end
 
-		if def and def.sound and def.sound.eat then
-			core.sound_play(def.sound.eat, {
-				pos = user:get_pos(),
-				max_hear_distance = 16
-			}, true)
-		end
+	if def and def.sound and def.sound.eat then
+		core.sound_play(def.sound.eat, {
+			pos = user:get_pos(),
+			max_hear_distance = 16
+		}, true)
+	end
 
-		if replace_with_item then
-			if itemstack:is_empty() then
-				itemstack:add_item(replace_with_item)
+	-- Changing hp might kill the player causing mods to do who-knows-what to the
+	-- inventory, so do this before set_hp().
+	if replace_with_item then
+		if itemstack:is_empty() then
+			itemstack:add_item(replace_with_item)
+		else
+			local inv = user:get_inventory()
+			-- Check if inv is null, since non-players don't have one
+			if inv and inv:room_for_item("main", {name=replace_with_item}) then
+				inv:add_item("main", replace_with_item)
 			else
-				local inv = user:get_inventory()
-				-- Check if inv is null, since non-players don't have one
-				if inv and inv:room_for_item("main", {name=replace_with_item}) then
-					inv:add_item("main", replace_with_item)
-				else
-					local pos = user:get_pos()
-					pos.y = math.floor(pos.y + 0.5)
-					core.add_item(pos, replace_with_item)
-				end
+				local pos = user:get_pos()
+				pos.y = math.floor(pos.y + 0.5)
+				core.add_item(pos, replace_with_item)
 			end
 		end
 	end
-	return itemstack
+	user:set_wielded_item(itemstack)
+
+	user:set_hp(user:get_hp() + hp_change)
+
+	return nil -- don't overwrite wield item a second time
 end
 
 function core.item_eat(hp_change, replace_with_item)
@@ -585,7 +467,7 @@ function core.node_dig(pos, node, digger)
 	if wielded then
 		local wdef = wielded:get_definition()
 		local tp = wielded:get_tool_capabilities()
-		local dp = core.get_dig_params(def and def.groups, tp)
+		local dp = core.get_dig_params(def and def.groups, tp, wielded:get_wear())
 		if wdef and wdef.after_use then
 			wielded = wdef.after_use(wielded, digger, node, dp) or wielded
 		else
@@ -647,9 +529,7 @@ function core.node_dig(pos, node, digger)
 	-- Run script hook
 	for _, callback in ipairs(core.registered_on_dignodes) do
 		local origin = core.callback_origins[callback]
-		if origin then
-			core.set_last_run_mod(origin.mod)
-		end
+		core.set_last_run_mod(origin.mod)
 
 		-- Copy pos and node because callback can modify them
 		local pos_copy = vector.new(pos)

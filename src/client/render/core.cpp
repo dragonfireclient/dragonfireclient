@@ -90,8 +90,11 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 	entity_esp_color = video::SColor(255, entity_color.X, entity_color.Y, entity_color.Z);
 	player_esp_color = video::SColor(255, player_color.X, player_color.Y, player_color.Z);
 
-	if (shadow_renderer)
+	if (shadow_renderer) {
+		// This is necessary to render shadows for animations correctly
+		smgr->getRootSceneNode()->OnAnimate(device->getTimer()->getTime());
 		shadow_renderer->update();
+	}
 
 	beforeDraw();
 	drawAll();

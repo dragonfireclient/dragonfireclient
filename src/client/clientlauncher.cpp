@@ -38,9 +38,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #if USE_SOUND
 	#include "sound_openal.h"
 #endif
-#ifdef __ANDROID__
-	#include "porting.h"
-#endif
 
 /* mainmenumanager.h
  */
@@ -73,9 +70,9 @@ static void dump_start_data(const GameStartData &data)
 
 ClientLauncher::~ClientLauncher()
 {
-	delete receiver;
-
 	delete input;
+
+	delete receiver;
 
 	delete g_fontengine;
 	delete g_gamecallback;
@@ -147,8 +144,8 @@ bool ClientLauncher::run(GameStartData &start_data, const Settings &cmd_args)
 	skin->setColor(gui::EGDC_3D_SHADOW, video::SColor(255, 0, 0, 0));
 	skin->setColor(gui::EGDC_HIGH_LIGHT, video::SColor(255, 70, 120, 50));
 	skin->setColor(gui::EGDC_HIGH_LIGHT_TEXT, video::SColor(255, 255, 255, 255));
-#ifdef __ANDROID__
-	float density = porting::getDisplayDensity();
+#ifdef HAVE_TOUCHSCREENGUI
+	float density = RenderingEngine::getDisplayDensity();
 	skin->setSize(gui::EGDS_CHECK_BOX_WIDTH, (s32)(17.0f * density));
 	skin->setSize(gui::EGDS_SCROLLBAR_SIZE, (s32)(14.0f * density));
 	skin->setSize(gui::EGDS_WINDOW_BUTTON_WIDTH, (s32)(15.0f * density));
@@ -567,6 +564,8 @@ void ClientLauncher::speed_tests()
 	// volatile to avoid some potential compiler optimisations
 	volatile static s16 temp16;
 	volatile static f32 tempf;
+	// Silence compiler warning
+	(void)temp16;
 	static v3f tempv3f1;
 	static v3f tempv3f2;
 	static std::string tempstring;

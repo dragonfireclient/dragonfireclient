@@ -19,28 +19,44 @@ builddir="$( cd "$builddir" && pwd )"
 libdir=$builddir/libs
 
 # Test which win64 compiler is present
-which x86_64-w64-mingw32-gcc &>/dev/null &&
-	toolchain_file=$dir/toolchain_x86_64-w64-mingw32.cmake
-which x86_64-w64-mingw32-gcc-posix &>/dev/null &&
-	toolchain_file=$dir/toolchain_x86_64-w64-mingw32-posix.cmake
+command -v x86_64-w64-mingw32-gcc >/dev/null &&
+	compiler=x86_64-w64-mingw32-gcc
+command -v x86_64-w64-mingw32-gcc-posix >/dev/null &&
+	compiler=x86_64-w64-mingw32-gcc-posix
 
-if [ -z "$toolchain_file" ]; then
-	echo "Unable to determine which mingw32 compiler to use"
+if [ -z "$compiler" ]; then
+	echo "Unable to determine which MinGW compiler to use"
 	exit 1
 fi
+toolchain_file=$dir/toolchain_${compiler/-gcc/}.cmake
 echo "Using $toolchain_file"
 
-irrlicht_version=1.9.0mt3
-ogg_version=1.3.4
+# Try to find runtime DLLs in various paths (varies by distribution, sigh)
+tmp=$(dirname "$(command -v $compiler)")/..
+runtime_dlls=
+for name in lib{gcc_,stdc++-,winpthread-}'*'.dll; do
+	for dir in $tmp/x86_64-w64-mingw32/{bin,lib} $tmp/lib/gcc/x86_64-w64-mingw32/*; do
+		[ -d "$dir" ] || continue
+		file=$(echo $dir/$name)
+		[ -f "$file" ] && { runtime_dlls+="$file;"; break; }
+	done
+done
+[ -z "$runtime_dlls" ] &&
+	echo "The compiler runtime DLLs could not be found, they might be missing in the final package."
+
+# Get stuff
+irrlicht_version=1.9.0mt5
+ogg_version=1.3.5
+openal_version=1.21.1
 vorbis_version=1.3.7
-curl_version=7.76.1
+curl_version=7.81.0
 gettext_version=0.20.1
-freetype_version=2.10.4
-sqlite3_version=3.35.5
+freetype_version=2.11.1
+sqlite3_version=3.37.2
 luajit_version=2.1.0-beta3
 leveldb_version=1.23
 zlib_version=1.2.11
-zstd_version=1.4.9
+zstd_version=1.5.2
 
 mkdir -p $libdir
 
@@ -63,7 +79,6 @@ download () {
 	fi
 }
 
-# Get stuff
 cd $libdir
 download "https://github.com/minetest/irrlicht/releases/download/$irrlicht_version/win64.zip" irrlicht-$irrlicht_version.zip
 download "http://minetest.kitsunemimi.pw/zlib-$zlib_version-win64.zip"
@@ -76,16 +91,18 @@ download "http://minetest.kitsunemimi.pw/freetype2-$freetype_version-win64.zip" 
 download "http://minetest.kitsunemimi.pw/sqlite3-$sqlite3_version-win64.zip"
 download "http://minetest.kitsunemimi.pw/luajit-$luajit_version-win64.zip"
 download "http://minetest.kitsunemimi.pw/libleveldb-$leveldb_version-win64.zip" leveldb-$leveldb_version.zip
-download "http://minetest.kitsunemimi.pw/openal_stripped64.zip" 'openal_stripped.zip' unzip_nofolder
+download "http://minetest.kitsunemimi.pw/openal-soft-$openal_version-win64.zip"
 
 # Set source dir, downloading Minetest as needed
 if [ -n "$EXISTING_MINETEST_DIR" ]; then
 	sourcedir="$( cd "$EXISTING_MINETEST_DIR" && pwd )"
 else
+	cd $builddir
 	sourcedir=$PWD/$CORE_NAME
 	[ -d $CORE_NAME ] && { pushd $CORE_NAME; git pull; popd; } || \
 		git clone -b $CORE_BRANCH $CORE_GIT $CORE_NAME
 	if [ -z "$NO_MINETEST_GAME" ]; then
+		cd $sourcedir
 		[ -d games/$GAME_NAME ] && { pushd games/$GAME_NAME; git pull; popd; } || \
 			git clone -b $GAME_BRANCH $GAME_GIT games/$GAME_NAME
 	fi
@@ -96,23 +113,21 @@ git_hash=$(cd $sourcedir && git rev-parse --short HEAD)
 # Build the thing
 cd $builddir
 [ -d build ] && rm -rf build
-mkdir build
-cd build
 
 irr_dlls=$(echo $libdir/irrlicht/lib/*.dll | tr ' ' ';')
 vorbis_dlls=$(echo $libdir/libvorbis/bin/libvorbis{,file}-*.dll | tr ' ' ';')
 gettext_dlls=$(echo $libdir/gettext/bin/lib{intl,iconv}-*.dll | tr ' ' ';')
 
-cmake -S $sourcedir -B . \
+cmake -S $sourcedir -B build \
 	-DCMAKE_TOOLCHAIN_FILE=$toolchain_file \
 	-DCMAKE_INSTALL_PREFIX=/tmp \
 	-DVERSION_EXTRA=$git_hash \
 	-DBUILD_CLIENT=1 -DBUILD_SERVER=0 \
+	-DEXTRA_DLL="$runtime_dlls" \
 	\
 	-DENABLE_SOUND=1 \
 	-DENABLE_CURL=1 \
 	-DENABLE_GETTEXT=1 \
-	-DENABLE_FREETYPE=1 \
 	-DENABLE_LEVELDB=1 \
 	\
 	-DCMAKE_PREFIX_PATH=$libdir/irrlicht \
@@ -138,15 +153,15 @@ cmake -S $sourcedir -B . \
 	-DVORBIS_DLL="$vorbis_dlls" \
 	-DVORBISFILE_LIBRARY=$libdir/libvorbis/lib/libvorbisfile.dll.a \
 	\
-	-DOPENAL_INCLUDE_DIR=$libdir/openal_stripped/include/AL \
-	-DOPENAL_LIBRARY=$libdir/openal_stripped/lib/libOpenAL32.dll.a \
-	-DOPENAL_DLL=$libdir/openal_stripped/bin/OpenAL32.dll \
+	-DOPENAL_INCLUDE_DIR=$libdir/openal/include/AL \
+	-DOPENAL_LIBRARY=$libdir/openal/lib/libOpenAL32.dll.a \
+	-DOPENAL_DLL=$libdir/openal/bin/OpenAL32.dll \
 	\
 	-DCURL_DLL=$libdir/curl/bin/libcurl-4.dll \
 	-DCURL_INCLUDE_DIR=$libdir/curl/include \
 	-DCURL_LIBRARY=$libdir/curl/lib/libcurl.dll.a \
 	\
-	-DGETTEXT_MSGFMT=`which msgfmt` \
+	-DGETTEXT_MSGFMT=`command -v msgfmt` \
 	-DGETTEXT_DLL="$gettext_dlls" \
 	-DGETTEXT_INCLUDE_DIR=$libdir/gettext/include \
 	-DGETTEXT_LIBRARY=$libdir/gettext/lib/libintl.dll.a \
@@ -164,9 +179,9 @@ cmake -S $sourcedir -B . \
 	-DLEVELDB_LIBRARY=$libdir/leveldb/lib/libleveldb.dll.a \
 	-DLEVELDB_DLL=$libdir/leveldb/bin/libleveldb.dll
 
-make -j$(nproc)
+cmake --build build -j$(nproc)
 
-[ -z "$NO_PACKAGE" ] && make package
+[ -z "$NO_PACKAGE" ] && cmake --build build --target package
 
 exit 0
 # EOF

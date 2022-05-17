@@ -232,8 +232,9 @@ void LocalPlayer::move(f32 dtime, Environment *env, f32 pos_max_d,
 		pp = floatToInt(position + v3f(0.0f, BS * 0.1f, 0.0f), BS);
 		node = map->getNode(pp, &is_valid_position);
 		if (is_valid_position) {
-			in_liquid = nodemgr->get(node.getContent()).isLiquid();
-			liquid_viscosity = nodemgr->get(node.getContent()).liquid_viscosity;
+			const ContentFeatures &cf = nodemgr->get(node.getContent());
+			in_liquid = cf.liquid_move_physics;
+			move_resistance = cf.move_resistance;
 		} else {
 			in_liquid = false;
 		}
@@ -243,8 +244,9 @@ void LocalPlayer::move(f32 dtime, Environment *env, f32 pos_max_d,
 		pp = floatToInt(position + v3f(0.0f, BS * 0.5f, 0.0f), BS);
 		node = map->getNode(pp, &is_valid_position);
 		if (is_valid_position) {
-			in_liquid = nodemgr->get(node.getContent()).isLiquid();
-			liquid_viscosity = nodemgr->get(node.getContent()).liquid_viscosity;
+			const ContentFeatures &cf = nodemgr->get(node.getContent());
+			in_liquid = cf.liquid_move_physics;
+			move_resistance = cf.move_resistance;
 		} else {
 			in_liquid = false;
 		}
@@ -257,7 +259,7 @@ void LocalPlayer::move(f32 dtime, Environment *env, f32 pos_max_d,
 	pp = floatToInt(position + v3f(0.0f), BS);
 	node = map->getNode(pp, &is_valid_position);
 	if (is_valid_position) {
-		in_liquid_stable = nodemgr->get(node.getContent()).isLiquid();
+		in_liquid_stable = nodemgr->get(node.getContent()).liquid_move_physics;
 	} else {
 		in_liquid_stable = false;
 	}
@@ -694,19 +696,21 @@ v3s16 LocalPlayer::getStandingNodePos()
 
 v3s16 LocalPlayer::getFootstepNodePos()
 {
+	v3f feet_pos = getPosition() + v3f(0.0f, m_collisionbox.MinEdge.Y, 0.0f);
+
 	// Emit swimming sound if the player is in liquid
 	if (in_liquid_stable)
-		return floatToInt(getPosition(), BS);
+		return floatToInt(feet_pos, BS);
 
 	// BS * 0.05 below the player's feet ensures a 1/16th height
 	// nodebox is detected instead of the node below it.
 	if (touching_ground)
-		return floatToInt(getPosition() - v3f(0.0f, BS * 0.05f, 0.0f), BS);
+		return floatToInt(feet_pos - v3f(0.0f, BS * 0.05f, 0.0f), BS);
 
 	// A larger distance below is necessary for a footstep sound
 	// when landing after a jump or fall. BS * 0.5 ensures water
 	// sounds when swimming in 1 node deep water.
-	return floatToInt(getPosition() - v3f(0.0f, BS * 0.5f, 0.0f), BS);
+	return floatToInt(feet_pos - v3f(0.0f, BS * 0.5f, 0.0f), BS);
 }
 
 v3s16 LocalPlayer::getLightPosition() const
@@ -846,8 +850,9 @@ void LocalPlayer::old_move(f32 dtime, Environment *env, f32 pos_max_d,
 		pp = floatToInt(position + v3f(0.0f, BS * 0.1f, 0.0f), BS);
 		node = map->getNode(pp, &is_valid_position);
 		if (is_valid_position) {
-			in_liquid = nodemgr->get(node.getContent()).isLiquid();
-			liquid_viscosity = nodemgr->get(node.getContent()).liquid_viscosity;
+			const ContentFeatures &cf = nodemgr->get(node.getContent());
+			in_liquid = cf.liquid_move_physics;
+			move_resistance = cf.move_resistance;
 		} else {
 			in_liquid = false;
 		}
@@ -856,8 +861,9 @@ void LocalPlayer::old_move(f32 dtime, Environment *env, f32 pos_max_d,
 		pp = floatToInt(position + v3f(0.0f, BS * 0.5f, 0.0f), BS);
 		node = map->getNode(pp, &is_valid_position);
 		if (is_valid_position) {
-			in_liquid = nodemgr->get(node.getContent()).isLiquid();
-			liquid_viscosity = nodemgr->get(node.getContent()).liquid_viscosity;
+			const ContentFeatures &cf = nodemgr->get(node.getContent());
+			in_liquid = cf.liquid_move_physics;
+			move_resistance = cf.move_resistance;
 		} else {
 			in_liquid = false;
 		}
@@ -869,7 +875,7 @@ void LocalPlayer::old_move(f32 dtime, Environment *env, f32 pos_max_d,
 	pp = floatToInt(position + v3f(0.0f), BS);
 	node = map->getNode(pp, &is_valid_position);
 	if (is_valid_position)
-		in_liquid_stable = nodemgr->get(node.getContent()).isLiquid();
+		in_liquid_stable = nodemgr->get(node.getContent()).liquid_move_physics;
 	else
 		in_liquid_stable = false;
 
@@ -1138,10 +1144,8 @@ void LocalPlayer::handleAutojump(f32 dtime, Environment *env,
 	if (m_autojump)
 		return;
 
-	bool control_forward = keyPressed & (1 << 0);
-
 	bool could_autojump =
-		m_can_jump && !control.jump && !control.sneak && control_forward;
+		m_can_jump && !control.jump && !control.sneak && control.isMoving();
 
 	if (!could_autojump)
 		return;

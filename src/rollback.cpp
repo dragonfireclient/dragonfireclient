@@ -483,6 +483,7 @@ const std::list<ActionRow> RollbackManager::actionRowsFromSelect(sqlite3_stmt* s
 		row.actor     = sqlite3_column_int  (stmt, 0);
 		row.timestamp = sqlite3_column_int64(stmt, 1);
 		row.type      = sqlite3_column_int  (stmt, 2);
+		row.nodeMeta  = 0;
 
 		if (row.type == RollbackAction::TYPE_MODIFY_INVENTORY_STACK) {
 			text = sqlite3_column_text (stmt, 3);
@@ -939,12 +940,6 @@ void RollbackManager::addAction(const RollbackAction & action)
 	if (action_todisk_buffer.size() >= 500) {
 		flush();
 	}
-}
-
-std::list<RollbackAction> RollbackManager::getEntriesSince(time_t first_time)
-{
-	flush();
-	return getActionsSince(first_time);
 }
 
 std::list<RollbackAction> RollbackManager::getNodeActors(v3s16 pos, int range,

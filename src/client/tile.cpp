@@ -33,6 +33,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "imagefilters.h"
 #include "guiscalingfilter.h"
 #include "renderingengine.h"
+#include "util/base64.h"
 
 /*
 	A cache from texture name to texture path
@@ -762,6 +763,9 @@ void TextureSource::rebuildImagesAndTextures()
 
 	// Recreate textures
 	for (TextureInfo &ti : m_textureinfo_cache) {
+		if (ti.name.empty())
+			continue; // Skip dummy entry
+
 		video::IImage *img = generateImage(ti.name);
 #if ENABLE_GLES
 		img = Align2Npot2(img, driver);
@@ -1056,6 +1060,45 @@ static std::string unescape_string(const std::string &str, const char esc = '\\'
 	return out;
 }
 
+void blitBaseImage(video::IImage* &src, video::IImage* &dst)
+{
+	//infostream<<"Blitting "<<part_of_name<<" on base"<<std::endl;
+	// Size of the copied area
+	core::dimension2d<u32> dim = src->getDimension();
+	//core::dimension2d<u32> dim(16,16);
+	// Position to copy the blitted to in the base image
+	core::position2d<s32> pos_to(0,0);
+	// Position to copy the blitted from in the blitted image
+	core::position2d<s32> pos_from(0,0);
+	// Blit
+	/*image->copyToWithAlpha(baseimg, pos_to,
+			core::rect<s32>(pos_from, dim),
+			video::SColor(255,255,255,255),
+			NULL);*/
+
+	core::dimension2d<u32> dim_dst = dst->getDimension();
+	if (dim == dim_dst) {
+		blit_with_alpha(src, dst, pos_from, pos_to, dim);
+	} else if (dim.Width * dim.Height < dim_dst.Width * dim_dst.Height) {
+		// Upscale overlying image
+		video::IImage *scaled_image = RenderingEngine::get_video_driver()->
+			createImage(video::ECF_A8R8G8B8, dim_dst);
+		src->copyToScaling(scaled_image);
+
+		blit_with_alpha(scaled_image, dst, pos_from, pos_to, dim_dst);
+		scaled_image->drop();
+	} else {
+		// Upscale base image
+		video::IImage *scaled_base = RenderingEngine::get_video_driver()->
+			createImage(video::ECF_A8R8G8B8, dim);
+		dst->copyToScaling(scaled_base);
+		dst->drop();
+		dst = scaled_base;
+
+		blit_with_alpha(src, dst, pos_from, pos_to, dim);
+	}
+}
+
 bool TextureSource::generateImagePart(std::string part_of_name,
 		video::IImage *& baseimg)
 {
@@ -1066,9 +1109,6 @@ bool TextureSource::generateImagePart(std::string part_of_name,
 	// Stuff starting with [ are special commands
 	if (part_of_name.empty() || part_of_name[0] != '[') {
 		video::IImage *image = m_sourcecache.getOrLoad(part_of_name);
-#if ENABLE_GLES
-		image = Align2Npot2(image, driver);
-#endif
 		if (image == NULL) {
 			if (!part_of_name.empty()) {
 
@@ -1119,41 +1159,7 @@ bool TextureSource::generateImagePart(std::string part_of_name,
 		// Else blit on base.
 		else
 		{
-			//infostream<<"Blitting "<<part_of_name<<" on base"<<std::endl;
-			// Size of the copied area
-			core::dimension2d<u32> dim = image->getDimension();
-			//core::dimension2d<u32> dim(16,16);
-			// Position to copy the blitted to in the base image
-			core::position2d<s32> pos_to(0,0);
-			// Position to copy the blitted from in the blitted image
-			core::position2d<s32> pos_from(0,0);
-			// Blit
-			/*image->copyToWithAlpha(baseimg, pos_to,
-					core::rect<s32>(pos_from, dim),
-					video::SColor(255,255,255,255),
-					NULL);*/
-
-			core::dimension2d<u32> dim_dst = baseimg->getDimension();
-			if (dim == dim_dst) {
-				blit_with_alpha(image, baseimg, pos_from, pos_to, dim);
-			} else if (dim.Width * dim.Height < dim_dst.Width * dim_dst.Height) {
-				// Upscale overlying image
-				video::IImage *scaled_image = RenderingEngine::get_video_driver()->
-					createImage(video::ECF_A8R8G8B8, dim_dst);
-				image->copyToScaling(scaled_image);
-
-				blit_with_alpha(scaled_image, baseimg, pos_from, pos_to, dim_dst);
-				scaled_image->drop();
-			} else {
-				// Upscale base image
-				video::IImage *scaled_base = RenderingEngine::get_video_driver()->
-					createImage(video::ECF_A8R8G8B8, dim);
-				baseimg->copyToScaling(scaled_base);
-				baseimg->drop();
-				baseimg = scaled_base;
-
-				blit_with_alpha(image, baseimg, pos_from, pos_to, dim);
-			}
+			blitBaseImage(image, baseimg);
 		}
 		//cleanup
 		image->drop();
@@ -1781,6 +1787,43 @@ bool TextureSource::generateImagePart(std::string part_of_name,
 			baseimg->drop();
 			baseimg = img;
 		}
+		/*
+			[png:base64
+			Decodes a PNG image in base64 form.
+			Use minetest.encode_png and minetest.encode_base64
+			to produce a valid string.
+		*/
+		else if (str_starts_with(part_of_name, "[png:")) {
+			Strfnd sf(part_of_name);
+			sf.next(":");
+			std::string png;
+			{
+				std::string blob = sf.next("");
+				if (!base64_is_valid(blob)) {
+					errorstream << "generateImagePart(): "
+								<< "malformed base64 in '[png'"
+								<< std::endl;
+					return false;
+				}
+				png = base64_decode(blob);
+			}
+
+			auto *device = RenderingEngine::get_raw_device();
+			auto *fs = device->getFileSystem();
+			auto *vd = device->getVideoDriver();
+			auto *memfile = fs->createMemoryReadFile(png.data(), png.size(), "__temp_png");
+			video::IImage* pngimg = vd->createImageFromFile(memfile);
+			memfile->drop();
+
+			if (baseimg) {
+				blitBaseImage(pngimg, baseimg);
+			} else {
+				core::dimension2d<u32> dim = pngimg->getDimension();
+				baseimg = driver->createImage(video::ECF_A8R8G8B8, dim);
+				pngimg->copyTo(baseimg);
+			}
+			pngimg->drop();
+		}
 		else
 		{
 			errorstream << "generateImagePart(): Invalid "
@@ -2183,6 +2226,48 @@ video::ITexture* TextureSource::getNormalTexture(const std::string &name)
 	return NULL;
 }
 
+namespace {
+	// For more colourspace transformations, see for example
+	// https://github.com/tobspr/GLSL-Color-Spaces/blob/master/ColorSpaces.inc.glsl
+
+	inline float linear_to_srgb_component(float v)
+	{
+		if (v > 0.0031308f)
+			return 1.055f * powf(v, 1.0f / 2.4f) - 0.055f;
+		return 12.92f * v;
+	}
+	inline float srgb_to_linear_component(float v)
+	{
+		if (v > 0.04045f)
+			return powf((v + 0.055f) / 1.055f, 2.4f);
+		return v / 12.92f;
+	}
+
+	v3f srgb_to_linear(const video::SColor &col_srgb)
+	{
+		v3f col(col_srgb.getRed(), col_srgb.getGreen(), col_srgb.getBlue());
+		col /= 255.0f;
+		col.X = srgb_to_linear_component(col.X);
+		col.Y = srgb_to_linear_component(col.Y);
+		col.Z = srgb_to_linear_component(col.Z);
+		return col;
+	}
+
+	video::SColor linear_to_srgb(const v3f &col_linear)
+	{
+		v3f col;
+		col.X = linear_to_srgb_component(col_linear.X);
+		col.Y = linear_to_srgb_component(col_linear.Y);
+		col.Z = linear_to_srgb_component(col_linear.Z);
+		col *= 255.0f;
+		col.X = core::clamp<float>(col.X, 0.0f, 255.0f);
+		col.Y = core::clamp<float>(col.Y, 0.0f, 255.0f);
+		col.Z = core::clamp<float>(col.Z, 0.0f, 255.0f);
+		return video::SColor(0xff, myround(col.X), myround(col.Y),
+			myround(col.Z));
+	}
+}
+
 video::SColor TextureSource::getTextureAverageColor(const std::string &name)
 {
 	video::IVideoDriver *driver = RenderingEngine::get_video_driver();
@@ -2197,9 +2282,7 @@ video::SColor TextureSource::getTextureAverageColor(const std::string &name)
 		return c;
 
 	u32 total = 0;
-	u32 tR = 0;
-	u32 tG = 0;
-	u32 tB = 0;
+	v3f col_acc(0, 0, 0);
 	core::dimension2d<u32> dim = image->getDimension();
 	u16 step = 1;
 	if (dim.Width > 16)
@@ -2209,17 +2292,14 @@ video::SColor TextureSource::getTextureAverageColor(const std::string &name)
 			c = image->getPixel(x,y);
 			if (c.getAlpha() > 0) {
 				total++;
-				tR += c.getRed();
-				tG += c.getGreen();
-				tB += c.getBlue();
+				col_acc += srgb_to_linear(c);
 			}
 		}
 	}
 	image->drop();
 	if (total > 0) {
-		c.setRed(tR / total);
-		c.setGreen(tG / total);
-		c.setBlue(tB / total);
+		col_acc /= total;
+		c = linear_to_srgb(col_acc);
 	}
 	c.setAlpha(255);
 	return c;

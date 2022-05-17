@@ -21,6 +21,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <cmath>
 #include <cassert>
 #include <vector>
+#include <algorithm>
 
 // Simple 2D bitmap class with just the functionality needed here
 class Bitmap {
@@ -123,7 +124,7 @@ void imageCleanTransparent(video::IImage *src, u32 threshold)
 			// Ignore pixels we haven't processed
 			if (!bitmap.get(sx, sy))
 				continue;
-	
+
 			// Add RGB values weighted by alpha IF the pixel is opaque, otherwise
 			// use full weight since we want to propagate colors.
 			video::SColor d = src->getPixel(sx, sy);

@@ -399,7 +399,7 @@ bool ScriptApiClient::on_inventory_open(Inventory *inventory)
 	lua_getglobal(L, "core");
 	lua_getfield(L, -1, "registered_on_inventory_open");
 
-	push_inventory(L, inventory);
+	push_inventory_lists(L, *inventory);
 
 	try {
 		runCallbacks(1, RUN_CALLBACKS_MODE_OR);

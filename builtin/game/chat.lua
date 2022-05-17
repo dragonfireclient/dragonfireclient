@@ -310,12 +310,7 @@ local function handle_revoke_command(caller, revokename, revokeprivstr)
 			and revokename == core.settings:get("name")
 			and revokename ~= ""
 	if revokeprivstr == "all" then
-		revokeprivs = privs
-		privs = {}
-	else
-		for priv, _ in pairs(revokeprivs) do
-			privs[priv] = nil
-		end
+		revokeprivs = table.copy(privs)
 	end
 
 	local privs_unknown = ""
@@ -332,7 +327,10 @@ local function handle_revoke_command(caller, revokename, revokeprivstr)
 		end
 		local def = core.registered_privileges[priv]
 		if not def then
-			privs_unknown = privs_unknown .. S("Unknown privilege: @1", priv) .. "\n"
+			-- Old/removed privileges might still be granted to certain players
+			if not privs[priv] then
+				privs_unknown = privs_unknown .. S("Unknown privilege: @1", priv) .. "\n"
+			end
 		elseif is_singleplayer and def.give_to_singleplayer then
 			irrevokable[priv] = true
 		elseif is_admin and def.give_to_admin then
@@ -359,18 +357,21 @@ local function handle_revoke_command(caller, revokename, revokeprivstr)
 	end
 
 	local revokecount = 0
+	for priv, _ in pairs(revokeprivs) do
+		privs[priv] = nil
+		revokecount = revokecount + 1
+	end
+
+	if revokecount == 0 then
+		return false, S("No privileges were revoked.")
+	end
 
 	core.set_player_privs(revokename, privs)
 	for priv, _ in pairs(revokeprivs) do
 		-- call the on_revoke callbacks
 		core.run_priv_callbacks(revokename, priv, caller, "revoke")
-		revokecount = revokecount + 1
 	end
 	local new_privs = core.get_player_privs(revokename)
-
-	if revokecount == 0 then
-		return false, S("No privileges were revoked.")
-	end
 
 	core.log("action", caller..' revoked ('
 			..core.privs_to_string(revokeprivs, ', ')
@@ -524,7 +525,7 @@ end
 
 -- Teleports player <name> to <p> if possible
 local function teleport_to_pos(name, p)
-	local lm = 31000
+	local lm = 31007 -- equals MAX_MAP_GENERATION_LIMIT in C++
 	if p.x < -lm or p.x > lm or p.y < -lm or p.y > lm
 			or p.z < -lm or p.z > lm then
 		return false, S("Cannot teleport out of map bounds!")
@@ -621,6 +622,10 @@ core.register_chatcommand("set", {
 
 		setname, setvalue = string.match(param, "([^ ]+) (.+)")
 		if setname and setvalue then
+			if setname:sub(1, 7) == "secure." then
+				return false, S("Failed. Cannot modify secure settings. "
+					.. "Edit the settings file manually.")
+			end
 			if not core.settings:get(setname) then
 				return false, S("Failed. Use '/set -n <name> <value>' "
 					.. "to create a new setting.")
@@ -1034,12 +1039,11 @@ core.register_chatcommand("time", {
 		end
 		local hour, minute = param:match("^(%d+):(%d+)$")
 		if not hour then
-			local new_time = tonumber(param)
-			if not new_time then
-				return false, S("Invalid time.")
+			local new_time = tonumber(param) or -1
+			if new_time ~= new_time or new_time < 0 or new_time > 24000 then
+				return false, S("Invalid time (must be between 0 and 24000).")
 			end
-			-- Backward compatibility.
-			core.set_timeofday((new_time % 24000) / 24000)
+			core.set_timeofday(new_time / 24000)
 			core.log("action", name .. " sets time to " .. new_time)
 			return true, S("Time of day changed.")
 		end
@@ -1283,7 +1287,7 @@ local function handle_kill_command(killer, victim)
 			return false, S("@1 is already dead.", victim)
 		end
 	end
-	if not killer == victim then
+	if killer ~= victim then
 		core.log("action", string.format("%s killed %s", killer, victim))
 	end
 	-- Kill victim

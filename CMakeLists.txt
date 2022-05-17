@@ -11,13 +11,14 @@ endif()
 project(minetest)
 set(PROJECT_NAME_CAPITALIZED "Dragonfire")
 
-set(CMAKE_CXX_STANDARD 11)
-set(GCC_MINIMUM_VERSION "4.8")
-set(CLANG_MINIMUM_VERSION "3.4")
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(GCC_MINIMUM_VERSION "5.1")
+set(CLANG_MINIMUM_VERSION "3.5")
 
 # Also remember to set PROTOCOL_VERSION in network/networkprotocol.h when releasing
 set(VERSION_MAJOR 5)
-set(VERSION_MINOR 5)
+set(VERSION_MINOR 6)
 set(VERSION_PATCH 0)
 set(VERSION_EXTRA "dragonfire" CACHE STRING "Stuff to append to version string")
 
@@ -26,7 +27,7 @@ set(DEVELOPMENT_BUILD FALSE)
 
 set(VERSION_STRING "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 if(VERSION_EXTRA)
-	set(VERSION_STRING ${VERSION_STRING}-${VERSION_EXTRA})
+	set(VERSION_STRING "${VERSION_STRING}-${VERSION_EXTRA}")
 elseif(DEVELOPMENT_BUILD)
 	set(VERSION_STRING "${VERSION_STRING}-dev")
 endif()
@@ -51,7 +52,7 @@ set(RUN_IN_PLACE ${DEFAULT_RUN_IN_PLACE} CACHE BOOL
 set(BUILD_CLIENT TRUE CACHE BOOL "Build client")
 set(BUILD_SERVER FALSE CACHE BOOL "Build server")
 set(BUILD_UNITTESTS TRUE CACHE BOOL "Build unittests")
-
+set(BUILD_BENCHMARKS FALSE CACHE BOOL "Build benchmarks")
 
 set(WARN_ALL TRUE CACHE BOOL "Enable -Wall for Release build")
 
@@ -64,8 +65,21 @@ endif()
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 
+set(IRRLICHTMT_BUILD_DIR "" CACHE PATH "Path to IrrlichtMt build directory.")
+if(NOT "${IRRLICHTMT_BUILD_DIR}" STREQUAL "")
+	find_package(IrrlichtMt QUIET
+		PATHS "${IRRLICHTMT_BUILD_DIR}"
+		NO_DEFAULT_PATH
+	)
+
+	if(NOT TARGET IrrlichtMt::IrrlichtMt)
+		# find_package() searches certain subdirectories. ${PATH}/cmake is not
+		# the only one, but it is the one where IrrlichtMt is supposed to export
+		# IrrlichtMtConfig.cmake
+		message(FATAL_ERROR "Could not find IrrlichtMtConfig.cmake in ${IRRLICHTMT_BUILD_DIR}/cmake.")
+	endif()
 # This is done here so that relative search paths are more reasonable
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/lib/irrlichtmt")
+elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/lib/irrlichtmt")
 	message(STATUS "Using user-provided IrrlichtMt at subdirectory 'lib/irrlichtmt'")
 	if(BUILD_CLIENT)
 		# tell IrrlichtMt to create a static library
@@ -101,9 +115,11 @@ else()
 		# Note that we can't use target_include_directories() since that doesn't work for IMPORTED targets before CMake 3.11
 		set_target_properties(IrrlichtMt::IrrlichtMt PROPERTIES
 			INTERFACE_INCLUDE_DIRECTORIES "${IRRLICHT_INCLUDE_DIR}")
-	else()
-		message(STATUS "Found IrrlichtMt ${IrrlichtMt_VERSION}")
 	endif()
+endif()
+
+if(TARGET IrrlichtMt::IrrlichtMt)
+	message(STATUS "Found IrrlichtMt ${IrrlichtMt_VERSION}")
 endif()
 
 
@@ -135,15 +151,16 @@ elseif(UNIX) # Linux, BSD etc
 		set(ICONDIR "unix/icons")
 		set(LOCALEDIR "locale")
 	else()
-		set(SHAREDIR "${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}")
-		set(BINDIR "${CMAKE_INSTALL_PREFIX}/bin")
-		set(DOCDIR "${CMAKE_INSTALL_PREFIX}/share/doc/${PROJECT_NAME}")
-		set(MANDIR "${CMAKE_INSTALL_PREFIX}/share/man")
+		include(GNUInstallDirs)
+		set(SHAREDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}")
+		set(BINDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}")
+		set(DOCDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DOCDIR}")
+		set(MANDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_MANDIR}")
 		set(EXAMPLE_CONF_DIR ${DOCDIR})
-		set(XDG_APPS_DIR "${CMAKE_INSTALL_PREFIX}/share/applications")
-		set(APPDATADIR "${CMAKE_INSTALL_PREFIX}/share/metainfo")
-		set(ICONDIR "${CMAKE_INSTALL_PREFIX}/share/icons")
-		set(LOCALEDIR "${CMAKE_INSTALL_PREFIX}/share/locale")
+		set(XDG_APPS_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/applications")
+		set(APPDATADIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/metainfo")
+		set(ICONDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/icons")
+		set(LOCALEDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LOCALEDIR}")
 	endif()
 endif()
 
@@ -246,10 +263,10 @@ endif()
 find_package(GMP REQUIRED)
 find_package(Json REQUIRED)
 find_package(Lua REQUIRED)
-
-# JsonCpp doesn't compile well on GCC 4.8
-if(NOT USE_SYSTEM_JSONCPP)
-	set(GCC_MINIMUM_VERSION "4.9")
+if(NOT USE_LUAJIT)
+	set(LUA_BIT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/bitop)
+	set(LUA_BIT_LIBRARY bitop)
+	add_subdirectory(lib/bitop)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -264,9 +281,12 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "(Apple)?Clang")
 	endif()
 endif()
 
+if(BUILD_BENCHMARKS)
+	add_subdirectory(lib/catch2)
+endif()
+
 # Subdirectories
 # Be sure to add all relevant definitions above this
-
 add_subdirectory(src)
 
 

@@ -61,7 +61,9 @@ public:
 
 	void cancelPendingItems();
 
-	static void runCompletionCallbacks(
+protected:
+
+	void runCompletionCallbacks(
 		const v3s16 &pos, EmergeAction action,
 		const EmergeCallbackList &callbacks);
 
@@ -138,7 +140,7 @@ EmergeParams::EmergeParams(EmergeManager *parent, const BiomeGen *biomegen,
 //// EmergeManager
 ////
 
-EmergeManager::EmergeManager(Server *server)
+EmergeManager::EmergeManager(Server *server, MetricsBackend *mb)
 {
 	this->ndef      = server->getNodeDefManager();
 	this->biomemgr  = new BiomeManager(server);
@@ -155,6 +157,17 @@ EmergeManager::EmergeManager(Server *server)
 	// EmergeThreads should be the ServerThread.
 
 	enable_mapgen_debug_info = g_settings->getBool("enable_mapgen_debug_info");
+
+	STATIC_ASSERT(ARRLEN(emergeActionStrs) == ARRLEN(m_completed_emerge_counter),
+		enum_size_mismatches);
+	for (u32 i = 0; i < ARRLEN(m_completed_emerge_counter); i++) {
+		std::string help_str("Number of completed emerges with status ");
+		help_str.append(emergeActionStrs[i]);
+		m_completed_emerge_counter[i] = mb->addCounter(
+			"minetest_emerge_completed", help_str,
+			{{"status", emergeActionStrs[i]}}
+		);
+	}
 
 	s16 nthreads = 1;
 	g_settings->getS16NoEx("num_emerge_threads", nthreads);
@@ -202,6 +215,7 @@ EmergeManager::~EmergeManager()
 			delete m_mapgens[i];
 	}
 
+	delete biomegen;
 	delete biomemgr;
 	delete oremgr;
 	delete decomgr;
@@ -368,12 +382,6 @@ bool EmergeManager::isBlockInQueue(v3s16 pos)
 
 
 // TODO(hmmmm): Move this to ServerMap
-v3s16 EmergeManager::getContainingChunk(v3s16 blockpos)
-{
-	return getContainingChunk(blockpos, mgparams->chunksize);
-}
-
-// TODO(hmmmm): Move this to ServerMap
 v3s16 EmergeManager::getContainingChunk(v3s16 blockpos, s16 chunksize)
 {
 	s16 coff = -chunksize / 2;
@@ -395,17 +403,6 @@ int EmergeManager::getSpawnLevelAtPoint(v2s16 p)
 	return m_mapgens[0]->getSpawnLevelAtPoint(p);
 }
 
-
-int EmergeManager::getGroundLevelAtPoint(v2s16 p)
-{
-	if (m_mapgens.empty() || !m_mapgens[0]) {
-		errorstream << "EmergeManager: getGroundLevelAtPoint() called"
-			" before mapgen init" << std::endl;
-		return 0;
-	}
-
-	return m_mapgens[0]->getGroundLevelAtPoint(p);
-}
 
 // TODO(hmmmm): Move this to ServerMap
 bool EmergeManager::isBlockUnderground(v3s16 blockpos)
@@ -505,6 +502,12 @@ EmergeThread *EmergeManager::getOptimalThread()
 	return m_threads[index];
 }
 
+void EmergeManager::reportCompletedEmerge(EmergeAction action)
+{
+	assert((int)action < ARRLEN(m_completed_emerge_counter));
+	m_completed_emerge_counter[(int)action]->increment();
+}
+
 
 ////
 //// EmergeThread
@@ -556,6 +559,8 @@ void EmergeThread::cancelPendingItems()
 void EmergeThread::runCompletionCallbacks(const v3s16 &pos, EmergeAction action,
 	const EmergeCallbackList &callbacks)
 {
+	m_emerge->reportCompletedEmerge(action);
+
 	for (size_t i = 0; i != callbacks.size(); i++) {
 		EmergeCompletionCallback callback;
 		void *param;
@@ -650,12 +655,14 @@ MapBlock *EmergeThread::finishGen(v3s16 pos, BlockMakeData *bmdata,
 		m_server->setAsyncFatalError(e);
 	}
 
-	/*
-		Clear generate notifier events
-	*/
-	m_mapgen->gennotify.clearEvents();
-
 	EMERGE_DBG_OUT("ended up with: " << analyze_block(block));
+
+	/*
+		Clear mapgen state
+	*/
+	assert(!m_mapgen->generating);
+	m_mapgen->gennotify.clearEvents();
+	m_mapgen->vm = nullptr;
 
 	/*
 		Activate the block
@@ -671,19 +678,19 @@ void *EmergeThread::run()
 	BEGIN_DEBUG_EXCEPTION_HANDLER
 
 	v3s16 pos;
+	std::map<v3s16, MapBlock *> modified_blocks;
 
-	m_map    = (ServerMap *)&(m_server->m_env->getMap());
+	m_map    = &m_server->m_env->getServerMap();
 	m_emerge = m_server->m_emerge;
 	m_mapgen = m_emerge->m_mapgens[id];
 	enable_mapgen_debug_info = m_emerge->enable_mapgen_debug_info;
 
 	try {
 	while (!stopRequested()) {
-		std::map<v3s16, MapBlock *> modified_blocks;
 		BlockEmergeData bedata;
 		BlockMakeData bmdata;
 		EmergeAction action;
-		MapBlock *block;
+		MapBlock *block = nullptr;
 
 		if (!popBlockEmerge(&pos, &bedata)) {
 			m_queue_event.wait();
@@ -706,6 +713,8 @@ void *EmergeThread::run()
 			}
 
 			block = finishGen(pos, &bmdata, &modified_blocks);
+			if (!block)
+				action = EMERGE_ERRORED;
 		}
 
 		runCompletionCallbacks(pos, action, bedata.callbacks);
@@ -715,6 +724,7 @@ void *EmergeThread::run()
 
 		if (!modified_blocks.empty())
 			m_server->SetBlocksNotSent(modified_blocks);
+		modified_blocks.clear();
 	}
 	} catch (VersionMismatchException &e) {
 		std::ostringstream err;
@@ -735,6 +745,8 @@ void *EmergeThread::run()
 			<< std::endl;
 		m_server->setAsyncFatalError(err.str());
 	}
+
+	cancelPendingItems();
 
 	END_DEBUG_EXCEPTION_HANDLER
 	return NULL;

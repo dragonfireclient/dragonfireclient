@@ -88,7 +88,7 @@ void SettingsHierarchy::onLayerCreated(int layer, Settings *obj)
 
 void SettingsHierarchy::onLayerRemoved(int layer)
 {
-	assert(layer >= 0 && layer < layers.size());
+	assert(layer >= 0 && layer < (int)layers.size());
 	layers[layer] = nullptr;
 	if (this == &g_hierarchy && layer == (int)SL_GLOBAL)
 		g_settings = nullptr;
@@ -104,8 +104,7 @@ Settings *Settings::createLayer(SettingsLayer sl, const std::string &end_tag)
 
 Settings *Settings::getLayer(SettingsLayer sl)
 {
-	sanity_check((int)sl >= 0 && sl < SL_TOTAL_COUNT);
-	return g_hierarchy.layers[(int)sl];
+	return g_hierarchy.getLayer(sl);
 }
 
 
@@ -660,13 +659,19 @@ bool Settings::getNoiseParamsFromGroup(const std::string &name,
 
 bool Settings::exists(const std::string &name) const
 {
-	MutexAutoLock lock(m_mutex);
-
-	if (m_settings.find(name) != m_settings.end())
+	if (existsLocal(name))
 		return true;
 	if (auto parent = getParent())
 		return parent->exists(name);
 	return false;
+}
+
+
+bool Settings::existsLocal(const std::string &name) const
+{
+	MutexAutoLock lock(m_mutex);
+
+	return m_settings.find(name) != m_settings.end();
 }
 
 

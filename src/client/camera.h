@@ -162,16 +162,11 @@ public:
 	// Notify about new server-sent FOV and initialize smooth FOV transition
 	void notifyFovChange();
 
-	// Checks if the constructor was able to create the scene nodes
-	bool successfullyCreated(std::string &error_message);
-
 	// Step the camera: updates the viewing range and view bobbing.
 	void step(f32 dtime);
 
 	// Update the camera from the local player's position.
-	// busytime is used to adjust the viewing range.
-	void update(LocalPlayer* player, f32 frametime, f32 busytime,
-			f32 tool_reload_ratio);
+	void update(LocalPlayer* player, f32 frametime, f32 tool_reload_ratio);
 
 	// Update render distance
 	void updateViewingRange();
@@ -244,6 +239,8 @@ private:
 	v3f m_camera_direction;
 	// Camera offset
 	v3s16 m_camera_offset;
+
+	bool m_stepheight_smooth_active = false;
 
 	// Server-sent FOV variables
 	bool m_server_sent_fov = false;

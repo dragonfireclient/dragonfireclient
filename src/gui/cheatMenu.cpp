@@ -31,10 +31,6 @@ FontMode CheatMenu::fontStringToEnum(std::string str)
 		return FM_Mono;
 	else if (str == "FM_Fallback")
 		return _FM_Fallback;
-	else if (str == "FM_Simple")
-		return FM_Simple;
-	else if (str == "FM_SimpleMono")
-		return FM_SimpleMono;
 	else if (str == "FM_MaxMode")
 		return FM_MaxMode;
 	else if (str == "FM_Unspecified")

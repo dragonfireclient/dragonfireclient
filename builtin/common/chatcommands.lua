@@ -6,6 +6,42 @@ local S = core.get_translator("__builtin")
 
 core.registered_chatcommands = {}
 
+-- Interpret the parameters of a command, separating options and arguments.
+-- Input: command, param
+--   command: name of command
+--   param: parameters of command
+-- Returns: opts, args
+--   opts is a string of option letters, or false on error
+--   args is an array with the non-option arguments in order, or an error message
+-- Example: for this command line:
+--      /command a b -cd e f -g
+-- the function would receive:
+--      a b -cd e f -g
+-- and it would return:
+--	"cdg", {"a", "b", "e", "f"}
+-- Negative numbers are taken as arguments. Long options (--option) are
+-- currently rejected as reserved.
+local function getopts(command, param)
+	local opts = ""
+	local args = {}
+	for match in param:gmatch("%S+") do
+		if match:byte(1) == 45 then -- 45 = '-'
+			local second = match:byte(2)
+			if second == 45 then
+				return false, S("Invalid parameters (see /help @1).", command)
+			elseif second and (second < 48 or second > 57) then -- 48 = '0', 57 = '9'
+				opts = opts .. match:sub(2)
+			else
+				-- numeric, add it to args
+				args[#args + 1] = match
+			end
+		else
+			args[#args + 1] = match
+		end
+	end
+	return opts, args
+end
+
 function core.register_chatcommand(cmd, def)
 	def = def or {}
 	def.params = def.params or ""
@@ -78,22 +114,30 @@ if INIT == "client" then
 	end
 end
 
-local function do_help_cmd(name, param)
-	local function format_help_line(cmd, def)
-		local cmd_marker = "/"
-		if INIT == "client" then
-			cmd_marker = "."
-		end
-		local msg = core.colorize("#00ffff", cmd_marker .. cmd)
-		if def.params and def.params ~= "" then
-			msg = msg .. " " .. def.params
-		end
-		if def.description and def.description ~= "" then
-			msg = msg .. ": " .. def.description
-		end
-		return msg
+local function format_help_line(cmd, def)
+	local cmd_marker = INIT == "client" and "." or "/"
+	local msg = core.colorize("#00ffff", cmd_marker .. cmd)
+	if def.params and def.params ~= "" then
+		msg = msg .. " " .. def.params
 	end
-	if param == "" then
+	if def.description and def.description ~= "" then
+		msg = msg .. ": " .. def.description
+	end
+	return msg
+end
+
+local function do_help_cmd(name, param)
+	local opts, args = getopts("help", param)
+	if not opts then
+		return false, args
+	end
+	if #args > 1 then
+		return false, S("Too many arguments, try using just /help <command>")
+	end
+	local use_gui = INIT ~= "client" and core.get_player_by_name(name)
+	use_gui = use_gui and not opts:find("t")
+
+	if #args == 0 and not use_gui then
 		local cmds = {}
 		for cmd, def in pairs(core.registered_chatcommands) do
 			if INIT == "client" or core.check_player_privs(name, def.privs) then
@@ -116,7 +160,10 @@ local function do_help_cmd(name, param)
 				.. "everything.")
 		end
 		return true, msg
-	elseif param == "all" then
+	elseif #args == 0 or (args[1] == "all" and use_gui) then
+		core.show_general_help_formspec(name)
+		return true
+	elseif args[1] == "all" then
 		local cmds = {}
 		for cmd, def in pairs(core.registered_chatcommands) do
 			if INIT == "client" or core.check_player_privs(name, def.privs) then
@@ -131,7 +178,11 @@ local function do_help_cmd(name, param)
 			msg = core.gettext("Available commands:")
 		end
 		return true, msg.."\n"..table.concat(cmds, "\n")
-	elseif INIT == "game" and param == "privs" then
+	elseif INIT == "game" and args[1] == "privs" then
+		if use_gui then
+			core.show_privs_help_formspec(name)
+			return true
+		end
 		local privs = {}
 		for priv, def in pairs(core.registered_privileges) do
 			privs[#privs + 1] = priv .. ": " .. def.description
@@ -139,7 +190,7 @@ local function do_help_cmd(name, param)
 		table.sort(privs)
 		return true, S("Available privileges:").."\n"..table.concat(privs, "\n")
 	else
-		local cmd = param
+		local cmd = args[1]
 		local def = core.registered_chatcommands[cmd]
 		if not def then
 			local msg
@@ -165,8 +216,8 @@ if INIT == "client" then
 	})
 else
 	core.register_chatcommand("help", {
-		params = S("[all | privs | <cmd>]"),
-		description = S("Get help for commands or list privileges"),
+		params = S("[all | privs | <cmd>] [-t]"),
+		description = S("Get help for commands or list privileges (-t: output in chat)"),
 		func = do_help_cmd,
 	})
 end

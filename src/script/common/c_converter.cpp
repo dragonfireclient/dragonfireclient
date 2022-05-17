@@ -52,32 +52,12 @@ if (value < F1000_MIN || value > F1000_MAX) { \
 
 
 /**
- * A helper which sets (if available) the vector metatable from builtin as metatable
- * for the table on top of the stack
+ * A helper which sets the vector metatable for the table on top of the stack
  */
 static void set_vector_metatable(lua_State *L)
 {
-	// get vector.metatable
-	lua_getglobal(L, "vector");
-	if (!lua_istable(L, -1)) {
-		// there is no global vector table
-		lua_pop(L, 1);
-		errorstream << "set_vector_metatable in c_converter.cpp: " <<
-				"missing global vector table" << std::endl;
-		return;
-	}
-	lua_getfield(L, -1, "metatable");
-	// set the metatable
-	lua_setmetatable(L, -3);
-	// pop vector global
-	lua_pop(L, 1);
-}
-
-
-void push_float_string(lua_State *L, float value)
-{
-	auto str = ftos(value);
-	lua_pushstring(L, str.c_str());
+	lua_rawgeti(L, LUA_REGISTRYINDEX, CUSTOM_RIDX_VECTOR_METATABLE);
+	lua_setmetatable(L, -2);
 }
 
 void push_v3f(lua_State *L, v3f p)
@@ -98,26 +78,6 @@ void push_v2f(lua_State *L, v2f p)
 	lua_pushnumber(L, p.X);
 	lua_setfield(L, -2, "x");
 	lua_pushnumber(L, p.Y);
-	lua_setfield(L, -2, "y");
-}
-
-void push_v3_float_string(lua_State *L, v3f p)
-{
-	lua_createtable(L, 0, 3);
-	push_float_string(L, p.X);
-	lua_setfield(L, -2, "x");
-	push_float_string(L, p.Y);
-	lua_setfield(L, -2, "y");
-	push_float_string(L, p.Z);
-	lua_setfield(L, -2, "z");
-}
-
-void push_v2_float_string(lua_State *L, v2f p)
-{
-	lua_createtable(L, 0, 2);
-	push_float_string(L, p.X);
-	lua_setfield(L, -2, "x");
-	push_float_string(L, p.Y);
 	lua_setfield(L, -2, "y");
 }
 
@@ -479,17 +439,9 @@ size_t read_stringlist(lua_State *L, int index, std::vector<std::string> *result
 	Table field getters
 */
 
-#if defined(__MINGW32__) && !defined(__MINGW64__)
-/* MinGW 32-bit somehow crashes in the std::set destructor when this
- * variable is thread-local, so just don't do that. */
-static std::set<u64> warned_msgs;
-#endif
-
 bool check_field_or_nil(lua_State *L, int index, int type, const char *fieldname)
 {
-#if !defined(__MINGW32__) || defined(__MINGW64__)
 	thread_local std::set<u64> warned_msgs;
-#endif
 
 	int t = lua_type(L, index);
 	if (t == LUA_TNIL)

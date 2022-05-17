@@ -24,6 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "network/networkprotocol.h"
 #include "irr_v3d.h"
 #include "util/container.h"
+#include "util/metricsbackend.h"
 #include "mapgen/mapgen.h" // for MapgenParams
 #include "map.h"
 
@@ -67,6 +68,14 @@ enum EmergeAction {
 	EMERGE_FROM_MEMORY,
 	EMERGE_FROM_DISK,
 	EMERGE_GENERATED,
+};
+
+const static std::string emergeActionStrs[] = {
+	"cancelled",
+	"errored",
+	"from_memory",
+	"from_disk",
+	"generated",
 };
 
 // Callback
@@ -138,7 +147,7 @@ public:
 	MapSettingsManager *map_settings_mgr;
 
 	// Methods
-	EmergeManager(Server *server);
+	EmergeManager(Server *server, MetricsBackend *mb);
 	~EmergeManager();
 	DISABLE_CLASS_COPY(EmergeManager);
 
@@ -176,13 +185,10 @@ public:
 
 	bool isBlockInQueue(v3s16 pos);
 
-	v3s16 getContainingChunk(v3s16 blockpos);
-
 	Mapgen *getCurrentMapgen();
 
 	// Mapgen helpers methods
 	int getSpawnLevelAtPoint(v2s16 p);
-	int getGroundLevelAtPoint(v2s16 p);
 	bool isBlockUnderground(v3s16 blockpos);
 
 	static v3s16 getContainingChunk(v3s16 blockpos, s16 chunksize);
@@ -199,6 +205,9 @@ private:
 	u32 m_qlimit_total;
 	u32 m_qlimit_diskonly;
 	u32 m_qlimit_generate;
+
+	// Emerge metrics
+	MetricCounterPtr m_completed_emerge_counter[5];
 
 	// Managers of various map generation-related components
 	// Note that each Mapgen gets a copy(!) of these to work with
@@ -220,6 +229,8 @@ private:
 		bool *entry_already_exists);
 
 	bool popBlockEmergeData(v3s16 pos, BlockEmergeData *bedata);
+
+	void reportCompletedEmerge(EmergeAction action);
 
 	friend class EmergeThread;
 };

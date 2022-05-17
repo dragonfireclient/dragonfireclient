@@ -27,6 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include <cerrno>
 #include <string>
+#include <algorithm>
 #include <iostream>
 
 
@@ -97,6 +98,7 @@ void ScriptApiSecurity::initializeSecurity()
 		"type",
 		"unpack",
 		"_VERSION",
+		"vector",
 		"xpcall",
 	};
 	static const char *whitelist_tables[] = {
@@ -106,6 +108,7 @@ void ScriptApiSecurity::initializeSecurity()
 		"string",
 		"table",
 		"math",
+		"bit"
 	};
 	static const char *io_whitelist[] = {
 		"open",
@@ -120,21 +123,17 @@ void ScriptApiSecurity::initializeSecurity()
 		"date",
 		"difftime",
 		"getenv",
-		"setlocale",
 		"time",
-		"tmpname",
 	};
 	static const char *debug_whitelist[] = {
 		"gethook",
 		"traceback",
 		"getinfo",
 		"getmetatable",
-		"setupvalue",
 		"setmetatable",
 		"upvalueid",
 		"sethook",
 		"debug",
-		"setlocal",
 	};
 	static const char *package_whitelist[] = {
 		"config",
@@ -220,6 +219,7 @@ void ScriptApiSecurity::initializeSecurity()
 	// And replace unsafe ones
 	SECURE_API(os, remove);
 	SECURE_API(os, rename);
+	SECURE_API(os, setlocale);
 
 	lua_setglobal(L, "os");
 	lua_pop(L, 1);  // Pop old OS
@@ -250,6 +250,15 @@ void ScriptApiSecurity::initializeSecurity()
 	}
 	lua_pop(L, 1);  // Pop old jit
 #endif
+
+	// Get rid of 'core' in the old globals, we don't want anyone thinking it's
+	// safe or even usable.
+	lua_pushnil(L);
+	lua_setfield(L, old_globals, "core");
+
+	// 'vector' as well.
+	lua_pushnil(L);
+	lua_setfield(L, old_globals, "vector");
 
 	lua_pop(L, 1); // Pop globals_backup
 
@@ -286,19 +295,21 @@ void ScriptApiSecurity::initializeSecurityClient()
 		"rawset",
 		"select",
 		"setfenv",
-		// getmetatable can be used to escape the sandbox
+		// getmetatable can be used to escape the sandbox <- ???
 		"setmetatable",
 		"tonumber",
 		"tostring",
 		"type",
 		"unpack",
 		"_VERSION",
+		"vector",
 		"xpcall",
 		// Completely safe libraries
 		"coroutine",
 		"string",
 		"table",
 		"math",
+		"bit",
 	};
 	static const char *os_whitelist[] = {
 		"clock",
@@ -307,7 +318,7 @@ void ScriptApiSecurity::initializeSecurityClient()
 		"time"
 	};
 	static const char *debug_whitelist[] = {
-		"getinfo",
+		"getinfo", // used by builtin and unset before mods load
 		"traceback"
 	};
 #if USE_LUAJIT
@@ -607,6 +618,38 @@ bool ScriptApiSecurity::checkPath(lua_State *L, const char *path,
 	return false;
 }
 
+bool ScriptApiSecurity::checkWhitelisted(lua_State *L, const std::string &setting)
+{
+	assert(str_starts_with(setting, "secure."));
+
+	// We have to make sure that this function is being called directly by
+	// a mod, otherwise a malicious mod could override this function and
+	// steal its return value.
+	lua_Debug info;
+
+	// Make sure there's only one item below this function on the stack...
+	if (lua_getstack(L, 2, &info))
+		return false;
+	FATAL_ERROR_IF(!lua_getstack(L, 1, &info), "lua_getstack() failed");
+	FATAL_ERROR_IF(!lua_getinfo(L, "S", &info), "lua_getinfo() failed");
+
+	// ...and that that item is the main file scope.
+	if (strcmp(info.what, "main") != 0)
+		return false;
+
+	// Mod must be listed in secure.http_mods or secure.trusted_mods
+	lua_rawgeti(L, LUA_REGISTRYINDEX, CUSTOM_RIDX_CURRENT_MOD_NAME);
+	if (!lua_isstring(L, -1))
+		return false;
+	std::string mod_name = readParam<std::string>(L, -1);
+
+	std::string value = g_settings->get(setting);
+	value.erase(std::remove(value.begin(), value.end(), ' '), value.end());
+	auto mod_list = str_split(value, ',');
+
+	return CONTAINS(mod_list, mod_name);
+}
+
 
 int ScriptApiSecurity::sl_g_dofile(lua_State *L)
 {
@@ -838,3 +881,20 @@ int ScriptApiSecurity::sl_os_remove(lua_State *L)
 	return 2;
 }
 
+
+int ScriptApiSecurity::sl_os_setlocale(lua_State *L)
+{
+	const bool cat = lua_gettop(L) > 1;
+	// Don't allow changes
+	if (!lua_isnoneornil(L, 1)) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	push_original(L, "os", "setlocale");
+	lua_pushnil(L);
+	if (cat)
+		lua_pushvalue(L, 2);
+	lua_call(L, cat ? 2 : 1, 1);
+	return 1;
+}

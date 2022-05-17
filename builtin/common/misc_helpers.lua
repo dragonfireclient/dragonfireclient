@@ -543,7 +543,7 @@ if INIT == "mainmenu" then
 	end
 end
 
-if INIT == "client" or INIT == "mainmenu" then
+if core.gettext then -- for client and mainmenu
 	function fgettext_ne(text, ...)
 		text = core.gettext(text)
 		local arg = {n=select('#', ...), ...}

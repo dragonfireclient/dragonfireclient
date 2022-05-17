@@ -78,34 +78,35 @@ local function load_texture_packs(txtpath, retval)
 
 	for _, item in ipairs(list) do
 		if item ~= "base" then
-			local name = item
-
 			local path = txtpath .. DIR_DELIM .. item .. DIR_DELIM
-			if path == current_texture_path then
-				name = fgettext("$1 (Enabled)", name)
-			end
-
 			local conf = Settings(path .. "texture_pack.conf")
+			local enabled = path == current_texture_path
 
+			local title = conf:get("title") or item
+
+			-- list_* is only used if non-nil, else the regular versions are used.
 			retval[#retval + 1] = {
 				name = item,
+				title = title,
+				list_name = enabled and fgettext("$1 (Enabled)", item) or nil,
+				list_title = enabled and fgettext("$1 (Enabled)", title) or nil,
 				author = conf:get("author"),
 				release = tonumber(conf:get("release")) or 0,
-				list_name = name,
 				type = "txp",
 				path = path,
-				enabled = path == current_texture_path,
+				enabled = enabled,
 			}
 		end
 	end
 end
 
-function get_mods(path,retval,modpack)
+function get_mods(path, virtual_path, retval, modpack)
 	local mods = core.get_dir_list(path, true)
 
 	for _, name in ipairs(mods) do
 		if name:sub(1, 1) ~= "." then
-			local prefix = path .. DIR_DELIM .. name
+			local mod_path = path .. DIR_DELIM .. name
+			local mod_virtual_path = virtual_path .. "/" .. name
 			local toadd = {
 				dir_name = name,
 				parent_dir = path,
@@ -114,18 +115,18 @@ function get_mods(path,retval,modpack)
 
 			-- Get config file
 			local mod_conf
-			local modpack_conf = io.open(prefix .. DIR_DELIM .. "modpack.conf")
+			local modpack_conf = io.open(mod_path .. DIR_DELIM .. "modpack.conf")
 			if modpack_conf then
 				toadd.is_modpack = true
 				modpack_conf:close()
 
-				mod_conf = Settings(prefix .. DIR_DELIM .. "modpack.conf"):to_table()
+				mod_conf = Settings(mod_path .. DIR_DELIM .. "modpack.conf"):to_table()
 				if mod_conf.name then
 					name = mod_conf.name
 					toadd.is_name_explicit = true
 				end
 			else
-				mod_conf = Settings(prefix .. DIR_DELIM .. "mod.conf"):to_table()
+				mod_conf = Settings(mod_path .. DIR_DELIM .. "mod.conf"):to_table()
 				if mod_conf.name then
 					name = mod_conf.name
 					toadd.is_name_explicit = true
@@ -134,14 +135,16 @@ function get_mods(path,retval,modpack)
 
 			-- Read from config
 			toadd.name = name
+			toadd.title = mod_conf.title
 			toadd.author = mod_conf.author
 			toadd.release = tonumber(mod_conf.release) or 0
-			toadd.path = prefix
+			toadd.path = mod_path
+			toadd.virtual_path = mod_virtual_path
 			toadd.type = "mod"
 
 			-- Check modpack.txt
 			-- Note: modpack.conf is already checked above
-			local modpackfile = io.open(prefix .. DIR_DELIM .. "modpack.txt")
+			local modpackfile = io.open(mod_path .. DIR_DELIM .. "modpack.txt")
 			if modpackfile then
 				modpackfile:close()
 				toadd.is_modpack = true
@@ -153,7 +156,7 @@ function get_mods(path,retval,modpack)
 			elseif toadd.is_modpack then
 				toadd.type = "modpack"
 				toadd.is_modpack = true
-				get_mods(prefix, retval, name)
+				get_mods(mod_path, mod_virtual_path, retval, name)
 			end
 		end
 	end
@@ -181,21 +184,6 @@ function pkgmgr.get_texture_packs()
 end
 
 --------------------------------------------------------------------------------
-function pkgmgr.extract(modfile)
-	if modfile.type == "zip" then
-		local tempfolder = os.tempfolder()
-
-		if tempfolder ~= nil and
-			tempfolder ~= "" then
-			core.create_dir(tempfolder)
-			if core.extract_zip(modfile.name,tempfolder) then
-				return tempfolder
-			end
-		end
-	end
-	return nil
-end
-
 function pkgmgr.get_folder_type(path)
 	local testfile = io.open(path .. DIR_DELIM .. "init.lua","r")
 	if testfile ~= nil then
@@ -349,7 +337,7 @@ function pkgmgr.identify_modname(modpath,filename)
 	return nil
 end
 --------------------------------------------------------------------------------
-function pkgmgr.render_packagelist(render_list)
+function pkgmgr.render_packagelist(render_list, use_technical_names)
 	if not render_list then
 		if not pkgmgr.global_mods then
 			pkgmgr.refresh_globals()
@@ -385,7 +373,12 @@ function pkgmgr.render_packagelist(render_list)
 		else
 			retval[#retval + 1] = "0"
 		end
-		retval[#retval + 1] = core.formspec_escape(v.list_name or v.name)
+
+		if use_technical_names then
+			retval[#retval + 1] = core.formspec_escape(v.list_name or v.name)
+		else
+			retval[#retval + 1] = core.formspec_escape(v.list_title or v.list_name or v.title or v.name)
+		end
 	end
 
 	return table.concat(retval, ",")
@@ -412,6 +405,14 @@ function pkgmgr.is_modpack_entirely_enabled(data, name)
 	return true
 end
 
+local function disable_all_by_name(list, name, except)
+	for i=1, #list do
+		if list[i].name == name and list[i] ~= except then
+			list[i].enabled = false
+		end
+	end
+end
+
 ---------- toggles or en/disables a mod or modpack and its dependencies --------
 local function toggle_mod_or_modpack(list, toggled_mods, enabled_mods, toset, mod)
 	if not mod.is_modpack then
@@ -420,13 +421,16 @@ local function toggle_mod_or_modpack(list, toggled_mods, enabled_mods, toset, mo
 			toset = not mod.enabled
 		end
 		if mod.enabled ~= toset then
-			mod.enabled = toset
 			toggled_mods[#toggled_mods+1] = mod.name
 		end
 		if toset then
 			-- Mark this mod for recursive dependency traversal
 			enabled_mods[mod.name] = true
+
+			-- Disable other mods with the same name
+			disable_all_by_name(list, mod.name, mod)
 		end
+		mod.enabled = toset
 	else
 		-- Toggle or en/disable every mod in the modpack,
 		-- interleaved unsupported
@@ -451,7 +455,7 @@ function pkgmgr.enable_mod(this, toset)
 	local enabled_mods = {}
 	toggle_mod_or_modpack(list, toggled_mods, enabled_mods, toset, mod)
 
-	if not toset then
+	if next(enabled_mods) == nil then
 		-- Mod(s) were disabled, so no dependencies need to be enabled
 		table.sort(toggled_mods)
 		core.log("info", "Following mods were disabled: " ..
@@ -461,11 +465,16 @@ function pkgmgr.enable_mod(this, toset)
 
 	-- Enable mods' depends after activation
 
-	-- Make a list of mod ids indexed by their names
+	-- Make a list of mod ids indexed by their names. Among mods with the
+	-- same name, enabled mods take precedence, after which game mods take
+	-- precedence, being last in the mod list.
 	local mod_ids = {}
 	for id, mod2 in pairs(list) do
 		if mod2.type == "mod" and not mod2.is_modpack then
-			mod_ids[mod2.name] = id
+			local prev_id = mod_ids[mod2.name]
+			if not prev_id or not list[prev_id].enabled then
+				mod_ids[mod2.name] = id
+			end
 		end
 	end
 
@@ -482,6 +491,7 @@ function pkgmgr.enable_mod(this, toset)
 			end
 		end
 	end
+
 	-- If sp is 0, every dependency is already activated
 	while sp > 0 do
 		local name = to_enable[sp]
@@ -494,14 +504,14 @@ function pkgmgr.enable_mod(this, toset)
 				core.log("warning", "Mod dependency \"" .. name ..
 					"\" not found!")
 			else
-				if mod_to_enable.enabled == false then
+				if not mod_to_enable.enabled then
 					mod_to_enable.enabled = true
 					toggled_mods[#toggled_mods+1] = mod_to_enable.name
 				end
 				-- Push the dependencies of the dependency onto the stack
 				local depends = pkgmgr.get_dependencies(mod_to_enable.path)
 				for i = 1, #depends do
-					if not enabled_mods[name] then
+					if not enabled_mods[depends[i]] then
 						sp = sp+1
 						to_enable[sp] = depends[i]
 					end
@@ -561,11 +571,10 @@ function pkgmgr.install_dir(type, path, basename, targetpath)
 		local from = basefolder and basefolder.path or path
 		if targetpath then
 			core.delete_dir(targetpath)
-			core.create_dir(targetpath)
 		else
 			targetpath = core.get_texturepath() .. DIR_DELIM .. basename
 		end
-		if not core.copy_dir(from, targetpath) then
+		if not core.copy_dir(from, targetpath, false) then
 			return nil,
 				fgettext("Failed to install $1 to $2", basename, targetpath)
 		end
@@ -586,7 +595,6 @@ function pkgmgr.install_dir(type, path, basename, targetpath)
 		-- Get destination name for modpack
 		if targetpath then
 			core.delete_dir(targetpath)
-			core.create_dir(targetpath)
 		else
 			local clean_path = nil
 			if basename ~= nil then
@@ -610,7 +618,6 @@ function pkgmgr.install_dir(type, path, basename, targetpath)
 
 		if targetpath then
 			core.delete_dir(targetpath)
-			core.create_dir(targetpath)
 		else
 			local targetfolder = basename
 			if targetfolder == nil then
@@ -636,14 +643,13 @@ function pkgmgr.install_dir(type, path, basename, targetpath)
 
 		if targetpath then
 			core.delete_dir(targetpath)
-			core.create_dir(targetpath)
 		else
 			targetpath = core.get_gamepath() .. DIR_DELIM .. basename
 		end
 	end
 
 	-- Copy it
-	if not core.copy_dir(basefolder.path, targetpath) then
+	if not core.copy_dir(basefolder.path, targetpath, false) then
 		return nil,
 			fgettext("Failed to install $1 to $2", basename, targetpath)
 	end
@@ -658,23 +664,6 @@ function pkgmgr.install_dir(type, path, basename, targetpath)
 end
 
 --------------------------------------------------------------------------------
-function pkgmgr.install(type, modfilename, basename, dest)
-	local archive_info = pkgmgr.identify_filetype(modfilename)
-	local path = pkgmgr.extract(archive_info)
-
-	if path == nil then
-		return nil,
-			fgettext("Install: file: \"$1\"", archive_info.name) .. "\n" ..
-			fgettext("Install: Unsupported file type \"$1\" or broken archive",
-				archive_info.type)
-	end
-
-	local targetpath, msg = pkgmgr.install_dir(type, path, basename, dest)
-	core.delete_dir(path)
-	return targetpath, msg
-end
-
---------------------------------------------------------------------------------
 function pkgmgr.prepareclientmodlist(data)
 	local retval = {}
 
@@ -683,9 +672,8 @@ function pkgmgr.prepareclientmodlist(data)
 	--read clientmods
 	local modpath = core.get_clientmodpath()
 
-	if modpath ~= nil and
-		modpath ~= "" then
-		get_mods(modpath,clientmods)
+	if modpath ~= nil and modpath ~= "" then
+		get_mods(modpath, "clientmods", clientmods)
 	end
 
 	for i=1,#clientmods,1 do
@@ -730,16 +718,15 @@ function pkgmgr.preparemodlist(data)
 	local game_mods = {}
 
 	--read global mods
-	local modpath = core.get_modpath()
-
-	if modpath ~= nil and
-		modpath ~= "" then
-		get_mods(modpath,global_mods)
+	local modpaths = core.get_modpaths()
+	for key, modpath in pairs(modpaths) do
+		get_mods(modpath, key, global_mods)
 	end
 
 	for i=1,#global_mods,1 do
 		global_mods[i].type = "mod"
 		global_mods[i].loc = "global"
+		global_mods[i].enabled = false
 		retval[#retval + 1] = global_mods[i]
 	end
 
@@ -773,22 +760,37 @@ function pkgmgr.preparemodlist(data)
 				DIR_DELIM .. "world.mt"
 
 	local worldfile = Settings(filename)
-
-	for key,value in pairs(worldfile:to_table()) do
+	for key, value in pairs(worldfile:to_table()) do
 		if key:sub(1, 9) == "load_mod_" then
 			key = key:sub(10)
-			local element = nil
-			for i=1,#retval,1 do
+			local mod_found = false
+
+			local fallback_found = false
+			local fallback_mod = nil
+
+			for i=1, #retval do
 				if retval[i].name == key and
-					not retval[i].is_modpack then
-					element = retval[i]
-					break
+						not retval[i].is_modpack then
+					if core.is_yes(value) or retval[i].virtual_path == value then
+						retval[i].enabled = true
+						mod_found = true
+						break
+					elseif fallback_found then
+						-- Only allow fallback if only one mod matches
+						fallback_mod = nil
+					else
+						fallback_found = true
+						fallback_mod = retval[i]
+					end
 				end
 			end
-			if element ~= nil then
-				element.enabled = value ~= "false" and value ~= "nil" and value
-			else
-				core.log("info", "Mod: " .. key .. " " .. dump(value) .. " but not found")
+
+			if not mod_found then
+				if fallback_mod and value:find("/") then
+					fallback_mod.enabled = true
+				else
+					core.log("info", "Mod: " .. key .. " " .. dump(value) .. " but not found")
+				end
 			end
 		end
 	end
@@ -872,45 +874,6 @@ function pkgmgr.refresh_globals()
 end
 
 --------------------------------------------------------------------------------
-function pkgmgr.identify_filetype(name)
-
-	if name:sub(-3):lower() == "zip" then
-		return {
-				name = name,
-				type = "zip"
-				}
-	end
-
-	if name:sub(-6):lower() == "tar.gz" or
-		name:sub(-3):lower() == "tgz"then
-		return {
-				name = name,
-				type = "tgz"
-				}
-	end
-
-	if name:sub(-6):lower() == "tar.bz2" then
-		return {
-				name = name,
-				type = "tbz"
-				}
-	end
-
-	if name:sub(-2):lower() == "7z" then
-		return {
-				name = name,
-				type = "7z"
-				}
-	end
-
-	return {
-		name = name,
-		type = "ukn"
-	}
-end
-
-
---------------------------------------------------------------------------------
 function pkgmgr.find_by_gameid(gameid)
 	for i=1,#pkgmgr.games,1 do
 		if pkgmgr.games[i].id == gameid then
@@ -925,7 +888,7 @@ function pkgmgr.get_game_mods(gamespec, retval)
 	if gamespec ~= nil and
 		gamespec.gamemods_path ~= nil and
 		gamespec.gamemods_path ~= "" then
-		get_mods(gamespec.gamemods_path, retval)
+		get_mods(gamespec.gamemods_path, ("games/%s/mods"):format(gamespec.id), retval)
 	end
 end
 

@@ -51,6 +51,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "clientmap.h"
 #include "clientmedia.h"
 #include "version.h"
+#include "database/database-files.h"
 #include "database/database-sqlite3.h"
 #include "serialization.h"
 #include "guiscalingfilter.h"
@@ -129,11 +130,43 @@ Client::Client(
 	// Add local player
 	m_env.setLocalPlayer(new LocalPlayer(this, playername));
 
+	// Make the mod storage database and begin the save for later
+	m_mod_storage_database =
+		new ModMetadataDatabaseSQLite3(porting::path_user + DIR_DELIM + "client");
+	m_mod_storage_database->beginSave();
+
 	if (g_settings->getBool("enable_minimap")) {
 		m_minimap = new Minimap(this);
 	}
 
 	m_cache_save_interval = g_settings->getU16("server_map_save_interval");
+}
+
+void Client::migrateModStorage()
+{
+	std::string mod_storage_dir = porting::path_user + DIR_DELIM + "client";
+	std::string old_mod_storage = mod_storage_dir + DIR_DELIM + "mod_storage";
+	if (fs::IsDir(old_mod_storage)) {
+		infostream << "Migrating client mod storage to SQLite3 database" << std::endl;
+		{
+			ModMetadataDatabaseFiles files_db(mod_storage_dir);
+			std::vector<std::string> mod_list;
+			files_db.listMods(&mod_list);
+			for (const std::string &modname : mod_list) {
+				infostream << "Migrating client mod storage for mod " << modname << std::endl;
+				StringMap meta;
+				files_db.getModEntries(modname, &meta);
+				for (const auto &pair : meta) {
+					m_mod_storage_database->setModEntry(modname, pair.first, pair.second);
+				}
+			}
+		}
+		if (!fs::Rename(old_mod_storage, old_mod_storage + ".bak")) {
+			// Execution cannot move forward if the migration does not complete.
+			throw BaseException("Could not finish migrating client mod storage");
+		}
+		infostream << "Finished migration of client mod storage" << std::endl;
+	}
 }
 
 void Client::loadMods()
@@ -304,10 +337,17 @@ Client::~Client()
 	// cleanup 3d model meshes on client shutdown
 	m_rendering_engine->cleanupMeshCache();
 
+	guiScalingCacheClear();
+
 	delete m_minimap;
 	m_minimap = nullptr;
 
 	delete m_media_downloader;
+
+	// Write the changes and delete
+	if (m_mod_storage_database)
+		m_mod_storage_database->endSave();
+	delete m_mod_storage_database;
 }
 
 void Client::connect(Address address, bool is_local_server)
@@ -644,19 +684,12 @@ void Client::step(float dtime)
 		}
 	}
 
+	// Write changes to the mod storage
 	m_mod_storage_save_timer -= dtime;
 	if (m_mod_storage_save_timer <= 0.0f) {
 		m_mod_storage_save_timer = g_settings->getFloat("server_map_save_interval");
-		int n = 0;
-		for (std::unordered_map<std::string, ModMetadata *>::const_iterator
-				it = m_mod_storages.begin(); it != m_mod_storages.end(); ++it) {
-			if (it->second->isModified()) {
-				it->second->save(getModStoragePath());
-				n++;
-			}
-		}
-		if (n > 0)
-			infostream << "Saved " << n << " modified mod storages." << std::endl;
+		m_mod_storage_database->endSave();
+		m_mod_storage_database->beginSave();
 	}
 
 	// Write server map
@@ -880,7 +913,7 @@ void Client::ProcessData(NetworkPacket *pkt)
 	*/
 	if(sender_peer_id != PEER_ID_SERVER) {
 		infostream << "Client::ProcessData(): Discarding data not "
-			"coming from server: peer_id=" << sender_peer_id
+			"coming from server: peer_id=" << sender_peer_id << " command=" << pkt->getCommand()
 			<< std::endl;
 		return;
 	}
@@ -931,7 +964,7 @@ void writePlayerPos(LocalPlayer *myplayer, ClientMap *clientMap, NetworkPacket *
 	v3f sf           = myplayer->getSendSpeed() * 100;
 	s32 pitch        = myplayer->getPitch() * 100;
 	s32 yaw          = myplayer->getYaw() * 100;
-	u32 keyPressed   = myplayer->keyPressed;
+	u32 keyPressed   = myplayer->control.getKeysPressed();
 	// scaled by 80, so that pi can fit into a u8
 	u8 fov           = clientMap->getCameraFov() * 80;
 	u8 wanted_range  = MYMIN(255,
@@ -1287,22 +1320,24 @@ void Client::sendPlayerPos(v3f pos)
 	if (!player)
 		return;
 
-	ClientMap &map = m_env.getClientMap();
-	u8 camera_fov   = map.getCameraFov();
-	u8 wanted_range = map.getControl().wanted_range;
-
 	// Save bandwidth by only updating position when
 	// player is not dead and something changed
 
 	if (m_activeobjects_received && player->isDead())
 		return;
 
+	ClientMap &map = m_env.getClientMap();
+	u8 camera_fov   = map.getCameraFov();
+	u8 wanted_range = map.getControl().wanted_range;
+
+	u32 keyPressed = player->control.getKeysPressed();
+
 	if (
 			player->last_position     == pos &&
 			player->last_speed        == player->getSendSpeed()    &&
 			player->last_pitch        == player->getPitch()    &&
 			player->last_yaw          == player->getYaw()      &&
-			player->last_keyPressed   == player->keyPressed    &&
+			player->last_keyPressed   == keyPressed            &&
 			player->last_camera_fov   == camera_fov            &&
 			player->last_wanted_range == wanted_range)
 		return;
@@ -1311,7 +1346,7 @@ void Client::sendPlayerPos(v3f pos)
 	player->last_speed        = player->getSendSpeed();
 	player->last_pitch        = player->getPitch();
 	player->last_yaw          = player->getYaw();
-	player->last_keyPressed   = player->keyPressed;
+	player->last_keyPressed   = keyPressed;
 	player->last_camera_fov   = camera_fov;
 	player->last_wanted_range = wanted_range;
 
@@ -1614,20 +1649,7 @@ void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server, bool urgent)
 
 void Client::addUpdateMeshTaskWithEdge(v3s16 blockpos, bool ack_to_server, bool urgent)
 {
-	try{
-		addUpdateMeshTask(blockpos, ack_to_server, urgent);
-	}
-	catch(InvalidPositionException &e){}
-
-	// Leading edge
-	for (int i=0;i<6;i++)
-	{
-		try{
-			v3s16 p = blockpos + g_6dirs[i];
-			addUpdateMeshTask(p, false, urgent);
-		}
-		catch(InvalidPositionException &e){}
-	}
+	m_mesh_update_thread.updateBlock(&m_env.getMap(), blockpos, ack_to_server, urgent, true);
 }
 
 void Client::addUpdateMeshTaskForNode(v3s16 nodepos, bool ack_to_server, bool urgent)
@@ -1639,38 +1661,16 @@ void Client::addUpdateMeshTaskForNode(v3s16 nodepos, bool ack_to_server, bool ur
 				<<std::endl;
 	}
 
-	v3s16 blockpos          = getNodeBlockPos(nodepos);
+	v3s16 blockpos = getNodeBlockPos(nodepos);
 	v3s16 blockpos_relative = blockpos * MAP_BLOCKSIZE;
-
-	try{
-		addUpdateMeshTask(blockpos, ack_to_server, urgent);
-	}
-	catch(InvalidPositionException &e) {}
-
+	m_mesh_update_thread.updateBlock(&m_env.getMap(), blockpos, ack_to_server, urgent, false);
 	// Leading edge
-	if(nodepos.X == blockpos_relative.X){
-		try{
-			v3s16 p = blockpos + v3s16(-1,0,0);
-			addUpdateMeshTask(p, false, urgent);
-		}
-		catch(InvalidPositionException &e){}
-	}
-
-	if(nodepos.Y == blockpos_relative.Y){
-		try{
-			v3s16 p = blockpos + v3s16(0,-1,0);
-			addUpdateMeshTask(p, false, urgent);
-		}
-		catch(InvalidPositionException &e){}
-	}
-
-	if(nodepos.Z == blockpos_relative.Z){
-		try{
-			v3s16 p = blockpos + v3s16(0,0,-1);
-			addUpdateMeshTask(p, false, urgent);
-		}
-		catch(InvalidPositionException &e){}
-	}
+	if (nodepos.X == blockpos_relative.X)
+		addUpdateMeshTask(blockpos + v3s16(-1, 0, 0), false, urgent);
+	if (nodepos.Y == blockpos_relative.Y)
+		addUpdateMeshTask(blockpos + v3s16(0, -1, 0), false, urgent);
+	if (nodepos.Z == blockpos_relative.Z)
+		addUpdateMeshTask(blockpos + v3s16(0, 0, -1), false, urgent);
 }
 
 void Client::updateAllMapBlocks()
@@ -1834,11 +1834,10 @@ void Client::makeScreenshot()
 	if (!raw_image)
 		return;
 
-	time_t t = time(NULL);
-	struct tm *tm = localtime(&t);
+	const struct tm tm = mt_localtime();
 
 	char timetstamp_c[64];
-	strftime(timetstamp_c, sizeof(timetstamp_c), "%Y%m%d_%H%M%S", tm);
+	strftime(timetstamp_c, sizeof(timetstamp_c), "%Y%m%d_%H%M%S", &tm);
 
 	std::string screenshot_dir;
 
@@ -2025,16 +2024,8 @@ void Client::unregisterModStorage(const std::string &name)
 {
 	std::unordered_map<std::string, ModMetadata *>::const_iterator it =
 		m_mod_storages.find(name);
-	if (it != m_mod_storages.end()) {
-		// Save unconditionaly on unregistration
-		it->second->save(getModStoragePath());
+	if (it != m_mod_storages.end())
 		m_mod_storages.erase(name);
-	}
-}
-
-std::string Client::getModStoragePath() const
-{
-	return porting::path_user + DIR_DELIM + "client" + DIR_DELIM + "mod_storage";
 }
 
 /*

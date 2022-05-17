@@ -477,7 +477,7 @@ int ModApiEnvMod::l_place_node(lua_State *L)
 		return 1;
 	}
 	// Create item to place
-	ItemStack item(ndef->get(n).name, 1, 0, idef);
+	Optional<ItemStack> item = ItemStack(ndef->get(n).name, 1, 0, idef);
 	// Make pointed position
 	PointedThing pointed;
 	pointed.type = POINTEDTHING_NODE;
@@ -1038,6 +1038,21 @@ int ModApiEnvMod::l_find_nodes_near_under_air_except(lua_State *L)
 	return 2;
 }
 
+static void checkArea(v3s16 &minp, v3s16 &maxp)
+{
+	auto volume = VoxelArea(minp, maxp).getVolume();
+	// Volume limit equal to 8 default mapchunks, (80 * 2) ^ 3 = 4,096,000
+	if (volume > 4096000) {
+		throw LuaError("Area volume exceeds allowed value of 4096000");
+	}
+
+	// Clamp to map range to avoid problems
+#define CLAMP(arg) core::clamp(arg, (s16)-MAX_MAP_GENERATION_LIMIT, (s16)MAX_MAP_GENERATION_LIMIT)
+	minp = v3s16(CLAMP(minp.X), CLAMP(minp.Y), CLAMP(minp.Z));
+	maxp = v3s16(CLAMP(maxp.X), CLAMP(maxp.Y), CLAMP(maxp.Z));
+#undef CLAMP
+}
+
 // find_nodes_in_area(minp, maxp, nodenames, [grouped])
 int ModApiEnvMod::l_find_nodes_in_area(lua_State *L)
 {
@@ -1057,13 +1072,7 @@ int ModApiEnvMod::l_find_nodes_in_area(lua_State *L)
 	}
 #endif
 
-	v3s16 cube = maxp - minp + 1;
-	// Volume limit equal to 8 default mapchunks, (80 * 2) ^ 3 = 4,096,000
-	if ((u64)cube.X * (u64)cube.Y * (u64)cube.Z > 4096000) {
-		luaL_error(L, "find_nodes_in_area(): area volume"
-				" exceeds allowed value of 4096000");
-		return 0;
-	}
+	checkArea(minp, maxp);
 
 	std::vector<content_t> filter;
 	collectNodeIds(L, 3, ndef, filter);
@@ -1168,13 +1177,7 @@ int ModApiEnvMod::l_find_nodes_in_area_under_air(lua_State *L)
 	}
 #endif
 
-	v3s16 cube = maxp - minp + 1;
-	// Volume limit equal to 8 default mapchunks, (80 * 2) ^ 3 = 4,096,000
-	if ((u64)cube.X * (u64)cube.Y * (u64)cube.Z > 4096000) {
-		luaL_error(L, "find_nodes_in_area_under_air(): area volume"
-				" exceeds allowed value of 4096000");
-		return 0;
-	}
+	checkArea(minp, maxp);
 
 	std::vector<content_t> filter;
 	collectNodeIds(L, 3, ndef, filter);
@@ -1541,7 +1544,7 @@ int ModApiEnvMod::l_transforming_liquid_add(lua_State *L)
 	GET_ENV_PTR;
 
 	v3s16 p0 = read_v3s16(L, 1);
-	env->getMap().transforming_liquid_add(p0);
+	env->getServerMap().transforming_liquid_add(p0);
 	return 1;
 }
 

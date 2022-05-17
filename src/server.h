@@ -69,9 +69,11 @@ struct SkyboxParams;
 struct SunParams;
 struct MoonParams;
 struct StarParams;
+struct Lighting;
 class ServerThread;
 class ServerModManager;
 class ServerInventoryManager;
+struct PackedValue;
 
 enum ClientDeletionReason {
 	CDR_LEAVE,
@@ -283,6 +285,7 @@ public:
 	virtual u16 allocateUnknownNodeId(const std::string &name);
 	IRollbackManager *getRollbackManager() { return m_rollback; }
 	virtual EmergeManager *getEmergeManager() { return m_emerge; }
+	virtual ModMetadataDatabase *getModStorageDatabase() { return m_mod_storage_database; }
 
 	IWritableItemDefManager* getWritableItemDefManager();
 	NodeDefManager* getWritableNodeDefManager();
@@ -290,12 +293,10 @@ public:
 
 	virtual const std::vector<ModSpec> &getMods() const;
 	virtual const ModSpec* getModSpec(const std::string &modname) const;
-	void getModNames(std::vector<std::string> &modlist);
-	std::string getBuiltinLuaPath();
+	static std::string getBuiltinLuaPath();
 	virtual std::string getWorldPath() const { return m_path_world; }
-	virtual std::string getModStoragePath() const;
 
-	inline bool isSingleplayer()
+	inline bool isSingleplayer() const
 			{ return m_simple_singleplayer_mode; }
 
 	inline void setAsyncFatalError(const std::string &error)
@@ -333,24 +334,24 @@ public:
 
 	void overrideDayNightRatio(RemotePlayer *player, bool do_override, float brightness);
 
+	void setLighting(RemotePlayer *player, const Lighting &lighting);
+
 	/* con::PeerHandler implementation. */
 	void peerAdded(con::Peer *peer);
 	void deletingPeer(con::Peer *peer, bool timeout);
 
 	void DenySudoAccess(session_t peer_id);
-	void DenyAccessVerCompliant(session_t peer_id, u16 proto_ver, AccessDeniedCode reason,
-		const std::string &str_reason = "", bool reconnect = false);
 	void DenyAccess(session_t peer_id, AccessDeniedCode reason,
-		const std::string &custom_reason = "");
+		const std::string &custom_reason = "", bool reconnect = false);
 	void acceptAuth(session_t peer_id, bool forSudoMode);
-	void DenyAccess_Legacy(session_t peer_id, const std::wstring &reason);
 	void DisconnectPeer(session_t peer_id);
 	bool getClientConInfo(session_t peer_id, con::rtt_stat_type type, float *retval);
 	bool getClientInfo(session_t peer_id, ClientInfo &ret);
 
 	void printToConsoleOnly(const std::string &text);
 
-	void SendPlayerHPOrDie(PlayerSAO *player, const PlayerHPChangeReason &reason);
+	void HandlePlayerHPChange(PlayerSAO *sao, const PlayerHPChangeReason &reason);
+	void SendPlayerHP(PlayerSAO *sao);
 	void SendPlayerBreath(PlayerSAO *sao);
 	void SendInventory(PlayerSAO *playerSAO, bool incremental);
 	void SendMovePlayer(session_t peer_id);
@@ -376,6 +377,20 @@ public:
 
 	// Get or load translations for a language
 	Translations *getTranslationLanguage(const std::string &lang_code);
+
+	static ModMetadataDatabase *openModStorageDatabase(const std::string &world_path);
+
+	static ModMetadataDatabase *openModStorageDatabase(const std::string &backend,
+			const std::string &world_path, const Settings &world_mt);
+
+	static bool migrateModStorageDatabase(const GameParams &game_params,
+			const Settings &cmd_args);
+
+	// Lua files registered for init of async env, pair of modname + path
+	std::vector<std::pair<std::string, std::string>> m_async_init_files;
+
+	// Data transferred into async envs at init time
+	std::unique_ptr<PackedValue> m_async_globals_data;
 
 	// Bind address
 	Address m_bind_addr;
@@ -410,6 +425,16 @@ private:
 		std::unordered_set<session_t> waiting_players;
 	};
 
+	// the standard library does not implement std::hash for pairs so we have this:
+	struct SBCHash {
+		size_t operator() (const std::pair<v3s16, u16> &p) const {
+			return (((size_t) p.first.X) << 48) | (((size_t) p.first.Y) << 32) |
+				(((size_t) p.first.Z) << 16) | ((size_t) p.second);
+		}
+	};
+
+	typedef std::unordered_map<std::pair<v3s16, u16>, std::string, SBCHash> SerializedBlockCache;
+
 	void init();
 
 	void SendMovement(session_t peer_id);
@@ -430,7 +455,6 @@ private:
 
 	virtual void SendChatMessage(session_t peer_id, const ChatMessage &message);
 	void SendTimeOfDay(session_t peer_id, u16 time, f32 time_speed);
-	void SendPlayerHP(session_t peer_id);
 
 	void SendLocalPlayerAnimations(session_t peer_id, v2s32 animation_frames[4],
 		f32 animation_speed);
@@ -451,6 +475,7 @@ private:
 	void SendSetStars(session_t peer_id, const StarParams &params);
 	void SendCloudParams(session_t peer_id, const CloudParams &params);
 	void SendOverrideDayNightRatio(session_t peer_id, bool do_override, float ratio);
+	void SendSetLighting(session_t peer_id, const Lighting &lighting);
 	void broadcastModChannelMessage(const std::string &channel,
 			const std::string &message, session_t from_peer);
 
@@ -470,7 +495,9 @@ private:
 			float far_d_nodes = 100);
 
 	// Environment and Connection must be locked when called
-	void SendBlockNoLock(session_t peer_id, MapBlock *block, u8 ver, u16 net_proto_version);
+	// `cache` may only be very short lived! (invalidation not handeled)
+	void SendBlockNoLock(session_t peer_id, MapBlock *block, u8 ver,
+		u16 net_proto_version, SerializedBlockCache *cache = nullptr);
 
 	// Sends blocks to clients (locks env and con on its own)
 	void SendBlocks(float dtime);
@@ -502,7 +529,7 @@ private:
 		Something random
 	*/
 
-	void DiePlayer(session_t peer_id, const PlayerHPChangeReason &reason);
+	void HandlePlayerDeath(PlayerSAO* sao, const PlayerHPChangeReason &reason);
 	void RespawnPlayer(session_t peer_id);
 	void DeleteClient(session_t peer_id, ClientDeletionReason reason);
 	void UpdateCrafting(RemotePlayer *player);
@@ -678,6 +705,7 @@ private:
 	s32 nextSoundId();
 
 	std::unordered_map<std::string, ModMetadata *> m_mod_storages;
+	ModMetadataDatabase *m_mod_storage_database = nullptr;
 	float m_mod_storage_save_timer = 10.0f;
 
 	// CSM restrictions byteflag
@@ -697,11 +725,11 @@ private:
 	MetricCounterPtr m_uptime_counter;
 	MetricGaugePtr m_player_gauge;
 	MetricGaugePtr m_timeofday_gauge;
-	// current server step lag
 	MetricGaugePtr m_lag_gauge;
-	MetricCounterPtr m_aom_buffer_counter;
+	MetricCounterPtr m_aom_buffer_counter[2]; // [0] = rel, [1] = unrel
 	MetricCounterPtr m_packet_recv_counter;
 	MetricCounterPtr m_packet_recv_processed_counter;
+	MetricCounterPtr m_map_edit_event_counter;
 };
 
 /*

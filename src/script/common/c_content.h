@@ -55,10 +55,11 @@ struct ObjectProperties;
 struct SimpleSoundSpec;
 struct ServerSoundParams;
 class Inventory;
+class InventoryList;
 struct NodeBox;
 struct ContentFeatures;
 struct TileDef;
-class Server;
+class IGameDef;
 struct DigParams;
 struct HitParams;
 struct EnumString;
@@ -124,11 +125,12 @@ void               push_inventory       	 (lua_State *L,
                                               Inventory *inventory);
 
 void               push_inventory_list       (lua_State *L,
-                                              Inventory *inv,
-                                              const char *name);
+                                              const InventoryList &invlist);
+void               push_inventory_lists      (lua_State *L,
+                                              const Inventory &inv);
 void               read_inventory_list       (lua_State *L, int tableindex,
                                               Inventory *inv, const char *name,
-                                              Server *srv, int forcesize=-1);
+                                              IGameDef *gdef, int forcesize=-1);
 
 MapNode            readnode                  (lua_State *L, int index,
                                               const NodeDefManager *ndef);
@@ -168,7 +170,7 @@ void               push_items                (lua_State *L,
 
 std::vector<ItemStack> read_items            (lua_State *L,
                                               int index,
-                                              Server* srv);
+                                              IGameDef* gdef);
 
 void               push_soundspec            (lua_State *L,
                                               const SimpleSoundSpec &spec);

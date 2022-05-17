@@ -121,7 +121,7 @@
 # joystick_id = 0
 
 #    The type of joystick
-#    type: enum values: auto, generic, xbox
+#    type: enum values: auto, generic, xbox, dragonrise_gamecube
 # joystick_type = auto
 
 #    The time in seconds it takes between repeated events
@@ -129,12 +129,12 @@
 #    type: float min: 0.001
 # repeat_joystick_button_time = 0.17
 
-#    The deadzone of the joystick
+#    The dead zone of the joystick
 #    type: int
 # joystick_deadzone = 2048
 
 #    The sensitivity of the joystick axes for moving the
-#    ingame view frustum around.
+#    in-game view frustum around.
 #    type: float
 # joystick_frustum_sensitivity = 170
 
@@ -503,7 +503,7 @@
 
 ### Basic
 
-#    Whether nametag backgrounds should be shown by default.
+#    Whether name tag backgrounds should be shown by default.
 #    Mods may still set a background.
 #    type: bool
 # show_nametag_backgrounds = true
@@ -533,6 +533,11 @@
 #    type: bool
 # smooth_lighting = true
 
+#    Enables tradeoffs that reduce CPU load or increase rendering performance
+#    at the expense of minor visual glitches that do not impact game playability.
+#    type: bool
+# performance_tradeoffs = false
+
 #    Clouds are a client side effect.
 #    type: bool
 # enable_clouds = true
@@ -551,7 +556,7 @@
 
 ### Filtering
 
-#    Use mip mapping to scale textures. May slightly increase performance,
+#    Use mipmapping to scale textures. May slightly increase performance,
 #    especially when using a high resolution texture pack.
 #    Gamma correct downscaling is not supported.
 #    type: bool
@@ -580,7 +585,7 @@
 #    can be blurred, so automatically upscale them with nearest-neighbor
 #    interpolation to preserve crisp pixels. This sets the minimum texture size
 #    for the upscaled textures; higher values look sharper, but require more
-#    memory.  Powers of 2 are recommended. This setting is ONLY applies if
+#    memory. Powers of 2 are recommended. This setting is ONLY applied if
 #    bilinear/trilinear/anisotropic filtering is enabled.
 #    This is also used as the base node texture size for world-aligned
 #    texture autoscaling.
@@ -668,10 +673,11 @@
 #    type: bool
 # enable_dynamic_shadows = false
 
-#    Set the shadow strength.
+#    Set the shadow strength gamma.
+#    Adjusts the intensity of in-game dynamic shadows.
 #    Lower value means lighter shadows, higher value means darker shadows.
-#    type: float min: 0.05 max: 1
-# shadow_strength = 0.2
+#    type: float min: 0.1 max: 10
+# shadow_strength_gamma = 1.0
 
 #    Maximum distance to render shadows.
 #    type: float min: 10 max: 1000
@@ -679,7 +685,7 @@
 
 #    Texture size to render the shadow map on.
 #    This must be a power of two.
-#    Bigger numbers create better shadowsbut it is also more expensive.
+#    Bigger numbers create better shadows but it is also more expensive.
 #    type: int min: 128 max: 8192
 # shadow_map_texture_size = 1024
 
@@ -689,37 +695,38 @@
 #    type: bool
 # shadow_map_texture_32bit = true
 
-#    Enable poisson disk filtering.
-#    On true uses poisson disk to make "soft shadows". Otherwise uses PCF filtering.
+#    Enable Poisson disk filtering.
+#    On true uses Poisson disk to make "soft shadows". Otherwise uses PCF filtering.
 #    type: bool
 # shadow_poisson_filter = true
 
-#    Define shadow filtering quality
-#    This simulates the soft shadows effect by applying a PCF or poisson disk
+#    Define shadow filtering quality.
+#    This simulates the soft shadows effect by applying a PCF or Poisson disk
 #    but also uses more resources.
 #    type: enum values: 0, 1, 2
 # shadow_filters = 1
 
-#    Enable colored shadows. 
+#    Enable colored shadows.
 #    On true translucent nodes cast colored shadows. This is expensive.
 #    type: bool
 # shadow_map_color = false
 
-#    Set the shadow update time.
-#    Lower value means shadows and map updates faster, but it consume more resources.
-#    Minimun value 0.001 seconds max value 0.2 seconds
-#    type: float min: 0.001 max: 0.2
-# shadow_update_time = 0.2
+#    Spread a complete update of shadow map over given amount of frames.
+#    Higher values might make shadows laggy, lower values
+#    will consume more resources.
+#    Minimum value: 1; maximum value: 16
+#    type: int min: 1 max: 16
+# shadow_update_frames = 8
 
 #    Set the soft shadow radius size.
-#    Lower values mean sharper shadows bigger values softer.
-#    Minimun value 1.0 and max value 10.0
+#    Lower values mean sharper shadows, bigger values mean softer shadows.
+#    Minimum value: 1.0; maximum value: 10.0
 #    type: float min: 1 max: 10
 # shadow_soft_radius = 1.0
 
-#    Set the tilt of Sun/Moon orbit in degrees
+#    Set the tilt of Sun/Moon orbit in degrees.
 #    Value of 0 means no tilt / vertical orbit.
-#    Minimun value 0.0 and max value 60.0
+#    Minimum value: 0.0; maximum value: 60.0
 #    type: float min: 0 max: 60
 # shadow_sky_body_orbit_tilt = 0.0
 
@@ -823,7 +830,7 @@
 #    Note: On Android, stick with OGLES1 if unsure! App may fail to start otherwise.
 #    On other platforms, OpenGL is recommended.
 #    Shaders are supported by OpenGL (desktop only) and OGLES2 (experimental)
-#    type: enum values: null, software, burningsvideo, direct3d8, direct3d9, opengl, ogles1, ogles2
+#    type: enum values: opengl, ogles1, ogles2
 # video_driver = opengl
 
 #    Radius of cloud area stated in number of 64 node cloud squares.
@@ -900,7 +907,7 @@
 # crosshair_color = (255,255,255)
 
 #    Crosshair alpha (opaqueness, between 0 and 255).
-#    Also controls the object crosshair color
+#    This also applies to the object crosshair.
 #    type: int min: 0 max: 255
 # crosshair_alpha = 255
 
@@ -917,7 +924,7 @@
 #    type: float
 # hud_hotbar_max_width = 1.0
 
-#    Modifies the size of the hudbar elements.
+#    Modifies the size of the HUD elements.
 #    type: float
 # hud_scaling = 1.0
 
@@ -996,6 +1003,11 @@
 #    type: bool
 # show_entity_selectionbox = false
 
+#    Distance in nodes at which transparency depth sorting is enabled
+#    Use this to limit the performance impact of transparency depth sorting
+#    type: int min: 0 max: 128
+# transparency_sorting_distance = 16
+
 ## Menus
 
 #    Use a cloud animation for the main menu background.
@@ -1031,11 +1043,6 @@
 #    type: bool
 # tooltip_append_itemname = false
 
-#    Whether FreeType fonts are used, requires FreeType support to be compiled in.
-#    If disabled, bitmap and XML vectors fonts are used instead.
-#    type: bool
-# freetype = true
-
 #    type: bool
 # font_bold = false
 
@@ -1050,13 +1057,18 @@
 #    type: int min: 0 max: 255
 # font_shadow_alpha = 127
 
-#    Font size of the default font in point (pt).
+#    Font size of the default font where 1 unit = 1 pixel at 96 DPI
 #    type: int min: 1
 # font_size = 16
 
-#    Path to the default font.
-#    If “freetype” setting is enabled: Must be a TrueType font.
-#    If “freetype” setting is disabled: Must be a bitmap or XML vectors font.
+#    For pixel-style fonts that do not scale well, this ensures that font sizes used
+#    with this font will always be divisible by this value, in pixels. For instance,
+#    a pixel font 16 pixels tall should have this set to 16, so it will only ever be
+#    sized 16, 32, 48, etc., so a mod requesting a size of 25 will get 32.
+#    type: int min: 1
+# font_size_divisible_by = 1
+
+#    Path to the default font. Must be a TrueType font.
 #    The fallback font will be used if the font cannot be loaded.
 #    type: filepath
 # font_path = fonts/Arimo-Regular.ttf
@@ -1070,13 +1082,18 @@
 #    type: filepath
 # font_path_bold_italic = fonts/Arimo-BoldItalic.ttf
 
-#    Font size of the monospace font in point (pt).
+#    Font size of the monospace font where 1 unit = 1 pixel at 96 DPI
 #    type: int min: 1
-# mono_font_size = 15
+# mono_font_size = 16
 
-#    Path to the monospace font.
-#    If “freetype” setting is enabled: Must be a TrueType font.
-#    If “freetype” setting is disabled: Must be a bitmap or XML vectors font.
+#    For pixel-style fonts that do not scale well, this ensures that font sizes used
+#    with this font will always be divisible by this value, in pixels. For instance,
+#    a pixel font 16 pixels tall should have this set to 16, so it will only ever be
+#    sized 16, 32, 48, etc., so a mod requesting a size of 25 will get 32.
+#    type: int min: 1
+# mono_font_size_divisible_by = 1
+
+#    Path to the monospace font. Must be a TrueType font.
 #    This font is used for e.g. the console and profiler screen.
 #    type: filepath
 # mono_font_path = fonts/Cousine-Regular.ttf
@@ -1090,9 +1107,7 @@
 #    type: filepath
 # mono_font_path_bold_italic = fonts/Cousine-BoldItalic.ttf
 
-#    Path of the fallback font.
-#    If “freetype” setting is enabled: Must be a TrueType font.
-#    If “freetype” setting is disabled: Must be a bitmap or XML vectors font.
+#    Path of the fallback font. Must be a TrueType font.
 #    This font will be used for certain languages or if the default font is unavailable.
 #    type: filepath
 # fallback_font_path = fonts/DroidSansFallbackFull.ttf
@@ -1108,7 +1123,7 @@
 # screenshot_path = screenshots
 
 #    Format of screenshots.
-#    type: enum values: png, jpg, bmp, pcx, ppm, tga
+#    type: enum values: png, jpg
 # screenshot_format = png
 
 #    Screenshot quality. Only used for JPEG format.
@@ -1122,6 +1137,10 @@
 #    Adjust dpi configuration to your screen (non X11/Android only) e.g. for 4k screens.
 #    type: int min: 1
 # screen_dpi = 72
+
+#    Adjust the detected display density, used for scaling UI elements.
+#    type: float
+# display_density_factor = 1
 
 #    Windows systems only: Start Minetest with the command line window in the background.
 #    Contains the same information as the file debug.txt (default name).
@@ -1155,13 +1174,13 @@
 # Client
 #
 
-#    If enabled, http links in chat can be middle-clicked or ctrl-left-clicked to open the link in the OS's default web browser.
+#    Clickable weblinks (middle-click or Ctrl+left-click) enabled in chat console output.
 #    type: bool
-# clickable_chat_weblinks = false
+# clickable_chat_weblinks = true
 
-#    If clickable_chat_weblinks is enabled, specify the color (as 24-bit hexadecimal) of weblinks in chat.
+#    Optional override for chat weblink color.
 #    type: string
-# chat_weblink_color = #8888FF
+# chat_weblink_color =
 
 ## Network
 
@@ -1177,9 +1196,9 @@
 # remote_port = 30000
 
 #    Prometheus listener address.
-#    If minetest is compiled with ENABLE_PROMETHEUS option enabled,
+#    If Minetest is compiled with ENABLE_PROMETHEUS option enabled,
 #    enable metrics listener for Prometheus on that address.
-#    Metrics can be fetch on http://127.0.0.1:30000/metrics
+#    Metrics can be fetched on http://127.0.0.1:30000/metrics
 #    type: string
 # prometheus_listener_address = 127.0.0.1:30000
 
@@ -1314,11 +1333,10 @@
 #    type: int
 # max_packets_per_iteration = 1024
 
-#    ZLib compression level to use when sending mapblocks to the client.
-#    -1 - Zlib's default compression level
-#    0 - no compresson, fastest
+#    Compression level to use when sending mapblocks to the client.
+#    -1 - use default compression level
+#    0 - least compression, fastest
 #    9 - best compression, slowest
-#    (levels 1-3 use Zlib's "fast" method, 4-9 use the normal method)
 #    type: int min: -1 max: 9
 # map_compression_level_net = -1
 
@@ -1436,7 +1454,7 @@
 # ask_reconnect_on_crash = false
 
 #    From how far clients know about objects, stated in mapblocks (16 nodes).
-#    
+#
 #    Setting this larger than active_block_range will also cause the server
 #    to maintain active objects up to this distance in the direction the
 #    player is looking. (This can avoid mobs suddenly disappearing from view)
@@ -1553,7 +1571,7 @@
 # deprecated_lua_api_handling = log
 
 #    Number of extra blocks that can be loaded by /clearobjects at once.
-#    This is a trade-off between sqlite transaction overhead and
+#    This is a trade-off between SQLite transaction overhead and
 #    memory consumption (4096=100MB, as a rule of thumb).
 #    type: int
 # max_clearobjects_extra_loaded_blocks = 4096
@@ -1565,19 +1583,18 @@
 
 #    Maximum number of statically stored objects in a block.
 #    type: int
-# max_objects_per_block = 64
+# max_objects_per_block = 256
 
 #    See https://www.sqlite.org/pragma.html#pragma_synchronous
 #    type: enum values: 0, 1, 2
 # sqlite_synchronous = 2
 
-#    ZLib compression level to use when saving mapblocks to disk.
-#    -1 - Zlib's default compression level
-#    0 - no compresson, fastest
+#    Compression level to use when saving mapblocks to disk.
+#    -1 - use default compression level
+#    0 - least compression, fastest
 #    9 - best compression, slowest
-#    (levels 1-3 use Zlib's "fast" method, 4-9 use the normal method)
 #    type: int min: -1 max: 9
-# map_compression_level_disk = 3
+# map_compression_level_disk = -1
 
 #    Length of a server tick and the interval at which objects are generally updated over
 #    network.
@@ -1705,7 +1722,7 @@
 #    type: bool
 # instrument.lbm = true
 
-#    Instrument chatcommands on registration.
+#    Instrument chat commands on registration.
 #    type: bool
 # instrument.chatcommand = true
 
@@ -1751,7 +1768,8 @@
 #    -    action
 #    -    info
 #    -    verbose
-#    type: enum values: , none, error, warning, action, info, verbose
+#    -    trace
+#    type: enum values: , none, error, warning, action, info, verbose, trace
 # debug_log_level = action
 
 #    If the file size of debug.txt exceeds the number of megabytes specified in
@@ -1762,7 +1780,7 @@
 # debug_log_size_max = 50
 
 #    Minimal level of logging to be written to chat.
-#    type: enum values: , none, error, warning, action, info, verbose
+#    type: enum values: , none, error, warning, action, info, verbose, trace
 # chat_log_level = error
 
 #    Enable IPv6 support (for both client and server).
@@ -1819,12 +1837,12 @@
 #    Limit of map generation, in nodes, in all 6 directions from (0, 0, 0).
 #    Only mapchunks completely within the mapgen limit are generated.
 #    Value is stored per-world.
-#    type: int min: 0 max: 31000
-# mapgen_limit = 31000
+#    type: int min: 0 max: 31007
+# mapgen_limit = 31007
 
 #    Global map generation attributes.
 #    In Mapgen v6 the 'decorations' flag controls all decorations except trees
-#    and junglegrass, in all other mapgens this flag controls all decorations.
+#    and jungle grass, in all other mapgens this flag controls all decorations.
 #    type: flags possible values: caves, dungeons, light, decorations, biomes, ores, nocaves, nodungeons, nolight, nodecorations, nobiomes, noores
 # mg_flags = caves,dungeons,light,decorations,biomes,ores
 
@@ -1990,7 +2008,7 @@
 #    octaves     = 3,
 #    persistence = 0.5,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    Second of two 3D noises that together define tunnels.
@@ -2003,7 +2021,7 @@
 #    octaves     = 3,
 #    persistence = 0.5,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    3D noise defining giant caverns.
@@ -2016,7 +2034,7 @@
 #    octaves     = 5,
 #    persistence = 0.63,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    3D noise defining terrain.
@@ -2042,7 +2060,7 @@
 #    octaves     = 2,
 #    persistence = 0.8,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 ## Mapgen V6
@@ -2429,7 +2447,7 @@
 #    octaves     = 5,
 #    persistence = 0.63,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    3D noise defining structure of river canyon walls.
@@ -2442,7 +2460,7 @@
 #    octaves     = 4,
 #    persistence = 0.75,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    3D noise defining structure of floatlands.
@@ -2458,7 +2476,7 @@
 #    octaves     = 4,
 #    persistence = 0.75,
 #    lacunarity  = 1.618,
-#    flags       = 
+#    flags       =
 # }
 
 #    3D noise defining giant caverns.
@@ -2471,7 +2489,7 @@
 #    octaves     = 5,
 #    persistence = 0.63,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    First of two 3D noises that together define tunnels.
@@ -2484,7 +2502,7 @@
 #    octaves     = 3,
 #    persistence = 0.5,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    Second of two 3D noises that together define tunnels.
@@ -2497,7 +2515,7 @@
 #    octaves     = 3,
 #    persistence = 0.5,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    3D noise that determines number of dungeons per mapchunk.
@@ -2510,7 +2528,7 @@
 #    octaves     = 2,
 #    persistence = 0.8,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 ## Mapgen Carpathian
@@ -2753,7 +2771,7 @@
 #    octaves     = 5,
 #    persistence = 0.55,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    First of two 3D noises that together define tunnels.
@@ -2766,7 +2784,7 @@
 #    octaves     = 3,
 #    persistence = 0.5,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    Second of two 3D noises that together define tunnels.
@@ -2779,7 +2797,7 @@
 #    octaves     = 3,
 #    persistence = 0.5,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    3D noise defining giant caverns.
@@ -2792,7 +2810,7 @@
 #    octaves     = 5,
 #    persistence = 0.63,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    3D noise that determines number of dungeons per mapchunk.
@@ -2805,7 +2823,7 @@
 #    octaves     = 2,
 #    persistence = 0.8,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 ## Mapgen Flat
@@ -2927,7 +2945,7 @@
 #    octaves     = 3,
 #    persistence = 0.5,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    Second of two 3D noises that together define tunnels.
@@ -2940,7 +2958,7 @@
 #    octaves     = 3,
 #    persistence = 0.5,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    3D noise defining giant caverns.
@@ -2953,7 +2971,7 @@
 #    octaves     = 5,
 #    persistence = 0.63,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    3D noise that determines number of dungeons per mapchunk.
@@ -2966,7 +2984,7 @@
 #    octaves     = 2,
 #    persistence = 0.8,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 ## Mapgen Fractal
@@ -3140,7 +3158,7 @@
 #    octaves     = 3,
 #    persistence = 0.5,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    Second of two 3D noises that together define tunnels.
@@ -3153,7 +3171,7 @@
 #    octaves     = 3,
 #    persistence = 0.5,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    3D noise that determines number of dungeons per mapchunk.
@@ -3166,7 +3184,7 @@
 #    octaves     = 2,
 #    persistence = 0.8,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 ## Mapgen Valleys
@@ -3256,7 +3274,7 @@
 #    octaves     = 3,
 #    persistence = 0.5,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    Second of two 3D noises that together define tunnels.
@@ -3269,7 +3287,7 @@
 #    octaves     = 3,
 #    persistence = 0.5,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    The depth of dirt or other biome filler node.
@@ -3295,7 +3313,7 @@
 #    octaves     = 6,
 #    persistence = 0.63,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    Defines large-scale river channel structure.
@@ -3347,7 +3365,7 @@
 #    octaves     = 6,
 #    persistence = 0.8,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 #    Amplifies the valleys.
@@ -3386,7 +3404,7 @@
 #    octaves     = 2,
 #    persistence = 0.8,
 #    lacunarity  = 2.0,
-#    flags       = 
+#    flags       =
 # }
 
 ## Advanced
@@ -3405,17 +3423,17 @@
 # enable_mapgen_debug_info = false
 
 #    Maximum number of blocks that can be queued for loading.
-#    type: int
+#    type: int min: 1 max: 1000000
 # emergequeue_limit_total = 1024
 
 #    Maximum number of blocks to be queued that are to be loaded from file.
 #    This limit is enforced per player.
-#    type: int
+#    type: int min: 1 max: 1000000
 # emergequeue_limit_diskonly = 128
 
 #    Maximum number of blocks to be queued that are to be generated.
 #    This limit is enforced per player.
-#    type: int
+#    type: int min: 1 max: 1000000
 # emergequeue_limit_generate = 128
 
 #    Number of emerge threads to use.

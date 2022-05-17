@@ -23,6 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "environment.h"
 #include "constants.h"
 #include "settings.h"
+#include "lighting.h"
 #include <list>
 
 class Client;
@@ -56,8 +57,8 @@ public:
 	bool in_liquid = false;
 	// This is more stable and defines the maximum speed of the player
 	bool in_liquid_stable = false;
-	// Gets the viscosity of water to calculate friction
-	u8 liquid_viscosity = 0;
+	// Slows down the player when moving through
+	u8 move_resistance = 0;
 	bool is_climbing = false;
 	bool swimming_vertical = false;
 	bool swimming_pitch = false;
@@ -87,7 +88,7 @@ public:
 	v3f last_speed;
 	float last_pitch = 0.0f;
 	float last_yaw = 0.0f;
-	unsigned int last_keyPressed = 0;
+	u32 last_keyPressed = 0;
 	u8 last_camera_fov = 0;
 	u8 last_wanted_range = 0;
 
@@ -187,6 +188,8 @@ public:
 		added_velocity += vel;
 	}
 
+	inline Lighting& getLighting() { return m_lighting; }
+
 	void tryReattach(int id);
 
 	bool isWaitingForReattach() const;
@@ -247,4 +250,5 @@ private:
 
 	GenericCAO *m_cao = nullptr;
 	Client *m_client;
+	Lighting m_lighting;
 };

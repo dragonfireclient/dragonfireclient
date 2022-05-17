@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "lua_api/l_internal.h"
 #include "common/c_converter.h"
 #include "common/c_content.h"
+#include "common/c_packer.h"
 #include "itemdef.h"
 #include "nodedef.h"
 #include "server.h"
@@ -446,6 +447,7 @@ int LuaItemStack::create_object(lua_State *L)
 	lua_setmetatable(L, -2);
 	return 1;
 }
+
 // Not callable from Lua
 int LuaItemStack::create(lua_State *L, const ItemStack &item)
 {
@@ -460,6 +462,20 @@ int LuaItemStack::create(lua_State *L, const ItemStack &item)
 LuaItemStack *LuaItemStack::checkobject(lua_State *L, int narg)
 {
 	return *(LuaItemStack **)luaL_checkudata(L, narg, className);
+}
+
+void *LuaItemStack::packIn(lua_State *L, int idx)
+{
+	LuaItemStack *o = checkobject(L, idx);
+	return new ItemStack(o->getItem());
+}
+
+void LuaItemStack::packOut(lua_State *L, void *ptr)
+{
+	ItemStack *stack = reinterpret_cast<ItemStack*>(ptr);
+	if (L)
+		create(L, *stack);
+	delete stack;
 }
 
 void LuaItemStack::Register(lua_State *L)
@@ -493,6 +509,8 @@ void LuaItemStack::Register(lua_State *L)
 
 	// Can be created from Lua (ItemStack(itemstack or itemstring or table or nil))
 	lua_register(L, className, create_object);
+
+	script_register_packer(L, className, packIn, packOut);
 }
 
 const char LuaItemStack::className[] = "ItemStack";
@@ -638,8 +656,8 @@ int ModApiItemMod::l_get_content_id(lua_State *L)
 	NO_MAP_LOCK_REQUIRED;
 	std::string name = luaL_checkstring(L, 1);
 
-	const IItemDefManager *idef = getGameDef(L)->getItemDefManager();
-	const NodeDefManager *ndef = getGameDef(L)->getNodeDefManager();
+	const IItemDefManager *idef = getGameDef(L)->idef();
+	const NodeDefManager *ndef = getGameDef(L)->ndef();
 
 	// If this is called at mod load time, NodeDefManager isn't aware of
 	// aliases yet, so we need to handle them manually
@@ -664,7 +682,7 @@ int ModApiItemMod::l_get_name_from_content_id(lua_State *L)
 	NO_MAP_LOCK_REQUIRED;
 	content_t c = luaL_checkint(L, 1);
 
-	const NodeDefManager *ndef = getGameDef(L)->getNodeDefManager();
+	const NodeDefManager *ndef = getGameDef(L)->ndef();
 	const char *name = ndef->get(c).name.c_str();
 
 	lua_pushstring(L, name);
@@ -676,6 +694,13 @@ void ModApiItemMod::Initialize(lua_State *L, int top)
 	API_FCT(register_item_raw);
 	API_FCT(unregister_item_raw);
 	API_FCT(register_alias_raw);
+	API_FCT(get_content_id);
+	API_FCT(get_name_from_content_id);
+}
+
+void ModApiItemMod::InitializeAsync(lua_State *L, int top)
+{
+	// all read-only functions
 	API_FCT(get_content_id);
 	API_FCT(get_name_from_content_id);
 }

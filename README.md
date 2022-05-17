@@ -7,7 +7,7 @@ Minetest
 
 Minetest is a free open-source voxel game engine with easy modding and game creation.
 
-Copyright (C) 2010-2020 Perttu Ahola <celeron55@gmail.com>
+Copyright (C) 2010-2022 Perttu Ahola <celeron55@gmail.com>
 and contributors (see source file comments and the version control log)
 
 In case you downloaded the source code
@@ -132,10 +132,11 @@ Compiling
 
 | Dependency | Version | Commentary |
 |------------|---------|------------|
-| GCC        | 4.9+    | Can be replaced with Clang 3.4+ |
+| GCC        | 5.1+    | or Clang 3.5+ |
 | CMake      | 3.5+    |            |
 | IrrlichtMt | -       | Custom version of Irrlicht, see https://github.com/minetest/irrlicht |
-| SQLite3    | 3.0+    |            |
+| Freetype   | 2.0+    |            |
+| SQLite3    | 3+      |            |
 | Zstd       | 1.0+    |            |
 | LuaJIT     | 2.0+    | Bundled Lua 5.1 is used if not present |
 | GMP        | 5.0.0+  | Bundled mini-GMP is used if not present |
@@ -143,12 +144,12 @@ Compiling
 
 For Debian/Ubuntu users:
 
-    sudo apt install g++ make libc6-dev cmake libpng-dev libjpeg-dev libxxf86vm-dev libgl1-mesa-dev libsqlite3-dev libogg-dev libvorbis-dev libopenal-dev libcurl4-gnutls-dev libfreetype6-dev zlib1g-dev libgmp-dev libjsoncpp-dev libzstd-dev
+    sudo apt install g++ make libc6-dev cmake libpng-dev libjpeg-dev libxxf86vm-dev libgl1-mesa-dev libsqlite3-dev libogg-dev libvorbis-dev libopenal-dev libcurl4-gnutls-dev libfreetype6-dev zlib1g-dev libgmp-dev libjsoncpp-dev libzstd-dev libluajit-5.1-dev
 
 For Fedora users:
 
     sudo dnf install make automake gcc gcc-c++ kernel-devel cmake libcurl-devel openal-soft-devel libvorbis-devel libXxf86vm-devel libogg-devel freetype-devel mesa-libGL-devel zlib-devel jsoncpp-devel gmp-devel sqlite-devel luajit-devel leveldb-devel ncurses-devel spatialindex-devel libzstd-devel
-    
+
 For Arch users:
 
     sudo pacman -S base-devel libcurl-gnutls cmake libxxf86vm libpng sqlite libogg libvorbis openal freetype2 jsoncpp gmp luajit leveldb ncurses zstd
@@ -224,10 +225,13 @@ Run it:
   - Debug build is slower, but gives much more useful output in a debugger.
 - If you build a bare server you don't need to have the Irrlicht or IrrlichtMt library installed.
   - In that case use `-DIRRLICHT_INCLUDE_DIR=/some/where/irrlicht/include`.
-- IrrlichtMt can also be installed somewhere that is not a standard install path.
-  - In that case use `-DCMAKE_PREFIX_PATH=/path/to/install_prefix`
-  - The path must be set so that `$(CMAKE_PREFIX_PATH)/lib/cmake/IrrlichtMt` exists
-    or that `$(CMAKE_PREFIX_PATH)` is the path of an IrrlichtMt build folder.
+
+- Minetest will use the IrrlichtMt package that is found first, given by the following order:
+  1. Specified `IRRLICHTMT_BUILD_DIR` CMake variable
+  2. `${PROJECT_SOURCE_DIR}/lib/irrlichtmt` (if existent)
+  3. Installation of IrrlichtMt in the system-specific library paths
+  4. For server builds with disabled `BUILD_CLIENT` variable, the headers from `IRRLICHT_INCLUDE_DIR` will be used.
+  - NOTE: Changing the IrrlichtMt build directory (includes system installs) requires regenerating the CMake cache (`rm CMakeCache.txt`)
 
 ### CMake options
 
@@ -236,6 +240,7 @@ General options and their default values:
     BUILD_CLIENT=TRUE          - Build Minetest client
     BUILD_SERVER=FALSE         - Build Minetest server
     BUILD_UNITTESTS=TRUE       - Build unittest sources
+    BUILD_BENCHMARKS=FALSE     - Build benchmark sources
     CMAKE_BUILD_TYPE=Release   - Type of build (Release vs. Debug)
         Release                - Release build
         Debug                  - Debug build
@@ -244,9 +249,8 @@ General options and their default values:
         MinSizeRel             - Release build with -Os passed to compiler to make executable as small as possible
     ENABLE_CURL=ON             - Build with cURL; Enables use of online mod repo, public serverlist and remote media fetching via http
     ENABLE_CURSES=ON           - Build with (n)curses; Enables a server side terminal (command line option: --terminal)
-    ENABLE_FREETYPE=ON         - Build with FreeType2; Allows using TTF fonts
     ENABLE_GETTEXT=ON          - Build with Gettext; Allows using translations
-    ENABLE_GLES=OFF            - Build for OpenGL ES instead of OpenGL (requires support by IrrlichtMt)
+    ENABLE_GLES=OFF            - Enable extra support code for OpenGL ES (requires support by IrrlichtMt)
     ENABLE_LEVELDB=ON          - Build with LevelDB; Enables use of LevelDB map backend
     ENABLE_POSTGRESQL=ON       - Build with libpq; Enables use of PostgreSQL map backend (PostgreSQL 9.5 or greater recommended)
     ENABLE_REDIS=ON            - Build with libhiredis; Enables use of Redis map backend
@@ -256,10 +260,10 @@ General options and their default values:
     ENABLE_PROMETHEUS=OFF      - Build with Prometheus metrics exporter (listens on tcp/30000 by default)
     ENABLE_SYSTEM_GMP=ON       - Use GMP from system (much faster than bundled mini-gmp)
     ENABLE_SYSTEM_JSONCPP=ON   - Use JsonCPP from system
-    OPENGL_GL_PREFERENCE=LEGACY - Linux client build only; See CMake Policy CMP0072 for reference
     RUN_IN_PLACE=FALSE         - Create a portable install (worlds, settings etc. in current directory)
     USE_GPROF=FALSE            - Enable profiling using GProf
     VERSION_EXTRA=             - Text to append to version (e.g. VERSION_EXTRA=foobar -> Minetest 0.4.9-foobar)
+    ENABLE_TOUCH=FALSE         - Enable Touchscreen support (requires support by IrrlichtMt)
 
 Library specific options:
 
@@ -268,10 +272,11 @@ Library specific options:
     CURL_LIBRARY                    - Only if building with cURL; path to libcurl.a/libcurl.so/libcurl.lib
     EGL_INCLUDE_DIR                 - Only if building with GLES; directory that contains egl.h
     EGL_LIBRARY                     - Only if building with GLES; path to libEGL.a/libEGL.so
-    FREETYPE_INCLUDE_DIR_freetype2  - Only if building with FreeType 2; directory that contains an freetype directory with files such as ftimage.h in it
-    FREETYPE_INCLUDE_DIR_ft2build   - Only if building with FreeType 2; directory that contains ft2build.h
-    FREETYPE_LIBRARY                - Only if building with FreeType 2; path to libfreetype.a/libfreetype.so/freetype.lib
-    FREETYPE_DLL                    - Only if building with FreeType 2 on Windows; path to libfreetype.dll
+    EXTRA_DLL                       - Only on Windows; optional paths to additional DLLs that should be packaged
+    FREETYPE_INCLUDE_DIR_freetype2  - Directory that contains files such as ftimage.h
+    FREETYPE_INCLUDE_DIR_ft2build   - Directory that contains ft2build.h
+    FREETYPE_LIBRARY                - Path to libfreetype.a/libfreetype.so/freetype.lib
+    FREETYPE_DLL                    - Only on Windows; path to libfreetype-6.dll
     GETTEXT_DLL                     - Only when building with gettext on Windows; paths to libintl + libiconv DLLs
     GETTEXT_INCLUDE_DIR             - Only when building with gettext; directory that contains iconv.h
     GETTEXT_LIBRARY                 - Only when building with gettext on Windows; path to libintl.dll.a
@@ -295,15 +300,12 @@ Library specific options:
     OPENAL_DLL                      - Only if building with sound on Windows; path to OpenAL32.dll
     OPENAL_INCLUDE_DIR              - Only if building with sound; directory where al.h is located
     OPENAL_LIBRARY                  - Only if building with sound; path to libopenal.a/libopenal.so/OpenAL32.lib
-    OPENGLES2_INCLUDE_DIR           - Only if building with GLES; directory that contains gl2.h
-    OPENGLES2_LIBRARY               - Only if building with GLES; path to libGLESv2.a/libGLESv2.so
     SQLITE3_INCLUDE_DIR             - Directory that contains sqlite3.h
     SQLITE3_LIBRARY                 - Path to libsqlite3.a/libsqlite3.so/sqlite3.lib
     VORBISFILE_LIBRARY              - Only if building with sound; path to libvorbisfile.a/libvorbisfile.so/libvorbisfile.dll.a
     VORBIS_DLL                      - Only if building with sound on Windows; paths to vorbis DLLs
     VORBIS_INCLUDE_DIR              - Only if building with sound; directory that contains a directory vorbis with vorbisenc.h inside
     VORBIS_LIBRARY                  - Only if building with sound; path to libvorbis.a/libvorbis.so/libvorbis.dll.a
-    XXF86VM_LIBRARY                 - Only on Linux; path to libXXf86vm.a/libXXf86vm.so
     ZLIB_DLL                        - Only on Windows; path to zlib1.dll
     ZLIB_INCLUDE_DIR                - Directory that contains zlib.h
     ZLIB_LIBRARY                    - Path to libz.a/libz.so/zlib.lib
@@ -326,13 +328,12 @@ It is highly recommended to use vcpkg as package manager.
 
 After you successfully built vcpkg you can easily install the required libraries:
 ```powershell
-vcpkg install zlib zstd curl[winssl] openal-soft libvorbis libogg sqlite3 freetype luajit gmp jsoncpp --triplet x64-windows
+vcpkg install zlib zstd curl[winssl] openal-soft libvorbis libogg libjpeg-turbo sqlite3 freetype luajit gmp jsoncpp opengl-registry --triplet x64-windows
 ```
 
 - **Don't forget about IrrlichtMt.** The easiest way is to clone it to `lib/irrlichtmt` as described in the Linux section.
 - `curl` is optional, but required to read the serverlist, `curl[winssl]` is required to use the content store.
 - `openal-soft`, `libvorbis` and `libogg` are optional, but required to use sound.
-- `freetype` is optional, it allows true-type font rendering.
 - `luajit` is optional, it replaces the integrated Lua interpreter with a faster just-in-time interpreter.
 - `gmp` and `jsoncpp` are optional, otherwise the bundled versions will be compiled
 
@@ -381,6 +382,60 @@ Build the binaries as described above, but make sure you unselect `RUN_IN_PLACE`
 Open the generated project file with Visual Studio. Right-click **Package** and choose **Generate**.
 It may take some minutes to generate the installer.
 
+### Compiling on MacOS
+
+#### Requirements
+- [Homebrew](https://brew.sh/)
+- [Git](https://git-scm.com/downloads)
+
+Install dependencies with homebrew:
+
+```
+brew install cmake freetype gettext gmp hiredis jpeg jsoncpp leveldb libogg libpng libvorbis luajit zstd
+```
+
+#### Download
+
+Download source (this is the URL to the latest of source repository, which might not work at all times) using Git:
+
+```bash
+git clone --depth 1 https://github.com/minetest/minetest.git
+cd minetest
+```
+
+Download minetest_game (otherwise only the "Development Test" game is available) using Git:
+
+```
+git clone --depth 1 https://github.com/minetest/minetest_game.git games/minetest_game
+```
+
+Download Minetest's fork of Irrlicht:
+
+```
+git clone --depth 1 https://github.com/minetest/irrlicht.git lib/irrlichtmt
+```
+
+#### Build
+
+```bash
+mkdir build
+cd build
+
+cmake .. \
+    -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 \
+    -DCMAKE_FIND_FRAMEWORK=LAST \
+    -DCMAKE_INSTALL_PREFIX=../build/macos/ \
+    -DRUN_IN_PLACE=FALSE -DENABLE_GETTEXT=TRUE
+
+make -j$(sysctl -n hw.logicalcpu)
+make install
+```
+
+#### Run
+
+```
+open ./build/macos/minetest.app
+```
 
 Docker
 ------

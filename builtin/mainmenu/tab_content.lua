@@ -88,12 +88,14 @@ local function get_formspec(tabview, name, tabdata)
 		tabdata.selected_pkg = 1
 	end
 
+	local use_technical_names = core.settings:get_bool("show_technical_names")
+
 
 	local retval =
 		"label[0.05,-0.25;".. fgettext("Installed Packages:") .. "]" ..
 		"tablecolumns[color;tree;text]" ..
 		"table[0,0.25;5.1,4.3;pkglist;" ..
-		pkgmgr.render_packagelist(packages) ..
+		pkgmgr.render_packagelist(packages, use_technical_names) ..
 		";" .. tabdata.selected_pkg .. "]" ..
 		"button[0,4.85;5.25,0.5;btn_contentdb;".. fgettext("Browse online content") .. "]"
 
@@ -124,9 +126,17 @@ local function get_formspec(tabview, name, tabdata)
 			desc = info.description
 		end
 
+		local title_and_name
+		if selected_pkg.type == "game" then
+			title_and_name = selected_pkg.name
+		else
+			title_and_name = (selected_pkg.title or selected_pkg.name) .. "\n" ..
+				core.colorize("#BFBFBF", selected_pkg.name)
+		end
+
 		retval = retval ..
 				"image[5.5,0;3,2;" .. core.formspec_escape(modscreenshot) .. "]" ..
-				"label[8.25,0.6;" .. core.formspec_escape(selected_pkg.name) .. "]" ..
+				"label[8.25,0.6;" .. core.formspec_escape(title_and_name) .. "]" ..
 				"box[5.5,2.2;6.15,2.35;#000]"
 
 		if selected_pkg.type == "mod" then
@@ -214,6 +224,9 @@ local function handle_doubleclick(pkg, pkg_name)
 			core.settings:set("texture_path", pkg.path)
 		end
 		packages = nil
+
+		mm_game_theme.init()
+		mm_game_theme.reset()
 	elseif pkg.is_clientside then
 		pkgmgr.enable_mod({data = {list = packages, selected_mod = pkg_name}})
 		packages = nil
@@ -276,17 +289,17 @@ local function handle_buttons(tabview, fields, tabname, tabdata)
 		return true
 	end
 
-	if fields.btn_mod_mgr_use_txp then
-		local txp = packages:get_list()[tabdata.selected_pkg]
-		core.settings:set("texture_path", txp.path)
-		packages = nil
-		return true
-	end
+	if fields.btn_mod_mgr_use_txp or fields.btn_mod_mgr_disable_txp then
+		local txp_path = ""
+		if fields.btn_mod_mgr_use_txp then
+			txp_path = packages:get_list()[tabdata.selected_pkg].path
+		end
 
-
-	if fields.btn_mod_mgr_disable_txp then
-		core.settings:set("texture_path", "")
+		core.settings:set("texture_path", txp_path)
 		packages = nil
+
+		mm_game_theme.init()
+		mm_game_theme.reset()
 		return true
 	end
 

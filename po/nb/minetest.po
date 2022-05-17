@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Norwegian Bokmål (Minetest)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-16 18:27+0200\n"
-"PO-Revision-Date: 2021-05-09 08:57+0000\n"
-"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"POT-Creation-Date: 2022-01-25 23:19+0100\n"
+"PO-Revision-Date: 2022-01-10 23:53+0000\n"
+"Last-Translator: Imre Kristoffer Eilertsen <imreeil42@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
 "minetest/minetest/nb_NO/>\n"
 "Language: nb\n"
@@ -12,16 +12,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"X-Generator: Weblate 4.10.1\n"
 
 #: builtin/client/chatcommands.lua
 msgid "Clear the out chat queue"
 msgstr ""
 
 #: builtin/client/chatcommands.lua
-#, fuzzy
 msgid "Empty command."
-msgstr "Sludrekommandoer"
+msgstr "Tom kommando."
 
 #: builtin/client/chatcommands.lua
 #, fuzzy
@@ -35,7 +34,7 @@ msgstr "Lokal kommando"
 
 #: builtin/client/chatcommands.lua
 msgid "Issued command: "
-msgstr ""
+msgstr "Avgitt kommando: "
 
 #: builtin/client/chatcommands.lua
 #, fuzzy
@@ -53,7 +52,7 @@ msgstr ""
 
 #: builtin/client/chatcommands.lua
 msgid "This command is disabled by server."
-msgstr ""
+msgstr "Denne kommandoen er utkoblet av tjeneren."
 
 #: builtin/client/death_formspec.lua src/client/game.cpp
 msgid "Respawn"
@@ -61,11 +60,6 @@ msgstr "Gjenoppstå"
 
 #: builtin/client/death_formspec.lua src/client/game.cpp
 msgid "You died"
-msgstr "Du døde"
-
-#: builtin/client/death_formspec.lua
-#, fuzzy
-msgid "You died."
 msgstr "Du døde"
 
 #: builtin/common/chatcommands.lua
@@ -80,7 +74,7 @@ msgstr "Lokal kommando"
 
 #: builtin/common/chatcommands.lua
 msgid "Command not available: "
-msgstr ""
+msgstr "Ikke tilgjengelig kommando: "
 
 #: builtin/common/chatcommands.lua
 msgid "Get help for commands"
@@ -98,6 +92,11 @@ msgstr ""
 #: builtin/fstk/dialog.lua builtin/fstk/ui.lua src/gui/modalMenu.cpp
 msgid "OK"
 msgstr "OK"
+
+#: builtin/fstk/ui.lua
+#, fuzzy
+msgid "<none available>"
+msgstr "Ikke tilgjengelig kommando: "
 
 #: builtin/fstk/ui.lua
 msgid "An error occurred in a Lua script:"
@@ -234,7 +233,7 @@ msgstr ""
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "$1 by $2"
-msgstr ""
+msgstr "$1 av $2"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid ""
@@ -305,6 +304,11 @@ msgid "Install missing dependencies"
 msgstr "Valgfrie avhengigheter:"
 
 #: builtin/mainmenu/dlg_contentstore.lua
+#, fuzzy
+msgid "Install: Unsupported file type or broken archive"
+msgstr "Installasjon: Ikke-støttet filtype \"$1\" eller ødelagt arkiv"
+
+#: builtin/mainmenu/dlg_contentstore.lua
 #: builtin/mainmenu/dlg_settings_advanced.lua
 msgid "Mods"
 msgstr "Modder"
@@ -318,17 +322,16 @@ msgid "No results"
 msgstr "Resultatløst"
 
 #: builtin/mainmenu/dlg_contentstore.lua
-#, fuzzy
 msgid "No updates"
-msgstr "Oppdater"
+msgstr "Ingen oppdateringer"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Not found"
-msgstr ""
+msgstr "Ikke funnet"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Overwrite"
-msgstr ""
+msgstr "Overskriv"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Please check that the base game is correct."
@@ -336,7 +339,7 @@ msgstr ""
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Queued"
-msgstr ""
+msgstr "Satt i kø"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Texture packs"
@@ -633,7 +636,8 @@ msgid "Offset"
 msgstr "Forskyvning"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
-msgid "Persistance"
+#, fuzzy
+msgid "Persistence"
 msgstr "Bestandighet"
 
 #: builtin/mainmenu/dlg_settings_advanced.lua
@@ -744,14 +748,6 @@ msgid "Install Mod: Unable to find suitable folder name for modpack $1"
 msgstr "Installer mod: Klarte ikke finne egnet mappenavn for mod-pakke $1"
 
 #: builtin/mainmenu/pkgmgr.lua
-msgid "Install: Unsupported file type \"$1\" or broken archive"
-msgstr "Installasjon: Ikke-støttet filtype \"$1\" eller ødelagt arkiv"
-
-#: builtin/mainmenu/pkgmgr.lua
-msgid "Install: file: \"$1\""
-msgstr "Installasjon: fil \"$1\""
-
-#: builtin/mainmenu/pkgmgr.lua
 msgid "Unable to find a valid mod or modpack"
 msgstr "Klarte ikke finne en gyldig mod eller modpakke"
 
@@ -788,7 +784,7 @@ msgstr ""
 
 #: builtin/mainmenu/tab_about.lua
 msgid "About"
-msgstr ""
+msgstr "Om"
 
 #: builtin/mainmenu/tab_about.lua
 msgid "Active Contributors"
@@ -892,7 +888,7 @@ msgstr "Installer spill fra ContentDB"
 
 #: builtin/mainmenu/tab_local.lua builtin/mainmenu/tab_online.lua
 msgid "Name"
-msgstr ""
+msgstr "Navn"
 
 #: builtin/mainmenu/tab_local.lua
 msgid "New"
@@ -903,9 +899,8 @@ msgid "No world created or selected!"
 msgstr "Ingen verden opprettet eller valgt!"
 
 #: builtin/mainmenu/tab_local.lua builtin/mainmenu/tab_online.lua
-#, fuzzy
 msgid "Password"
-msgstr "Nytt passord"
+msgstr "Passord"
 
 #: builtin/mainmenu/tab_local.lua
 msgid "Play Game"
@@ -933,9 +928,8 @@ msgid "Start Game"
 msgstr "Start spill"
 
 #: builtin/mainmenu/tab_online.lua
-#, fuzzy
 msgid "Address"
-msgstr "- Adresse: "
+msgstr "Adresse"
 
 #: builtin/mainmenu/tab_online.lua src/client/keycode.cpp
 msgid "Clear"
@@ -960,9 +954,8 @@ msgid "Del. Favorite"
 msgstr "Slett favoritt"
 
 #: builtin/mainmenu/tab_online.lua
-#, fuzzy
 msgid "Favorites"
-msgstr "Favoritt"
+msgstr "Favoritter"
 
 #: builtin/mainmenu/tab_online.lua
 msgid "Incompatible Servers"
@@ -983,7 +976,7 @@ msgstr "Annonseringstjener"
 
 #: builtin/mainmenu/tab_online.lua
 msgid "Refresh"
-msgstr ""
+msgstr "Oppdater"
 
 #: builtin/mainmenu/tab_online.lua
 #, fuzzy
@@ -1045,15 +1038,15 @@ msgstr "Forseggjorte blader"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "High"
-msgstr ""
+msgstr "Høy"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Low"
-msgstr ""
+msgstr "Lav"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Medium"
-msgstr ""
+msgstr "Medium"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Mipmap"
@@ -1114,7 +1107,7 @@ msgstr "Flytlandene (eksperimentelt)"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Shaders (unavailable)"
-msgstr "Skyggelegging (ikke tilgjenglig)"
+msgstr "Skyggelegging (ikke tilgjengelig)"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Simple Leaves"
@@ -1122,15 +1115,11 @@ msgstr "Enkle løv"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Smooth Lighting"
-msgstr "Gjevn belysning"
+msgstr "Jevn belysning"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Texturing:"
 msgstr "Teksturering:"
-
-#: builtin/mainmenu/tab_settings.lua
-msgid "To enable shaders the OpenGL driver needs to be used."
-msgstr "For å skru på skyggeleging, må man bruke OpenGL-driveren."
 
 #: builtin/mainmenu/tab_settings.lua src/settings_translation_file.cpp
 msgid "Tone Mapping"
@@ -1146,11 +1135,11 @@ msgstr "Trilineært filter"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Ultra High"
-msgstr ""
+msgstr "Ultrahøy"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Very Low"
-msgstr ""
+msgstr "Veldig lav"
 
 #: builtin/mainmenu/tab_settings.lua
 msgid "Waving Leaves"
@@ -1164,7 +1153,7 @@ msgstr "Skvulpende væsker"
 msgid "Waving Plants"
 msgstr "Bølgende planter"
 
-#: src/client/client.cpp
+#: src/client/client.cpp src/client/game.cpp
 msgid "Connection timed out."
 msgstr "Forbindelsen løp ut på tid."
 
@@ -1193,7 +1182,8 @@ msgid "Connection error (timed out?)"
 msgstr "Tilkoblingsfeil (tidsavbrudd?)"
 
 #: src/client/clientlauncher.cpp
-msgid "Could not find or load game \""
+#, fuzzy
+msgid "Could not find or load game: "
 msgstr "Klarte ikke finne eller laste inn spill «"
 
 #: src/client/clientlauncher.cpp
@@ -1237,14 +1227,6 @@ msgid "- Address: "
 msgstr "- Adresse: "
 
 #: src/client/game.cpp
-msgid "- Creative Mode: "
-msgstr "- Kreativ modus: "
-
-#: src/client/game.cpp
-msgid "- Damage: "
-msgstr "- Skade: "
-
-#: src/client/game.cpp
 msgid "- Mode: "
 msgstr "- Modus: "
 
@@ -1266,6 +1248,16 @@ msgid "- Server Name: "
 msgstr "- Tjenernavn: "
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "A serialization error occurred:"
+msgstr "Det oppstod en feil:"
+
+#: src/client/game.cpp
+#, c-format
+msgid "Access denied. Reason: %s"
+msgstr ""
+
+#: src/client/game.cpp
 msgid "Automatic forward disabled"
 msgstr "Automatisk forover slått av"
 
@@ -1274,12 +1266,32 @@ msgid "Automatic forward enabled"
 msgstr "Automatisk forover slått på"
 
 #: src/client/game.cpp
+msgid "Block bounds hidden"
+msgstr ""
+
+#: src/client/game.cpp
+msgid "Block bounds shown for all blocks"
+msgstr ""
+
+#: src/client/game.cpp
+msgid "Block bounds shown for current block"
+msgstr ""
+
+#: src/client/game.cpp
+msgid "Block bounds shown for nearby blocks"
+msgstr ""
+
+#: src/client/game.cpp
 msgid "Camera update disabled"
 msgstr "Kameraoppdatering slått av"
 
 #: src/client/game.cpp
 msgid "Camera update enabled"
 msgstr "Kameraoppdatering slått på"
+
+#: src/client/game.cpp
+msgid "Can't show block bounds (need 'basic_debug' privilege)"
+msgstr ""
 
 #: src/client/game.cpp
 msgid "Change Password"
@@ -1294,12 +1306,21 @@ msgid "Cinematic mode enabled"
 msgstr "Filmatisk modus påskrudd"
 
 #: src/client/game.cpp
+#, fuzzy
+msgid "Client disconnected"
+msgstr "Brukermodding"
+
+#: src/client/game.cpp
 msgid "Client side scripting is disabled"
 msgstr "Skripting er slått av på klientside"
 
 #: src/client/game.cpp
 msgid "Connecting to server..."
 msgstr "Kobler til tjener…"
+
+#: src/client/game.cpp
+msgid "Connection failed for unknown reason"
+msgstr ""
 
 #: src/client/game.cpp
 msgid "Continue"
@@ -1339,6 +1360,11 @@ msgstr ""
 "- %s: sludring\n"
 
 #: src/client/game.cpp
+#, c-format
+msgid "Couldn't resolve address: %s"
+msgstr ""
+
+#: src/client/game.cpp
 msgid "Creating client..."
 msgstr "Oppretter klient…"
 
@@ -1348,7 +1374,7 @@ msgstr "Oppretter tjener…"
 
 #: src/client/game.cpp
 msgid "Debug info and profiler graph hidden"
-msgstr "Skjuler feilsøkingsinfo og profilgraf"
+msgstr "Skjuler feilsøkingsinfo og profileringsgraf"
 
 #: src/client/game.cpp
 msgid "Debug info shown"
@@ -1356,7 +1382,7 @@ msgstr "Viser feilsøkingsinfo"
 
 #: src/client/game.cpp
 msgid "Debug info, profiler graph, and wireframe hidden"
-msgstr ""
+msgstr "Skjuler feilsøkingsinfo, profileringsgraf og 3D-gitter"
 
 #: src/client/game.cpp
 msgid ""
@@ -1467,9 +1493,8 @@ msgid "Minimap currently disabled by game or mod"
 msgstr ""
 
 #: src/client/game.cpp
-#, fuzzy
 msgid "Multiplayer"
-msgstr "Enkeltspiller"
+msgstr "Flerspiller"
 
 #: src/client/game.cpp
 msgid "Noclip mode disabled"
@@ -1543,6 +1568,21 @@ msgstr "Lydsystem støttes ikke på dette bygget"
 #: src/client/game.cpp
 msgid "Sound unmuted"
 msgstr "Lyd på"
+
+#: src/client/game.cpp
+#, c-format
+msgid "The server is probably running a different version of %s."
+msgstr ""
+
+#: src/client/game.cpp
+#, c-format
+msgid "Unable to connect to %s because IPv6 is disabled"
+msgstr ""
+
+#: src/client/game.cpp
+#, c-format
+msgid "Unable to listen on %s because IPv6 is disabled"
+msgstr ""
 
 #: src/client/game.cpp
 #, c-format
@@ -1878,6 +1918,15 @@ msgstr ""
 msgid "Minimap in texture mode"
 msgstr ""
 
+#: src/gui/guiChatConsole.cpp
+#, fuzzy
+msgid "Failed to open webpage"
+msgstr "Klarte ikke laste ned $1"
+
+#: src/gui/guiChatConsole.cpp
+msgid "Opening webpage"
+msgstr ""
+
 #: src/gui/guiConfirmRegistration.cpp src/gui/guiPasswordChange.cpp
 msgid "Passwords do not match!"
 msgstr "Passordene samsvarer ikke!"
@@ -2081,7 +2130,8 @@ msgid "Muted"
 msgstr "Av"
 
 #: src/gui/guiVolumeChange.cpp
-msgid "Sound Volume: "
+#, fuzzy, c-format
+msgid "Sound Volume: %d%%"
 msgstr "Lydstyrke: "
 
 #. ~ Imperative, as in "Enter/type in text".
@@ -2334,6 +2384,10 @@ msgid ""
 msgstr ""
 "Justér skjermens DPI-innstilling (ikke for X11/kun Android), f. eks. for 4k-"
 "skjermer."
+
+#: src/settings_translation_file.cpp
+msgid "Adjust the detected display density, used for scaling UI elements."
+msgstr ""
 
 #: src/settings_translation_file.cpp
 #, c-format
@@ -2628,6 +2682,11 @@ msgstr "Terskel for utvisning fra chat"
 
 #: src/settings_translation_file.cpp
 #, fuzzy
+msgid "Chat commands"
+msgstr "Sludrekommandoer"
+
+#: src/settings_translation_file.cpp
+#, fuzzy
 msgid "Chat font size"
 msgstr "Skriftstørrelse"
 
@@ -2661,8 +2720,9 @@ msgid "Chat toggle key"
 msgstr "Tast for veksling av sludring"
 
 #: src/settings_translation_file.cpp
-msgid "Chatcommands"
-msgstr "Sludrekommandoer"
+#, fuzzy
+msgid "Chat weblinks"
+msgstr "Viser chat"
 
 #: src/settings_translation_file.cpp
 msgid "Chunk size"
@@ -2679,6 +2739,12 @@ msgstr "Tast for filmatisk tilstand"
 #: src/settings_translation_file.cpp
 msgid "Clean transparent textures"
 msgstr "Rene, gjennomsiktige teksturer"
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Clickable weblinks (middle-click or Ctrl+left-click) enabled in chat console "
+"output."
+msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Client"
@@ -2766,6 +2832,22 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid "Command key"
 msgstr "Tast for chat og kommandoer"
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Compression level to use when saving mapblocks to disk.\n"
+"-1 - use default compression level\n"
+"0 - least compression, fastest\n"
+"9 - best compression, slowest"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Compression level to use when sending mapblocks to the client.\n"
+"-1 - use default compression level\n"
+"0 - least compression, fastest\n"
+"9 - best compression, slowest"
+msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Connect glass"
@@ -2866,8 +2948,10 @@ msgstr "Trådkors-alpha"
 #, fuzzy
 msgid ""
 "Crosshair alpha (opaqueness, between 0 and 255).\n"
-"Also controls the object crosshair color"
-msgstr "Trådkors-alpha (ugjennomsiktighet, mellom 0 og 255)."
+"This also applies to the object crosshair."
+msgstr ""
+"Trådkors-alpha (ugjennomsiktighet, mellom 0 og 255).\n"
+"Kontrollerer også objektets trådkorsfarge"
 
 #: src/settings_translation_file.cpp
 msgid "Crosshair color"
@@ -2944,8 +3028,8 @@ msgstr "Forvalgt spill"
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Define shadow filtering quality\n"
-"This simulates the soft shadows effect by applying a PCF or poisson disk\n"
+"Define shadow filtering quality.\n"
+"This simulates the soft shadows effect by applying a PCF or Poisson disk\n"
 "but also uses more resources."
 msgstr ""
 
@@ -3066,6 +3150,10 @@ msgid "Disallow empty passwords"
 msgstr "Ikke tillatt tomme passord"
 
 #: src/settings_translation_file.cpp
+msgid "Display Density Scaling Factor"
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Domain name of server, to be displayed in the serverlist."
 msgstr "Domenenavn for tjener, som vist i tjenerlisten."
 
@@ -3112,7 +3200,14 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Enable colored shadows. \n"
+"Enable Poisson disk filtering.\n"
+"On true uses Poisson disk to make \"soft shadows\". Otherwise uses PCF "
+"filtering."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Enable colored shadows.\n"
 "On true translucent nodes cast colored shadows. This is expensive."
 msgstr ""
 
@@ -3121,9 +3216,8 @@ msgid "Enable console window"
 msgstr "Skru på konsollvindu"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Enable creative mode for all players"
-msgstr "Skru på kreativt modusfor nye opprettede kart."
+msgstr "Aktiver kreativt modus for alle spillere"
 
 #: src/settings_translation_file.cpp
 msgid "Enable joysticks"
@@ -3139,13 +3233,6 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Enable players getting damage and dying."
-msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid ""
-"Enable poisson disk filtering.\n"
-"On true uses poisson disk to make \"soft shadows\". Otherwise uses PCF "
-"filtering."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -3235,6 +3322,12 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid ""
+"Enables tradeoffs that reduce CPU load or increase rendering performance\n"
+"at the expense of minor visual glitches that do not impact game playability."
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Engine profiling data print interval"
 msgstr ""
 
@@ -3253,13 +3346,12 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "FPS when unfocused or paused"
-msgstr "Maks FPS når spillet står i pause."
+msgstr "Maks FPS når spillet ikke har fokus eller er pauset"
 
 #: src/settings_translation_file.cpp
 msgid "FSAA"
-msgstr ""
+msgstr "FSAA"
 
 #: src/settings_translation_file.cpp
 msgid "Factor noise"
@@ -3426,17 +3518,32 @@ msgid "Font size"
 msgstr "Skriftstørrelse"
 
 #: src/settings_translation_file.cpp
-msgid "Font size of the default font in point (pt)."
+msgid "Font size divisible by"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Font size of the monospace font in point (pt)."
+msgid "Font size of the default font where 1 unit = 1 pixel at 96 DPI"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid "Font size of the monospace font where 1 unit = 1 pixel at 96 DPI"
 msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
 "Font size of the recent chat text and chat prompt in point (pt).\n"
 "Value 0 will use the default font size."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"For pixel-style fonts that do not scale well, this ensures that font sizes "
+"used\n"
+"with this font will always be divisible by this value, in pixels. For "
+"instance,\n"
+"a pixel font 16 pixels tall should have this set to 16, so it will only ever "
+"be\n"
+"sized 16, 32, 48, etc., so a mod requesting a size of 25 will get 32."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -3499,10 +3606,6 @@ msgid "Fraction of the visible distance at which fog starts to be rendered"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "FreeType fonts"
-msgstr "FreeType-skrifttyper"
-
-#: src/settings_translation_file.cpp
 msgid ""
 "From how far blocks are generated for clients, stated in mapblocks (16 "
 "nodes)."
@@ -3550,7 +3653,7 @@ msgstr ""
 msgid ""
 "Global map generation attributes.\n"
 "In Mapgen v6 the 'decorations' flag controls all decorations except trees\n"
-"and junglegrass, in all other mapgens this flag controls all decorations."
+"and jungle grass, in all other mapgens this flag controls all decorations."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -3982,7 +4085,7 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Instrument chatcommands on registration."
+msgid "Instrument chat commands on registration."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4048,7 +4151,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Iterations"
-msgstr ""
+msgstr "Ringer"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -4068,7 +4171,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 #, fuzzy
-msgid "Joystick deadzone"
+msgid "Joystick dead zone"
 msgstr "Spillstikketype"
 
 #: src/settings_translation_file.cpp
@@ -4076,9 +4179,8 @@ msgid "Joystick frustum sensitivity"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-#, fuzzy
 msgid "Joystick type"
-msgstr "Spillstikketype"
+msgstr "Kontrollertype"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -4816,7 +4918,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Language"
-msgstr ""
+msgstr "Språk"
 
 #: src/settings_translation_file.cpp
 msgid "Large cave depth"
@@ -5072,7 +5174,7 @@ msgid "Map save interval"
 msgstr "Lagringsintervall for kart"
 
 #: src/settings_translation_file.cpp
-msgid "Map update time"
+msgid "Map shadows update frames"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -5374,7 +5476,7 @@ msgid "Mod channels"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "Modifies the size of the hudbar elements."
+msgid "Modifies the size of the HUD elements."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -5383,6 +5485,11 @@ msgstr "Filsti for monospace skrifttype"
 
 #: src/settings_translation_file.cpp
 msgid "Monospace font size"
+msgstr "Størrelse for monospace skrifttype"
+
+#: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Monospace font size divisible by"
 msgstr "Størrelse for monospace skrifttype"
 
 #: src/settings_translation_file.cpp
@@ -5453,7 +5560,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Network"
-msgstr ""
+msgstr "Nettverk"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -5506,7 +5613,7 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "Number of extra blocks that can be loaded by /clearobjects at once.\n"
-"This is a trade-off between sqlite transaction overhead and\n"
+"This is a trade-off between SQLite transaction overhead and\n"
 "memory consumption (4096=100MB, as a rule of thumb)."
 msgstr ""
 
@@ -5531,10 +5638,12 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid "Optional override for chat weblink color."
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid ""
-"Path of the fallback font.\n"
-"If “freetype” setting is enabled: Must be a TrueType font.\n"
-"If “freetype” setting is disabled: Must be a bitmap or XML vectors font.\n"
+"Path of the fallback font. Must be a TrueType font.\n"
 "This font will be used for certain languages or if the default font is "
 "unavailable."
 msgstr ""
@@ -5557,17 +5666,13 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Path to the default font.\n"
-"If “freetype” setting is enabled: Must be a TrueType font.\n"
-"If “freetype” setting is disabled: Must be a bitmap or XML vectors font.\n"
+"Path to the default font. Must be a TrueType font.\n"
 "The fallback font will be used if the font cannot be loaded."
 msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Path to the monospace font.\n"
-"If “freetype” setting is enabled: Must be a TrueType font.\n"
-"If “freetype” setting is disabled: Must be a bitmap or XML vectors font.\n"
+"Path to the monospace font. Must be a TrueType font.\n"
 "This font is used for e.g. the console and profiler screen."
 msgstr ""
 
@@ -5664,7 +5769,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Profiling"
-msgstr ""
+msgstr "Profilering"
 
 #: src/settings_translation_file.cpp
 msgid "Prometheus listener address"
@@ -5673,9 +5778,9 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "Prometheus listener address.\n"
-"If minetest is compiled with ENABLE_PROMETHEUS option enabled,\n"
+"If Minetest is compiled with ENABLE_PROMETHEUS option enabled,\n"
 "enable metrics listener for Prometheus on that address.\n"
-"Metrics can be fetch on http://127.0.0.1:30000/metrics"
+"Metrics can be fetched on http://127.0.0.1:30000/metrics"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -5849,11 +5954,11 @@ msgstr "Mappe for skjermdumper"
 
 #: src/settings_translation_file.cpp
 msgid "Screenshot format"
-msgstr ""
+msgstr "Skjermklippformat"
 
 #: src/settings_translation_file.cpp
 msgid "Screenshot quality"
-msgstr ""
+msgstr "Skjermklippkvalitet"
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -5916,6 +6021,25 @@ msgid ""
 "17 = 4D \"Mandelbulb\" Mandelbrot set.\n"
 "18 = 4D \"Mandelbulb\" Julia set."
 msgstr ""
+"Velger en av 18 fraktaltyper.\n"
+"1 = 4D «Rund» Mandelbrot-mengde.\n"
+"2 = 4D «Rund» Julia-mengde.\n"
+"3 = 4D «Firkantet» Mandelbrot-mengde.\n"
+"4 = 4D «Firkantet» Julia-mengde.\n"
+"5 = 4D «Mandy Cousin» Mandelbrot-mengde.\n"
+"6 = 4D «Mandy Cousin» Julia-mengde.\n"
+"7 = 4D «Variasjon» Mandelbrot-mengde.\n"
+"8 = 4D «Variasjon» Julia-mengde.\n"
+"9 = 3D «Mandelbrot/Mandelbar» Mandelbrot-mengde.\n"
+"10 = 3D «Mandelbrot/Mandelbar» Julia-mengde.\n"
+"11 = 3D «Juletre» Mandelbrot-mengde.\n"
+"12 = 3D «Juletre» Julia-mengde.\n"
+"13 = 3D «Mandelbulb» Mandelbrot-mengde.\n"
+"14 = 3D «Mandelbulb» Julia-mengde.\n"
+"15 = 3D «Cosine Mandelbulb» Mandelbrot-mengde.\n"
+"16 = 3D «Cosine Mandelbulb» Julia-mengde.\n"
+"17 = 4D «Mandelbulb» Mandelbrot-mengde.\n"
+"18 = 4D «Mandelbulb» Julia-mengde."
 
 #: src/settings_translation_file.cpp
 msgid "Server / Singleplayer"
@@ -5975,24 +6099,16 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Set the shadow update time.\n"
-"Lower value means shadows and map updates faster, but it consume more "
-"resources.\n"
-"Minimun value 0.001 seconds max value 0.2 seconds"
-msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid ""
 "Set the soft shadow radius size.\n"
-"Lower values mean sharper shadows bigger values softer.\n"
-"Minimun value 1.0 and max value 10.0"
+"Lower values mean sharper shadows, bigger values mean softer shadows.\n"
+"Minimum value: 1.0; maximum value: 10.0"
 msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Set the tilt of Sun/Moon orbit in degrees\n"
+"Set the tilt of Sun/Moon orbit in degrees.\n"
 "Value of 0 means no tilt / vertical orbit.\n"
-"Minimun value 0.0 and max value 60.0"
+"Minimum value: 0.0; maximum value: 60.0"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -6096,7 +6212,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 #, fuzzy
-msgid "Show nametag backgrounds by default"
+msgid "Show name tag backgrounds by default"
 msgstr "Fet skrifttype som forvalg"
 
 #: src/settings_translation_file.cpp
@@ -6205,6 +6321,14 @@ msgid ""
 "Specifies the default stack size of nodes, items and tools.\n"
 "Note that mods or games may explicitly set a stack for certain (or all) "
 "items."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Spread a complete update of shadow map over given amount of frames.\n"
+"Higher values might make shadows laggy, lower values\n"
+"will consume more resources.\n"
+"Minimum value: 1; maximum value: 16"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -6322,7 +6446,7 @@ msgstr "Filsti for teksturer"
 msgid ""
 "Texture size to render the shadow map on.\n"
 "This must be a power of two.\n"
-"Bigger numbers create better shadowsbut it is also more expensive."
+"Bigger numbers create better shadows but it is also more expensive."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -6340,7 +6464,7 @@ msgid "The URL for the content repository"
 msgstr ""
 
 #: src/settings_translation_file.cpp
-msgid "The deadzone of the joystick"
+msgid "The dead zone of the joystick"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -6414,7 +6538,7 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "The sensitivity of the joystick axes for moving the\n"
-"ingame view frustum around."
+"in-game view frustum around."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -6509,6 +6633,10 @@ msgid "Touch screen threshold"
 msgstr "Strandlydsterskel"
 
 #: src/settings_translation_file.cpp
+msgid "Tradeoffs for performance"
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Trees noise"
 msgstr ""
 
@@ -6582,7 +6710,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Use mip mapping to scale textures. May slightly increase performance,\n"
+"Use mipmapping to scale textures. May slightly increase performance,\n"
 "especially when using a high resolution texture pack.\n"
 "Gamma correct downscaling is not supported."
 msgstr ""
@@ -6608,7 +6736,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "VSync"
-msgstr ""
+msgstr "VSync"
 
 #: src/settings_translation_file.cpp
 msgid "Valley depth"
@@ -6772,6 +6900,11 @@ msgid "Waving plants"
 msgstr "Plantesvaiing"
 
 #: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Weblink color"
+msgstr "Farge på utvalgsfelt"
+
+#: src/settings_translation_file.cpp
 msgid ""
 "When gui_scaling_filter is true, all GUI images need to be\n"
 "filtered in software, but some images are generated directly\n"
@@ -6792,7 +6925,7 @@ msgid ""
 "can be blurred, so automatically upscale them with nearest-neighbor\n"
 "interpolation to preserve crisp pixels. This sets the minimum texture size\n"
 "for the upscaled textures; higher values look sharper, but require more\n"
-"memory.  Powers of 2 are recommended. This setting is ONLY applies if\n"
+"memory. Powers of 2 are recommended. This setting is ONLY applied if\n"
 "bilinear/trilinear/anisotropic filtering is enabled.\n"
 "This is also used as the base node texture size for world-aligned\n"
 "texture autoscaling."
@@ -6800,14 +6933,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Whether FreeType fonts are used, requires FreeType support to be compiled "
-"in.\n"
-"If disabled, bitmap and XML vectors fonts are used instead."
-msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid ""
-"Whether nametag backgrounds should be shown by default.\n"
+"Whether name tag backgrounds should be shown by default.\n"
 "Mods may still set a background."
 msgstr ""
 
@@ -6938,24 +7064,6 @@ msgid "Y-level of seabed."
 msgstr "Y-nivå for havbunn."
 
 #: src/settings_translation_file.cpp
-msgid ""
-"ZLib compression level to use when saving mapblocks to disk.\n"
-"-1 - Zlib's default compression level\n"
-"0 - no compresson, fastest\n"
-"9 - best compression, slowest\n"
-"(levels 1-3 use Zlib's \"fast\" method, 4-9 use the normal method)"
-msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid ""
-"ZLib compression level to use when sending mapblocks to the client.\n"
-"-1 - Zlib's default compression level\n"
-"0 - no compresson, fastest\n"
-"9 - best compression, slowest\n"
-"(levels 1-3 use Zlib's \"fast\" method, 4-9 use the normal method)"
-msgstr ""
-
-#: src/settings_translation_file.cpp
 msgid "cURL file download timeout"
 msgstr "Tidsutløp for filnedlasting med cURL"
 
@@ -6967,6 +7075,12 @@ msgstr "cURL-tidsgrense"
 #: src/settings_translation_file.cpp
 msgid "cURL parallel limit"
 msgstr "Maksimal parallellisering i cURL"
+
+#~ msgid "- Creative Mode: "
+#~ msgstr "- Kreativ modus: "
+
+#~ msgid "- Damage: "
+#~ msgstr "- Skade: "
 
 #~ msgid "Address / Port"
 #~ msgstr "Adresse / port"
@@ -7032,11 +7146,17 @@ msgstr "Maksimal parallellisering i cURL"
 #~ msgid "Fallback font size"
 #~ msgstr "Tilbakefallsskriftstørrelse"
 
+#~ msgid "FreeType fonts"
+#~ msgstr "FreeType-skrifttyper"
+
 #~ msgid "Generate Normal Maps"
 #~ msgstr "Generer normale kart"
 
 #~ msgid "IPv6 support."
 #~ msgstr "IPv6-støtte."
+
+#~ msgid "Install: file: \"$1\""
+#~ msgstr "Installasjon: fil \"$1\""
 
 #~ msgid "Main"
 #~ msgstr "Hovedmeny"
@@ -7081,6 +7201,9 @@ msgstr "Maksimal parallellisering i cURL"
 #~ msgid "Start Singleplayer"
 #~ msgstr "Start enkeltspiller"
 
+#~ msgid "To enable shaders the OpenGL driver needs to be used."
+#~ msgstr "OpenGL-driveren må brukes for å aktivere skyggelegging."
+
 #~ msgid "View"
 #~ msgstr "Vis"
 
@@ -7092,6 +7215,9 @@ msgstr "Maksimal parallellisering i cURL"
 
 #~ msgid "Yes"
 #~ msgstr "Ja"
+
+#~ msgid "You died."
+#~ msgstr "Du døde."
 
 #~ msgid "needs_fallback_font"
 #~ msgstr "no"

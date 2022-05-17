@@ -45,6 +45,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "tileanimation.h"
 #include "gettext.h"
 #include "skyparams.h"
+#include <memory>
 
 void Client::handleCommand_Deprecated(NetworkPacket* pkt)
 {
@@ -184,7 +185,7 @@ void Client::handleCommand_AccessDenied(NetworkPacket* pkt)
 	m_access_denied_reason = "Unknown";
 
 	if (pkt->getCommand() != TOCLIENT_ACCESS_DENIED) {
-		// 13/03/15 Legacy code from 0.4.12 and lesser but is still used
+		// Legacy code from 0.4.12 and older but is still used
 		// in some places of the server code
 		if (pkt->getSize() >= 2) {
 			std::wstring wide_reason;
@@ -197,14 +198,14 @@ void Client::handleCommand_AccessDenied(NetworkPacket* pkt)
 	if (pkt->getSize() < 1)
 		return;
 
-	u8 denyCode = SERVER_ACCESSDENIED_UNEXPECTED_DATA;
+	u8 denyCode;
 	*pkt >> denyCode;
+
 	if (denyCode == SERVER_ACCESSDENIED_SHUTDOWN ||
 			denyCode == SERVER_ACCESSDENIED_CRASH) {
 		*pkt >> m_access_denied_reason;
-		if (m_access_denied_reason.empty()) {
+		if (m_access_denied_reason.empty())
 			m_access_denied_reason = accessDeniedStrings[denyCode];
-		}
 		u8 reconnect;
 		*pkt >> reconnect;
 		m_access_denied_reconnect = reconnect & 1;
@@ -221,9 +222,8 @@ void Client::handleCommand_AccessDenied(NetworkPacket* pkt)
 		// Until then (which may be never), this is outside
 		// of the defined protocol.
 		*pkt >> m_access_denied_reason;
-		if (m_access_denied_reason.empty()) {
+		if (m_access_denied_reason.empty())
 			m_access_denied_reason = "Unknown";
-		}
 	}
 }
 
@@ -918,11 +918,6 @@ void Client::handleCommand_Privileges(NetworkPacket* pkt)
 		m_privileges.insert(priv);
 		infostream << priv << " ";
 	}
-
-	// Enable basic_debug on server versions before it was added
-	if (m_proto_ver < 40)
-		m_privileges.insert("basic_debug");
-
 	infostream << std::endl;
 }
 
@@ -1269,19 +1264,17 @@ void Client::handleCommand_HudSetSky(NetworkPacket* pkt)
 		} catch (...) {}
 
 		// Use default skybox settings:
-		SkyboxDefaults sky_defaults;
-		SunParams sun = sky_defaults.getSunDefaults();
-		MoonParams moon = sky_defaults.getMoonDefaults();
-		StarParams stars = sky_defaults.getStarDefaults();
+		SunParams sun = SkyboxDefaults::getSunDefaults();
+		MoonParams moon = SkyboxDefaults::getMoonDefaults();
+		StarParams stars = SkyboxDefaults::getStarDefaults();
 
 		// Fix for "regular" skies, as color isn't kept:
 		if (skybox.type == "regular") {
-			skybox.sky_color = sky_defaults.getSkyColorDefaults();
+			skybox.sky_color = SkyboxDefaults::getSkyColorDefaults();
 			skybox.fog_tint_type = "default";
 			skybox.fog_moon_tint = video::SColor(255, 255, 255, 255);
 			skybox.fog_sun_tint = video::SColor(255, 255, 255, 255);
-		}
-		else {
+		} else {
 			sun.visible = false;
 			sun.sunrise_visible = false;
 			moon.visible = false;
@@ -1431,6 +1424,8 @@ void Client::handleCommand_LocalPlayerAnimations(NetworkPacket* pkt)
 	*pkt >> player->local_animations[2];
 	*pkt >> player->local_animations[3];
 	*pkt >> player->local_animation_speed;
+
+	player->last_animation = -1;
 }
 
 void Client::handleCommand_EyeOffset(NetworkPacket* pkt)
@@ -1589,7 +1584,7 @@ void Client::handleCommand_MediaPush(NetworkPacket *pkt)
 	m_media_pushed_files.insert(filename);
 
 	// create a downloader for this file
-	auto downloader = new SingleMediaDownloader(cached);
+	auto downloader(std::make_shared<SingleMediaDownloader>(cached));
 	m_pending_media_downloads.emplace_back(token, downloader);
 	downloader->addFile(filename, raw_hash);
 	for (const auto &baseurl : m_remote_media_servers)
@@ -1715,4 +1710,12 @@ void Client::handleCommand_MinimapModes(NetworkPacket *pkt)
 
 	if (m_minimap)
 		m_minimap->setModeIndex(mode);
+}
+
+void Client::handleCommand_SetLighting(NetworkPacket *pkt)
+{
+	Lighting& lighting = m_env.getLocalPlayer()->getLighting();
+
+	if (pkt->getRemainingBytes() >= 4)
+		*pkt >> lighting.shadow_intensity;
 }

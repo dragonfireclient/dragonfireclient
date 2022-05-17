@@ -124,16 +124,16 @@ void GameUI::update(const RunStats &stats, Client *client, MapDrawControl *draw_
 
 	// Minimal debug text must only contain info that can't give a gameplay advantage
 	if (m_flags.show_minimal_debug) {
-		static float drawtime_avg = 0;
-		drawtime_avg = drawtime_avg * 0.95 + stats.drawtime * 0.05;
-		u16 fps = 1.0 / stats.dtime_jitter.avg;
+		const u16 fps = 1.0 / stats.dtime_jitter.avg;
+		m_drawtime_avg *= 0.95f;
+		m_drawtime_avg += 0.05f * (stats.drawtime / 1000);
 
 		std::ostringstream os(std::ios_base::binary);
 		os << std::fixed
 			<< PROJECT_NAME_C " " << g_version_hash
 			<< " | FPS: " << fps
 			<< std::setprecision(0)
-			<< " | drawtime: " << drawtime_avg << "ms"
+			<< " | drawtime: " << m_drawtime_avg << "ms"
 			<< std::setprecision(1)
 			<< " | dtime jitter: "
 			<< (stats.dtime_jitter.max_fraction * 100.0) << "%"
@@ -171,9 +171,13 @@ void GameUI::update(const RunStats &stats, Client *client, MapDrawControl *draw_
 			const NodeDefManager *nodedef = client->getNodeDefManager();
 			MapNode n = map.getNode(pointed_old.node_undersurface);
 
-			if (n.getContent() != CONTENT_IGNORE && nodedef->get(n).name != "unknown") {
-				os << ", pointed: " << nodedef->get(n).name
-					<< ", param2: " << (u64) n.getParam2();
+			if (n.getContent() != CONTENT_IGNORE) {
+				if (nodedef->get(n).name == "unknown") {
+					os << ", pointed: <unknown node>";
+				} else {
+					os << ", pointed: " << nodedef->get(n).name;
+				}
+				os << ", param2: " << (u64) n.getParam2();
 			}
 		}
 
@@ -229,7 +233,6 @@ void GameUI::initFlags()
 {
 	m_flags = GameUI::Flags();
 	m_flags.show_minimal_debug = g_settings->getBool("show_debug");
-	m_flags.show_basic_debug = false;
 }
 
 void GameUI::showMinimap(bool show)
@@ -246,7 +249,13 @@ void GameUI::showTranslatedStatusText(const char *str)
 
 void GameUI::setChatText(const EnrichedString &chat_text, u32 recent_chat_count)
 {
+	setStaticText(m_guitext_chat, chat_text);
 
+	m_recent_chat_count = recent_chat_count;
+}
+
+void GameUI::updateChatSize()
+{
 	// Update gui element size and position
 
 	const v2u32 &window_size = RenderingEngine::getWindowSize();
@@ -258,15 +267,15 @@ void GameUI::setChatText(const EnrichedString &chat_text, u32 recent_chat_count)
 	if (m_flags.show_basic_debug)
 		chat_y += g_fontengine->getLineHeight();
 
-	core::rect<s32> chat_size(10, chat_y,
-		window_size.X - 20, 0);
+	core::rect<s32> chat_size(10, chat_y, window_size.X - 20, 0);
 	chat_size.LowerRightCorner.Y = std::min((s32)window_size.Y,
-		m_guitext_chat->getTextHeight() + chat_y);
+			m_guitext_chat->getTextHeight() + chat_y);
+
+	if (chat_size == m_current_chat_size)
+		return;
+	m_current_chat_size = chat_size;
 
 	m_guitext_chat->setRelativePosition(chat_size);
-	setStaticText(m_guitext_chat, chat_text);
-
-	m_recent_chat_count = recent_chat_count;
 }
 
 void GameUI::updateProfiler()

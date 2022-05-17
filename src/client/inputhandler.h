@@ -153,8 +153,14 @@ public:
 	// in the subsequent iteration of Game::processPlayerInteraction
 	bool WasKeyReleased(const KeyPress &keycode) const { return keyWasReleased[keycode]; }
 
-	void listenForKey(const KeyPress &keyCode) { keysListenedFor.set(keyCode); }
-	void dontListenForKeys() { keysListenedFor.clear(); }
+	void listenForKey(const KeyPress &keyCode)
+	{
+		keysListenedFor.set(keyCode);
+	}
+	void dontListenForKeys()
+	{
+		keysListenedFor.clear();
+	}
 
 	s32 getMouseWheel()
 	{
@@ -190,13 +196,13 @@ public:
 #endif
 	}
 
-	s32 mouse_wheel = 0;
-
 	JoystickController *joystick = nullptr;
 
 #ifdef HAVE_TOUCHSCREENGUI
 	TouchScreenGUI *m_touchscreengui;
 #endif
+
+	s32 mouse_wheel = 0;
 
 	// The current state of keys
 	KeyList keyIsDown;
@@ -274,6 +280,12 @@ public:
 	{
 		m_receiver->joystick = &joystick;
 	}
+
+	virtual ~RealInputHandler()
+	{
+		m_receiver->joystick = nullptr;
+	}
+
 	virtual bool isKeyDown(GameKeyType k)
 	{
 		return m_receiver->IsKeyDown(keycache.key[k]) || joystick.isKeyDown(k);
@@ -299,6 +311,7 @@ public:
 	{
 		return m_receiver->WasKeyReleased(keycache.key[k]) || joystick.wasKeyReleased(k);
 	}
+
 	virtual float getMovementSpeed()
 	{
 		bool f = m_receiver->IsKeyDown(keycache.key[KeyType::FORWARD]),
@@ -318,6 +331,7 @@ public:
 		}
 		return joystick.getMovementSpeed();
 	}
+
 	virtual float getMovementDirection()
 	{
 		float x = 0, z = 0;
@@ -337,10 +351,12 @@ public:
 		else
 			return joystick.getMovementDirection();
 	}
+
 	virtual bool cancelPressed()
 	{
 		return wasKeyDown(KeyType::ESC) || m_receiver->WasKeyDown(CancelKey);
 	}
+
 	virtual void clearWasKeyPressed()
 	{
 		m_receiver->clearWasKeyPressed();
@@ -349,17 +365,21 @@ public:
 	{
 		m_receiver->clearWasKeyReleased();
 	}
+
 	virtual void listenForKey(const KeyPress &keyCode)
 	{
 		m_receiver->listenForKey(keyCode);
 	}
-	virtual void dontListenForKeys() { m_receiver->dontListenForKeys(); }
+	virtual void dontListenForKeys()
+	{
+		m_receiver->dontListenForKeys();
+	}
+
 	virtual v2s32 getMousePos()
 	{
-		if (RenderingEngine::get_raw_device()->getCursorControl()) {
-			return RenderingEngine::get_raw_device()
-					->getCursorControl()
-					->getPosition();
+		auto control = RenderingEngine::get_raw_device()->getCursorControl();
+		if (control) {
+			return control->getPosition();
 		}
 
 		return m_mousepos;
@@ -367,16 +387,18 @@ public:
 
 	virtual void setMousePos(s32 x, s32 y)
 	{
-		if (RenderingEngine::get_raw_device()->getCursorControl()) {
-			RenderingEngine::get_raw_device()
-					->getCursorControl()
-					->setPosition(x, y);
+		auto control = RenderingEngine::get_raw_device()->getCursorControl();
+		if (control) {
+			control->setPosition(x, y);
 		} else {
 			m_mousepos = v2s32(x, y);
 		}
 	}
 
-	virtual s32 getMouseWheel() { return m_receiver->getMouseWheel(); }
+	virtual s32 getMouseWheel()
+	{
+		return m_receiver->getMouseWheel();
+	}
 
 	void clear()
 	{
@@ -384,7 +406,7 @@ public:
 		m_receiver->clearInput();
 	}
 
-	private:
+private:
 	MyEventReceiver *m_receiver = nullptr;
 	v2s32 m_mousepos;
 };

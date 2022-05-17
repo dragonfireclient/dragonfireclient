@@ -116,7 +116,7 @@ RenderingEngine::RenderingEngine(IEventReceiver *receiver)
 	}
 
 	SIrrlichtCreationParameters params = SIrrlichtCreationParameters();
-	if (g_logger.getTraceEnabled())
+	if (tracestream)
 		params.LoggingLevel = irr::ELL_DEBUG;
 	params.DriverType = driverType;
 	params.WindowSize = core::dimension2d<u32>(screen_w, screen_h);
@@ -597,7 +597,7 @@ static float calcDisplayDensity()
 float RenderingEngine::getDisplayDensity()
 {
 	static float cached_display_density = calcDisplayDensity();
-	return cached_display_density;
+	return cached_display_density * g_settings->getFloat("display_density_factor");
 }
 
 #elif defined(_WIN32)
@@ -625,14 +625,14 @@ float RenderingEngine::getDisplayDensity()
 		display_density = calcDisplayDensity(get_video_driver());
 		cached = true;
 	}
-	return display_density;
+	return display_density * g_settings->getFloat("display_density_factor");
 }
 
 #else
 
 float RenderingEngine::getDisplayDensity()
 {
-	return g_settings->getFloat("screen_dpi") / 96.0;
+	return (g_settings->getFloat("screen_dpi") / 96.0) * g_settings->getFloat("display_density_factor");
 }
 
 #endif
