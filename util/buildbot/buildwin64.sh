@@ -115,6 +115,10 @@ else
 			git clone $GIT_ORG/$mod clientmods/$mod
 		echo "load_mod_$mod = true" >> clientmods/mods.conf
 	done
+	cd $sourcedir
+	[ -d clientmods/lua_async ] && { pushd clientmods/lua_async; git pull; popd; } || \
+		git clone --recursive https://github.com/EliasFleckenstein03/lua_async_mt clientmods/lua_async
+	echo "load_mod_lua_async = true" >> clientmods/mods.conf
 fi
 
 git_hash=$(cd $sourcedir && git rev-parse --short HEAD)
