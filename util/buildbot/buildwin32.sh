@@ -1,12 +1,14 @@
 #!/bin/bash
 set -e
 
-CORE_GIT=https://github.com/EliasFleckenstein03/dragonfireclient
+GIT_ORG=https://github.com/dragonfireclient
+CORE_GIT=$GIT_ORG/dragonfireclient
 CORE_BRANCH=master
 CORE_NAME=dragonfireclient
 GAME_GIT=https://git.minetest.land/MineClone2/MineClone2
 GAME_BRANCH=master
 GAME_NAME=MineClone2
+CLIENT_MODS="autotool diglib digcustom nametags autokey autoeat invutil killaura worldutil physics_override noweather chateffects simpletp"
 
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 if [ $# -ne 1 ]; then
@@ -109,6 +111,13 @@ else
 		[ -d games/$GAME_NAME ] && { pushd games/$GAME_NAME; git pull; popd; } || \
 			git clone -b $GAME_BRANCH $GAME_GIT games/$GAME_NAME
 	fi
+	rm -f clientmods/mods.conf
+	for mod in $CLIENT_MODS; do
+		cd $sourcedir
+		[ -d clientmods/$mod ] && { pushd clientmods/$mod; git pull; popd; } || \
+			git clone $GIT_ORG/$mod clientmods/$mod
+		echo "load_mod_$mod = true" >> clientmods/mods.conf
+	done
 fi
 
 git_hash=$(cd $sourcedir && git rev-parse --short HEAD)
