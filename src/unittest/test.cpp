@@ -362,7 +362,7 @@ struct TestMapBlock: public TestBase
 
 		MapNode node;
 		bool position_valid;
-		core::list<v3s16> validity_exceptions;
+		std::list<v3s16> validity_exceptions;
 
 		TC()
 		{
@@ -373,7 +373,7 @@ struct TestMapBlock: public TestBase
 		{
 			//return position_valid ^ (p==position_valid_exception);
 			bool exception = false;
-			for(core::list<v3s16>::Iterator i=validity_exceptions.begin();
+			for(std::list<v3s16>::iterator i=validity_exceptions.begin();
 					i != validity_exceptions.end(); i++)
 			{
 				if(p == *i)

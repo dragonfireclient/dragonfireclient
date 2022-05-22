@@ -103,7 +103,8 @@ GUIKeyChangeMenu::GUIKeyChangeMenu(gui::IGUIEnvironment* env,
 
 GUIKeyChangeMenu::~GUIKeyChangeMenu()
 {
-	removeChildren();
+	removeAllChildren();
+	key_used_text = nullptr;
 
 	for (key_setting *ks : key_settings) {
 		delete[] ks->button_name;
@@ -112,23 +113,10 @@ GUIKeyChangeMenu::~GUIKeyChangeMenu()
 	key_settings.clear();
 }
 
-void GUIKeyChangeMenu::removeChildren()
-{
-	const core::list<gui::IGUIElement*> &children = getChildren();
-	core::list<gui::IGUIElement*> children_copy;
-	for (gui::IGUIElement*i : children) {
-		children_copy.push_back(i);
-	}
-
-	for (gui::IGUIElement *i : children_copy) {
-		i->remove();
-	}
-	key_used_text = nullptr;
-}
-
 void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 {
-	removeChildren();
+	removeAllChildren();
+	key_used_text = nullptr;
 
 	const float s = m_gui_scale;
 	DesiredRect = core::rect<s32>(
