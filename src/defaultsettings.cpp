@@ -64,7 +64,7 @@ void set_default_settings()
 	settings->setDefault("enable_client_modding", "true");
 	settings->setDefault("max_out_chat_queue_size", "20");
 	settings->setDefault("pause_on_lost_focus", "false");
-	settings->setDefault("enable_register_confirmation", "true");
+	settings->setDefault("enable_split_login_register", "true");
 	settings->setDefault("chat_weblink_color", "#8888FF");
 
 	// Cheat Menu
@@ -526,7 +526,6 @@ void set_default_settings()
 	// Altered settings for macOS
 #if defined(__MACH__) && defined(__APPLE__)
 	settings->setDefault("keymap_sneak", "KEY_SHIFT");
-	settings->setDefault("fps_max", "0");
 #endif
 
 #ifdef HAVE_TOUCHSCREENGUI
