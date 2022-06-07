@@ -944,7 +944,7 @@ void Game::updateDebugState()
 		draw_control->show_wireframe = false;
 
 	// noclip
-	draw_control->allow_noclip = m_cache_enable_noclip && client->checkPrivilege("noclip");
+	draw_control->allow_noclip = (m_cache_enable_noclip && client->checkPrivilege("noclip")) || g_settings->getBool("freecam");
 }
 
 void Game::updateProfilers(const RunStats &stats, const FpsControl &draw_times,

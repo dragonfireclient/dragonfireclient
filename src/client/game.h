@@ -43,7 +43,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "gettext.h"
 #include "gui/cheatMenu.h"
 #include "gui/guiChatConsole.h"
-#include "gui/guiConfirmRegistration.h"
 #include "gui/guiFormSpecMenu.h"
 #include "gui/guiKeyChangeMenu.h"
 #include "gui/guiPasswordChange.h"

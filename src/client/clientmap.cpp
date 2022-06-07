@@ -221,7 +221,7 @@ void ClientMap::updateDrawList()
 
 	// No occlusion culling when free_move is on and camera is inside ground
 	bool occlusion_culling_enabled = true;
-	if (m_control.allow_noclip || g_settings->getBool("freecam")) {
+	if (m_control.allow_noclip) {
 		MapNode n = getNode(cam_pos_nodes);
 		if (n.getContent() == CONTENT_IGNORE || m_nodedef->get(n).solidness == 2)
 			occlusion_culling_enabled = false;
@@ -682,7 +682,7 @@ void ClientMap::renderPostFx(CameraMode cam_mode)
 	// If the camera is in a solid node, make everything black.
 	// (first person mode only)
 	if (features.solidness == 2 && cam_mode == CAMERA_MODE_FIRST &&
-		!(m_control.allow_noclip || g_settings->getBool("freecam"))) {
+		!m_control.allow_noclip) {
 		post_effect_color = video::SColor(255, 0, 0, 0);
 	}
 
