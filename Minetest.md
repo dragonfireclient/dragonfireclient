@@ -1,3 +1,5 @@
+# [Dragonfire client](/README.md)
+
 Minetest
 ========
 
@@ -12,7 +14,7 @@ and contributors (see source file comments and the version control log)
 
 In case you downloaded the source code
 --------------------------------------
-If you downloaded the Dragonfire Client source code in which this file is
+If you downloaded the [Dragonfire Client](/README.md) source code in which this file is
 contained, you probably want to download the [Minetest Game](https://github.com/minetest/minetest_game/)
 project too. See its README.txt for more information.
 
