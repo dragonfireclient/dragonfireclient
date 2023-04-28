@@ -29,6 +29,7 @@ core.cheats = {
 		["PlayerTracers"] = "enable_player_tracers",
 		["NodeESP"] = "enable_node_esp",
 		["NodeTracers"] = "enable_node_tracers",
+		["MineCloneStrongholds"] = "enable_stronghold_tracers",
 	},
 	["Interact"] = {
 		["FastDig"] = "fastdig",

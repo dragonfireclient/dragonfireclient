@@ -43,6 +43,11 @@ protected:
 	bool draw_player_tracers;
 	bool draw_node_esp;
 	bool draw_node_tracers;
+	bool draw_stronghold_tracers;
+
+	int stronghold_amount;
+	v3s16* render_strongholds;
+
 	video::SColor entity_esp_color;
 	video::SColor player_esp_color;
 

@@ -15,5 +15,6 @@ set(mapgen_SRCS
 	${CMAKE_CURRENT_SOURCE_DIR}/mg_ore.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/mg_schematic.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/treegen.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/mineclone_stronghold.cpp
 	PARENT_SCOPE
 )

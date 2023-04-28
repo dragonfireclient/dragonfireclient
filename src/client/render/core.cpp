@@ -29,6 +29,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "mapblock.h"
 #include "mapsector.h"
 #include "client/shadows/dynamicshadowsrender.h"
+#include "mapgen/mineclone_stronghold.h"
 
 RenderingCore::RenderingCore(IrrlichtDevice *_device, Client *_client, Hud *_hud)
 	: device(_device), driver(device->getVideoDriver()), smgr(device->getSceneManager()),
@@ -49,10 +50,15 @@ RenderingCore::~RenderingCore()
 {
 	clearTextures();
 	delete shadow_renderer;
+	delete render_strongholds;
 }
 
 void RenderingCore::initialize()
 {
+	mineclone_stronghold finder = mineclone_stronghold(client->getMapSeed());
+	stronghold_amount = g_settings->getFloat("stronghold_amount");
+	render_strongholds = finder.nearestStrongholds(client->getCamera()->getOffset(), stronghold_amount);
+
 	// have to be called late as the VMT is not ready in the constructor:
 	initTextures();
 	if (shadow_renderer)
@@ -85,6 +91,8 @@ void RenderingCore::draw(video::SColor _skycolor, bool _show_hud, bool _show_min
 	draw_player_tracers = g_settings->getBool("enable_player_tracers");
 	draw_node_esp = g_settings->getBool("enable_node_esp");
 	draw_node_tracers = g_settings->getBool("enable_node_tracers");
+	draw_stronghold_tracers = g_settings->getBool("enable_stronghold_tracers");
+
 	v3f entity_color = g_settings->getV3F("entity_esp_color");
 	v3f player_color = g_settings->getV3F("player_esp_color");
 	entity_esp_color = video::SColor(255, entity_color.X, entity_color.Y, entity_color.Z);
@@ -117,7 +125,7 @@ void RenderingCore::drawTracersAndESP()
 	material.setFlag(video::EMF_ZWRITE_ENABLE, false);
 	driver->setMaterial(material);
 
- 	if (draw_entity_esp || draw_entity_tracers || draw_player_esp || draw_player_tracers) {
+ 	if (draw_entity_esp || draw_entity_tracers || draw_player_esp || draw_player_tracers || draw_stronghold_tracers) {
 		auto allObjects = env.getAllActiveObjects();
 		for (auto &it : allObjects) {
 			ClientActiveObject *cao = it.second;
@@ -167,6 +175,17 @@ void RenderingCore::drawTracersAndESP()
 						driver->draw3DLine(eye_pos, box.getCenter(), color);
 				}
 			}
+		}
+	}
+	if(draw_stronghold_tracers){
+		for(int index = 0; index < stronghold_amount;index++){ //can't use 'v3s16 &p : render_strongholds' here!
+			v3s16 p = render_strongholds[index];
+			v3f pos = intToFloat(p,BS) - camera_offset;
+			aabb3f box;
+			box.MinEdge += pos;
+			box.MaxEdge += pos;
+			driver->draw3DLine(eye_pos,box.getCenter(),video::SColor(8,160,94,255));
+			driver->draw3DBox(box,video::SColor(8,160,94,255));
 		}
 	}
 
