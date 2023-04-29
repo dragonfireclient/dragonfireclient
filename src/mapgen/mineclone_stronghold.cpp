@@ -4,9 +4,6 @@
 #include <math.h>
 #include "constants.h"
 #include "util/numeric.h"
-#include <stdlib.h>
-
-#include <iostream>
 
 stronghold_ring* mineclone_stronghold::stronghold_rings = new stronghold_ring[8]{
     stronghold_ring {3,1408,2688},
@@ -56,7 +53,7 @@ v3s16* mineclone_stronghold::all(){
 float mineclone_stronghold::distance(v3s16 pos1,v3s16 pos2){
     int distX = pos1.X-pos2.X;
     int distZ = pos1.Z-pos2.Z;
-    return sqrt((distX*distX) + (distZ*distZ));
+    return sqrt(pow(distX,2) + pow(distZ,2));
 }
 
 v3s16* mineclone_stronghold::nearestStrongholds(v3s16 position,int amount){
@@ -67,7 +64,7 @@ v3s16* mineclone_stronghold::nearestStrongholds(v3s16 position,int amount){
         v3s16 stronghold = strongholds[index];
         float dist = distance(position,stronghold);
         for(int aindex = 0;aindex<amount;aindex++){
-            if(distances[aindex] == NULL || distances[aindex] > dist){
+            if(!distances[aindex] || distances[aindex] > dist){
                 distances[aindex] = dist;
                 positions[aindex] = stronghold;
                 break;
