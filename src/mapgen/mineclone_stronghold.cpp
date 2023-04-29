@@ -8,8 +8,6 @@
 
 #include <iostream>
 
-#define PI 3.14159265358979323846
-
 stronghold_ring* mineclone_stronghold::stronghold_rings = new stronghold_ring[8]{
     stronghold_ring {3,1408,2688},
     stronghold_ring {6,4480,5760},
@@ -38,7 +36,7 @@ v3s16* mineclone_stronghold::all(){
     for(int s=0;s<ringAmount;s++){
         stronghold_ring ring = stronghold_rings[s];
         double angle = pr.next();
-        angle = ((angle / 32767) * (PI*2));
+        angle = ((angle / 32767) * (M_PI*2));
         for(int a=0;a<ring.amount;a++){
             float dist = pr.range(ring.min,ring.max);
             double x =  cos(angle) * dist;
@@ -49,7 +47,7 @@ v3s16* mineclone_stronghold::all(){
             v3s16 pos = doubleToInt(pos3d,1.0);
             positions[current] = pos;
             current++;
-            angle = fmod(angle + ((PI*2) / ring.amount),PI*2);
+            angle = fmod(angle + ((M_PI*2) / ring.amount),M_PI*2);
         }
     }
     return positions;
