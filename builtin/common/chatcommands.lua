@@ -74,6 +74,7 @@ if INIT == "client" then
 		local def = {}
 		def.description = desc
 		def.params = "del <item> | add <item> | list"
+		def._list_setting = setting
 		function def.func(param)
 			local list = (minetest.settings:get(setting) or ""):split(",")
 			if param == "list" then
