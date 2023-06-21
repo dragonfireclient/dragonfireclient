@@ -712,7 +712,7 @@ Call these functions only at load time!
     * `add` adds something to the list
     * `del` del removes something from the list
     * `list` lists all items on the list
-    * The field `_list_setting` will be set in the chatcommand definition to be able to recover it the
+    * The field `list_setting` will be set in the chatcommand definition to be able to recover it the
       value of the 3rd parameter (settings) from minetest.registered_chatcommands later.
 * `minetest.register_on_chatcommand(function(command, params))`
     * Called always when a chatcommand is triggered, before `minetest.registered_chatcommands`
@@ -1634,7 +1634,7 @@ It can be created via `Raycast(pos1, pos2, objects, liquids)` or
         description = "Remove privilege from player", -- Full description
         func = function(param),        -- Called when command is run.
                                        -- Returns boolean success and text output.
-        _list_setting,                 -- this field will be automatically set by the minetest.register_list_command reflecting the 3rd "setting" parameter
+        list_setting,                  -- this field will be automatically set by the minetest.register_list_command reflecting the 3rd "setting" parameter
     }
 ### Server info
 ```lua
