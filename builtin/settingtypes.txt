@@ -2331,6 +2331,9 @@ priv_bypass (PrivBypass) bool true
 
 zoom_bypass (ZoomBypass) bool true
 
+# The zoom FOV when using ZoomBypass. Lower values mean more zoom. Default: 15.0
+zoom_bypass_fov (ZoomBypass FOV) float 15.0
+
 fastdig (FastDig) bool false
 
 fastplace (FastPlace) bool false
