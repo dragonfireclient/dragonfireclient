@@ -86,6 +86,7 @@ void set_default_settings()
 	settings->setDefault("xray_nodes", "default:stone,mcl_core:stone");
 	settings->setDefault("fullbright", "false");
 	settings->setDefault("priv_bypass", "true");
+	settings->setDefault("zoom_bypass", "true");
 	settings->setDefault("freecam", "false");
 	settings->setDefault("prevent_natural_damage", "true");
 	settings->setDefault("freecam", "false");

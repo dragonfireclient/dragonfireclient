@@ -1662,7 +1662,7 @@ void Game::toggleFullViewRange()
 void Game::checkZoomEnabled()
 {
 	LocalPlayer *player = client->getEnv().getLocalPlayer();
-	if (!g_settings->getBool("priv_bypass") && (player->getZoomFOV() < 0.001f || player->getFov().fov > 0.0f))
+	if (!g_settings->getBool("zoom_bypass") && (player->getZoomFOV() < 0.001f || player->getFov().fov > 0.0f))
 		m_game_ui->showTranslatedStatusText("Zoom currently disabled by game or mod");
 }
 

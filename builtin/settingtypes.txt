@@ -2329,6 +2329,8 @@ xray_nodes (XRay Nodes) string default:stone,mcl_core:stone
 
 priv_bypass (PrivBypass) bool true
 
+zoom_bypass (ZoomBypass) bool true
+
 fastdig (FastDig) bool false
 
 fastplace (FastPlace) bool false
