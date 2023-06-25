@@ -478,7 +478,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, f32 tool_reload_ratio)
 	 * If not, check for zoom and set to zoom FOV.
 	 * Otherwise, default to m_cache_fov.
 	 */
-	if (m_fov_transition_active) {
+	if(!g_settings->getBool("zoom_bypass") && m_fov_transition_active) {
 		// Smooth FOV transition
 		// Dynamically calculate FOV delta based on frametimes
 		f32 delta = (frametime / m_transition_time) * m_fov_diff;
@@ -490,7 +490,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, f32 tool_reload_ratio)
 			m_fov_transition_active = false;
 			m_curr_fov_degrees = m_target_fov_degrees;
 		}
-	} else if (m_server_sent_fov) {
+	} else if (!g_settings->getBool("zoom_bypass") && m_server_sent_fov) {
 		// Instantaneous FOV change
 		m_curr_fov_degrees = m_target_fov_degrees;
 	} else if (player->getPlayerControl().zoom && player->getZoomFOV() > 0.001f) {

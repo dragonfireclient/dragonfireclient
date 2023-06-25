@@ -48,6 +48,7 @@ core.cheats = {
 		["Reach"] = "reach",
 		["PointLiquids"] = "point_liquids",
 		["PrivBypass"] = "priv_bypass",
+		["ZoomBypass"] = "zoom_bypass",
 		["AutoRespawn"] = "autorespawn",
 		["ThroughWalls"] = "dont_point_nodes",
 	},
