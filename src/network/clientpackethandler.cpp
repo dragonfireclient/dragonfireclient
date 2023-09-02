@@ -1056,7 +1056,7 @@ void Client::handleCommand_AddParticleSpawner(NetworkPacket* pkt)
 	event->add_particlespawner.p           = new ParticleSpawnerParameters(p);
 	event->add_particlespawner.attached_id = attached_id;
 	event->add_particlespawner.id          = server_id;
-
+	if (m_mods_loaded && m_script->on_receive_particlespawner(*event->add_particlespawner.p)) return;
 	m_client_event_queue.push(event);
 }
 
