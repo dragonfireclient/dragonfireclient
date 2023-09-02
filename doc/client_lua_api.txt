@@ -774,6 +774,10 @@ Call these functions only at load time!
     * Called when recieving a spawn particle command from server
     * Newest functions are called first
     * If any function returns true, the particle does not spawn
+* `minetest.register_on_receive_particlespawner(function(particleSpawner parameters))`
+    * Called when recieving a particlespawner from the server
+    * Newest functions are called first
+    * If any function returns true, the particlespawner will not be created on the client
 * `minetest.register_on_object_add(function(obj))`
 	* Called every time an object is added
 * `minetest.register_on_object_properties_change(function(obj))`
