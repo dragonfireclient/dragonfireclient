@@ -346,6 +346,48 @@ bool ScriptApiClient::on_spawn_particle(struct ParticleParameters param)
 	return readParam<bool>(L, -1);
 }
 
+bool ScriptApiClient::on_receive_particlespawner(struct ParticleSpawnerParameters param)
+{
+	SCRIPTAPI_PRECHECKHEADER
+
+	lua_getglobal(L, "core");
+	lua_getfield(L, -1, "registered_on_receive_particlespawner");
+
+	// Push data
+	lua_newtable(L);
+	setstringfield(L, -1, "texture", param.texture);
+	lua_pushinteger(L, param.amount);
+	lua_setfield(L, -2, "amount");
+	push_v3f(L, param.minpos);
+	lua_setfield(L, -2, "minpos");
+	push_v3f(L, param.maxpos);
+	lua_setfield(L, -2, "maxpos");
+	push_v3f(L, param.minvel);
+	lua_setfield(L, -2, "minvel");
+	push_v3f(L, param.maxvel);
+	lua_setfield(L, -2, "maxvel");
+	push_v3f(L, param.minacc);
+	lua_setfield(L, -2, "minacc");
+	push_v3f(L, param.maxacc);
+	lua_setfield(L, -2, "maxacc");
+	lua_pushnumber(L, param.time);
+	lua_setfield(L, -2, "time");
+	lua_pushnumber(L, param.minexptime);
+	lua_setfield(L, -2, "minexptime");
+	lua_pushnumber(L, param.maxexptime);
+	lua_setfield(L, -2, "maxexptime");
+	lua_pushnumber(L, param.minsize);
+	lua_setfield(L, -2, "minsize");
+	lua_pushnumber(L, param.maxsize);
+	lua_setfield(L, -2, "maxsize");
+	lua_pushinteger(L, param.collisiondetection);
+	lua_setfield(L, -2, "collisiondetection");
+
+	// Call functions
+	runCallbacks(1, RUN_CALLBACKS_MODE_OR);
+	return readParam<bool>(L, -1);
+}
+
 void ScriptApiClient::on_object_properties_change(s16 id)
 {
 	SCRIPTAPI_PRECHECKHEADER

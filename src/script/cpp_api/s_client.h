@@ -63,6 +63,7 @@ public:
 			bool new_move);
 	bool on_play_sound(SimpleSoundSpec spec);
 	bool on_spawn_particle(struct ParticleParameters param);
+	bool on_receive_particlespawner(struct ParticleSpawnerParameters param);
 	void on_object_properties_change(s16 id);
 	void on_object_hp_change(s16 id);
 	bool on_object_add(s16 id);
