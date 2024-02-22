@@ -2398,3 +2398,7 @@ reach (Reach) bool false
 airjump (AirJump) bool false
 
 spider (Spider) bool false
+
+node_stroker (Node stroker) bool false
+
+node_stroker_color (Node stroker color) string (255, 0, 0)
