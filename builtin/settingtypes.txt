@@ -2401,4 +2401,4 @@ spider (Spider) bool false
 
 node_light(Node Lighting) bool false
 
-node_light_color (Custom color for node lighting) string (255, 0, 0)
+node_light_color (NodeLighting color) string (255, 0, 0)
