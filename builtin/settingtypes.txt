@@ -2398,3 +2398,7 @@ reach (Reach) bool false
 airjump (AirJump) bool false
 
 spider (Spider) bool false
+
+node_light(Node Lighting) bool false
+
+node_light_color (NodeLighting color) string (255, 0, 0)
