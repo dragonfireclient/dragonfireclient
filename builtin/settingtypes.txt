@@ -2399,6 +2399,6 @@ airjump (AirJump) bool false
 
 spider (Spider) bool false
 
-node_stroker (Node stroker) bool false
+node_light(Node stroker) bool false
 
-node_stroker_color (Node stroker color) string (255, 0, 0)
+node_light_color (Node stroker color) string (255, 0, 0)

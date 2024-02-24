@@ -126,8 +126,8 @@ void set_default_settings()
 	settings->setDefault("killaura", "false");
 	settings->setDefault("airjump", "false");
 	settings->setDefault("spider", "false");
-	settings->setDefault("node_stroker", "false");
-	settings->setDefault("node_stroker_color", "(255, 0, 0)");
+	settings->setDefault("node_light", "false");
+	settings->setDefault("node_light_color", "(255, 0, 0)");
 
 	// Keymap
 	settings->setDefault("remote_port", "30000");
