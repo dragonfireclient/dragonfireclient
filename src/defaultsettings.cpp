@@ -397,6 +397,7 @@ void set_default_settings()
 
 	// ContentDB
 	settings->setDefault("contentdb_url", "http://cheatdb.elidragon.com");
+	settings->setDefault("contentdb_url_static", "https://raw.githubusercontent.com/dragonfireclient/static_cheatdb/main/packages.json");
 	settings->setDefault("contentdb_max_concurrent_downloads", "3");
 
 #ifdef __ANDROID__

@@ -72,6 +72,7 @@ assert(urlencode("sample text?") == "sample%20text%3F")
 
 
 local function get_download_url(package, reason)
+	if package.download_url then return package.download_url end
 	local base_url = core.settings:get("contentdb_url")
 	local ret = base_url .. ("/packages/%s/releases/%d/download/"):format(
 		package.url_part, package.release)
@@ -577,15 +578,21 @@ end
 
 function store.load()
 	local version = core.get_version()
-	local base_url = core.settings:get("contentdb_url")
-	local url = base_url ..
-		"/api/packages/?type=mod&type=game&type=txp&protocol_version=" ..
-		core.get_max_supp_proto() .. "&engine_version=" .. urlencode(version.string)
+	local static_url = core.settings:get("contentdb_url_static")
+	local url
+	if static_url and static_url ~= "" then
+		url = static_url
+	else
+		local base_url = core.settings:get("contentdb_url")
+		local url = base_url ..
+			"/api/packages/?type=mod&type=game&type=txp&protocol_version=" ..
+			core.get_max_supp_proto() .. "&engine_version=" .. urlencode(version.string)
 
-	for _, item in pairs(core.settings:get("contentdb_flag_blacklist"):split(",")) do
-		item = item:trim()
-		if item ~= "" then
-			url = url .. "&hide=" .. urlencode(item)
+		for _, item in pairs(core.settings:get("contentdb_flag_blacklist"):split(",")) do
+			item = item:trim()
+			if item ~= "" then
+				url = url .. "&hide=" .. urlencode(item)
+			end
 		end
 	end
 
