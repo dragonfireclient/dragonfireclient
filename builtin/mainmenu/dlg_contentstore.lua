@@ -72,6 +72,7 @@ assert(urlencode("sample text?") == "sample%20text%3F")
 
 
 local function get_download_url(package, reason)
+	if package.download_url then return package.download_url end
 	local base_url = core.settings:get("contentdb_url")
 	local ret = base_url .. ("/packages/%s/releases/%d/download/"):format(
 		package.url_part, package.release)
