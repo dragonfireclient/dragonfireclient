@@ -622,6 +622,14 @@ bool Game::initGui()
 		return false;
 	}
 
+	new_menu = new NewMenu(guienv, guienv->getRootGUIElement(), -1, &g_menumgr, client);
+
+	if (!new_menu) {
+		*error_message = "Could not allocate memory for cheat menu";
+		errorstream << *error_message << std::endl;
+		return false;
+	}
+
 #ifdef HAVE_TOUCHSCREENGUI
 
 	if (g_touchscreengui)
@@ -1076,16 +1084,18 @@ void Game::processUserInput(f32 dtime)
 
 void Game::processKeyInput()
 {
-	if (wasKeyDown(KeyType::SELECT_UP)) {
-		m_cheat_menu->selectUp();
-	} else if (wasKeyDown(KeyType::SELECT_DOWN)) {
-		m_cheat_menu->selectDown();
-	} else if (wasKeyDown(KeyType::SELECT_LEFT)) {
-		m_cheat_menu->selectLeft();
-	} else if (wasKeyDown(KeyType::SELECT_RIGHT)) {
-		m_cheat_menu->selectRight();
-	} else if (wasKeyDown(KeyType::SELECT_CONFIRM)) {
-		m_cheat_menu->selectConfirm();
+	if (g_settings->getBool("use_old_menu")) {
+		if (wasKeyDown(KeyType::SELECT_UP)) {
+			m_cheat_menu->selectUp();
+		} else if (wasKeyDown(KeyType::SELECT_DOWN)) {
+			m_cheat_menu->selectDown();
+		} else if (wasKeyDown(KeyType::SELECT_LEFT)) {
+			m_cheat_menu->selectLeft();
+		} else if (wasKeyDown(KeyType::SELECT_RIGHT)) {
+			m_cheat_menu->selectRight();
+		} else if (wasKeyDown(KeyType::SELECT_CONFIRM)) {
+			m_cheat_menu->selectConfirm();
+		}
 	}
 
 	if (wasKeyDown(KeyType::DROP)) {
@@ -1183,7 +1193,11 @@ void Game::processKeyInput()
 	} else if (wasKeyDown(KeyType::TOGGLE_FOG)) {
 		toggleFog();
 	} else if (wasKeyDown(KeyType::TOGGLE_CHEAT_MENU)) {
-		m_game_ui->toggleCheatMenu();
+		if (g_settings->getBool("use_old_menu")) {
+			m_game_ui->toggleCheatMenu();
+		} else {
+			new_menu->create();
+		}
 	} else if (wasKeyDown(KeyType::TOGGLE_UPDATE_CAMERA)) {
 		toggleUpdateCamera();
 	} else if (wasKeyDown(KeyType::TOGGLE_DEBUG)) {
@@ -3266,7 +3280,7 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 	*/
 
 	if (! gui_chat_console->isOpen()) {
-		if (m_game_ui->m_flags.show_cheat_menu)
+		if (m_game_ui->m_flags.show_cheat_menu && g_settings->getBool("use_old_menu"))
 			m_cheat_menu->draw(driver, m_game_ui->m_flags.show_minimal_debug);
 		if (g_settings->getBool("cheat_hud"))
 			m_cheat_menu->drawHUD(driver, dtime);

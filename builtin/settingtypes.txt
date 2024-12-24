@@ -2319,6 +2319,8 @@ cheat_menu_entry_height (Entry height) int 40
 
 cheat_menu_entry_width (Entry width) int 200
 
+use_old_menu (Use Old Menu) bool false
+
 [Cheats]
 
 fullbright (Fullbright) bool false

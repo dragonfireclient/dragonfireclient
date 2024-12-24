@@ -42,6 +42,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "filesys.h"
 #include "gettext.h"
 #include "gui/cheatMenu.h"
+#include "gui/NewMenu.h"
 #include "gui/guiChatConsole.h"
 #include "gui/guiFormSpecMenu.h"
 #include "gui/guiKeyChangeMenu.h"
@@ -849,6 +850,7 @@ public:
 	std::unique_ptr<GameUI> m_game_ui;
 	GUIChatConsole *gui_chat_console = nullptr; // Free using ->Drop()
 	CheatMenu *m_cheat_menu = nullptr;
+	NewMenu *new_menu = nullptr;
 	MapDrawControl *draw_control = nullptr;
 	Camera *camera = nullptr;
 	Clouds *clouds = nullptr;	                  // Free using ->Drop()

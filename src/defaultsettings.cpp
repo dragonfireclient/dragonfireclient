@@ -80,6 +80,7 @@ void set_default_settings()
 	settings->setDefault("cheat_menu_head_height", "50");
 	settings->setDefault("cheat_menu_entry_height", "35");
 	settings->setDefault("cheat_menu_entry_width", "200");
+	settings->setDefault("use_old_menu", "false");
 
 	// Cheats
 	settings->setDefault("xray", "false");
